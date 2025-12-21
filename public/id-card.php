@@ -29,9 +29,16 @@ include dirname(__DIR__) . '/includes/header.php';
 // Include PWA install prompt (only show on mobile)
 include __DIR__ . '/pwa-install-prompt.php';
 
-// If no employee record exists, find contact person and send notifications
+// If no employee record exists, handle differently for superadmins
 if (!$employee):
     $user = Auth::getUser();
+    
+    // Superadmins don't need employee profiles - redirect to admin area
+    if (RBAC::isSuperAdmin()) {
+        header('Location: ' . url('admin/organisations.php'));
+        exit;
+    }
+    
     $organisation = null;
     $contactPerson = null;
     $contactAttempts = [];
