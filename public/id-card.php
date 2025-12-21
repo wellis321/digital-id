@@ -211,8 +211,14 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
     }
     ?>
     
-    <?php if ($photoPath): ?>
-        <img src="<?php echo htmlspecialchars($photoPath); ?>" alt="Photo" class="id-card-photo" style="<?php echo $photoStatus === 'pending' ? 'opacity: 0.7; border: 2px dashed #f59e0b;' : ''; ?>">
+        <?php if ($photoPath): ?>
+            <?php
+            $photoAltText = 'ID card photo for ' . htmlspecialchars($employee['first_name'] . ' ' . $employee['last_name']);
+            if ($photoStatus === 'pending') {
+                $photoAltText .= ' (pending approval)';
+            }
+            ?>
+            <img src="<?php echo htmlspecialchars($photoPath); ?>" alt="<?php echo $photoAltText; ?>" class="id-card-photo" style="<?php echo $photoStatus === 'pending' ? 'opacity: 0.7; border: 2px dashed #f59e0b;' : ''; ?>">
     <?php else: ?>
         <div class="id-card-photo" style="background-color: #f3f4f6; border: 3px solid #e5e7eb; display: flex; align-items: center; justify-content: center; color: #6b7280;">
             No Photo
@@ -246,7 +252,10 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
     
     <div class="id-card-qr">
         <p style="margin-bottom: 1rem; font-size: 0.875rem;">Scan QR code for verification</p>
-        <img src="<?php echo htmlspecialchars($qrImageUrl); ?>" alt="QR Code" style="max-width: 200px; background: white; padding: 1rem; border-radius: 0;">
+        <?php
+        $qrAltText = 'QR code for verifying ' . htmlspecialchars($employee['first_name'] . ' ' . $employee['last_name']) . ' ID card';
+        ?>
+        <img src="<?php echo htmlspecialchars($qrImageUrl); ?>" alt="<?php echo $qrAltText; ?>" style="max-width: 200px; background: white; padding: 1rem; border-radius: 0;">
     </div>
     
     <div style="margin-top: 1.5rem; text-align: center;">

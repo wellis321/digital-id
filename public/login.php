@@ -4,8 +4,18 @@ require_once dirname(__DIR__) . '/config/config.php';
 $error = '';
 $success = '';
 
+// Rate limiting for login attempts
+require_once SRC_PATH . '/classes/RateLimiter.php';
+$clientId = RateLimiter::getClientIdentifier();
+$rateLimitKey = 'login_' . $clientId;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!CSRF::validatePost()) {
+    // Check rate limit before processing
+    if (RateLimiter::isRateLimited($rateLimitKey, 5, 900)) { // 5 attempts per 15 minutes
+        $resetTime = RateLimiter::getResetTime($rateLimitKey);
+        $minutes = ceil($resetTime / 60);
+        $error = "Too many login attempts. Please try again in {$minutes} minute" . ($minutes !== 1 ? 's' : '') . ".";
+    } elseif (!CSRF::validatePost()) {
         // Regenerate token to invalidate the old form
         unset($_SESSION[CSRF_TOKEN_NAME]);
         $error = 'Invalid security token. Please try again.';
@@ -16,12 +26,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = Auth::login($email, $password);
         
         if ($result === true) {
+            // Successful login - reset rate limit
+            RateLimiter::reset($rateLimitKey);
             header('Location: ' . url('id-card.php'));
             exit;
         } elseif (is_array($result) && isset($result['error'])) {
             $error = $result['message'];
         } else {
             $error = 'Invalid email or password.';
+            $remaining = RateLimiter::getRemainingAttempts($rateLimitKey, 5);
+            if ($remaining > 0) {
+                $error .= " You have {$remaining} attempt" . ($remaining !== 1 ? 's' : '') . " remaining.";
+            }
         }
     }
 }
@@ -34,11 +50,11 @@ include INCLUDES_PATH . '/header.php';
     <h1>Login</h1>
     
     <?php if ($error): ?>
-        <div class="alert alert-error"><?php echo htmlspecialchars($error); ?></div>
+        <div class="alert alert-error" role="alert" aria-live="assertive"><?php echo htmlspecialchars($error); ?></div>
     <?php endif; ?>
     
     <?php if ($success): ?>
-        <div class="alert alert-success"><?php echo htmlspecialchars($success); ?></div>
+        <div class="alert alert-success" role="alert" aria-live="polite"><?php echo htmlspecialchars($success); ?></div>
     <?php endif; ?>
     
     <form method="POST" action="" autocomplete="off">

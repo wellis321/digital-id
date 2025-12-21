@@ -8,6 +8,11 @@
     # Prevent directory listing
     Options -Indexes
     
+    # Force HTTPS in production (uncomment and adjust domain as needed)
+    # RewriteCond %{HTTPS} off
+    # RewriteCond %{HTTP_HOST} ^(?:www\.)?lightslategrey-weasel-963972\.hostingersite\.com [NC]
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    
     # Redirect to index.php if file doesn't exist (optional - can be removed if not needed)
     # RewriteCond %{REQUEST_FILENAME} !-f
     # RewriteCond %{REQUEST_FILENAME} !-d
@@ -27,6 +32,14 @@
     
     # Referrer Policy
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Content Security Policy
+    # Allow same-origin resources, Font Awesome CDN, and QR code API
+    # 'unsafe-inline' needed for inline styles/scripts (consider nonce-based CSP for better security)
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https://api.qrserver.com; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self';"
+    
+    # Strict Transport Security (only add in production with HTTPS)
+    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 </IfModule>
 
 # Prevent access to sensitive files
@@ -52,8 +65,8 @@ DirectoryIndex index.php index.html
     php_value max_input_time 300
 </IfModule>
 
-# Enable error pages (optional)
-# ErrorDocument 404 /404.php
-# ErrorDocument 403 /403.php
-# ErrorDocument 500 /500.php
+# Enable error pages
+ErrorDocument 404 /404.php
+ErrorDocument 403 /403.php
+ErrorDocument 500 /500.php
 

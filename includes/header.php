@@ -166,6 +166,25 @@
     </script>
 </head>
 <body>
+    <!-- Skip to main content link for keyboard navigation -->
+    <a href="#main-content" class="skip-link" style="position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden;">Skip to main content</a>
+    <style>
+        .skip-link:focus {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 10000;
+            padding: 0.75rem 1.5rem;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 0;
+            font-weight: 600;
+            width: auto;
+            height: auto;
+            overflow: visible;
+        }
+    </style>
     <header>
         <nav>
             <div class="container">
@@ -236,19 +255,19 @@
                             <a href="<?php echo url('admin/users.php'); ?>" class="<?php echo (strpos($currentPage, 'users.php') !== false) ? 'active' : ''; ?>">Users</a>
                         <?php endif; ?>
                         <a href="<?php echo url('logout.php'); ?>">Logout</a>
-                    </div>
+                    </nav>
                 <?php else: ?>
-                    <div class="nav-links" data-menu-state="closed">
+                    <nav id="nav-links" class="nav-links" data-menu-state="closed" role="navigation" aria-label="Main navigation">
                         <a href="<?php echo url('index.php'); ?>" class="<?php echo $isActive('index.php'); ?>">Home</a>
                         <a href="<?php echo url('features.php'); ?>" class="<?php echo $isActive('features.php'); ?>">Features</a>
                         <a href="<?php echo url('security.php'); ?>" class="<?php echo $isActive('security.php'); ?>">Security</a>
                         <a href="<?php echo url('docs.php'); ?>" class="<?php echo $isActive('docs.php'); ?>">Documentation</a>
                         <a href="<?php echo url('request-access.php'); ?>" class="<?php echo $isActive('request-access.php'); ?>">Request Access</a>
                         <a href="<?php echo url('login.php'); ?>" class="<?php echo $isActive('login.php'); ?>">Login</a>
-                    </div>
+                    </nav>
                 <?php endif; ?>
             </div>
         </nav>
     </header>
-    <main class="container">
+    <main id="main-content" class="container">
 

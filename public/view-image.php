@@ -16,10 +16,25 @@ if (empty($imagePath)) {
 
 // Sanitize path - only allow uploads directory
 $allowedBase = dirname(__DIR__) . '/uploads/';
-$fullPath = realpath(dirname(__DIR__) . '/' . $imagePath);
+$allowedBaseNormalized = str_replace('\\', '/', realpath($allowedBase)) . '/';
+
+// Remove any null bytes and normalize path
+$imagePath = str_replace("\0", '', $imagePath);
+$requestedPath = dirname(__DIR__) . '/' . ltrim($imagePath, '/');
+$fullPath = realpath($requestedPath);
 
 // Security check: ensure the file is within the uploads directory
-if (!$fullPath || strpos($fullPath, $allowedBase) !== 0) {
+// Use realpath comparison to prevent directory traversal
+if (!$fullPath || !$allowedBaseNormalized) {
+    http_response_code(403);
+    die('Access denied');
+}
+
+// Normalize both paths for comparison (handle Windows/Unix path separators)
+$fullPathNormalized = str_replace('\\', '/', $fullPath) . '/';
+
+// Strict check: file must be within uploads directory (not equal to uploads root)
+if (strpos($fullPathNormalized, $allowedBaseNormalized) !== 0 || $fullPathNormalized === $allowedBaseNormalized) {
     http_response_code(403);
     die('Access denied');
 }
