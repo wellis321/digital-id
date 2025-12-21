@@ -109,8 +109,8 @@ if (!function_exists('getBaseUrl')) {
         static $baseUrl = null;
         if ($baseUrl === null) {
             $docRoot = $_SERVER['DOCUMENT_ROOT'] ?? '';
+            $scriptFilename = $_SERVER['SCRIPT_FILENAME'] ?? '';
             $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
-            $requestUri = $_SERVER['REQUEST_URI'] ?? '';
             
             $docRootNormalized = rtrim(str_replace('\\', '/', $docRoot), '/');
             $lastPart = strtolower(basename($docRootNormalized));
@@ -123,18 +123,9 @@ if (!function_exists('getBaseUrl')) {
                 $baseUrl = '';
             } else {
                 // Document root is project root
-                // Check if script is in public folder but REQUEST_URI doesn't have /public/
-                // This means .htaccess rewrite is working, so don't add /public/ prefix
-                $scriptInPublic = strpos($scriptName, '/public/') !== false;
-                $uriHasPublic = strpos($requestUri, '/public/') !== false;
-                
-                if ($scriptInPublic && !$uriHasPublic) {
-                    // .htaccess is rewriting, so URLs should NOT include /public/
-                    $baseUrl = '';
-                } else {
-                    // No rewrite detected, need /public/ prefix
-                    $baseUrl = '/public';
-                }
+                // Since .htaccess rewrites all requests to /public/, URLs should NOT include /public/
+                // The rewrite handles the routing internally
+                $baseUrl = '';
             }
         }
         return $baseUrl;
