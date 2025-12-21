@@ -41,6 +41,9 @@ define('APP_NAME', getenv('APP_NAME') ?: 'Digital ID');
 define('APP_VERSION', '1.0.0');
 define('APP_URL', getenv('APP_URL') ?: 'http://localhost');
 
+// Contact email - Main super admin and point of contact
+define('CONTACT_EMAIL', 'digital-ids@outlook.com');
+
 // Security
 define('CSRF_TOKEN_NAME', 'csrf_token');
 define('PASSWORD_MIN_LENGTH', 8);

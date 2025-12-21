@@ -161,8 +161,8 @@ if (!$employee):
                 
                 <p style="margin-top: 1rem; font-size: 0.9rem;">
                     <strong>Support Email:</strong> 
-                    <a href="mailto:<?php echo htmlspecialchars(getenv('SUPPORT_EMAIL') ?: getenv('MAIL_REPLY_TO') ?: 'support@example.com'); ?>">
-                        <?php echo htmlspecialchars(getenv('SUPPORT_EMAIL') ?: getenv('MAIL_REPLY_TO') ?: 'support@example.com'); ?>
+                    <a href="mailto:<?php echo htmlspecialchars(CONTACT_EMAIL); ?>">
+                        <?php echo htmlspecialchars(CONTACT_EMAIL); ?>
                     </a>
                 </p>
             </div>

@@ -146,7 +146,7 @@ class Email {
      * Notify site support about user needing employee profile (when no admin found)
      */
     public static function notifySupportAboutMissingEmployeeProfile($userDetails, $organisationDetails, $contactAttempts = []) {
-        $supportEmail = getenv('SUPPORT_EMAIL') ?: getenv('MAIL_REPLY_TO') ?: 'support@example.com';
+        $supportEmail = defined('CONTACT_EMAIL') ? CONTACT_EMAIL : (getenv('SUPPORT_EMAIL') ?: getenv('MAIL_REPLY_TO') ?: 'support@example.com');
         $subject = '[URGENT] User Missing Employee Profile - ' . APP_NAME;
         
         $contactAttemptsText = '';

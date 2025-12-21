@@ -1,13 +1,9 @@
 // Service Worker for Digital ID PWA
-const CACHE_NAME = 'digital-id-v1';
-const RUNTIME_CACHE = 'digital-id-runtime-v1';
+const CACHE_NAME = 'digital-id-v2'; // Updated to force cache clear
+const RUNTIME_CACHE = 'digital-id-runtime-v2'; // Updated to force cache clear
 
-// Assets to cache immediately
+// Assets to cache immediately - ONLY static assets, NO PHP pages with authentication
 const STATIC_ASSETS = [
-  '/',
-  '/index.php',
-  '/id-card.php',
-  '/login.php',
   '/assets/css/style.css',
   '/manifest.json'
 ];
@@ -53,49 +49,50 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // For ID card page, try network first (needs fresh data), then cache
-  if (event.request.url.includes('id-card.php')) {
+  // CRITICAL: Never cache PHP pages - they contain authentication state
+  // Only cache static assets (CSS, JS, images, manifest, etc.)
+  const url = new URL(event.request.url);
+  const isPhpPage = url.pathname.endsWith('.php') || url.pathname === '/' || url.pathname === '';
+  const isStaticAsset = url.pathname.match(/\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|json)$/i) || 
+                        url.pathname.startsWith('/assets/') ||
+                        url.pathname === '/manifest.json';
+
+  // For PHP pages, always fetch from network (never cache)
+  if (isPhpPage) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
+  // For static assets, try cache first, then network
+  if (isStaticAsset) {
     event.respondWith(
-      fetch(event.request)
-        .then((response) => {
-          // Clone the response
-          const responseToCache = response.clone();
-          caches.open(RUNTIME_CACHE).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
-          return response;
-        })
-        .catch(() => {
-          return caches.match(event.request);
+      caches.match(event.request)
+        .then((cachedResponse) => {
+          if (cachedResponse) {
+            return cachedResponse;
+          }
+
+          return fetch(event.request)
+            .then((response) => {
+              // Don't cache non-successful responses
+              if (!response || response.status !== 200 || response.type !== 'basic') {
+                return response;
+              }
+
+              // Clone the response
+              const responseToCache = response.clone();
+              caches.open(RUNTIME_CACHE).then((cache) => {
+                cache.put(event.request, responseToCache);
+              });
+
+              return response;
+            });
         })
     );
     return;
   }
 
-  // For other pages, try cache first, then network
-  event.respondWith(
-    caches.match(event.request)
-      .then((cachedResponse) => {
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-
-        return fetch(event.request)
-          .then((response) => {
-            // Don't cache non-successful responses
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-
-            // Clone the response
-            const responseToCache = response.clone();
-            caches.open(RUNTIME_CACHE).then((cache) => {
-              cache.put(event.request, responseToCache);
-            });
-
-            return response;
-          });
-      })
-  );
+  // For everything else, fetch from network (don't cache)
+  event.respondWith(fetch(event.request));
 });
 
