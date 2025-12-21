@@ -255,7 +255,7 @@
                             <a href="<?php echo url('admin/users.php'); ?>" class="<?php echo (strpos($currentPage, 'users.php') !== false) ? 'active' : ''; ?>">Users</a>
                         <?php endif; ?>
                         <a href="<?php echo url('logout.php'); ?>">Logout</a>
-                    </nav>
+                    </div>
                 <?php else: ?>
                     <nav id="nav-links" class="nav-links" data-menu-state="closed" role="navigation" aria-label="Main navigation">
                         <a href="<?php echo url('index.php'); ?>" class="<?php echo $isActive('index.php'); ?>">Home</a>
