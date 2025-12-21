@@ -92,10 +92,13 @@ include INCLUDES_PATH . '/header.php';
         </div>
     <?php endif; ?>
     
-    <p style="margin-top: 1rem;">
-        <a href="<?php echo url('register.php'); ?>">Don't have an account? Register</a>
-    </p>
-    <p style="margin-top: 0.5rem; color: #6b7280; font-size: 0.875rem;">
+    <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e5e7eb;">
+        <p style="margin-bottom: 1rem; text-align: center; color: #374151; font-weight: 500;">Don't have an account?</p>
+        <a href="<?php echo url('register.php'); ?>" class="btn btn-primary" style="width: 100%; display: block; text-align: center;">
+            <i class="fas fa-user-plus"></i> Register Now
+        </a>
+    </div>
+    <p style="margin-top: 1rem; text-align: center; color: #6b7280; font-size: 0.875rem;">
         <strong>New organisation?</strong> <a href="<?php echo url('request-access.php'); ?>">Request access</a> for your organisation first.
     </p>
 </div>

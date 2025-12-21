@@ -628,8 +628,9 @@ include INCLUDES_PATH . '/header.php';
             <a href="<?php echo url('id-card.php'); ?>" class="btn btn-hero-primary">View Your ID Card</a>
             <a href="<?php echo url('features.php'); ?>" class="btn btn-hero-secondary">Learn More</a>
         <?php else: ?>
-            <a href="<?php echo url('request-access.php'); ?>" class="btn btn-hero-primary">Request Access</a>
+            <a href="<?php echo url('register.php'); ?>" class="btn btn-hero-primary">Register</a>
             <a href="<?php echo url('login.php'); ?>" class="btn btn-hero-secondary">Login</a>
+            <a href="<?php echo url('request-access.php'); ?>" class="btn btn-hero-secondary" style="font-size: 0.9375rem;">Request Organisation Access</a>
         <?php endif; ?>
     </div>
 </div>
@@ -977,8 +978,9 @@ include INCLUDES_PATH . '/header.php';
             <h2>Ready to Get Started?</h2>
             <p>Join organisations already using Digital ID to streamline their identity management and protect their staff and service users.</p>
             <div>
-                <a href="<?php echo url('request-access.php'); ?>" class="btn">Request Access</a>
-                <a href="<?php echo url('features.php'); ?>" class="btn" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid white;">Explore Features</a>
+                <a href="<?php echo url('register.php'); ?>" class="btn" style="background: white; color: #2563eb; border: none; font-weight: 600;">Register</a>
+                <a href="<?php echo url('login.php'); ?>" class="btn" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid white;">Login</a>
+                <a href="<?php echo url('request-access.php'); ?>" class="btn" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid white; font-size: 0.9375rem;">Request Organisation Access</a>
             </div>
         </div>
     </div>
