@@ -16,6 +16,6 @@ if [ ! -f .env ]; then
     echo ""
 fi
 
-# Start PHP server
-php -S localhost:8000 -t public
+# Start PHP server with router for 404 handling
+php -S localhost:8000 -t public public/router.php
 
