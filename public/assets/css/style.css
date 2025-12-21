@@ -42,6 +42,7 @@ nav .container {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    flex-wrap: nowrap;
 }
 
 .logo {
@@ -52,6 +53,8 @@ nav .container {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .logo:hover {
@@ -69,6 +72,7 @@ nav .container {
     padding: 0.5rem;
     border-radius: 0;
     transition: background-color 0.2s;
+    flex-shrink: 0;
 }
 
 .mobile-menu-toggle:hover {
@@ -77,21 +81,24 @@ nav .container {
 
 .nav-links {
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    flex-shrink: 1;
+    min-width: 0;
 }
 
 .nav-links a {
     color: white;
     text-decoration: none;
     font-weight: 500;
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
     transition: all 0.2s;
-    padding: 0.625rem 1rem;
+    padding: 0.5rem 0.75rem;
     border-radius: 0;
     position: relative;
     white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .nav-links a:hover {
