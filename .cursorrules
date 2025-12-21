@@ -1,0 +1,29 @@
+# Cursor AI Rules for Digital ID Project
+
+## CRITICAL DEVELOPMENT STANDARDS
+
+### Icons
+- **NEVER use emojis** - Always use Font Awesome 6 icons
+- Font Awesome is loaded globally in `includes/header.php`
+- Use `<i class="fas fa-icon-name"></i>` format
+- Browse icons at: https://fontawesome.com/icons
+
+### Language
+- **ALWAYS use UK English spelling** - Never American English
+- Common corrections:
+  - organisation (not organization)
+  - synchronisation (not synchronization)
+  - colour (not color) - in text content only, CSS properties are fine
+  - centre (not center) - in text content only, CSS properties are fine
+  - optimise, recognise, authorise, customise, analyse, licence, defence, offence, programme, behaviour, favour, honour, labour, neighbour, realise, specialise, utilise
+
+### Reference Documents
+- See `DEVELOPMENT_GUIDELINES.md` for complete standards
+- Always check existing code patterns before implementing new features
+
+### Before Committing
+- [ ] No emojis used
+- [ ] All icons use Font Awesome
+- [ ] UK English spelling throughout
+- [ ] Code follows existing patterns
+

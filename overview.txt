@@ -1,0 +1,25 @@
+In this appplication we'll build a digital Id app.
+
+The app should be built using php and sql.
+
+We currently have authentication for orgganisations that we use in other apps like this one  ~ % /Users/wellis/Desktop/Cursor/contracts 
+
+We keep building apps and rebuilding the same authenitication and its a lot of duplication.
+
+The main customers we're aiming at are social care providers as they need to use banks on bbehalf of their vulnerable clients but currently use paper based ID cards.
+
+The ID card should be a secure digital version that ensures the person can be fully identified as an employee and as a particular  employee with a uniique reference as set by the organisation. 
+
+This should be displayed on their phone or in a web based device meaning anyone want to confirmm the persons ID can do so by visually checking or by looking them upp online and visually checking.
+
+The app will have security measures built in that ensure there are connections between the person and thee organoosation that cannot be replicated and hence prove the person is an employee and who they say they are.
+
+The app could also be used to open door systems, notify when a person has attended and leeft a meeting, attended a fire call meeting when there has been a drill or a fire alarm, that the person is safewhen required by the organisation to identify as such like wif they are working late or lone working for instance and other use cases.
+
+The digital IID should have as little required details as possile that are needed to identify the person for being who they are.
+
+Lots of organisations use Entra and Microsoft 365 so that might be a good api to use .
+
+It would be best to have a underlying JSON structure so that staff can move jobs, move organisations and mwbe more fluidly mobile easily.
+
+It would also be good that the app took into consideration that people who use servicces and their loved ones and carers would probably want to be part of the same system so that they could identify staff easily .

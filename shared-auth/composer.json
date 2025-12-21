@@ -1,0 +1,20 @@
+{
+    "name": "digital-id/shared-auth",
+    "description": "Shared authentication package for multi-tenant PHP applications",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Digital ID Team"
+        }
+    ],
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    }
+}
+
