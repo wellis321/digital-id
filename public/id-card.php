@@ -214,7 +214,7 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
     <?php if ($photoPath): ?>
         <img src="<?php echo htmlspecialchars($photoPath); ?>" alt="Photo" class="id-card-photo" style="<?php echo $photoStatus === 'pending' ? 'opacity: 0.7; border: 2px dashed #f59e0b;' : ''; ?>">
     <?php else: ?>
-        <div class="id-card-photo" style="background-color: #ddd; display: flex; align-items: center; justify-content: center; color: #666;">
+        <div class="id-card-photo" style="background-color: #f3f4f6; border: 3px solid #e5e7eb; display: flex; align-items: center; justify-content: center; color: #6b7280;">
             No Photo
         </div>
     <?php endif; ?>

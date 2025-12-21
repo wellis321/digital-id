@@ -1,0 +1,39 @@
+# Root-level .htaccess
+# Use this if document root is project root (not public/)
+
+# Redirect all requests to public/ directory
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Redirect root to public/index.php
+    RewriteCond %{REQUEST_URI} ^/$
+    RewriteRule ^$ /public/index.php [L]
+    
+    # Redirect requests that don't start with /public/ to public/ directory
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ /public/$1 [L]
+    
+    # If file/directory exists in public/, serve it
+    RewriteCond %{REQUEST_URI} ^/public/
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^public/(.*)$ /public/$1 [L]
+</IfModule>
+
+# Prevent directory listing
+Options -Indexes
+
+# Protect sensitive files
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Protect config and env files
+<FilesMatch "\.(env|log|ini|conf)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
