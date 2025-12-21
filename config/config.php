@@ -103,6 +103,11 @@ spl_autoload_register(function ($class) {
     }
 });
 
+// Ensure RateLimiter is available (for rate limiting functionality)
+if (class_exists('RateLimiter') === false && file_exists(SRC_PATH . '/classes/RateLimiter.php')) {
+    require_once SRC_PATH . '/classes/RateLimiter.php';
+}
+
 // Calculate base URL dynamically based on document root
 if (!function_exists('getBaseUrl')) {
     function getBaseUrl() {
