@@ -19,8 +19,8 @@
                 <ul>
                     <li><a href="<?php echo url('features.php'); ?>">Features</a></li>
                     <li><a href="<?php echo url('index.php'); ?>">How It Works</a></li>
-                    <li><a href="<?php echo url('index.php'); ?>#security">Security</a></li>
-                    <li><a href="<?php echo url('index.php'); ?>#pricing">Pricing</a></li>
+                    <li><a href="<?php echo url('security.php'); ?>">Security</a></li>
+                    <li><a href="<?php echo url('docs.php'); ?>">Documentation</a></li>
                 </ul>
             </div>
             
@@ -37,10 +37,10 @@
             <div class="footer-section">
                 <h3>Company</h3>
                 <ul>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="mailto:<?php echo CONTACT_EMAIL; ?>">Contact</a></li>
+                    <li><a href="<?php echo url('request-access.php'); ?>">Request Access</a></li>
+                    <li><a href="<?php echo url('privacy-policy.php'); ?>">Privacy Policy</a></li>
+                    <li><a href="<?php echo url('terms-of-service.php'); ?>">Terms of Service</a></li>
                 </ul>
             </div>
         </div>

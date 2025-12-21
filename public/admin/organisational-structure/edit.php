@@ -156,21 +156,21 @@ include dirname(__DIR__, 3) . '/includes/header.php';
     </form>
     
     <!-- Delete Section -->
-    <div style="background-color: #fef2f2; border: 1px solid #fecaca; border-left: 4px solid #dc2626; border-radius: 4px; padding: 1.5rem; margin-top: 2rem;">
+    <div style="background-color: #fef2f2; border: 1px solid #fecaca; border-left: 4px solid #dc2626; border-radius: 0; padding: 1.5rem; margin-top: 2rem;">
         <h3 style="margin-top: 0; color: #991b1b; font-size: 1.125rem;">Danger Zone</h3>
         <p style="color: #7f1d1d; font-size: 0.875rem; margin-bottom: 1rem;">
             Delete this organisational unit. This action cannot be undone.
         </p>
         
         <?php if ($childCount > 0): ?>
-            <div style="padding: 0.75rem; background-color: #fee2e2; border-radius: 4px; margin-bottom: 1rem;">
+            <div style="padding: 0.75rem; background-color: #fee2e2; border-radius: 0; margin-bottom: 1rem;">
                 <p style="margin: 0; color: #991b1b; font-size: 0.875rem;">
                     Cannot delete: This unit has <?php echo $childCount; ?> child unit<?php echo $childCount !== 1 ? 's' : ''; ?>.
                     Delete or reassign the child units first.
                 </p>
             </div>
         <?php elseif ($memberCount > 0): ?>
-            <div style="padding: 0.75rem; background-color: #fee2e2; border-radius: 4px; margin-bottom: 1rem;">
+            <div style="padding: 0.75rem; background-color: #fee2e2; border-radius: 0; margin-bottom: 1rem;">
                 <p style="margin: 0; color: #991b1b; font-size: 0.875rem;">
                     Cannot delete: This unit has <?php echo $memberCount; ?> member<?php echo $memberCount !== 1 ? 's' : ''; ?>.
                     Remove all members first.

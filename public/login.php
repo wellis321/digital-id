@@ -95,6 +95,9 @@ include INCLUDES_PATH . '/header.php';
     <p style="margin-top: 1rem;">
         <a href="<?php echo url('register.php'); ?>">Don't have an account? Register</a>
     </p>
+    <p style="margin-top: 0.5rem; color: #6b7280; font-size: 0.875rem;">
+        <strong>New organisation?</strong> <a href="<?php echo url('request-access.php'); ?>">Request access</a> for your organisation first.
+    </p>
 </div>
 
 <?php include INCLUDES_PATH . '/footer.php'; ?>

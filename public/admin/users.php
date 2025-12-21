@@ -242,7 +242,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                                     } elseif (stripos($roles[$index], 'admin') !== false) {
                                         $badgeColor = 'warning';
                                     }
-                                    echo '<span class="badge badge-' . $badgeColor . '" style="display: inline-block; padding: 0.25rem 0.5rem; margin-right: 0.25rem; margin-bottom: 0.25rem; background-color: ' . ($badgeColor === 'danger' ? '#dc2626' : ($badgeColor === 'warning' ? '#f59e0b' : '#2563eb')) . '; color: white; border-radius: 4px; font-size: 0.75rem; font-weight: 500;">' . htmlspecialchars($formattedRole) . '</span>';
+                                    echo '<span class="badge badge-' . $badgeColor . '" style="display: inline-block; padding: 0.25rem 0.5rem; margin-right: 0.25rem; margin-bottom: 0.25rem; background-color: ' . ($badgeColor === 'danger' ? '#dc2626' : ($badgeColor === 'warning' ? '#f59e0b' : '#2563eb')) . '; color: white; border-radius: 0; font-size: 0.75rem; font-weight: 500;">' . htmlspecialchars($formattedRole) . '</span>';
                                 }
                             }
                             ?>

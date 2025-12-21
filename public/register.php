@@ -43,7 +43,7 @@ include INCLUDES_PATH . '/header.php';
     <h1>Register</h1>
     
     <?php if ($error): ?>
-        <div class="alert alert-error"><?php echo htmlspecialchars($error); ?></div>
+        <div class="alert alert-error"><?php echo $error; ?></div>
     <?php endif; ?>
     
     <?php if ($success): ?>
@@ -66,7 +66,7 @@ include INCLUDES_PATH . '/header.php';
         <div class="form-group">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" required>
-            <small>Your email domain will determine your organisation</small>
+            <small>Your email must match an organisation that has been set up. If your organisation hasn't been configured yet, please <a href="<?php echo url('request-access.php'); ?>">request access</a> first.</small>
         </div>
         
         <div class="form-group">
@@ -135,7 +135,7 @@ include INCLUDES_PATH . '/header.php';
 #password-strength {
     font-weight: 500;
     padding: 0.5rem;
-    border-radius: 4px;
+    border-radius: 0;
     margin-top: 0.5rem;
 }
 
@@ -157,7 +157,7 @@ include INCLUDES_PATH . '/header.php';
 #password-match {
     font-weight: 500;
     padding: 0.5rem;
-    border-radius: 4px;
+    border-radius: 0;
 }
 
 #password-match.match {

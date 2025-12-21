@@ -130,7 +130,7 @@ if (!$employee):
                 <h2 style="margin-top: 0;">✓ Help is on the way!</h2>
                 <p>We've automatically notified the appropriate person in your organisation about your missing employee profile.</p>
                 
-                <div style="background-color: white; padding: 1rem; border-radius: 4px; margin-top: 1rem;">
+                <div style="background-color: white; padding: 1rem; border-radius: 0; margin-top: 1rem;">
                     <h3 style="margin-top: 0; font-size: 1.1rem;">Your Contact Person:</h3>
                     <p style="margin: 0.5rem 0;"><strong>Name:</strong> <?php echo htmlspecialchars($contactPerson['first_name'] . ' ' . $contactPerson['last_name']); ?></p>
                     <p style="margin: 0.5rem 0;"><strong>Email:</strong> <a href="mailto:<?php echo htmlspecialchars($contactPerson['email']); ?>"><?php echo htmlspecialchars($contactPerson['email']); ?></a></p>
@@ -152,7 +152,7 @@ if (!$employee):
                 <p>Your request has been automatically escalated to our support team, who will contact you shortly to help resolve this issue.</p>
                 
                 <?php if ($organisation): ?>
-                    <div style="background-color: white; padding: 1rem; border-radius: 4px; margin-top: 1rem;">
+                    <div style="background-color: white; padding: 1rem; border-radius: 0; margin-top: 1rem;">
                         <h3 style="margin-top: 0; font-size: 1.1rem;">Your Organisation:</h3>
                         <p style="margin: 0.5rem 0;"><strong>Name:</strong> <?php echo htmlspecialchars($organisation['name']); ?></p>
                         <p style="margin: 0.5rem 0;"><strong>Domain:</strong> <?php echo htmlspecialchars($organisation['domain']); ?></p>
@@ -196,23 +196,57 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
         <p>Digital ID Card</p>
     </div>
     
-    <?php if ($employee['photo_path'] && file_exists(dirname(__DIR__) . '/' . $employee['photo_path'])): ?>
-        <img src="<?php echo htmlspecialchars($employee['photo_path']); ?>" alt="Photo" class="id-card-photo">
+    <?php 
+    // Show approved photo, or pending photo if no approved photo yet
+    $photoPath = null;
+    $photoStatus = $employee['photo_approval_status'] ?? 'none';
+    
+    // First priority: approved photo
+    if ($photoStatus === 'approved' && $employee['photo_path'] && file_exists(dirname(__DIR__) . '/' . $employee['photo_path'])) {
+        $photoPath = url('view-image.php?path=' . urlencode($employee['photo_path']));
+    }
+    // Second priority: pending photo (show what user uploaded)
+    elseif ($photoStatus === 'pending' && !empty($employee['photo_pending_path']) && file_exists(dirname(__DIR__) . '/' . $employee['photo_pending_path'])) {
+        $photoPath = url('view-image.php?path=' . urlencode($employee['photo_pending_path']));
+    }
+    ?>
+    
+    <?php if ($photoPath): ?>
+        <img src="<?php echo htmlspecialchars($photoPath); ?>" alt="Photo" class="id-card-photo" style="<?php echo $photoStatus === 'pending' ? 'opacity: 0.7; border: 2px dashed #f59e0b;' : ''; ?>">
     <?php else: ?>
         <div class="id-card-photo" style="background-color: #ddd; display: flex; align-items: center; justify-content: center; color: #666;">
             No Photo
         </div>
     <?php endif; ?>
     
+    <!-- Photo Upload/Status Info -->
+    <div style="text-align: center; margin-top: 1rem;">
+        <?php if (($employee['photo_approval_status'] ?? 'none') === 'pending'): ?>
+            <p style="color: #f59e0b; font-size: 0.875rem; margin: 0 0 0.75rem 0;">
+                <i class="fas fa-clock"></i> Photo pending approval
+            </p>
+        <?php elseif (($employee['photo_approval_status'] ?? 'none') === 'rejected'): ?>
+            <p style="color: #ef4444; font-size: 0.875rem; margin: 0 0 0.75rem 0;">
+                <i class="fas fa-exclamation-triangle"></i> Photo was rejected
+            </p>
+        <?php endif; ?>
+        
+        <?php if (!RBAC::isAdmin() || Auth::getUserId() == $employee['user_id']): ?>
+            <a href="<?php echo url('upload-photo.php'); ?>" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                <i class="fas fa-camera"></i> <?php echo $photoPath ? 'Change Photo' : 'Upload Photo'; ?>
+            </a>
+        <?php endif; ?>
+    </div>
+    
     <div class="id-card-details">
         <p><strong>Name:</strong> <?php echo htmlspecialchars($employee['first_name'] . ' ' . $employee['last_name']); ?></p>
-        <p><strong>Employee Reference:</strong> <?php echo htmlspecialchars($employee['employee_reference']); ?></p>
+        <p><strong>Reference:</strong> <?php echo htmlspecialchars($employee['display_reference'] ?? $employee['employee_reference'] ?? 'N/A'); ?></p>
         <p><strong>Organisation:</strong> <?php echo htmlspecialchars($employee['organisation_name']); ?></p>
     </div>
     
     <div class="id-card-qr">
         <p style="margin-bottom: 1rem; font-size: 0.875rem;">Scan QR code for verification</p>
-        <img src="<?php echo htmlspecialchars($qrImageUrl); ?>" alt="QR Code" style="max-width: 200px; background: white; padding: 1rem; border-radius: 8px;">
+        <img src="<?php echo htmlspecialchars($qrImageUrl); ?>" alt="QR Code" style="max-width: 200px; background: white; padding: 1rem; border-radius: 0;">
     </div>
     
     <div style="margin-top: 1.5rem; text-align: center;">

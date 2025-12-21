@@ -1,0 +1,73 @@
+<?php
+/**
+ * Image Viewer
+ * Safely serves images from outside the public directory
+ */
+
+require_once dirname(__DIR__) . '/config/config.php';
+
+// Get image path from query parameter
+$imagePath = $_GET['path'] ?? '';
+
+if (empty($imagePath)) {
+    http_response_code(400);
+    die('Image path required');
+}
+
+// Sanitize path - only allow uploads directory
+$allowedBase = dirname(__DIR__) . '/uploads/';
+$fullPath = realpath(dirname(__DIR__) . '/' . $imagePath);
+
+// Security check: ensure the file is within the uploads directory
+if (!$fullPath || strpos($fullPath, $allowedBase) !== 0) {
+    http_response_code(403);
+    die('Access denied');
+}
+
+// Check if file exists
+if (!file_exists($fullPath)) {
+    http_response_code(404);
+    die('Image not found');
+}
+
+// Get mime type
+$mimeType = mime_content_type($fullPath);
+if (!in_array($mimeType, ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'])) {
+    http_response_code(403);
+    die('Invalid image type');
+}
+
+// For pending photos, require login
+if (strpos($imagePath, 'pending') !== false) {
+    Auth::requireLogin();
+    
+    // Admins can view any pending photo
+    if (RBAC::isAdmin()) {
+        // Allow access
+    } else {
+        // Regular users can only view their own pending photos
+        $employee = Employee::findByUserId(Auth::getUserId());
+        if (!$employee) {
+            http_response_code(403);
+            die('Access denied');
+        }
+        
+        // Check if this is the user's own pending photo
+        $filename = basename($fullPath);
+        $expectedPrefix = 'employee_' . $employee['id'] . '_';
+        
+        if (strpos($filename, $expectedPrefix) !== 0) {
+            http_response_code(403);
+            die('Access denied');
+        }
+    }
+}
+
+// Set headers and serve file
+header('Content-Type: ' . $mimeType);
+header('Content-Length: ' . filesize($fullPath));
+header('Cache-Control: private, max-age=3600');
+
+readfile($fullPath);
+exit;
+

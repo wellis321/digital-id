@@ -92,7 +92,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
     <?php endif; ?>
     
     <?php if (!empty($warnings)): ?>
-        <div style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 1rem; border-radius: 4px; margin-bottom: 2rem;">
+        <div style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 1rem; border-radius: 0; margin-bottom: 2rem;">
             <h4 style="margin-top: 0; color: #92400e; font-size: 1rem;">Import Warnings</h4>
             <ul style="margin: 0.5rem 0 0; padding-left: 1.5rem; color: #92400e; font-size: 0.875rem;">
                 <?php foreach ($warnings as $warning): ?>
@@ -103,7 +103,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
     <?php endif; ?>
     
     <!-- Info Box -->
-    <div style="background-color: #e0f2fe; border-left: 4px solid #06b6d4; padding: 1rem; border-radius: 4px; margin-bottom: 2rem;">
+    <div style="background-color: #e0f2fe; border-left: 4px solid #06b6d4; padding: 1rem; border-radius: 0; margin-bottom: 2rem;">
         <h4 style="margin-top: 0; color: #0e7490; font-size: 1rem;">Bulk User Import</h4>
         <p style="margin: 0.5rem 0 0; color: #0e7490; font-size: 0.875rem;">
             Import users from CSV or JSON files exported from Microsoft Entra ID, recruitment systems, or HR databases. 
@@ -129,7 +129,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
         <!-- File Upload -->
         <div class="form-group">
             <label for="import_file">Upload File <span style="color: #dc2626;">*</span></label>
-            <div style="margin-top: 0.5rem; padding: 2rem; border: 2px dashed #d1d5db; border-radius: 8px; text-align: center; background-color: #f9fafb;">
+            <div style="margin-top: 0.5rem; padding: 2rem; border: 2px dashed #d1d5db; border-radius: 0; text-align: center; background-color: #f9fafb;">
                 <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: #9ca3af; margin-bottom: 0.5rem;"></i>
                 <div style="margin-top: 0.5rem;">
                     <label for="import_file" style="color: #06b6d4; cursor: pointer; font-weight: 500;">
@@ -145,7 +145,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
         </div>
         
         <!-- Format Guide -->
-        <div style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 4px; padding: 1.5rem; margin-bottom: 2rem;">
+        <div style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0; padding: 1.5rem; margin-bottom: 2rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                 <h3 style="margin: 0; font-size: 1rem; font-weight: 600; color: #1f2937;">File Format Guide</h3>
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
@@ -163,15 +163,15 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                     <i class="fas fa-file-csv" style="margin-right: 0.5rem;"></i>CSV Format
                 </h4>
                 <p style="font-size: 0.75rem; color: #6b7280; margin-bottom: 0.5rem;">
-                    Required columns: <code style="background-color: #f3f4f6; padding: 0.125rem 0.25rem; border-radius: 2px;">email</code> (required), 
-                    <code style="background-color: #f3f4f6; padding: 0.125rem 0.25rem; border-radius: 2px;">first_name</code> (required), 
-                    <code style="background-color: #f3f4f6; padding: 0.125rem 0.25rem; border-radius: 2px;">last_name</code> (required)
+                    Required columns: <code style="background-color: #f3f4f6; padding: 0.125rem 0.25rem; border-radius: 0;">email</code> (required), 
+                    <code style="background-color: #f3f4f6; padding: 0.125rem 0.25rem; border-radius: 0;">first_name</code> (required), 
+                    <code style="background-color: #f3f4f6; padding: 0.125rem 0.25rem; border-radius: 0;">last_name</code> (required)
                 </p>
                 <p style="font-size: 0.75rem; color: #6b7280; margin-bottom: 0.5rem;">
-                    Optional columns: <code style="background-color: #f3f4f6; padding: 0.125rem 0.25rem; border-radius: 2px;">employee_reference</code>, 
-                    <code style="background-color: #f3f4f6; padding: 0.125rem 0.25rem; border-radius: 2px;">password</code> (if not provided, temporary password will be generated)
+                    Optional columns: <code style="background-color: #f3f4f6; padding: 0.125rem 0.25rem; border-radius: 0;">employee_reference</code>, 
+                    <code style="background-color: #f3f4f6; padding: 0.125rem 0.25rem; border-radius: 0;">password</code> (if not provided, temporary password will be generated)
                 </p>
-                <pre style="font-size: 0.75rem; color: #6b7280; overflow-x: auto; margin: 0.5rem 0 0; background-color: #ffffff; padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 4px;"><code>email,first_name,last_name,employee_reference
+                <pre style="font-size: 0.75rem; color: #6b7280; overflow-x: auto; margin: 0.5rem 0 0; background-color: #ffffff; padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 0;"><code>email,first_name,last_name,employee_reference
 john.doe@example.com,John,Doe,EMP001
 jane.smith@example.com,Jane,Smith,EMP002
 bob.jones@example.com,Bob,Jones,EMP003</code></pre>
@@ -182,11 +182,11 @@ bob.jones@example.com,Bob,Jones,EMP003</code></pre>
                     <i class="fas fa-file-code" style="margin-right: 0.5rem;"></i>JSON Format
                 </h4>
                 <p style="font-size: 0.75rem; color: #6b7280; margin-bottom: 0.5rem;">
-                    Array of user objects with required fields: <code style="background-color: #f3f4f6; padding: 0.125rem 0.25rem; border-radius: 2px;">email</code>, 
-                    <code style="background-color: #f3f4f6; padding: 0.125rem 0.25rem; border-radius: 2px;">first_name</code>, 
-                    <code style="background-color: #f3f4f6; padding: 0.125rem 0.25rem; border-radius: 2px;">last_name</code>
+                    Array of user objects with required fields: <code style="background-color: #f3f4f6; padding: 0.125rem 0.25rem; border-radius: 0;">email</code>, 
+                    <code style="background-color: #f3f4f6; padding: 0.125rem 0.25rem; border-radius: 0;">first_name</code>, 
+                    <code style="background-color: #f3f4f6; padding: 0.125rem 0.25rem; border-radius: 0;">last_name</code>
                 </p>
-                <pre style="font-size: 0.7rem; color: #6b7280; overflow-x: auto; margin: 0.5rem 0 0; background-color: #ffffff; padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 4px; max-height: 200px; overflow-y: auto;"><code>{
+                <pre style="font-size: 0.7rem; color: #6b7280; overflow-x: auto; margin: 0.5rem 0 0; background-color: #ffffff; padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 0; max-height: 200px; overflow-y: auto;"><code>{
   "users": [
     {
       "email": "john.doe@example.com",
@@ -204,7 +204,7 @@ bob.jones@example.com,Bob,Jones,EMP003</code></pre>
 }</code></pre>
             </div>
             
-            <div style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 0.75rem; margin-top: 1rem; border-radius: 4px;">
+            <div style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 0.75rem; margin-top: 1rem; border-radius: 0;">
                 <p style="margin: 0; font-size: 0.75rem; color: #92400e;">
                     <strong><i class="fas fa-exclamation-triangle" style="margin-right: 0.5rem;"></i>Important:</strong> 
                     If passwords are not provided, temporary passwords will be generated and users will need to change them on first login. 

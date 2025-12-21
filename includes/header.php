@@ -39,12 +39,140 @@
             });
         }
     </script>
+    <!-- Mobile Menu Toggle -->
+    <script>
+        (function() {
+            function updateMenuVisibility() {
+                const menuToggle = document.querySelector('.mobile-menu-toggle');
+                const navLinks = document.querySelector('.nav-links');
+                const isMobile = window.innerWidth <= 968;
+                
+                if (menuToggle) {
+                    // Force visibility based on screen width
+                    if (isMobile) {
+                        menuToggle.style.display = 'block';
+                    } else {
+                        menuToggle.style.display = 'none';
+                        // Also remove any inline styles that might interfere
+                        menuToggle.removeAttribute('style');
+                        menuToggle.style.display = 'none';
+                    }
+                }
+                
+                if (navLinks) {
+                    if (isMobile) {
+                        // On mobile, ensure menu starts closed
+                        if (!navLinks.classList.contains('active')) {
+                            navLinks.style.display = 'none';
+                        }
+                    } else {
+                        // On desktop, always show nav-links
+                        navLinks.style.display = 'flex';
+                        navLinks.classList.remove('active');
+                    }
+                }
+            }
+            
+            function resetMenuOnPageLoad() {
+                const navLinks = document.querySelector('.nav-links');
+                const menuToggle = document.querySelector('.mobile-menu-toggle');
+                
+                // Update visibility first
+                updateMenuVisibility();
+                
+                if (navLinks) {
+                    navLinks.classList.remove('active');
+                    navLinks.setAttribute('data-menu-state', 'closed');
+                }
+                
+                if (menuToggle) {
+                    const icon = menuToggle.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                }
+            }
+            
+            // Run immediately
+            resetMenuOnPageLoad();
+            
+            // Also run on DOM ready and window resize
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', resetMenuOnPageLoad);
+            } else {
+                resetMenuOnPageLoad();
+            }
+            
+            // Update on window resize
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(updateMenuVisibility, 100);
+            });
+            
+            document.addEventListener('DOMContentLoaded', function() {
+                updateMenuVisibility();
+                
+                const menuToggle = document.querySelector('.mobile-menu-toggle');
+                const navLinks = document.querySelector('.nav-links');
+                
+                if (menuToggle && navLinks) {
+                    menuToggle.addEventListener('click', function(e) {
+                        // Only work on mobile
+                        if (window.innerWidth > 968) {
+                            e.preventDefault();
+                            return;
+                        }
+                        
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        navLinks.classList.toggle('active');
+                        const icon = menuToggle.querySelector('i');
+                        if (icon) {
+                            if (navLinks.classList.contains('active')) {
+                                icon.classList.remove('fa-bars');
+                                icon.classList.add('fa-times');
+                                navLinks.setAttribute('data-menu-state', 'open');
+                                navLinks.style.display = 'flex';
+                            } else {
+                                icon.classList.remove('fa-times');
+                                icon.classList.add('fa-bars');
+                                navLinks.setAttribute('data-menu-state', 'closed');
+                                navLinks.style.display = 'none';
+                            }
+                        }
+                    });
+                    
+                    // Close menu when clicking on a link
+                    navLinks.querySelectorAll('a').forEach(function(link) {
+                        link.addEventListener('click', function() {
+                            if (window.innerWidth <= 968) {
+                                navLinks.classList.remove('active');
+                                navLinks.setAttribute('data-menu-state', 'closed');
+                                navLinks.style.display = 'none';
+                                const icon = menuToggle.querySelector('i');
+                                if (icon) {
+                                    icon.classList.remove('fa-times');
+                                    icon.classList.add('fa-bars');
+                                }
+                            }
+                        });
+                    });
+                }
+            });
+        })();
+    </script>
 </head>
 <body>
     <header>
         <nav>
             <div class="container">
                 <a href="<?php echo url('index.php'); ?>" class="logo"><?php echo APP_NAME; ?></a>
+                <button class="mobile-menu-toggle" aria-label="Toggle menu" style="display: none;">
+                    <i class="fas fa-bars"></i>
+                </button>
                 <?php 
                 $currentPage = basename($_SERVER['PHP_SELF']);
                 $isActive = function($page) use ($currentPage) {
@@ -53,12 +181,55 @@
                 ?>
                 <?php if (Auth::isLoggedIn()): 
                 ?>
-                    <div class="nav-links">
+                    <div class="nav-links" data-menu-state="closed">
                         <a href="<?php echo url('index.php'); ?>" class="<?php echo $isActive('index.php'); ?>">Home</a>
                         <a href="<?php echo url('id-card.php'); ?>" class="<?php echo $isActive('id-card.php'); ?>">My ID Card</a>
                         <?php if (RBAC::isAdmin()): ?>
-                            <a href="<?php echo url('admin/employees.php'); ?>" class="<?php echo (strpos($currentPage, 'employees.php') !== false) ? 'active' : ''; ?>">Employees</a>
+                            <a href="<?php echo url('admin/employees.php'); ?>" class="<?php echo (strpos($currentPage, 'employees.php') !== false) ? 'active' : ''; ?>">
+                                Employees
+                                <?php
+                                // Show badge for users needing employee records
+                                try {
+                                    if (Auth::isLoggedIn() && RBAC::isAdmin()) {
+                                        require_once SRC_PATH . '/classes/AdminNotifications.php';
+                                        $orgId = Auth::getOrganisationId();
+                                        if ($orgId) {
+                                            $usersNeedingNumbers = AdminNotifications::getUsersNeedingEmployeeNumbers($orgId);
+                                            $countNeedingNumbers = count($usersNeedingNumbers);
+                                            if ($countNeedingNumbers > 0) {
+                                                echo '<span style="background: #ef4444; color: white; border-radius: 0; padding: 0.125rem 0.5rem; font-size: 0.75rem; margin-left: 0.25rem;">' . $countNeedingNumbers . '</span>';
+                                            }
+                                        }
+                                    }
+                                } catch (Exception $e) {
+                                    // Silently fail if database isn't available
+                                }
+                                ?>
+                            </a>
                             <a href="<?php echo url('admin/organisational-structure.php'); ?>" class="<?php echo (strpos($currentPage, 'organisational-structure') !== false) ? 'active' : ''; ?>">Structure</a>
+                            <a href="<?php echo url('admin/photo-approvals.php'); ?>" class="<?php echo (strpos($currentPage, 'photo-approvals.php') !== false) ? 'active' : ''; ?>">
+                                Photos
+                                <?php
+                                // Show badge for pending photos
+                                try {
+                                    if (Auth::isLoggedIn() && RBAC::isAdmin()) {
+                                        $db = getDbConnection();
+                                        $orgId = Auth::getOrganisationId();
+                                        if ($orgId) {
+                                            $stmt = $db->prepare("SELECT COUNT(*) as count FROM employees WHERE organisation_id = ? AND photo_approval_status = 'pending' AND photo_pending_path IS NOT NULL");
+                                            $stmt->execute([$orgId]);
+                                            $pending = $stmt->fetch();
+                                            if ($pending && $pending['count'] > 0) {
+                                                echo '<span style="background: #ef4444; color: white; border-radius: 0; padding: 0.125rem 0.5rem; font-size: 0.75rem; margin-left: 0.25rem;">' . $pending['count'] . '</span>';
+                                            }
+                                        }
+                                    }
+                                } catch (Exception $e) {
+                                    // Silently fail if database isn't available
+                                }
+                                ?>
+                            </a>
+                            <a href="<?php echo url('admin/reference-settings.php'); ?>" class="<?php echo (strpos($currentPage, 'reference-settings.php') !== false) ? 'active' : ''; ?>">Settings</a>
                         <?php endif; ?>
                         <?php if (RBAC::isSuperAdmin()): ?>
                             <a href="<?php echo url('admin/organisations.php'); ?>" class="<?php echo (strpos($currentPage, 'organisations.php') !== false) ? 'active' : ''; ?>">Organisations</a>
@@ -67,13 +238,13 @@
                         <a href="<?php echo url('logout.php'); ?>">Logout</a>
                     </div>
                 <?php else: ?>
-                    <div class="nav-links">
+                    <div class="nav-links" data-menu-state="closed">
                         <a href="<?php echo url('index.php'); ?>" class="<?php echo $isActive('index.php'); ?>">Home</a>
                         <a href="<?php echo url('features.php'); ?>" class="<?php echo $isActive('features.php'); ?>">Features</a>
                         <a href="<?php echo url('security.php'); ?>" class="<?php echo $isActive('security.php'); ?>">Security</a>
                         <a href="<?php echo url('docs.php'); ?>" class="<?php echo $isActive('docs.php'); ?>">Documentation</a>
+                        <a href="<?php echo url('request-access.php'); ?>" class="<?php echo $isActive('request-access.php'); ?>">Request Access</a>
                         <a href="<?php echo url('login.php'); ?>" class="<?php echo $isActive('login.php'); ?>">Login</a>
-                        <a href="<?php echo url('register.php'); ?>" class="<?php echo $isActive('register.php'); ?>">Register</a>
                     </div>
                 <?php endif; ?>
             </div>

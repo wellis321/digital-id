@@ -24,7 +24,7 @@ $section = $_GET['section'] ?? 'getting-started';
     top: 2rem;
     height: fit-content;
     background: #f9fafb;
-    border-radius: 8px;
+    border-radius: 0;
     padding: 1.5rem;
     border: 1px solid #e5e7eb;
 }
@@ -53,7 +53,7 @@ $section = $_GET['section'] ?? 'getting-started';
     padding: 0.5rem 0.75rem;
     color: #6b7280;
     text-decoration: none;
-    border-radius: 4px;
+    border-radius: 0;
     transition: all 0.2s;
     font-size: 0.875rem;
 }
@@ -72,7 +72,7 @@ $section = $_GET['section'] ?? 'getting-started';
 .docs-content {
     background: white;
     padding: 2.5rem;
-    border-radius: 8px;
+    border-radius: 0;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
@@ -98,7 +98,7 @@ $section = $_GET['section'] ?? 'getting-started';
 .docs-content h3 {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #06b6d4;
+    color: #1f2937;
     margin-top: 1.5rem;
     margin-bottom: 0.75rem;
 }
@@ -123,7 +123,7 @@ $section = $_GET['section'] ?? 'getting-started';
 .docs-content code {
     background: #f3f4f6;
     padding: 0.125rem 0.375rem;
-    border-radius: 3px;
+    border-radius: 0;
     font-family: 'Courier New', monospace;
     font-size: 0.9em;
     color: #dc2626;
@@ -133,7 +133,7 @@ $section = $_GET['section'] ?? 'getting-started';
     background: #1f2937;
     color: #f9fafb;
     padding: 1rem;
-    border-radius: 6px;
+    border-radius: 0;
     overflow-x: auto;
     margin: 1rem 0;
 }
@@ -149,7 +149,7 @@ $section = $_GET['section'] ?? 'getting-started';
     border-left: 4px solid #06b6d4;
     padding: 1rem 1.5rem;
     margin: 1.5rem 0;
-    border-radius: 4px;
+    border-radius: 0;
 }
 
 .docs-content .info-box h4 {
@@ -168,7 +168,7 @@ $section = $_GET['section'] ?? 'getting-started';
     border-left: 4px solid #f59e0b;
     padding: 1rem 1.5rem;
     margin: 1.5rem 0;
-    border-radius: 4px;
+    border-radius: 0;
 }
 
 .docs-content .warning-box h4 {
@@ -187,7 +187,7 @@ $section = $_GET['section'] ?? 'getting-started';
     border-left: 4px solid #10b981;
     padding: 1rem 1.5rem;
     margin: 1.5rem 0;
-    border-radius: 4px;
+    border-radius: 0;
 }
 
 .docs-content .success-box h4 {
@@ -223,7 +223,7 @@ $section = $_GET['section'] ?? 'getting-started';
     color: white;
     width: 2rem;
     height: 2rem;
-    border-radius: 50%;
+    border-radius: 0;
     display: flex;
     align-items: center;
     justify-content: center;

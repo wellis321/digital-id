@@ -2,6 +2,17 @@
 require_once dirname(__DIR__) . '/config/config.php';
 
 $pageTitle = 'Home';
+
+// Get admin notifications
+$usersNeedingEmployeeNumbers = [];
+$countUsersNeedingNumbers = 0;
+if (Auth::isLoggedIn() && RBAC::isAdmin()) {
+    $organisationId = Auth::getOrganisationId();
+    require_once dirname(__DIR__) . '/src/classes/AdminNotifications.php';
+    $usersNeedingEmployeeNumbers = AdminNotifications::getUsersNeedingEmployeeNumbers($organisationId);
+    $countUsersNeedingNumbers = count($usersNeedingEmployeeNumbers);
+}
+
 include INCLUDES_PATH . '/header.php';
 ?>
 
@@ -48,7 +59,7 @@ include INCLUDES_PATH . '/header.php';
     padding: 0.875rem 2rem;
     font-size: 1.0625rem;
     font-weight: 500;
-    border-radius: 6px;
+    border-radius: 0;
     transition: all 0.2s;
     border: none;
 }
@@ -65,7 +76,7 @@ include INCLUDES_PATH . '/header.php';
     padding: 0.875rem 2rem;
     font-size: 1.0625rem;
     font-weight: 500;
-    border-radius: 6px;
+    border-radius: 0;
     border: 1px solid #2563eb;
     transition: all 0.2s;
 }
@@ -144,7 +155,7 @@ include INCLUDES_PATH . '/header.php';
     width: 64px;
     height: 64px;
     background-color: #f0f9ff;
-    border-radius: 12px;
+    border-radius: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -185,7 +196,7 @@ include INCLUDES_PATH . '/header.php';
 .why-item {
     padding: 2rem;
     background: #f9fafb;
-    border-radius: 8px;
+    border-radius: 0;
     border: 1px solid #e5e7eb;
 }
 
@@ -208,7 +219,7 @@ include INCLUDES_PATH . '/header.php';
     color: white;
     padding: 4rem 2rem;
     text-align: center;
-    border-radius: 12px;
+    border-radius: 0;
     margin: 4rem 0;
 }
 
@@ -269,7 +280,7 @@ include INCLUDES_PATH . '/header.php';
     height: 40px;
     width: 120px;
     background: #e5e7eb;
-    border-radius: 4px;
+    border-radius: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -338,7 +349,7 @@ include INCLUDES_PATH . '/header.php';
 
 .two-column-image {
     background: #f3f4f6;
-    border-radius: 12px;
+    border-radius: 0;
     padding: 3rem;
     min-height: 300px;
     display: flex;
@@ -381,7 +392,7 @@ include INCLUDES_PATH . '/header.php';
     text-align: center;
     padding: 1.5rem;
     background: white;
-    border-radius: 8px;
+    border-radius: 0;
     border: 1px solid #e5e7eb;
     transition: transform 0.2s, box-shadow 0.2s;
 }
@@ -459,7 +470,7 @@ include INCLUDES_PATH . '/header.php';
 .testimonial-item {
     background: white;
     padding: 2rem;
-    border-radius: 12px;
+    border-radius: 0;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
@@ -480,7 +491,7 @@ include INCLUDES_PATH . '/header.php';
 .testimonial-author-avatar {
     width: 48px;
     height: 48px;
-    border-radius: 50%;
+    border-radius: 0;
     background: #e5e7eb;
     display: flex;
     align-items: center;
@@ -511,7 +522,7 @@ include INCLUDES_PATH . '/header.php';
 .placeholder-section {
     background: #f9fafb;
     border: 2px dashed #d1d5db;
-    border-radius: 8px;
+    border-radius: 0;
     padding: 3rem 2rem;
     text-align: center;
     color: #9ca3af;
@@ -603,6 +614,7 @@ include INCLUDES_PATH . '/header.php';
 }
 </style>
 
+
 <!-- Hero Section -->
 <div class="home-hero">
     <h1>Digital ID for Social Care Providers</h1>
@@ -616,7 +628,7 @@ include INCLUDES_PATH . '/header.php';
             <a href="<?php echo url('id-card.php'); ?>" class="btn btn-hero-primary">View Your ID Card</a>
             <a href="<?php echo url('features.php'); ?>" class="btn btn-hero-secondary">Learn More</a>
         <?php else: ?>
-            <a href="<?php echo url('register.php'); ?>" class="btn btn-hero-primary">Get Started</a>
+            <a href="<?php echo url('request-access.php'); ?>" class="btn btn-hero-primary">Request Access</a>
             <a href="<?php echo url('login.php'); ?>" class="btn btn-hero-secondary">Login</a>
         <?php endif; ?>
     </div>
@@ -965,7 +977,7 @@ include INCLUDES_PATH . '/header.php';
             <h2>Ready to Get Started?</h2>
             <p>Join organisations already using Digital ID to streamline their identity management and protect their staff and service users.</p>
             <div>
-                <a href="<?php echo url('register.php'); ?>" class="btn">Register Your Organisation</a>
+                <a href="<?php echo url('request-access.php'); ?>" class="btn">Request Access</a>
                 <a href="<?php echo url('features.php'); ?>" class="btn" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid white;">Explore Features</a>
             </div>
         </div>

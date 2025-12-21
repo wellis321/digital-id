@@ -32,7 +32,7 @@ include INCLUDES_PATH . '/header.php';
 
 .hero-image {
     background-color: #eff6ff;
-    border-radius: 12px;
+    border-radius: 0;
     aspect-ratio: 4/3;
     display: flex;
     align-items: center;
@@ -92,14 +92,14 @@ include INCLUDES_PATH . '/header.php';
     font-size: 2.5rem;
     margin-bottom: 1.5rem;
     color: #1f2937;
-    border-bottom: 3px solid #10b981;
+    border-bottom: 3px solid #3b82f6;
     padding-bottom: 0.5rem;
 }
 
 .section h3 {
     font-size: 1.75rem;
     margin: 2rem 0 1rem;
-    color: #06b6d4;
+    color: #3b82f6;
 }
 
 .security-features-grid {
@@ -113,14 +113,37 @@ include INCLUDES_PATH . '/header.php';
     background: white;
     padding: 2rem;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    border-left: 4px solid #06b6d4;
+    border-left: 4px solid #8b5cf6;
+}
+
+.security-feature:nth-child(3n+1) {
+    border-left-color: #3b82f6;
+}
+
+.security-feature:nth-child(3n+2) {
+    border-left-color: #10b981;
+}
+
+.security-feature:nth-child(3n+3) {
+    border-left-color: #8b5cf6;
 }
 
 .security-feature-icon {
     font-size: 2.5rem;
-    color: #06b6d4;
     margin-bottom: 1rem;
     display: block;
+}
+
+.security-feature:nth-child(3n+1) .security-feature-icon {
+    color: #3b82f6;
+}
+
+.security-feature:nth-child(3n+2) .security-feature-icon {
+    color: #10b981;
+}
+
+.security-feature:nth-child(3n+3) .security-feature-icon {
+    color: #8b5cf6;
 }
 
 .security-feature h4 {
@@ -153,14 +176,33 @@ include INCLUDES_PATH . '/header.php';
     flex-shrink: 0;
     width: 60px;
     height: 60px;
-    background-color: #06b6d4;
     color: white;
-    border-radius: 50%;
+    border-radius: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
     font-weight: bold;
+}
+
+.step:nth-child(1) .step-number {
+    background-color: #3b82f6;
+}
+
+.step:nth-child(2) .step-number {
+    background-color: #10b981;
+}
+
+.step:nth-child(3) .step-number {
+    background-color: #8b5cf6;
+}
+
+.step:nth-child(4) .step-number {
+    background-color: #f59e0b;
+}
+
+.step:nth-child(5) .step-number {
+    background-color: #06b6d4;
 }
 
 .step-content h4 {
@@ -184,7 +226,7 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .comparison-table th {
-    background-color: #06b6d4;
+    background-color: #3b82f6;
     color: white;
     padding: 1rem;
     text-align: left;
@@ -596,7 +638,7 @@ include INCLUDES_PATH . '/header.php';
         <p style="margin-top: 1rem;">
             <a href="<?php echo url('index.php'); ?>" class="btn btn-primary">Return to Home</a>
             <?php if (!Auth::isLoggedIn()): ?>
-                <a href="<?php echo url('register.php'); ?>" class="btn btn-secondary" style="margin-left: 0.5rem;">Get Started</a>
+                <a href="<?php echo url('request-access.php'); ?>" class="btn btn-secondary" style="margin-left: 0.5rem;">Request Access</a>
             <?php endif; ?>
         </p>
     </div>

@@ -16,6 +16,11 @@ $error = $_SESSION['error'] ?? '';
 $success = $_SESSION['success'] ?? '';
 unset($_SESSION['error'], $_SESSION['success']);
 
+// Get users needing employee numbers
+require_once dirname(__DIR__, 2) . '/src/classes/AdminNotifications.php';
+$usersNeedingEmployeeNumbers = AdminNotifications::getUsersNeedingEmployeeNumbers($organisationId);
+$countUsersNeedingNumbers = count($usersNeedingEmployeeNumbers);
+
 // Get organisation details
 $db = getDbConnection();
 $stmt = $db->prepare("SELECT * FROM organisations WHERE id = ?");
@@ -35,6 +40,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
 ?>
 
 <div class="card">
+    
     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2rem;">
         <div>
             <h1>Organisational Structure</h1>
@@ -59,7 +65,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
     <?php endif; ?>
     
     <!-- Info Box -->
-    <div style="background-color: #e0f2fe; border-left: 4px solid #2563eb; padding: 1rem; border-radius: 4px; margin-bottom: 2rem;">
+    <div style="background-color: #e0f2fe; border-left: 4px solid #2563eb; padding: 1rem; border-radius: 0; margin-bottom: 2rem;">
         <h4 style="margin-top: 0; color: #1e40af; font-size: 1rem;">About Organisational Structure</h4>
         <p style="margin: 0; color: #1e40af; font-size: 0.875rem;">
             Define your organisation's hierarchy however you like. Create teams, departments, areas, regions, or any structure that fits your needs.
@@ -69,7 +75,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
     
     <?php if (empty($allUnits)): ?>
         <!-- Empty State -->
-        <div style="text-align: center; padding: 3rem; background-color: #f9fafb; border-radius: 8px; border: 2px dashed #d1d5db;">
+        <div style="text-align: center; padding: 3rem; background-color: #f9fafb; border-radius: 0; border: 2px dashed #d1d5db;">
             <i class="fas fa-sitemap" style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem;"></i>
             <h3 style="margin: 0 0 0.5rem; color: #1f2937;">No Organisational Units Yet</h3>
             <p style="color: #6b7280; margin-bottom: 1.5rem;">Create your first unit to start building your organisational structure.</p>
@@ -79,7 +85,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
         </div>
     <?php else: ?>
         <!-- Organisational Structure Tree -->
-        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem;">
+        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0; padding: 1.5rem; margin-bottom: 2rem;">
             <h3 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.25rem;">Structure Overview (<?php echo count($allUnits); ?> units)</h3>
             
             <?php
@@ -89,7 +95,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                 
                 foreach ($units as $unit): ?>
                     <div style="<?php echo $depth > 0 ? 'margin-left: 2rem; margin-top: 0.5rem;' : 'margin-top: 0.5rem;'; ?> border-left: <?php echo $depth > 0 ? '2px solid #d1d5db' : '2px solid #2563eb'; ?> padding-left: 1rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background-color: #f9fafb; border-radius: 4px; margin-bottom: 0.5rem; transition: background-color 0.2s;" 
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background-color: #f9fafb; border-radius: 0; margin-bottom: 0.5rem; transition: background-color 0.2s;" 
                              onmouseover="this.style.backgroundColor='#f3f4f6'" 
                              onmouseout="this.style.backgroundColor='#f9fafb'">
                             <div style="flex: 1;">
@@ -98,7 +104,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                                         <?php echo htmlspecialchars($unit['name']); ?>
                                     </h4>
                                     <?php if (!empty($unit['unit_type'])): ?>
-                                        <span style="padding: 0.25rem 0.5rem; background-color: #e5e7eb; border-radius: 4px; font-size: 0.75rem; color: #6b7280;">
+                                        <span style="padding: 0.25rem 0.5rem; background-color: #e5e7eb; border-radius: 0; font-size: 0.75rem; color: #6b7280;">
                                             <?php echo htmlspecialchars($unit['unit_type']); ?>
                                         </span>
                                     <?php endif; ?>
@@ -141,16 +147,16 @@ include dirname(__DIR__, 2) . '/includes/header.php';
         </div>
         
         <!-- Flat List View (Alternative) -->
-        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.5rem;">
+        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0; padding: 1.5rem;">
             <h3 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.25rem;">All Units (Flat List)</h3>
             <div style="display: grid; gap: 0.5rem;">
                 <?php foreach ($allUnits as $unit): ?>
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background-color: #f9fafb; border-radius: 4px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background-color: #f9fafb; border-radius: 0;">
                         <div style="flex: 1;">
                             <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
                                 <span style="font-weight: 500; color: #1f2937;"><?php echo htmlspecialchars($unit['name']); ?></span>
                                 <?php if (!empty($unit['unit_type'])): ?>
-                                    <span style="padding: 0.25rem 0.5rem; background-color: #e5e7eb; border-radius: 4px; font-size: 0.75rem; color: #6b7280;">
+                                    <span style="padding: 0.25rem 0.5rem; background-color: #e5e7eb; border-radius: 0; font-size: 0.75rem; color: #6b7280;">
                                         <?php echo htmlspecialchars($unit['unit_type']); ?>
                                     </span>
                                 <?php endif; ?>

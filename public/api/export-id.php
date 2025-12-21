@@ -22,7 +22,8 @@ $idCardData = Employee::getIdCardData($employee['id']);
 if (!$idCardData) {
     // Generate default structure if not exists
     $idCardData = [
-        'employee_reference' => $employee['employee_reference'],
+        'employee_number' => $employee['employee_number'] ?? $employee['employee_reference'] ?? null,
+        'display_reference' => $employee['display_reference'] ?? $employee['employee_reference'] ?? null,
         'full_name' => $employee['first_name'] . ' ' . $employee['last_name'],
         'organization' => [
             'id' => $employee['organisation_id'],
@@ -39,8 +40,9 @@ if ($employee['photo_path'] && file_exists(dirname(__DIR__, 2) . '/' . $employee
     $idCardData['photo_hash'] = hash_file('sha256', dirname(__DIR__, 2) . '/' . $employee['photo_path']);
 }
 
+$referenceForFilename = $employee['display_reference'] ?? $employee['employee_reference'] ?? 'unknown';
 header('Content-Type: application/json');
-header('Content-Disposition: attachment; filename="digital-id-' . $employee['employee_reference'] . '.json"');
+header('Content-Disposition: attachment; filename="digital-id-' . $referenceForFilename . '.json"');
 
 echo json_encode($idCardData, JSON_PRETTY_PRINT);
 

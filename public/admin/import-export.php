@@ -36,7 +36,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
         <button type="submit" class="btn btn-primary">Import ID Data</button>
     </form>
     
-    <div style="margin-top: 2rem; padding: 1rem; background-color: #f0f0f0; border-radius: 4px;">
+    <div style="margin-top: 2rem; padding: 1rem; background-color: #f0f0f0; border-radius: 0;">
         <h3>Note</h3>
         <p>When importing ID card data:</p>
         <ul style="margin-left: 1.5rem;">

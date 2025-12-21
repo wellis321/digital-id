@@ -47,8 +47,23 @@ include dirname(__DIR__) . '/includes/header.php';
                         <p>Verified Employee</p>
                     </div>
                     
-                    <?php if ($verificationResult['employee']['photo_path'] && file_exists(dirname(__DIR__) . '/' . $verificationResult['employee']['photo_path'])): ?>
-                        <img src="<?php echo htmlspecialchars($verificationResult['employee']['photo_path']); ?>" alt="Photo" class="id-card-photo">
+                    <?php 
+                    // Only show approved photos
+                    $verifiedPhotoPath = null;
+                    if (($verificationResult['employee']['photo_approval_status'] ?? 'none') === 'approved' && 
+                        $verificationResult['employee']['photo_path'] && 
+                        file_exists(dirname(__DIR__) . '/' . $verificationResult['employee']['photo_path'])) {
+                        $verifiedPhotoPath = $verificationResult['employee']['photo_path'];
+                    }
+                    ?>
+                    <?php if ($verifiedPhotoPath): ?>
+                        <?php
+                        // Use image viewer for photos outside public directory
+                        $photoUrl = strpos($verifiedPhotoPath, 'uploads/') === 0 
+                            ? url('view-image.php?path=' . urlencode($verifiedPhotoPath))
+                            : $verifiedPhotoPath;
+                        ?>
+                        <img src="<?php echo htmlspecialchars($photoUrl); ?>" alt="Photo" class="id-card-photo">
                     <?php else: ?>
                         <div class="id-card-photo" style="background-color: #ddd; display: flex; align-items: center; justify-content: center; color: #666;">
                             No Photo
@@ -57,7 +72,7 @@ include dirname(__DIR__) . '/includes/header.php';
                     
                     <div class="id-card-details">
                         <p><strong>Name:</strong> <?php echo htmlspecialchars($verificationResult['employee']['first_name'] . ' ' . $verificationResult['employee']['last_name']); ?></p>
-                        <p><strong>Employee Reference:</strong> <?php echo htmlspecialchars($verificationResult['employee']['employee_reference']); ?></p>
+                        <p><strong>Reference:</strong> <?php echo htmlspecialchars($verificationResult['employee']['display_reference'] ?? $verificationResult['employee']['employee_reference'] ?? 'N/A'); ?></p>
                         <p><strong>Organisation:</strong> <?php echo htmlspecialchars($verificationResult['employee']['organisation_name']); ?></p>
                         <p><strong>Verification Method:</strong> <?php echo strtoupper($verificationResult['verification_type']); ?></p>
                     </div>

@@ -50,7 +50,7 @@
     right: -0.5rem;
     background: #f3f4f6;
     border: none;
-    border-radius: 50%;
+    border-radius: 0;
     width: 32px;
     height: 32px;
     cursor: pointer;
@@ -85,7 +85,7 @@
     text-align: left;
     background: #f9fafb;
     padding: 1rem;
-    border-radius: 8px;
+    border-radius: 0;
     margin: 1rem 0;
     font-size: 0.875rem;
     color: #4b5563;

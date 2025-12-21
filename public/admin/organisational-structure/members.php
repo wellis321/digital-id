@@ -121,7 +121,7 @@ include dirname(__DIR__, 3) . '/includes/header.php';
             <p style="color: #6b7280; margin-top: 0.5rem;">
                 <?php echo htmlspecialchars($unit['name']); ?>
                 <?php if (!empty($unit['unit_type'])): ?>
-                    <span style="padding: 0.25rem 0.5rem; background-color: #e5e7eb; border-radius: 4px; font-size: 0.75rem; color: #6b7280; margin-left: 0.5rem;">
+                    <span style="padding: 0.25rem 0.5rem; background-color: #e5e7eb; border-radius: 0; font-size: 0.75rem; color: #6b7280; margin-left: 0.5rem;">
                         <?php echo htmlspecialchars($unit['unit_type']); ?>
                     </span>
                 <?php endif; ?>
@@ -139,7 +139,7 @@ include dirname(__DIR__, 3) . '/includes/header.php';
     
     <!-- Add Member Form -->
     <?php if (!empty($availableUsers)): ?>
-        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem;">
+        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0; padding: 1.5rem; margin-bottom: 2rem;">
             <h3 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.125rem;">Add Staff Member</h3>
             <form method="POST" action="" style="display: grid; grid-template-columns: 2fr 1fr auto; gap: 1rem; align-items: end;">
                 <?php echo CSRF::tokenField(); ?>
@@ -171,7 +171,7 @@ include dirname(__DIR__, 3) . '/includes/header.php';
             </form>
         </div>
     <?php else: ?>
-        <div style="background-color: #e0f2fe; border-left: 4px solid #2563eb; padding: 1rem; border-radius: 4px; margin-bottom: 2rem;">
+        <div style="background-color: #e0f2fe; border-left: 4px solid #2563eb; padding: 1rem; border-radius: 0; margin-bottom: 2rem;">
             <p style="margin: 0; color: #1e40af; font-size: 0.875rem;">
                 All staff members in this organisation are already assigned to this unit.
             </p>
@@ -179,7 +179,7 @@ include dirname(__DIR__, 3) . '/includes/header.php';
     <?php endif; ?>
     
     <!-- Current Members List -->
-    <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.5rem;">
+    <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0; padding: 1.5rem;">
         <h3 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.125rem;">
             Current Members (<?php echo count($members); ?>)
         </h3>
@@ -192,7 +192,7 @@ include dirname(__DIR__, 3) . '/includes/header.php';
         <?php else: ?>
             <div style="display: grid; gap: 0.75rem;">
                 <?php foreach ($members as $member): ?>
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background-color: #f9fafb; border-radius: 4px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background-color: #f9fafb; border-radius: 0;">
                         <div style="flex: 1;">
                             <h4 style="margin: 0; font-size: 1rem; font-weight: 500; color: #1f2937;">
                                 <?php echo htmlspecialchars($member['first_name'] . ' ' . $member['last_name']); ?>
@@ -201,7 +201,7 @@ include dirname(__DIR__, 3) . '/includes/header.php';
                                 <?php echo htmlspecialchars($member['email']); ?>
                             </p>
                             <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; align-items: center;">
-                                <span style="padding: 0.25rem 0.5rem; background-color: #dbeafe; border-radius: 4px; font-size: 0.75rem; color: #1e40af;">
+                                <span style="padding: 0.25rem 0.5rem; background-color: #dbeafe; border-radius: 0; font-size: 0.75rem; color: #1e40af;">
                                     Role: <?php echo htmlspecialchars(ucfirst($member['role'])); ?>
                                 </span>
                                 <?php if (!empty($member['joined_at'])): ?>
@@ -218,7 +218,7 @@ include dirname(__DIR__, 3) . '/includes/header.php';
                                 <input type="hidden" name="user_id" value="<?php echo $member['user_id']; ?>">
                                 <select name="role" 
                                         onchange="this.form.submit()"
-                                        style="padding: 0.375rem 0.75rem; font-size: 0.875rem; border: 1px solid #d1d5db; border-radius: 4px;">
+                                        style="padding: 0.375rem 0.75rem; font-size: 0.875rem; border: 1px solid #d1d5db; border-radius: 0;">
                                     <option value="member" <?php echo $member['role'] === 'member' ? 'selected' : ''; ?>>Member</option>
                                     <option value="lead" <?php echo $member['role'] === 'lead' ? 'selected' : ''; ?>>Lead</option>
                                     <option value="admin" <?php echo $member['role'] === 'admin' ? 'selected' : ''; ?>>Admin</option>

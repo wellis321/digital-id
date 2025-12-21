@@ -332,7 +332,7 @@ class Auth {
         $organisation = $stmt->fetch();
         
         if (!$organisation) {
-            return ['success' => false, 'message' => 'No organisation found for email domain "' . htmlspecialchars($domain) . '". Please contact your administrator to set up your organisation.'];
+            return ['success' => false, 'message' => 'No organisation found for email domain "' . htmlspecialchars($domain) . '". Your organisation needs to be set up before you can register. Please <a href="' . url('request-access.php') . '">request access</a> for your organisation first.'];
         }
         
         // Check if seats are available (only count verified and active users)

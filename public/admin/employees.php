@@ -15,20 +15,30 @@ $organisationId = Auth::getOrganisationId();
 $error = '';
 $success = '';
 
+// Get users needing employee numbers
+require_once dirname(__DIR__, 2) . '/src/classes/AdminNotifications.php';
+$usersNeedingEmployeeNumbers = AdminNotifications::getUsersNeedingEmployeeNumbers($organisationId);
+$countUsersNeedingNumbers = count($usersNeedingEmployeeNumbers);
+
 // Handle employee creation
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'create') {
     if (!CSRF::validatePost()) {
         $error = 'Invalid security token.';
     } else {
         $userId = $_POST['user_id'] ?? '';
-        $employeeReference = $_POST['employee_reference'] ?? '';
+        $employeeNumber = trim($_POST['employee_number'] ?? '');
+        $displayReference = trim($_POST['display_reference'] ?? '');
         
-        if (empty($userId) || empty($employeeReference)) {
-            $error = 'User ID and employee reference are required.';
+        if (empty($userId) || empty($employeeNumber)) {
+            $error = 'User ID and employee number are required.';
         } else {
-            $result = Employee::create($userId, $organisationId, $employeeReference);
+            // If display reference is empty, it will be auto-generated
+            $result = Employee::create($userId, $organisationId, $employeeNumber, $displayReference ?: null);
             if ($result['success']) {
                 $success = 'Employee created successfully.';
+                if (isset($result['display_reference']) && empty($displayReference)) {
+                    $success .= ' Display reference "' . htmlspecialchars($result['display_reference']) . '" was automatically generated.';
+                }
             } else {
                 $error = $result['message'];
             }
@@ -73,6 +83,15 @@ include dirname(__DIR__, 2) . '/includes/header.php';
         <div class="alert alert-success"><?php echo htmlspecialchars($success); ?></div>
     <?php endif; ?>
     
+    <?php if ($countUsersNeedingNumbers > 0): ?>
+    <!-- Users Needing Employee Numbers Notification -->
+    <div style="background: #f0f9ff; border-left: 3px solid #3b82f6; padding: 1rem; border-radius: 0; margin-bottom: 1.5rem;">
+        <p style="margin: 0; color: #1e40af; font-size: 0.9375rem;">
+            <i class="fas fa-info-circle"></i> <strong><?php echo $countUsersNeedingNumbers; ?> verified user<?php echo $countUsersNeedingNumbers !== 1 ? 's' : ''; ?> need<?php echo $countUsersNeedingNumbers === 1 ? 's' : ''; ?> employee records created.</strong> Use the form below to create employee records for them.
+        </p>
+    </div>
+    <?php endif; ?>
+    
     <h2>Create New Employee</h2>
     <form method="POST" action="">
         <?php echo CSRF::tokenField(); ?>
@@ -91,9 +110,15 @@ include dirname(__DIR__, 2) . '/includes/header.php';
         </div>
         
         <div class="form-group">
-            <label for="employee_reference">Employee Reference</label>
-            <input type="text" id="employee_reference" name="employee_reference" required>
-            <small>Unique reference for this employee within your organisation</small>
+            <label for="employee_number">Employee Number <span style="color: #dc2626;">*</span></label>
+            <input type="text" id="employee_number" name="employee_number" required>
+            <small><i class="fas fa-info-circle"></i> <strong>This is the employee number from your HR or payroll system.</strong> This number cannot be changed after creation and is used internally for system integration. It will not be displayed on the digital ID card.</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="display_reference">Display Reference</label>
+            <input type="text" id="display_reference" name="display_reference">
+            <small><i class="fas fa-info-circle"></i> <strong>Optional:</strong> The reference shown on the digital ID card. If left blank, a reference will be automatically generated based on your organisation's reference format settings. This reference must be unique within your organisation.</small>
         </div>
         
         <button type="submit" class="btn btn-primary">Create Employee</button>
@@ -126,7 +151,12 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                             <?php echo htmlspecialchars($employee['email']); ?>
                         </td>
                         <td style="padding: 0.75rem;">
-                            <?php echo htmlspecialchars($employee['employee_reference']); ?>
+                            <?php echo htmlspecialchars($employee['employee_number'] ?? $employee['employee_reference'] ?? 'N/A'); ?>
+                            <small style="display: block; color: #6b7280; font-size: 0.75rem;">(From HR/Payroll)</small>
+                        </td>
+                        <td style="padding: 0.75rem;">
+                            <?php echo htmlspecialchars($employee['display_reference'] ?? $employee['employee_reference'] ?? 'N/A'); ?>
+                            <small style="display: block; color: #6b7280; font-size: 0.75rem;">(Shown on ID Card)</small>
                         </td>
                         <td style="padding: 0.75rem;">
                             <?php echo $employee['is_active'] ? '<span style="color: green;">Active</span>' : '<span style="color: red;">Inactive</span>'; ?>

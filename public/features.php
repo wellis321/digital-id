@@ -32,7 +32,7 @@ include INCLUDES_PATH . '/header.php';
 
 .hero-image {
     background-color: #f3f4f6;
-    border-radius: 12px;
+    border-radius: 0;
     aspect-ratio: 4/3;
     display: flex;
     align-items: center;
@@ -93,7 +93,7 @@ include INCLUDES_PATH . '/header.php';
 
 .feature-card {
     background: white;
-    border-radius: 12px;
+    border-radius: 0;
     padding: 2rem;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     transition: transform 0.3s, box-shadow 0.3s;
@@ -108,13 +108,35 @@ include INCLUDES_PATH . '/header.php';
     font-size: 3rem;
     margin-bottom: 1rem;
     display: block;
-    color: #06b6d4;
+}
+
+.feature-card:nth-child(3n+1) .feature-icon {
+    color: #3b82f6;
+}
+
+.feature-card:nth-child(3n+2) .feature-icon {
+    color: #10b981;
+}
+
+.feature-card:nth-child(3n+3) .feature-icon {
+    color: #8b5cf6;
 }
 
 .feature-card h3 {
-    color: #06b6d4;
     margin-bottom: 1rem;
     font-size: 1.5rem;
+}
+
+.feature-card:nth-child(3n+1) h3 {
+    color: #3b82f6;
+}
+
+.feature-card:nth-child(3n+2) h3 {
+    color: #10b981;
+}
+
+.feature-card:nth-child(3n+3) h3 {
+    color: #8b5cf6;
 }
 
 .feature-card p {
@@ -125,7 +147,7 @@ include INCLUDES_PATH . '/header.php';
 .benefits-section {
     background-color: #f5f7fa;
     padding: 3rem 2rem;
-    border-radius: 12px;
+    border-radius: 0;
     margin: 3rem 0;
 }
 
@@ -160,10 +182,10 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .cta-section {
-    background-color: #06b6d4;
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
     color: white;
     padding: 3rem 2rem;
-    border-radius: 12px;
+    border-radius: 0;
     text-align: center;
     margin: 3rem 0;
 }
@@ -201,8 +223,23 @@ include INCLUDES_PATH . '/header.php';
 .stat-number {
     font-size: 3rem;
     font-weight: bold;
-    color: #06b6d4;
     display: block;
+}
+
+.stat-item:nth-child(1) .stat-number {
+    color: #3b82f6;
+}
+
+.stat-item:nth-child(2) .stat-number {
+    color: #10b981;
+}
+
+.stat-item:nth-child(3) .stat-number {
+    color: #8b5cf6;
+}
+
+.stat-item:nth-child(4) .stat-number {
+    color: #06b6d4;
 }
 
 .stat-label {
@@ -231,7 +268,7 @@ include INCLUDES_PATH . '/header.php';
         <h1>Transform Your Identity Management</h1>
         <p>Secure, verifiable digital ID cards designed specifically for social care providers. Replace paper-based systems with modern, secure technology.</p>
         <?php if (!Auth::isLoggedIn()): ?>
-            <a href="<?php echo url('register.php'); ?>" class="btn btn-primary">Get Started Free</a>
+            <a href="<?php echo url('request-access.php'); ?>" class="btn btn-primary">Request Access</a>
         <?php else: ?>
             <a href="<?php echo url('id-card.php'); ?>" class="btn btn-primary">View Your ID Card</a>
         <?php endif; ?>
@@ -404,9 +441,9 @@ include INCLUDES_PATH . '/header.php';
     <p>Join organisations already using Digital ID to streamline their identity management</p>
     <div class="cta-buttons">
         <?php if (Auth::isLoggedIn()): ?>
-            <a href="<?php echo url('id-card.php'); ?>" class="btn btn-secondary" style="background: white; color: #06b6d4;">View Your ID Card</a>
+            <a href="<?php echo url('id-card.php'); ?>" class="btn btn-secondary" style="background: white; color: #3b82f6;">View Your ID Card</a>
         <?php else: ?>
-            <a href="<?php echo url('register.php'); ?>" class="btn btn-secondary" style="background: white; color: #06b6d4;">Get Started Free</a>
+            <a href="<?php echo url('request-access.php'); ?>" class="btn btn-secondary" style="background: white; color: #3b82f6;">Request Access</a>
             <a href="<?php echo url('login.php'); ?>" class="btn btn-secondary" style="background: rgba(255,255,255,0.2); color: white; border: 2px solid white;">Login</a>
         <?php endif; ?>
     </div>

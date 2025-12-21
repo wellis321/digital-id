@@ -99,7 +99,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
         </form>
     <?php endif; ?>
     
-    <div style="margin-top: 2rem; padding: 1rem; background-color: #f0f0f0; border-radius: 4px;">
+    <div style="margin-top: 2rem; padding: 1rem; background-color: #f0f0f0; border-radius: 0;">
         <h3>Setup Instructions</h3>
         <ol style="margin-left: 1.5rem;">
             <li>Register your application in Azure AD</li>

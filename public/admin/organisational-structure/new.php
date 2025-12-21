@@ -80,7 +80,7 @@ include dirname(__DIR__, 3) . '/includes/header.php';
     <?php endif; ?>
     
     <!-- Info Box -->
-    <div style="background-color: #e0f2fe; border-left: 4px solid #2563eb; padding: 1rem; border-radius: 4px; margin-bottom: 2rem;">
+    <div style="background-color: #e0f2fe; border-left: 4px solid #2563eb; padding: 1rem; border-radius: 0; margin-bottom: 2rem;">
         <h4 style="margin-top: 0; color: #1e40af; font-size: 1rem;">Create Your Structure</h4>
         <p style="margin: 0.5rem 0 0; color: #1e40af; font-size: 0.875rem;">
             Define units however your organisation works. Examples:
