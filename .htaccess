@@ -6,12 +6,17 @@
     RewriteEngine On
     RewriteBase /
     
-    # Redirect everything to public/ directory
+    # First, redirect everything to public/ directory if not already there
     # Skip if already in /public/
     RewriteCond %{REQUEST_URI} !^/public/
     # Redirect all requests to /public/
     RewriteRule ^(.*)$ /public/$1 [L]
 </IfModule>
+
+# ErrorDocument directives at root level (paths relative to document root)
+ErrorDocument 404 /public/404.php
+ErrorDocument 403 /public/403.php
+ErrorDocument 500 /public/500.php
 
 # Prevent directory listing
 Options -Indexes

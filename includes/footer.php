@@ -18,7 +18,7 @@
                 <h3>Product</h3>
                 <ul>
                     <li><a href="<?php echo url('features.php'); ?>">Features</a></li>
-                    <li><a href="<?php echo url('index.php'); ?>">How It Works</a></li>
+                    <li><a href="<?php echo url('security.php'); ?>#how-it-works">How It Works</a></li>
                     <li><a href="<?php echo url('security.php'); ?>">Security</a></li>
                     <li><a href="<?php echo url('docs.php'); ?>">Documentation</a></li>
                 </ul>

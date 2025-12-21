@@ -13,10 +13,16 @@
     # RewriteCond %{HTTP_HOST} ^(?:www\.)?lightslategrey-weasel-963972\.hostingersite\.com [NC]
     # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
     
-    # Redirect to index.php if file doesn't exist (optional - can be removed if not needed)
-    # RewriteCond %{REQUEST_FILENAME} !-f
-    # RewriteCond %{REQUEST_FILENAME} !-d
-    # RewriteRule ^(.*)$ index.php [QSA,L]
+    # Custom 404 handling via mod_rewrite (works better than ErrorDocument on some hosts)
+    # Only trigger if the requested file doesn't exist and isn't a directory
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    # Don't redirect error pages themselves (prevents infinite loops)
+    RewriteCond %{REQUEST_URI} !^/(public/)?404\.php$ [NC]
+    RewriteCond %{REQUEST_URI} !^/(public/)?403\.php$ [NC]
+    RewriteCond %{REQUEST_URI} !^/(public/)?500\.php$ [NC]
+    # Route to custom 404 page (use relative path since we're in public/)
+    RewriteRule ^(.*)$ 404.php [L]
 </IfModule>
 
 # Security Headers
@@ -34,9 +40,11 @@
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
     
     # Content Security Policy
+    # TEMPORARILY DISABLED - Uncomment once site is working if needed
+    # Some hosting providers may have issues with long header values or CSP syntax
     # Allow same-origin resources, Font Awesome CDN, and QR code API
     # 'unsafe-inline' needed for inline styles/scripts (consider nonce-based CSP for better security)
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https://api.qrserver.com; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self';"
+    # Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https://api.qrserver.com; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'"
     
     # Strict Transport Security (only add in production with HTTPS)
     # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
@@ -66,7 +74,8 @@ DirectoryIndex index.php index.html
 </IfModule>
 
 # Enable error pages
-ErrorDocument 404 /404.php
-ErrorDocument 403 /403.php
-ErrorDocument 500 /500.php
+# Note: Paths are relative to document root, so use /public/ prefix if document root is project root
+ErrorDocument 404 /public/404.php
+ErrorDocument 403 /public/403.php
+ErrorDocument 500 /public/500.php
 

@@ -322,7 +322,7 @@ include INCLUDES_PATH . '/header.php';
 </div>
 
 <div class="card">
-    <div class="section">
+    <div class="section" id="how-it-works">
         <h2>How Digital ID Works</h2>
         
         <div class="how-it-works-steps">
