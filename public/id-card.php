@@ -264,8 +264,24 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
     
     <div style="margin-top: 1.5rem; text-align: center;">
         <button id="nfc-activate" class="btn btn-secondary" style="width: 100%;">Activate NFC</button>
-        <p style="margin-top: 0.5rem; font-size: 0.75rem; opacity: 0.8;">Tap to enable NFC verification</p>
+        <p id="nfc-help-text" style="margin-top: 0.5rem; font-size: 0.75rem; opacity: 0.8;">Tap to enable NFC verification (Android Chrome/Edge only)</p>
     </div>
+    <script>
+    // Hide NFC button on iOS - Web NFC API not supported on iOS Safari
+    (function() {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        if (isIOS) {
+            const nfcButton = document.getElementById('nfc-activate');
+            const nfcHelpText = document.getElementById('nfc-help-text');
+            if (nfcButton) {
+                nfcButton.style.display = 'none';
+            }
+            if (nfcHelpText) {
+                nfcHelpText.style.display = 'none';
+            }
+        }
+    })();
+    </script>
     
     <div style="margin-top: 1rem; text-align: center; font-size: 0.75rem; opacity: 0.7;">
         <p>Card expires: <?php echo date('d/m/Y', strtotime($idCard['expires_at'])); ?></p>
@@ -278,20 +294,48 @@ document.getElementById('nfc-activate').addEventListener('click', async function
     const nfcToken = '<?php echo $idCard['nfc_token']; ?>';
     const verificationUrl = '<?php echo APP_URL . url('verify.php?token=' . urlencode($idCard['nfc_token']) . '&type=nfc'); ?>';
     
+    // #region agent log
+    fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'id-card.php:nfcButtonClick',message:'NFC button clicked',data:{userAgent:navigator.userAgent,protocol:location.protocol,hostname:location.hostname,hasNDEFWriter:'NDEFWriter' in window,hasNDEFReader:'NDEFReader' in window},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+    // #endregion
+    
     // Check if we're on HTTPS (required for Web NFC)
     if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+        // #region agent log
+        fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'id-card.php:notHTTPS',message:'NFC blocked - not HTTPS',data:{protocol:location.protocol},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+        // #endregion
         alert('NFC requires HTTPS. Please access this site over HTTPS to use NFC features.');
         return;
     }
     
+    // Detect platform and browser
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isAndroid = /Android/.test(navigator.userAgent);
+    const isChrome = /Chrome/.test(navigator.userAgent) && !/Edg|OPR/.test(navigator.userAgent);
+    const isEdge = /Edg/.test(navigator.userAgent);
+    const isFirefox = /Firefox/.test(navigator.userAgent) && !/Seamonkey/.test(navigator.userAgent);
+    const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome|CriOS|FxiOS|OPiOS/.test(navigator.userAgent);
+    
+    // #region agent log
+    fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'id-card.php:browserDetection',message:'Browser and platform detection for NFC',data:{isIOS:isIOS,isAndroid:isAndroid,isChrome:isChrome,isEdge:isEdge,isFirefox:isFirefox,isSafari:isSafari,userAgent:navigator.userAgent},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+    // #endregion
+    
     // Check for modern Web NFC API (NDEFWriter - Chrome/Edge on Android)
     // Note: Web NFC API is experimental and only works on Chrome/Edge for Android
     if ('NDEFWriter' in window) {
+        // #region agent log
+        fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'id-card.php:ndefWriterFound',message:'NDEFWriter API found, attempting write',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
+        // #endregion
         try {
             const writer = new NDEFWriter();
             await writer.write(verificationUrl);
+            // #region agent log
+            fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'id-card.php:nfcWriteSuccess',message:'NFC write successful',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
+            // #endregion
             alert('NFC tag written successfully!');
         } catch (err) {
+            // #region agent log
+            fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'id-card.php:nfcWriteError',message:'NFC write error',data:{errorName:err.name,errorMessage:err.message,errorStack:err.stack},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
+            // #endregion
             if (err.name === 'NotAllowedError' || err.name === 'SecurityError') {
                 alert('NFC permission denied. Please:\n1. Allow NFC access in your browser settings\n2. Ensure NFC is enabled on your device\n3. Grant location permission if prompted');
             } else if (err.name === 'NotSupportedError') {
@@ -305,6 +349,9 @@ document.getElementById('nfc-activate').addEventListener('click', async function
     } 
     // Check for NDEFReader (alternative API - for reading, but indicates NFC support)
     else if ('NDEFReader' in window) {
+        // #region agent log
+        fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'id-card.php:ndefReaderFound',message:'NDEFReader found but NDEFWriter not available',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
+        // #endregion
         try {
             // Try to write using NDEFReader (some implementations support both)
             const reader = new NDEFReader();
@@ -314,15 +361,20 @@ document.getElementById('nfc-activate').addEventListener('click', async function
             alert('NFC is available but cannot write tags.\n\nPlease use Chrome or Edge browser on Android for NFC writing.');
         }
     } else {
-        // Provide helpful error message
-        const isAndroid = /Android/.test(navigator.userAgent);
-        const isChrome = /Chrome/.test(navigator.userAgent) && !/Edge|Edg/.test(navigator.userAgent);
-        const isEdge = /Edg/.test(navigator.userAgent);
-        
-        if (isAndroid && (isChrome || isEdge)) {
-            alert('NFC API not available.\n\nPlease ensure:\n1. You are using the latest version of Chrome or Edge\n2. NFC is enabled in your device settings\n3. The page is loaded over HTTPS\n4. You have granted necessary permissions\n\nIf the issue persists, please use QR code for verification.');
+        // #region agent log
+        fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'id-card.php:noNFCAPI',message:'No NFC API available',data:{isIOS:isIOS,isAndroid:isAndroid,isChrome:isChrome,isEdge:isEdge,isFirefox:isFirefox,protocol:location.protocol},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
+        // #endregion
+        // Provide helpful error message based on platform
+        if (isIOS) {
+            alert('NFC Writing Not Available on iOS\n\nWhile your iPhone has NFC hardware, iOS Safari does not support the Web NFC API for writing NFC tags.\n\nYour iPhone can:\n- Use NFC for Apple Pay\n- Read NFC tags with third-party apps\n\nBut cannot:\n- Write NFC tags through web browsers\n\nPlease use the QR code above for verification instead. QR codes work perfectly on all devices and browsers.');
+        } else if (isAndroid && (isChrome || isEdge)) {
+            alert('NFC API not available.\n\nPlease ensure:\n1. You are using the latest version of Chrome or Edge (version 89+)\n2. NFC is enabled in your device settings\n3. The page is loaded over HTTPS\n4. You have granted necessary permissions\n5. Your device has NFC hardware\n\nNote: Web NFC API may not be available on all Android devices, even with Chrome/Edge.\n\nIf the issue persists, please use QR code for verification.');
+        } else if (isAndroid && isFirefox) {
+            alert('NFC Not Supported in Firefox\n\nFirefox on Android does not support the Web NFC API.\n\nPlease use:\n- Chrome browser on Android, or\n- Edge browser on Android, or\n- QR code for verification (works on all browsers)');
+        } else if (isAndroid) {
+            alert('NFC Not Supported\n\nWeb NFC writing requires:\n- Chrome or Edge browser (not Firefox or other browsers)\n- Android device\n- Latest browser version (Chrome 89+ or Edge 89+)\n- HTTPS connection\n- NFC-enabled device\n\nPlease use Chrome or Edge browser, or use the QR code above for verification.');
         } else {
-            alert('NFC is not supported on this device or browser.\n\nWeb NFC is currently only supported on:\n- Chrome or Edge browser\n- Android devices\n- Requires HTTPS connection\n- Requires NFC-enabled device\n\nPlease use QR code for verification instead.');
+            alert('NFC Writing Not Supported\n\nWeb NFC writing is currently only supported on:\n- Chrome or Edge browser\n- Android devices\n- Requires HTTPS connection\n- Requires NFC-enabled device\n\nPlease use the QR code above for verification instead. QR codes work on all devices and browsers.');
         }
     }
 });

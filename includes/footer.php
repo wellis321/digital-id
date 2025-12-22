@@ -65,10 +65,6 @@
         <script>
         // Handle footer install button
         document.addEventListener('DOMContentLoaded', function() {
-            // #region agent log
-            fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'footer.php:DOMContentLoaded',message:'Footer script DOMContentLoaded',data:{pwaHandlerExists:!!window.pwaInstallHandler},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'G'})}).catch(()=>{});
-            // #endregion
-            
             const footerInstallBtn = document.getElementById('footer-install-button');
             if (footerInstallBtn && window.pwaInstallHandler) {
                 footerInstallBtn.addEventListener('click', function() {
@@ -81,9 +77,6 @@
                 const isIOSNonSafari = isIOS && !isSafari;
                 
                 if (isIOSNonSafari) {
-                    // #region agent log
-                    fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'footer.php:iosNonSafari',message:'Hiding install button - iOS non-Safari browser',data:{userAgent:navigator.userAgent},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'I'})}).catch(()=>{});
-                    // #endregion
                     footerInstallBtn.style.display = 'none';
                     return;
                 }
@@ -96,29 +89,15 @@
                     const isMacOS = /Macintosh|Mac OS X/.test(navigator.userAgent);
                     const isLinux = /Linux/.test(navigator.userAgent) && !/Android/.test(navigator.userAgent);
                     
-                    // #region agent log
-                    fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'footer.php:firefoxCheck',message:'Checking Firefox platform support',data:{isWindows:isWindows,isAndroid:isAndroid,isMacOS:isMacOS,isLinux:isLinux,currentDisplay:footerInstallBtn.style.display},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H'})}).catch(()=>{});
-                    // #endregion
-                    
                     // Show for Firefox on Windows (143+) and Android ONLY
                     if ((isWindows || isAndroid) && !isMacOS && !isLinux) {
                         footerInstallBtn.style.display = 'inline-flex';
                         footerInstallBtn.innerHTML = '<i class="fas fa-download"></i> <span>Install App (Use Browser Menu)</span>';
-                        // #region agent log
-                        fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'footer.php:firefoxShowButton',message:'Showing Firefox install button in footer',data:{display:footerInstallBtn.style.display,platform:isWindows?'Windows':'Android'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H'})}).catch(()=>{});
-                        // #endregion
                     } else {
-                        // #region agent log
-                        fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'footer.php:firefoxHideButton',message:'Hiding Firefox install button - unsupported platform',data:{platform:isMacOS?'macOS':isLinux?'Linux':'Other'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H'})}).catch(()=>{});
-                        // #endregion
                         // Explicitly hide button on unsupported platforms
                         footerInstallBtn.style.display = 'none';
                     }
                 }
-            } else {
-                // #region agent log
-                fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'footer.php:buttonNotFound',message:'Footer install button or handler not found',data:{buttonFound:!!footerInstallBtn,handlerExists:!!window.pwaInstallHandler},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'G'})}).catch(()=>{});
-                // #endregion
             }
         });
         </script>
