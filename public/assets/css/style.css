@@ -143,9 +143,9 @@ nav .container {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
-    position: absolute;
-    top: 100%;
-    left: 0;
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
     background-color: white;
     min-width: 200px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -214,7 +214,7 @@ nav .container {
     font-weight: 600;
 }
 
-/* Mobile: Show dropdown menu as expanded list */
+/* Mobile: Show dropdown menu as expanded list - MUST be before desktop media query */
 @media (max-width: 968px) {
     .nav-dropdown {
         width: 100%;
@@ -231,29 +231,32 @@ nav .container {
         visibility: visible !important;
         opacity: 1 !important;
         pointer-events: auto !important;
-        box-shadow: none;
-        border: none;
-        background-color: rgba(255, 255, 255, 0.1);
-        margin-top: 0;
-        padding-left: 1rem;
+        box-shadow: none !important;
+        border: none !important;
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        margin-top: 0 !important;
+        padding-left: 1rem !important;
+        top: auto !important;
+        left: auto !important;
     }
     
     .nav-dropdown-menu a {
-        color: white;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        color: white !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        background-color: transparent !important;
     }
     
     .nav-dropdown-menu a:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: rgba(255, 255, 255, 0.1) !important;
     }
     
     .nav-dropdown-menu a.active {
-        background-color: rgba(255, 255, 255, 0.2);
-        color: white;
+        background-color: rgba(255, 255, 255, 0.2) !important;
+        color: white !important;
     }
     
     .nav-dropdown-menu a i {
-        color: rgba(255, 255, 255, 0.8);
+        color: rgba(255, 255, 255, 0.8) !important;
     }
 }
 
@@ -507,6 +510,45 @@ footer .container {
     
     .nav-links.active {
         display: flex !important;
+    }
+    
+    /* Ensure dropdown menu is hidden by default on desktop - must override mobile styles */
+    .nav-dropdown-menu {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        position: absolute !important;
+        top: 100% !important;
+        left: 0 !important;
+        pointer-events: none !important;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+        border: 1px solid #e5e7eb !important;
+        background-color: white !important;
+        margin-top: 0.25rem !important;
+        padding-left: 0 !important;
+    }
+    
+    .nav-dropdown.active .nav-dropdown-menu {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+    
+    /* Ensure dropdown menu items are styled correctly on desktop */
+    .nav-dropdown-menu a {
+        color: #1f2937 !important;
+        border-bottom: 1px solid #f3f4f6 !important;
+        background-color: transparent !important;
+    }
+    
+    .nav-dropdown-menu a:hover {
+        background-color: #f9fafb !important;
+    }
+    
+    .nav-dropdown-menu a.active {
+        background-color: #eff6ff !important;
+        color: #2563eb !important;
     }
 }
 

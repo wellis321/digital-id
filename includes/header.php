@@ -23,7 +23,7 @@
     
     <!-- Font Awesome 6 (Free) - Icon Library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="<?php echo url('assets/css/style.css'); ?>">
+    <link rel="stylesheet" href="<?php echo url('assets/css/style.css'); ?>?v=<?php echo filemtime(dirname(__DIR__) . '/public/assets/css/style.css'); ?>">
     
     <!-- Service Worker Registration -->
     <script>
@@ -116,7 +116,6 @@
                 
                 const menuToggle = document.querySelector('.mobile-menu-toggle');
                 const navLinks = document.querySelector('.nav-links');
-                
                 if (menuToggle && navLinks) {
                     menuToggle.addEventListener('click', function(e) {
                         // Only work on mobile
@@ -155,8 +154,13 @@
                             
                             e.preventDefault();
                             e.stopPropagation();
+                            e.stopImmediatePropagation();
                             
                             const dropdown = toggle.closest('.nav-dropdown');
+                            if (!dropdown) {
+                                return;
+                            }
+                            
                             const isActive = dropdown.classList.contains('active');
                             
                             // Close all dropdowns
@@ -172,13 +176,26 @@
                     });
                     
                     // Close dropdowns when clicking outside
+                    // Use setTimeout to ensure toggle handler runs first
                     document.addEventListener('click', function(e) {
                         if (window.innerWidth > 968) {
-                            if (!e.target.closest('.nav-dropdown')) {
-                                navLinks.querySelectorAll('.nav-dropdown').forEach(function(dd) {
-                                    dd.classList.remove('active');
-                                });
-                            }
+                            // Delay to allow toggle handler to run first
+                            setTimeout(function() {
+                                // Don't close if clicking on the toggle button itself
+                                if (e.target.closest('.nav-dropdown-toggle')) {
+                                    return;
+                                }
+                                // Don't close if clicking inside the dropdown menu
+                                if (e.target.closest('.nav-dropdown-menu')) {
+                                    return;
+                                }
+                                // Close all dropdowns if clicking outside
+                                if (!e.target.closest('.nav-dropdown')) {
+                                    navLinks.querySelectorAll('.nav-dropdown').forEach(function(dd) {
+                                        dd.classList.remove('active');
+                                    });
+                                }
+                            }, 10);
                         }
                     });
                     

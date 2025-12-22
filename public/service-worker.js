@@ -1,6 +1,6 @@
 // Service Worker for Digital ID PWA
-const CACHE_NAME = 'digital-id-v2'; // Updated to force cache clear
-const RUNTIME_CACHE = 'digital-id-runtime-v2'; // Updated to force cache clear
+const CACHE_NAME = 'digital-id-v3'; // Updated to force cache clear for dropdown fixes
+const RUNTIME_CACHE = 'digital-id-runtime-v3'; // Updated to force cache clear for dropdown fixes
 
 // Assets to cache immediately - ONLY static assets, NO PHP pages with authentication
 const STATIC_ASSETS = [
