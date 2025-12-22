@@ -271,7 +271,9 @@
                             $isAdminPageActive = (strpos($currentPage, 'employees.php') !== false || 
                                                  strpos($currentPage, 'organisational-structure') !== false || 
                                                  strpos($currentPage, 'photo-approvals.php') !== false || 
-                                                 strpos($currentPage, 'reference-settings.php') !== false);
+                                                 strpos($currentPage, 'reference-settings.php') !== false ||
+                                                 strpos($currentPage, 'entra-settings.php') !== false ||
+                                                 strpos($currentPage, 'verification-logs.php') !== false);
                             
                             // Get notification counts
                             $employeesBadgeCount = 0;
@@ -321,6 +323,12 @@
                                     </a>
                                     <a href="<?php echo url('admin/reference-settings.php'); ?>" class="<?php echo (strpos($currentPage, 'reference-settings.php') !== false) ? 'active' : ''; ?>">
                                         <i class="fas fa-cog"></i> Settings
+                                    </a>
+                                    <a href="<?php echo url('admin/entra-settings.php'); ?>" class="<?php echo (strpos($currentPage, 'entra-settings.php') !== false) ? 'active' : ''; ?>">
+                                        <i class="fas fa-microsoft"></i> Microsoft 365 SSO
+                                    </a>
+                                    <a href="<?php echo url('admin/verification-logs.php'); ?>" class="<?php echo (strpos($currentPage, 'verification-logs.php') !== false) ? 'active' : ''; ?>">
+                                        <i class="fas fa-clipboard-list"></i> Verification Logs
                                     </a>
                                 </div>
                             </div>

@@ -43,8 +43,30 @@ include dirname(__DIR__) . '/includes/header.php';
                 
                 <div class="id-card" style="margin: 2rem auto;">
                     <div class="id-card-header">
-                        <h2><?php echo htmlspecialchars($verificationResult['employee']['organisation_name']); ?></h2>
-                        <p>Verified Employee</p>
+                        <?php
+                        // Get organisation logo if available
+                        $orgLogoPath = null;
+                        if (!empty($verificationResult['employee']['organisation_id'])) {
+                            $db = getDbConnection();
+                            $stmt = $db->prepare("SELECT logo_path FROM organisations WHERE id = ?");
+                            $stmt->execute([$verificationResult['employee']['organisation_id']]);
+                            $orgData = $stmt->fetch();
+                            if ($orgData && $orgData['logo_path'] && file_exists(dirname(__DIR__) . '/' . $orgData['logo_path'])) {
+                                $orgLogoPath = url('view-image.php?path=' . urlencode($orgData['logo_path']));
+                            }
+                        }
+                        ?>
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                            <?php if ($orgLogoPath): ?>
+                                <img src="<?php echo htmlspecialchars($orgLogoPath); ?>" 
+                                     alt="<?php echo htmlspecialchars($verificationResult['employee']['organisation_name']); ?> Logo" 
+                                     style="max-height: 50px; max-width: 150px; object-fit: contain;">
+                            <?php endif; ?>
+                            <div style="flex: 1;">
+                                <h2 style="margin: 0;"><?php echo htmlspecialchars($verificationResult['employee']['organisation_name']); ?></h2>
+                                <p style="margin: 0;">Verified Employee</p>
+                            </div>
+                        </div>
                     </div>
                     
                     <?php 

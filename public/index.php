@@ -142,9 +142,21 @@ include INCLUDES_PATH . '/header.php';
 /* Features Grid */
 .features-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2.5rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
     margin-top: 3rem;
+}
+
+@media (max-width: 1024px) {
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .feature-item {
@@ -616,22 +628,42 @@ include INCLUDES_PATH . '/header.php';
 
 
 <!-- Hero Section -->
-<div class="home-hero">
-    <h1>Digital ID for Social Care Providers</h1>
-    <p class="subtitle">
-        Secure, verifiable employee identification designed for organisations where trust is critical. 
-        Replace paper-based ID cards with modern, secure technology that protects your staff and service users.
-    </p>
-    
-    <div class="cta-buttons">
-        <?php if (Auth::isLoggedIn()): ?>
-            <a href="<?php echo url('id-card.php'); ?>" class="btn btn-hero-primary">View Your ID Card</a>
-            <a href="<?php echo url('features.php'); ?>" class="btn btn-hero-secondary">Learn More</a>
-        <?php else: ?>
-            <a href="<?php echo url('register.php'); ?>" class="btn btn-hero-primary">Register</a>
-            <a href="<?php echo url('login.php'); ?>" class="btn btn-hero-secondary">Login</a>
-            <a href="<?php echo url('request-access.php'); ?>" class="btn btn-hero-secondary" style="font-size: 0.9375rem;">Request Organisation Access</a>
-        <?php endif; ?>
+<div class="full-width-section main-section">
+    <div class="section-content">
+        <div class="two-column-section">
+            <div class="two-column-content">
+                <div class="two-column-text">
+                    <h2>Digital ID for Social Care Providers</h2>
+                    <p>
+                        Secure, verifiable employee identification designed for organisations where trust is critical. 
+                        Replace paper-based ID cards with modern, secure technology that protects your staff and service users.
+                        Integrate with Microsoft 365 for seamless single sign-on and automatic user management.
+                    </p>
+                    <ul>
+                        <li>Bank-grade security with multi-layered verification</li>
+                        <li>Instant verification via QR codes and NFC</li>
+                        <li>Complete audit trail for compliance</li>
+                        <li>Works offline with PWA technology</li>
+                    </ul>
+                    <div class="cta-buttons" style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <?php if (Auth::isLoggedIn()): ?>
+                            <a href="<?php echo url('id-card.php'); ?>" class="btn btn-hero-primary" style="background-color: #06b6d4; color: white; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; transition: all 0.2s; border: none; text-decoration: none;">View Your ID Card</a>
+                            <a href="<?php echo url('features.php'); ?>" class="btn btn-hero-secondary" style="background-color: white; color: #2563eb; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; border: 1px solid #2563eb; transition: all 0.2s; text-decoration: none;">Learn More</a>
+                        <?php else: ?>
+                            <a href="<?php echo url('register.php'); ?>" class="btn btn-hero-primary" style="background-color: #06b6d4; color: white; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; transition: all 0.2s; border: none; text-decoration: none;">Register</a>
+                            <a href="<?php echo url('login.php'); ?>" class="btn btn-hero-secondary" style="background-color: white; color: #2563eb; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; border: 1px solid #2563eb; transition: all 0.2s; text-decoration: none;">Login</a>
+                            <a href="<?php echo url('request-access.php'); ?>" class="btn btn-hero-secondary" style="background-color: white; color: #2563eb; padding: 0.875rem 2rem; font-size: 0.9375rem; font-weight: 500; border-radius: 0; border: 1px solid #2563eb; transition: all 0.2s; text-decoration: none;">Request Organisation Access</a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <div class="two-column-image placeholder">
+                    <div>
+                        <i class="fas fa-id-card fa-3x" style="margin-bottom: 1rem; display: block; color: #06b6d4;"></i>
+                        <p style="color: #6b7280; font-size: 1rem;">Digital ID Card</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -671,7 +703,7 @@ include INCLUDES_PATH . '/header.php';
                 <i class="fas fa-mobile-alt"></i>
             </div>
             <h3>Always Accessible</h3>
-            <p>Access ID cards from any device - smartphone, tablet, or computer. Install as an app on your phone for instant home screen access. No need to carry physical cards that can be lost or damaged.</p>
+            <p>Access ID cards from any device - smartphone, tablet, or computer. No need to carry physical cards that can be lost or damaged.</p>
         </div>
         
         <div class="feature-item">
@@ -679,7 +711,7 @@ include INCLUDES_PATH . '/header.php';
                 <i class="fas fa-download"></i>
             </div>
             <h3>Install as App</h3>
-            <p>Install Digital ID as a Progressive Web App (PWA) on your phone. Quick access from your home screen, works offline, and feels like a native app - no app store required.</p>
+            <p>Install Digital ID as a Progressive Web App (PWA) on your phone. Quick access from your home screen, works offline, and feels like a native app.</p>
         </div>
         
         <div class="feature-item">
@@ -692,10 +724,10 @@ include INCLUDES_PATH . '/header.php';
         
         <div class="feature-item">
             <div class="feature-icon-wrapper">
-                <i class="fas fa-chart-line"></i>
+                <i class="fas fa-clipboard-list"></i>
             </div>
             <h3>Complete Audit Trail</h3>
-            <p>Every verification attempt is logged with timestamps, locations, and results. Perfect for compliance and security audits.</p>
+            <p>Every verification attempt is logged with timestamps, IP addresses, device info, and results. Admins can view, filter, and export logs for compliance reporting and security monitoring.</p>
         </div>
         
         <div class="feature-item">
@@ -708,10 +740,26 @@ include INCLUDES_PATH . '/header.php';
         
         <div class="feature-item">
             <div class="feature-icon-wrapper">
-                <i class="fas fa-link"></i>
+                <i class="fas fa-qrcode"></i>
             </div>
-            <h3>Microsoft 365 Integration</h3>
-            <p>Seamlessly integrate with Microsoft Entra ID and Office 365. Single sign-on and automatic employee synchronisation.</p>
+            <h3>QR Code Verification</h3>
+            <p>Universal QR code support works on all devices and browsers. Time-limited tokens ensure secure verification every time.</p>
+        </div>
+        
+        <div class="feature-item">
+            <div class="feature-icon-wrapper">
+                <i class="fas fa-wifi"></i>
+            </div>
+            <h3>Offline Capable</h3>
+            <p>View your ID card even without internet connection. PWA technology caches your card for reliable access anywhere.</p>
+        </div>
+        
+        <div class="feature-item">
+            <div class="feature-icon-wrapper">
+                <i class="fas fa-user-check"></i>
+            </div>
+            <h3>Photo Verification</h3>
+            <p>Admin-approved employee photos ensure visual identity confirmation. Clear guidelines help staff upload professional photos.</p>
         </div>
         </div>
     </div>
@@ -913,59 +961,81 @@ include INCLUDES_PATH . '/header.php';
     </div>
 </div>
 
-<!-- Testimonial Section (Placeholder) -->
+<!-- Microsoft 365 Integration Section -->
 <div class="full-width-section main-section-light-gray">
     <div class="section-content">
         <div class="section-header">
-        <h2>What our customers say</h2>
-        <p>See how organisations are using Digital ID to improve their identity management</p>
-    </div>
-    
-    <div class="testimonial-grid">
-        <div class="testimonial-item">
-            <p class="testimonial-text">
-                "Digital ID has transformed how we verify staff identity. The QR code system is fast, secure, and our service users love the confidence it gives them."
-            </p>
-            <div class="testimonial-author">
-                <div class="testimonial-author-avatar">
-                    <i class="fas fa-user"></i>
+            <h2>Microsoft 365 Integration</h2>
+            <p>Seamlessly integrate Digital ID with your existing Microsoft 365 infrastructure for streamlined user management and authentication.</p>
+        </div>
+        
+        <div class="two-column-section">
+            <div class="two-column-content">
+                <div class="two-column-text">
+                    <h3>Single Sign-On (SSO)</h3>
+                    <p>
+                        Enable your staff to log in to Digital ID using their existing Microsoft 365 credentials. 
+                        No need to remember another password - they can use the same login they use for Office 365, Teams, and other Microsoft services.
+                    </p>
+                    <ul>
+                        <li>One-click login with Microsoft 365</li>
+                        <li>No additional passwords to manage</li>
+                        <li>Works with existing Microsoft Entra ID</li>
+                        <li>Secure OAuth 2.0 authentication</li>
+                    </ul>
+                    
+                    <h3 style="margin-top: 2rem;">Automatic User Synchronisation</h3>
+                    <p>
+                        Keep your Digital ID user list in sync with Microsoft 365 automatically. 
+                        No need to export CSV files or manually manage user accounts.
+                    </p>
+                    <ul>
+                        <li>Sync all users from Microsoft Entra ID</li>
+                        <li>Automatic user creation and updates</li>
+                        <li>Optionally create employee profiles</li>
+                        <li>Uses the same reliable import system</li>
+                    </ul>
+                    
+                    <div style="margin-top: 2rem;">
+                        <a href="<?php echo url('docs.php?section=entra-integration'); ?>" class="btn btn-primary">
+                            <i class="fas fa-book"></i> Learn More About Integration
+                        </a>
+                    </div>
                 </div>
-                <div class="testimonial-author-info">
-                    <h4>Placeholder Name</h4>
-                    <p>Organisation Name</p>
+                <div class="two-column-image placeholder">
+                    <div>
+                        <i class="fas fa-microsoft fa-3x" style="margin-bottom: 1rem; display: block; color: #06b6d4;"></i>
+                        <p style="color: #6b7280; font-size: 1rem;">Microsoft 365</p>
+                        <p style="color: #9ca3af; font-size: 0.875rem; margin-top: 0.5rem;">Seamless Integration</p>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <div class="testimonial-item">
-            <p class="testimonial-text">
-                "The audit trail feature has been invaluable for compliance. We can now prove every verification attempt with complete details."
-            </p>
-            <div class="testimonial-author">
-                <div class="testimonial-author-avatar">
-                    <i class="fas fa-user"></i>
+        <div style="margin-top: 3rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+            <div style="padding: 1.5rem; background: white; border: 1px solid #e5e7eb; border-radius: 0;">
+                <div style="width: 48px; height: 48px; background-color: #f0f9ff; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                    <i class="fas fa-sign-in-alt" style="font-size: 1.5rem; color: #06b6d4;"></i>
                 </div>
-                <div class="testimonial-author-info">
-                    <h4>Placeholder Name</h4>
-                    <p>Organisation Name</p>
-                </div>
+                <h4 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Single Sign-On</h4>
+                <p style="color: #6b7280; font-size: 0.9375rem; margin: 0;">Users log in with their Microsoft 365 credentials - no separate password needed.</p>
             </div>
-        </div>
-        
-        <div class="testimonial-item">
-            <p class="testimonial-text">
-                "Replacing paper ID cards has saved us time and money. Staff can access their digital ID from any device, and it's always up to date."
-            </p>
-            <div class="testimonial-author">
-                <div class="testimonial-author-avatar">
-                    <i class="fas fa-user"></i>
+            
+            <div style="padding: 1.5rem; background: white; border: 1px solid #e5e7eb; border-radius: 0;">
+                <div style="width: 48px; height: 48px; background-color: #f0f9ff; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                    <i class="fas fa-sync" style="font-size: 1.5rem; color: #06b6d4;"></i>
                 </div>
-                <div class="testimonial-author-info">
-                    <h4>Placeholder Name</h4>
-                    <p>Organisation Name</p>
-                </div>
+                <h4 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">User Sync</h4>
+                <p style="color: #6b7280; font-size: 0.9375rem; margin: 0;">Automatically sync users from Microsoft Entra ID - no CSV exports required.</p>
             </div>
-        </div>
+            
+            <div style="padding: 1.5rem; background: white; border: 1px solid #e5e7eb; border-radius: 0;">
+                <div style="width: 48px; height: 48px; background-color: #f0f9ff; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                    <i class="fas fa-shield-alt" style="font-size: 1.5rem; color: #06b6d4;"></i>
+                </div>
+                <h4 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Secure & Compliant</h4>
+                <p style="color: #6b7280; font-size: 0.9375rem; margin: 0;">Uses industry-standard OAuth 2.0 and Microsoft Graph API for secure integration.</p>
+            </div>
         </div>
     </div>
 </div>

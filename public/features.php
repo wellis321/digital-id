@@ -316,9 +316,9 @@ include INCLUDES_PATH . '/header.php';
         </div>
         
         <div class="feature-card">
-            <i class="fas fa-link feature-icon"></i>
+            <i class="fas fa-microsoft feature-icon"></i>
             <h3>Microsoft 365 Integration</h3>
-            <p>Seamlessly integrate with Microsoft Entra ID and Office 365. Single sign-on and automatic employee synchronisation.</p>
+            <p>Seamlessly integrate with Microsoft Entra ID. Single sign-on login and automatic user synchronisation directly from Microsoft 365 - no CSV exports needed.</p>
         </div>
         
         <div class="feature-card">

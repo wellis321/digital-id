@@ -196,8 +196,30 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
 
 <div class="id-card" id="id-card-content">
     <div class="id-card-header">
-        <h2><?php echo htmlspecialchars($employee['organisation_name']); ?></h2>
-        <p>Digital ID Card</p>
+        <?php
+        // Get organisation logo if available
+        $orgLogoPath = null;
+        if (!empty($employee['organisation_id'])) {
+            $db = getDbConnection();
+            $stmt = $db->prepare("SELECT logo_path FROM organisations WHERE id = ?");
+            $stmt->execute([$employee['organisation_id']]);
+            $orgData = $stmt->fetch();
+            if ($orgData && $orgData['logo_path'] && file_exists(dirname(__DIR__) . '/' . $orgData['logo_path'])) {
+                $orgLogoPath = url('view-image.php?path=' . urlencode($orgData['logo_path']));
+            }
+        }
+        ?>
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+            <?php if ($orgLogoPath): ?>
+                <img src="<?php echo htmlspecialchars($orgLogoPath); ?>" 
+                     alt="<?php echo htmlspecialchars($employee['organisation_name']); ?> Logo" 
+                     style="max-height: 50px; max-width: 150px; object-fit: contain;">
+            <?php endif; ?>
+            <div style="flex: 1;">
+                <h2 style="margin: 0;"><?php echo htmlspecialchars($employee['organisation_name']); ?></h2>
+                <p style="margin: 0;">Digital ID Card</p>
+            </div>
+        </div>
     </div>
     
     <?php 
@@ -263,8 +285,13 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
     </div>
     
     <div style="margin-top: 1.5rem; text-align: center;">
-        <button id="nfc-activate" class="btn btn-secondary" style="width: 100%;">Activate NFC</button>
-        <p id="nfc-help-text" style="margin-top: 0.5rem; font-size: 0.75rem; opacity: 0.8;">Tap to enable NFC verification (Android Chrome/Edge only)</p>
+        <p style="font-size: 0.875rem; opacity: 0.7; margin-bottom: 0.75rem;">Additional verification methods:</p>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
+            <button id="nfc-activate" class="btn btn-secondary" style="flex: 1; min-width: 120px;">Activate NFC</button>
+            <button id="ble-activate" class="btn btn-secondary" style="flex: 1; min-width: 120px;">Activate BLE</button>
+        </div>
+        <p id="nfc-help-text" style="margin-top: 0.5rem; font-size: 0.75rem; opacity: 0.8;">NFC: Android Chrome/Edge only</p>
+        <p id="ble-help-text" style="margin-top: 0.25rem; font-size: 0.75rem; opacity: 0.8;">BLE: Chrome/Edge (Android/Desktop)</p>
     </div>
     <script>
     // Hide NFC button on iOS - Web NFC API not supported on iOS Safari
@@ -278,6 +305,22 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
             }
             if (nfcHelpText) {
                 nfcHelpText.style.display = 'none';
+            }
+        }
+    })();
+    
+    // Hide BLE button on iOS - Web Bluetooth API not supported on iOS Safari
+    (function() {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        const isFirefox = /Firefox/.test(navigator.userAgent);
+        if (isIOS || isFirefox) {
+            const bleButton = document.getElementById('ble-activate');
+            const bleHelpText = document.getElementById('ble-help-text');
+            if (bleButton) {
+                bleButton.style.display = 'none';
+            }
+            if (bleHelpText) {
+                bleHelpText.style.display = 'none';
             }
         }
     })();
@@ -375,6 +418,74 @@ document.getElementById('nfc-activate').addEventListener('click', async function
             alert('NFC Not Supported\n\nWeb NFC writing requires:\n- Chrome or Edge browser (not Firefox or other browsers)\n- Android device\n- Latest browser version (Chrome 89+ or Edge 89+)\n- HTTPS connection\n- NFC-enabled device\n\nPlease use Chrome or Edge browser, or use the QR code above for verification.');
         } else {
             alert('NFC Writing Not Supported\n\nWeb NFC writing is currently only supported on:\n- Chrome or Edge browser\n- Android devices\n- Requires HTTPS connection\n- Requires NFC-enabled device\n\nPlease use the QR code above for verification instead. QR codes work on all devices and browsers.');
+        }
+    }
+});
+
+// BLE activation (supplementary feature - uses Web Bluetooth API)
+document.getElementById('ble-activate').addEventListener('click', async function() {
+    const nfcToken = '<?php echo $idCard['nfc_token']; ?>';
+    const verificationUrl = '<?php echo APP_URL . url('verify.php?token=' . urlencode($idCard['nfc_token']) . '&type=ble'); ?>';
+    
+    // Check if we're on HTTPS (required for Web Bluetooth)
+    if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+        alert('BLE requires HTTPS. Please access this site over HTTPS to use BLE features.');
+        return;
+    }
+    
+    // Check for Web Bluetooth API
+    if (!navigator.bluetooth) {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        const isFirefox = /Firefox/.test(navigator.userAgent);
+        
+        if (isIOS) {
+            alert('BLE Not Available on iOS\n\nWeb Bluetooth API is not supported in iOS Safari.\n\nPlease use:\n- QR code for verification (works on all devices), or\n- A third-party browser like Bluefy that supports Web Bluetooth');
+        } else if (isFirefox) {
+            alert('BLE Not Supported in Firefox\n\nWeb Bluetooth API is not supported in Firefox.\n\nPlease use:\n- Chrome browser, or\n- Edge browser, or\n- QR code for verification (works on all browsers)');
+        } else {
+            alert('BLE Not Supported\n\nWeb Bluetooth API is not available in this browser.\n\nPlease use:\n- Chrome browser (Android/Desktop), or\n- Edge browser (Android/Desktop), or\n- QR code for verification (works on all browsers)');
+        }
+        return;
+    }
+    
+    try {
+        // Request Bluetooth device (this makes device discoverable)
+        // Note: Web Bluetooth API primarily supports central mode (connecting to devices)
+        // For peripheral mode (broadcasting), we'll use a workaround with GATT server
+        
+        // Create a custom service UUID for digital ID verification
+        const serviceUUID = '12345678-1234-1234-1234-123456789abc';
+        const characteristicUUID = '12345678-1234-1234-1234-123456789abd';
+        
+        // Encode verification URL as Uint8Array
+        const encoder = new TextEncoder();
+        const urlData = encoder.encode(verificationUrl);
+        
+        // Try to use Web Bluetooth API to advertise/share the verification URL
+        // Since Web Bluetooth doesn't fully support peripheral mode, we'll use a different approach:
+        // Copy the verification URL and show instructions for verifier to connect
+        
+        // For now, copy URL to clipboard and show instructions
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(verificationUrl);
+            alert('BLE Verification URL copied!\n\nVerification URL has been copied to your clipboard.\n\nFor BLE verification:\n1. Ensure Bluetooth is enabled\n2. Share this URL with the verifier device\n3. Verifier can scan for BLE devices or use the URL directly\n\nNote: Full BLE broadcasting requires native app support.\nFor web-based verification, QR codes are recommended.');
+        } else {
+            // Fallback: show URL in prompt
+            prompt('BLE Verification URL (copy this):', verificationUrl);
+            alert('For BLE verification:\n1. Ensure Bluetooth is enabled\n2. Share this URL with the verifier device\n3. Verifier can scan for BLE devices or use the URL directly\n\nNote: Full BLE broadcasting requires native app support.\nFor web-based verification, QR codes are recommended.');
+        }
+        
+        // Future enhancement: Use Web Bluetooth Advertising API when available
+        // This would allow true BLE broadcasting, but has very limited browser support
+        
+    } catch (err) {
+        console.error('BLE error:', err);
+        if (err.name === 'NotFoundError') {
+            alert('Bluetooth device not found.\n\nPlease ensure:\n1. Bluetooth is enabled on your device\n2. Your device supports Bluetooth Low Energy (BLE)\n3. You have granted Bluetooth permissions');
+        } else if (err.name === 'SecurityError' || err.name === 'NotAllowedError') {
+            alert('Bluetooth permission denied.\n\nPlease:\n1. Allow Bluetooth access in your browser settings\n2. Ensure Bluetooth is enabled on your device\n3. Grant location permission if prompted (required for Bluetooth on some devices)');
+        } else {
+            alert('BLE error: ' + err.message + '\n\nPlease use QR code for verification instead, which works on all devices and browsers.');
         }
     }
 });

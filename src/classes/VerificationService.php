@@ -7,7 +7,7 @@
 class VerificationService {
     
     /**
-     * Verify employee by token (QR or NFC)
+     * Verify employee by token (QR, NFC, or BLE)
      */
     public static function verifyByToken($token, $type = 'qr') {
         $validation = DigitalID::validateToken($token, $type);

@@ -19,8 +19,120 @@ if (!$org) {
     exit;
 }
 
+// Handle logo upload
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'upload_logo') {
+    if (!CSRF::validatePost()) {
+        $error = 'Invalid security token.';
+    } elseif (empty($_FILES['logo']) || $_FILES['logo']['error'] !== UPLOAD_ERR_OK) {
+        $error = 'No logo file was uploaded or there was an upload error.';
+    } else {
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/svg+xml'];
+        $maxSize = 2 * 1024 * 1024; // 2MB
+        
+        $fileType = $_FILES['logo']['type'];
+        $fileSize = $_FILES['logo']['size'];
+        
+        // Validate file type
+        if (!in_array($fileType, $allowedTypes)) {
+            $error = 'Invalid file type. Only JPEG, PNG, and SVG images are allowed.';
+        } elseif ($fileSize > $maxSize) {
+            $error = 'File is too large. Maximum size is 2MB.';
+        } else {
+            // Create uploads directory if it doesn't exist
+            $uploadDir = dirname(__DIR__, 2) . '/uploads/organisations/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+            
+            // Generate unique filename
+            $extension = strtolower(pathinfo($_FILES['logo']['name'], PATHINFO_EXTENSION));
+            $filename = 'org_' . $organisationId . '_' . time() . '.' . $extension;
+            $filePath = $uploadDir . $filename;
+            
+            // Validate image (skip for SVG)
+            if ($fileType !== 'image/svg+xml') {
+                $imageInfo = getimagesize($_FILES['logo']['tmp_name']);
+                if ($imageInfo === false) {
+                    $error = 'Invalid image file. Please ensure the file is a valid image.';
+                } else {
+                    // Check reasonable dimensions (at least 100x100, max 2000x2000)
+                    if ($imageInfo[0] < 100 || $imageInfo[1] < 100) {
+                        $error = 'Image is too small. Please use a logo that is at least 100x100 pixels.';
+                    } elseif ($imageInfo[0] > 2000 || $imageInfo[1] > 2000) {
+                        $error = 'Image is too large. Please use a logo that is no more than 2000x2000 pixels.';
+                    } else {
+                        if (move_uploaded_file($_FILES['logo']['tmp_name'], $filePath)) {
+                            // Delete old logo if exists
+                            if ($org['logo_path'] && file_exists(dirname(__DIR__, 2) . '/' . $org['logo_path'])) {
+                                @unlink(dirname(__DIR__, 2) . '/' . $org['logo_path']);
+                            }
+                            
+                            // Update organisation record
+                            $stmt = $db->prepare("UPDATE organisations SET logo_path = ? WHERE id = ?");
+                            $stmt->execute(['uploads/organisations/' . $filename, $organisationId]);
+                            
+                            // Refresh organisation data
+                            $stmt = $db->prepare("SELECT * FROM organisations WHERE id = ?");
+                            $stmt->execute([$organisationId]);
+                            $org = $stmt->fetch();
+                            
+                            $success = 'Logo uploaded successfully!';
+                        } else {
+                            $error = 'Failed to upload logo. Please try again.';
+                        }
+                    }
+                }
+            } else {
+                // SVG file - just move it
+                if (move_uploaded_file($_FILES['logo']['tmp_name'], $filePath)) {
+                    // Delete old logo if exists
+                    if ($org['logo_path'] && file_exists(dirname(__DIR__, 2) . '/' . $org['logo_path'])) {
+                        @unlink(dirname(__DIR__, 2) . '/' . $org['logo_path']);
+                    }
+                    
+                    // Update organisation record
+                    $stmt = $db->prepare("UPDATE organisations SET logo_path = ? WHERE id = ?");
+                    $stmt->execute(['uploads/organisations/' . $filename, $organisationId]);
+                    
+                    // Refresh organisation data
+                    $stmt = $db->prepare("SELECT * FROM organisations WHERE id = ?");
+                    $stmt->execute([$organisationId]);
+                    $org = $stmt->fetch();
+                    
+                    $success = 'Logo uploaded successfully!';
+                } else {
+                    $error = 'Failed to upload logo. Please try again.';
+                }
+            }
+        }
+    }
+}
+
+// Handle logo deletion
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete_logo') {
+    if (!CSRF::validatePost()) {
+        $error = 'Invalid security token.';
+    } else {
+        // Delete file
+        if ($org['logo_path'] && file_exists(dirname(__DIR__, 2) . '/' . $org['logo_path'])) {
+            @unlink(dirname(__DIR__, 2) . '/' . $org['logo_path']);
+        }
+        
+        // Update database
+        $stmt = $db->prepare("UPDATE organisations SET logo_path = NULL WHERE id = ?");
+        $stmt->execute([$organisationId]);
+        
+        // Refresh organisation data
+        $stmt = $db->prepare("SELECT * FROM organisations WHERE id = ?");
+        $stmt->execute([$organisationId]);
+        $org = $stmt->fetch();
+        
+        $success = 'Logo deleted successfully.';
+    }
+}
+
 // Handle form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update_reference') {
     if (!CSRF::validatePost()) {
         $error = 'Invalid security token.';
     } else {
@@ -65,20 +177,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$pageTitle = 'Reference Settings';
+$pageTitle = 'Organisation Settings';
 include dirname(__DIR__, 2) . '/includes/header.php';
 ?>
 
-<div class="card">
+<div class="container">
     <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
         <a href="<?php echo url('admin/organisational-structure.php'); ?>" style="color: #6b7280;">
             <i class="fas fa-arrow-left"></i>
         </a>
-        <div>
-            <h1>Display Reference Settings</h1>
+        <div style="flex: 1;">
+            <h1>Organisation Settings</h1>
             <p style="color: #6b7280; margin-top: 0.5rem;">
-                Configure how display references are automatically generated for your organisation
+                Manage your organisation logo and display reference settings
             </p>
+        </div>
+        <div>
+            <a href="<?php echo url('admin/entra-settings.php'); ?>" class="btn btn-secondary">
+                <i class="fas fa-microsoft"></i> Microsoft 365 SSO Settings
+            </a>
         </div>
     </div>
     
@@ -105,10 +222,57 @@ include dirname(__DIR__, 2) . '/includes/header.php';
         <div class="alert alert-success"><?php echo htmlspecialchars($success); ?></div>
     <?php endif; ?>
     
-    <form method="POST" action="">
-        <?php echo CSRF::tokenField(); ?>
+    <!-- Organisation Logo Section -->
+    <div class="card" style="margin-bottom: 2rem;">
+        <h2 style="margin-top: 0;">Organisation Logo</h2>
+        <p style="color: #6b7280; margin-bottom: 1.5rem;">
+            Upload your organisation's logo to display on all digital ID cards. This makes ID cards look more authentic and branded.
+        </p>
         
-        <div class="form-group">
+        <?php if ($org['logo_path'] && file_exists(dirname(__DIR__, 2) . '/' . $org['logo_path'])): ?>
+            <div style="margin-bottom: 1.5rem; padding: 1rem; background: #f9fafb; border: 1px solid #e5e7eb; display: inline-block;">
+                <img src="<?php echo url('view-image.php?path=' . urlencode($org['logo_path'])); ?>" 
+                     alt="Organisation Logo" 
+                     style="max-height: 100px; max-width: 300px; display: block;">
+            </div>
+            <br>
+        <?php endif; ?>
+        
+        <form method="POST" action="" enctype="multipart/form-data" style="margin-bottom: 1rem;">
+            <?php echo CSRF::tokenField(); ?>
+            <input type="hidden" name="action" value="upload_logo">
+            
+            <div class="form-group">
+                <label for="logo">Upload Logo</label>
+                <input type="file" id="logo" name="logo" accept="image/jpeg,image/png,image/jpg,image/svg+xml" required>
+                <small>Accepted formats: JPEG, PNG, SVG. Maximum size: 2MB. Recommended: Square logo, at least 200x200 pixels.</small>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-upload"></i> Upload Logo
+            </button>
+        </form>
+        
+        <?php if ($org['logo_path']): ?>
+            <form method="POST" action="" style="display: inline-block;">
+                <?php echo CSRF::tokenField(); ?>
+                <input type="hidden" name="action" value="delete_logo">
+                <button type="submit" class="btn btn-secondary" onclick="return confirm('Are you sure you want to delete the organisation logo?');">
+                    <i class="fas fa-trash"></i> Delete Logo
+                </button>
+            </form>
+        <?php endif; ?>
+    </div>
+    
+    <!-- Reference Settings Section -->
+    <div class="card">
+        <h2 style="margin-top: 0;">Display Reference Settings</h2>
+        
+        <form method="POST" action="">
+            <?php echo CSRF::tokenField(); ?>
+            <input type="hidden" name="action" value="update_reference">
+            
+            <div class="form-group">
             <label for="reference_prefix">Reference Prefix</label>
             <input type="text" id="reference_prefix" name="reference_prefix" 
                    value="<?php echo htmlspecialchars($org['reference_prefix'] ?? ''); ?>"

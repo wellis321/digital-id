@@ -191,10 +191,12 @@ class DigitalID {
     }
     
     /**
-     * Validate token (QR or NFC)
+     * Validate token (QR, NFC, or BLE)
      */
     public static function validateToken($token, $type = 'qr') {
-        $idCard = $type === 'nfc' ? self::findByNfcToken($token) : self::findByQrToken($token);
+        // BLE uses the same token system as NFC (both are proximity-based supplementary methods)
+        $isProximityType = ($type === 'nfc' || $type === 'ble');
+        $idCard = $isProximityType ? self::findByNfcToken($token) : self::findByQrToken($token);
         
         if (!$idCard) {
             return ['valid' => false, 'reason' => 'token_not_found'];
@@ -204,7 +206,7 @@ class DigitalID {
             return ['valid' => false, 'reason' => 'revoked'];
         }
         
-        $expiresField = $type === 'nfc' ? 'nfc_token_expires_at' : 'qr_token_expires_at';
+        $expiresField = $isProximityType ? 'nfc_token_expires_at' : 'qr_token_expires_at';
         if (strtotime($idCard[$expiresField]) < time()) {
             return ['valid' => false, 'reason' => 'expired'];
         }

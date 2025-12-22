@@ -30,7 +30,7 @@
                     <li><a href="#">Documentation</a></li>
                     <li><a href="#">API Reference</a></li>
                     <li><a href="#">Support</a></li>
-                    <li><a href="#">Case Studies</a></li>
+                    <li><a href="<?php echo url('case-studies.php'); ?>">Case Studies</a></li>
                 </ul>
             </div>
             

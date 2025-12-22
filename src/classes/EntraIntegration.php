@@ -264,5 +264,186 @@ class EntraIntegration {
         $stmt->execute([$employeeId]);
         return $stmt->fetch();
     }
+    
+    /**
+     * Get application access token (client credentials flow) for bulk operations
+     * Requires application permissions: User.Read.All
+     */
+    public static function getApplicationToken($organisationId) {
+        $config = self::getConfig($organisationId);
+        
+        if (!$config || !$config['entra_enabled']) {
+            return ['success' => false, 'message' => 'Entra integration not enabled'];
+        }
+        
+        $tenantId = $config['entra_tenant_id'];
+        $clientId = $config['entra_client_id'];
+        $clientSecret = getenv('ENTRA_CLIENT_SECRET');
+        
+        if (!$clientSecret) {
+            return ['success' => false, 'message' => 'Client secret not configured'];
+        }
+        
+        $tokenUrl = "https://login.microsoftonline.com/{$tenantId}/oauth2/v2.0/token";
+        
+        $data = [
+            'client_id' => $clientId,
+            'client_secret' => $clientSecret,
+            'scope' => 'https://graph.microsoft.com/.default',
+            'grant_type' => 'client_credentials'
+        ];
+        
+        $ch = curl_init($tokenUrl);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/x-www-form-urlencoded']);
+        
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        
+        if ($httpCode !== 200) {
+            return ['success' => false, 'message' => 'Failed to get application token', 'http_code' => $httpCode, 'response' => $response];
+        }
+        
+        $tokenData = json_decode($response, true);
+        
+        if (!isset($tokenData['access_token'])) {
+            return ['success' => false, 'message' => 'Invalid token response'];
+        }
+        
+        return ['success' => true, 'token' => $tokenData['access_token']];
+    }
+    
+    /**
+     * Fetch all users from Microsoft Graph API
+     * Requires User.Read.All application permission
+     */
+    public static function fetchAllUsers($organisationId) {
+        $tokenResult = self::getApplicationToken($organisationId);
+        
+        if (!$tokenResult['success']) {
+            return ['success' => false, 'message' => $tokenResult['message']];
+        }
+        
+        $accessToken = $tokenResult['token'];
+        $allUsers = [];
+        $nextLink = 'https://graph.microsoft.com/v1.0/users?$select=id,mail,userPrincipalName,givenName,surname,displayName,jobTitle,department,employeeId,accountEnabled';
+        
+        // Handle pagination
+        while ($nextLink) {
+            $ch = curl_init($nextLink);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Authorization: Bearer ' . $accessToken,
+                'Content-Type: application/json'
+            ]);
+            
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+            
+            if ($httpCode !== 200) {
+                return ['success' => false, 'message' => 'Failed to fetch users from Microsoft Graph', 'http_code' => $httpCode];
+            }
+            
+            $data = json_decode($response, true);
+            
+            if (isset($data['value'])) {
+                $allUsers = array_merge($allUsers, $data['value']);
+            }
+            
+            // Check for next page
+            $nextLink = $data['@odata.nextLink'] ?? null;
+        }
+        
+        return ['success' => true, 'users' => $allUsers];
+    }
+    
+    /**
+     * Sync users from Microsoft Entra ID to Digital ID
+     * Fetches users from Graph API and imports them using UserImport class
+     */
+    public static function syncUsersFromEntra($organisationId, $createEmployees = false) {
+        require_once SRC_PATH . '/classes/UserImport.php';
+        
+        // Fetch users from Microsoft Graph
+        $fetchResult = self::fetchAllUsers($organisationId);
+        
+        if (!$fetchResult['success']) {
+            return $fetchResult;
+        }
+        
+        $entraUsers = $fetchResult['users'];
+        
+        if (empty($entraUsers)) {
+            return ['success' => true, 'users_created' => 0, 'users_updated' => 0, 'users_skipped' => 0, 'employees_created' => 0, 'warnings' => ['No users found in Microsoft Entra ID']];
+        }
+        
+        // Convert to CSV format for UserImport
+        $csvData = [];
+        $csvData[] = ['email', 'first_name', 'last_name', 'employee_reference']; // Header
+        
+        foreach ($entraUsers as $entraUser) {
+            // Skip disabled accounts
+            if (isset($entraUser['accountEnabled']) && !$entraUser['accountEnabled']) {
+                continue;
+            }
+            
+            $email = $entraUser['mail'] ?? $entraUser['userPrincipalName'] ?? '';
+            $firstName = $entraUser['givenName'] ?? '';
+            $lastName = $entraUser['surname'] ?? '';
+            $employeeId = $entraUser['employeeId'] ?? '';
+            
+            // Skip if no email
+            if (empty($email)) {
+                continue;
+            }
+            
+            // Use display name if first/last name not available
+            if (empty($firstName) && empty($lastName) && !empty($entraUser['displayName'])) {
+                $nameParts = explode(' ', $entraUser['displayName'], 2);
+                $firstName = $nameParts[0] ?? '';
+                $lastName = $nameParts[1] ?? '';
+            }
+            
+            $csvData[] = [
+                $email,
+                $firstName,
+                $lastName,
+                $employeeId
+            ];
+        }
+        
+        // Create temporary CSV file
+        $tempFile = sys_get_temp_dir() . '/entra_sync_' . $organisationId . '_' . time() . '.csv';
+        $handle = fopen($tempFile, 'w');
+        
+        if (!$handle) {
+            return ['success' => false, 'message' => 'Failed to create temporary file'];
+        }
+        
+        foreach ($csvData as $row) {
+            fputcsv($handle, $row);
+        }
+        
+        fclose($handle);
+        
+        // Import using existing UserImport class
+        try {
+            $importResult = UserImport::importFromCsv($organisationId, $tempFile, $createEmployees);
+            
+            // Clean up temp file
+            @unlink($tempFile);
+            
+            return $importResult;
+        } catch (Exception $e) {
+            // Clean up temp file
+            @unlink($tempFile);
+            
+            return ['success' => false, 'message' => 'Import failed: ' . $e->getMessage()];
+        }
+    }
 }
 

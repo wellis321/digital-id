@@ -345,7 +345,7 @@ $section = $_GET['section'] ?? 'getting-started';
                 <li><strong>Public Verification:</strong> Service users and third parties can verify employee identity</li>
                 <li><strong>Complete Audit Trail:</strong> All verification attempts are logged</li>
                 <li><strong>Data Portability:</strong> Export and import employee data in JSON format</li>
-                <li><strong>Microsoft Entra Integration:</strong> Optional SSO and employee synchronisation</li>
+                <li><strong>Microsoft Entra Integration:</strong> Optional SSO login and automatic user synchronisation from Microsoft 365</li>
             </ul>
             
             <h2>Creating Your Account</h2>
@@ -797,8 +797,11 @@ $section = $_GET['section'] ?? 'getting-started';
                 <p>QR code tokens expire after 5 minutes to prevent replay attacks. The token automatically refreshes when you view your ID card.</p>
             </div>
             
-            <h2>NFC Verification</h2>
-            <h3>How It Works</h3>
+            <h2>Supplementary Verification Methods</h2>
+            <p>In addition to QR codes, the system supports NFC and BLE (Bluetooth Low Energy) as supplementary verification methods. These are optional features that work alongside QR codes.</p>
+            
+            <h3>NFC Verification</h3>
+            <h4>How It Works</h4>
             <ol>
                 <li>Activate NFC on your device</li>
                 <li>View your digital ID card</li>
@@ -806,7 +809,14 @@ $section = $_GET['section'] ?? 'getting-started';
                 <li>Or use NFC-enabled verification systems</li>
             </ol>
             
-            <h3>Use Cases</h3>
+            <h4>Browser Support</h4>
+            <ul>
+                <li>Chrome on Android (version 89+)</li>
+                <li>Edge on Android (version 89+)</li>
+                <li><strong>Not supported:</strong> iOS Safari, Firefox, desktop browsers</li>
+            </ul>
+            
+            <h4>Use Cases</h4>
             <ul>
                 <li>Contactless verification</li>
                 <li>Door access systems</li>
@@ -814,8 +824,39 @@ $section = $_GET['section'] ?? 'getting-started';
                 <li>Meeting attendance</li>
             </ul>
             
-            <h3>Security Level</h3>
+            <h4>Security Level</h4>
             <p><strong>High</strong> - Time-limited token (5 minutes), contactless, logged, and validated.</p>
+            
+            <h3>BLE (Bluetooth Low Energy) Verification</h3>
+            <h4>How It Works</h4>
+            <ol>
+                <li>Activate BLE on your device</li>
+                <li>View your digital ID card</li>
+                <li>Share the verification URL via Bluetooth</li>
+                <li>Verifier device receives the verification token</li>
+            </ol>
+            
+            <h4>Browser Support</h4>
+            <ul>
+                <li>Chrome on Android and Desktop</li>
+                <li>Edge on Android and Desktop</li>
+                <li><strong>Not supported:</strong> iOS Safari, Firefox</li>
+            </ul>
+            
+            <h4>Use Cases</h4>
+            <ul>
+                <li>Proximity-based verification</li>
+                <li>Bluetooth-enabled access systems</li>
+                <li>Device-to-device verification</li>
+            </ul>
+            
+            <h4>Security Level</h4>
+            <p><strong>High</strong> - Time-limited token (5 minutes), proximity-based, logged, and validated.</p>
+            
+            <div class="info-box">
+                <h4><i class="fas fa-info-circle"></i> Note</h4>
+                <p><strong>QR codes remain the primary verification method</strong> as they work on all devices and browsers. NFC and BLE are supplementary features for specific use cases and device combinations.</p>
+            </div>
             
             <h2>Public Verification Page</h2>
             <p>The public verification page allows anyone to verify employee identity:</p>
@@ -850,16 +891,39 @@ $section = $_GET['section'] ?? 'getting-started';
             </ul>
             
             <h2>Audit Trail</h2>
-            <p>Every verification attempt is logged with:</p>
+            <p>Every verification attempt is automatically logged with comprehensive details for compliance and security monitoring.</p>
+            
+            <h3>What Gets Logged</h3>
+            <p>Each verification attempt records:</p>
             <ul>
-                <li>Timestamp</li>
-                <li>Verification method (visual, QR, NFC)</li>
-                <li>Result (success or failure)</li>
-                <li>Failure reason (if applicable)</li>
-                <li>Employee reference</li>
+                <li><strong>Timestamp:</strong> Exact date and time of verification</li>
+                <li><strong>Verification Method:</strong> Visual, QR code, NFC, or BLE</li>
+                <li><strong>Result:</strong> Success, failed, expired, or revoked</li>
+                <li><strong>Employee Details:</strong> Name and reference number</li>
+                <li><strong>Verifier Information:</strong> Who performed the verification (if logged in) or "Public Verification"</li>
+                <li><strong>IP Address:</strong> Network location of the verification</li>
+                <li><strong>Device Information:</strong> Browser and device details</li>
+                <li><strong>Failure Reason:</strong> Detailed notes if verification failed</li>
             </ul>
             
-            <p>Administrators can review verification logs for compliance and security monitoring.</p>
+            <h3>Admin Verification Logs Interface</h3>
+            <p>Administrators can access the Verification Logs page from the Organisation menu to:</p>
+            <ul>
+                <li><strong>View All Logs:</strong> See every verification attempt in your organisation</li>
+                <li><strong>Filter Results:</strong> Filter by date range, employee, verification type, or result</li>
+                <li><strong>Export Data:</strong> Download logs as CSV files for compliance reporting</li>
+                <li><strong>Search History:</strong> Quickly find specific verifications using filters</li>
+            </ul>
+            
+            <div class="info-box">
+                <h4><i class="fas fa-info-circle"></i> Compliance Ready</h4>
+                <p>The audit trail provides complete documentation for regulatory compliance, security audits, and quality assurance reviews. All verification attempts are permanently logged and cannot be modified.</p>
+            </div>
+            
+            <div class="success-box">
+                <h4><i class="fas fa-check-circle"></i> Privacy</h4>
+                <p>Verification logs are only accessible to organisation administrators. Personal contact details are not included in logs, maintaining privacy while ensuring security.</p>
+            </div>
             
         <?php elseif ($section === 'organisational-structure'): ?>
             <h1>Organisational Structure</h1>
@@ -1092,13 +1156,23 @@ jane@example.com,Newcastle Team,lead</code></pre>
                 <li>Select "Microsoft Graph"</li>
                 <li>Add the following permissions:
                     <ul>
-                        <li><code>User.Read</code> - Read user profile</li>
-                        <li><code>openid</code> - Sign in and read user profile</li>
-                        <li><code>profile</code> - View user's basic profile</li>
-                        <li><code>email</code> - View user's email address</li>
+                        <li><strong>For SSO Login (Delegated Permissions):</strong>
+                            <ul>
+                                <li><code>User.Read</code> - Read user profile</li>
+                                <li><code>openid</code> - Sign in and read user profile</li>
+                                <li><code>profile</code> - View user's basic profile</li>
+                                <li><code>email</code> - View user's email address</li>
+                            </ul>
+                        </li>
+                        <li><strong>For User Synchronisation (Application Permissions):</strong>
+                            <ul>
+                                <li><code>User.Read.All</code> - Read all users' profiles (requires admin consent)</li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
                 <li>Click "Add permissions"</li>
+                <li><strong>Important:</strong> For <code>User.Read.All</code>, click "Grant admin consent" to enable user synchronisation</li>
             </ol>
             
             <h3>Step 3: Create Client Secret</h3>
@@ -1135,13 +1209,34 @@ jane@example.com,Newcastle Team,lead</code></pre>
                 <li>You'll be redirected back to Digital ID</li>
             </ol>
             
-            <h2>Employee Synchronisation</h2>
-            <p>If enabled, the system can automatically synchronise employees from Microsoft 365:</p>
+            <h2>User Synchronisation</h2>
+            <p>When Microsoft Entra integration is enabled, organisation administrators can synchronise users from Microsoft 365:</p>
             <ul>
-                <li>Employees are matched by email address</li>
-                <li>New employees can be automatically created</li>
-                <li>Existing employees are updated</li>
+                <li><strong>Bulk Import:</strong> Fetch all active users from Microsoft Entra ID</li>
+                <li><strong>Automatic Matching:</strong> Users are matched by email address</li>
+                <li><strong>Create or Update:</strong> New users are created, existing users are updated</li>
+                <li><strong>Employee Profiles:</strong> Optionally create employee profiles for users with employee IDs</li>
+                <li><strong>Same Process:</strong> Uses the same import logic as CSV/JSON import for consistency</li>
             </ul>
+            
+            <h3>How to Sync Users</h3>
+            <ol>
+                <li>Go to Organisation → Microsoft 365 SSO Settings</li>
+                <li>Ensure Entra integration is enabled</li>
+                <li>Click "Sync Users from Microsoft Entra ID"</li>
+                <li>Optionally check "Also create employee profiles" if users have employee IDs</li>
+                <li>Review the sync results and any warnings</li>
+            </ol>
+            
+            <div class="info-box">
+                <h4><i class="fas fa-info-circle"></i> Required Permissions</h4>
+                <p>For user synchronisation to work, your Azure AD app registration needs <strong>User.Read.All</strong> application permission (not delegated). Admin consent is required for this permission.</p>
+            </div>
+            
+            <div class="success-box">
+                <h4><i class="fas fa-check-circle"></i> Benefits</h4>
+                <p>User synchronisation automates the import process by pulling data directly from Microsoft Entra ID, eliminating the need to export CSV files manually. It uses the same reliable import system as manual CSV/JSON imports.</p>
+            </div>
             
             <h2>Troubleshooting</h2>
             <h3>Common Issues</h3>

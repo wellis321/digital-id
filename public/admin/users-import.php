@@ -109,6 +109,18 @@ include dirname(__DIR__, 2) . '/includes/header.php';
             Import users from CSV or JSON files exported from Microsoft Entra ID, recruitment systems, or HR databases. 
             Users can be created with temporary passwords that they'll need to change on first login.
         </p>
+        <?php
+        // Check if Entra sync is available
+        if (EntraIntegration::isEnabled($organisationId)):
+        ?>
+            <div style="margin-top: 1rem; padding: 0.75rem; background-color: #ffffff; border: 1px solid #06b6d4; border-radius: 0;">
+                <p style="margin: 0; color: #0e7490; font-size: 0.875rem;">
+                    <strong><i class="fas fa-microsoft"></i> Microsoft 365 Users?</strong> 
+                    If you use Microsoft Entra ID, you can sync users directly without exporting CSV files. 
+                    <a href="<?php echo url('admin/entra-settings.php'); ?>" style="color: #06b6d4; font-weight: 500;">Go to Microsoft 365 SSO Settings</a> to sync users automatically.
+                </p>
+            </div>
+        <?php endif; ?>
     </div>
     
     <!-- Upload Form -->
