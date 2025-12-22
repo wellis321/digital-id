@@ -49,8 +49,8 @@
                 <p style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 1rem;">
                     Install Digital ID as an app on your phone for quick access
                 </p>
-                <button id="footer-install-button" class="btn btn-primary" style="display: none; width: 100%; margin-bottom: 0.5rem;">
-                    <i class="fas fa-download"></i> Install App
+                <button id="footer-install-button" class="btn btn-primary" style="display: none; width: 100%; margin-bottom: 0.5rem; gap: 0.5rem;">
+                    <i class="fas fa-download"></i> <span>Install App</span>
                 </button>
                 <a href="<?php echo url('install.php'); ?>" class="btn btn-secondary" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
                     <i class="fas fa-mobile-alt"></i> Installation Guide
@@ -75,6 +75,19 @@
                     window.pwaInstallHandler.triggerInstall();
                 });
                 
+                // Check for iOS non-Safari browsers - hide button
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+                const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome|CriOS|FxiOS|OPiOS/.test(navigator.userAgent);
+                const isIOSNonSafari = isIOS && !isSafari;
+                
+                if (isIOSNonSafari) {
+                    // #region agent log
+                    fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'footer.php:iosNonSafari',message:'Hiding install button - iOS non-Safari browser',data:{userAgent:navigator.userAgent},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'I'})}).catch(()=>{});
+                    // #endregion
+                    footerInstallBtn.style.display = 'none';
+                    return;
+                }
+                
                 // Show install button for Firefox on supported platforms (if not already shown)
                 const isFirefox = /Firefox/.test(navigator.userAgent) && !/Seamonkey/.test(navigator.userAgent);
                 if (isFirefox) {
@@ -90,7 +103,7 @@
                     // Show for Firefox on Windows (143+) and Android ONLY
                     if ((isWindows || isAndroid) && !isMacOS && !isLinux) {
                         footerInstallBtn.style.display = 'inline-flex';
-                        footerInstallBtn.innerHTML = '<i class="fas fa-download"></i> Install App (Use Browser Menu)';
+                        footerInstallBtn.innerHTML = '<i class="fas fa-download"></i> <span>Install App (Use Browser Menu)</span>';
                         // #region agent log
                         fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'footer.php:firefoxShowButton',message:'Showing Firefox install button in footer',data:{display:footerInstallBtn.style.display,platform:isWindows?'Windows':'Android'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H'})}).catch(()=>{});
                         // #endregion

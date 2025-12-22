@@ -18,7 +18,7 @@
             <!-- Instructions will be populated by JavaScript based on device -->
         </div>
         <button id="pwa-install-button" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">
-            <i class="fas fa-download"></i> Install App
+            <i class="fas fa-download"></i> <span>Install App</span>
         </button>
     </div>
 </div>
@@ -133,6 +133,9 @@ window.pwaInstallHandler = {
         const isWindows = /Windows/.test(navigator.userAgent);
         const isMacOS = /Macintosh|Mac OS X/.test(navigator.userAgent);
         const isLinux = /Linux/.test(navigator.userAgent) && !/Android/.test(navigator.userAgent);
+        // Detect Safari on iOS (Safari is the only browser that supports PWA on iOS)
+        const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome|CriOS|FxiOS|OPiOS/.test(navigator.userAgent);
+        const isIOSNonSafari = isIOS && !isSafari;
         
         // #region agent log
         fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pwa-install-prompt.php:browserDetection',message:'Browser and platform detection',data:{isFirefox:isFirefox,isChrome:isChrome,isEdge:isEdge,isBrave:isBrave,isIOS:isIOS,isAndroid:isAndroid,isWindows:isWindows,isMacOS:isMacOS,isLinux:isLinux},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
@@ -182,13 +185,21 @@ window.pwaInstallHandler = {
             }
         }
         
-        // iOS with Chrome/Edge/Brave - these browsers don't support PWA installation on iOS
+        // iOS with non-Safari browsers - these browsers don't support PWA installation on iOS
         // Only Safari supports PWA installation on iOS
-        if (isIOS && (isChrome || isEdge || isBrave)) {
+        if (isIOSNonSafari) {
             // #region agent log
-            fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pwa-install-prompt.php:iosChrome',message:'iOS with Chrome/Edge detected - PWA not supported',data:{browser:isChrome?'Chrome':isEdge?'Edge':'Brave'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
+            fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pwa-install-prompt.php:iosNonSafari',message:'iOS with non-Safari browser detected - PWA not supported',data:{userAgent:navigator.userAgent},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
             // #endregion
-            // Don't show install button - user needs Safari
+            // Hide install buttons - user needs Safari
+            const installButton = document.getElementById('pwa-install-button');
+            if (installButton) {
+                installButton.style.display = 'none';
+            }
+            const footerInstallBtn = document.getElementById('footer-install-button');
+            if (footerInstallBtn) {
+                footerInstallBtn.style.display = 'none';
+            }
         }
         
         // Don't automatically show footer button - it will be shown by:
@@ -205,11 +216,33 @@ window.pwaInstallHandler = {
 
         // Reuse browser/platform detection variables already declared above
         // (isIOS, isAndroid, isFirefox, isWindows are already declared in init function scope)
+        // Re-detect Safari for prompt instructions
+        const isSafariPrompt = /Safari/.test(navigator.userAgent) && !/Chrome|CriOS|FxiOS|OPiOS/.test(navigator.userAgent);
+        const isIOSNonSafariPrompt = isIOS && !isSafariPrompt;
 
-        if (isIOS) {
+        if (isIOSNonSafariPrompt) {
+            // iOS non-Safari - hide install button and show Safari message
+            if (installButton) {
+                installButton.style.display = 'none';
+            }
+            instructions.innerHTML = `
+                <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem; margin: 1rem 0; border-radius: 0;">
+                    <p style="margin: 0; color: #856404; font-weight: 600;">
+                        <i class="fas fa-exclamation-triangle"></i> Safari Required
+                    </p>
+                    <p style="margin: 0.5rem 0 0 0; color: #856404; font-size: 0.875rem;">
+                        To install this app on iPhone/iPad, you must use <strong>Safari</strong> browser. Chrome and other browsers on iOS do not support app installation.
+                    </p>
+                    <p style="margin: 0.5rem 0 0 0; color: #856404; font-size: 0.875rem;">
+                        <a href="<?php echo url('install.php'); ?>" style="color: #856404; text-decoration: underline; font-weight: 600;">View Installation Guide</a>
+                    </p>
+                </div>
+            `;
+        } else if (isIOS) {
+            // iOS Safari - show Safari-specific instructions
             instructions.innerHTML = `
                 <ol>
-                    <li>Tap the <i class="fas fa-share"></i> Share button at the bottom of your screen</li>
+                    <li>Tap the <i class="fas fa-share"></i> Share button at the bottom of Safari</li>
                     <li>Scroll down and tap "Add to Home Screen"</li>
                     <li>Tap "Add" to confirm</li>
                 </ol>
@@ -303,6 +336,16 @@ window.pwaInstallHandler = {
         const isAndroid = /Android/.test(navigator.userAgent);
         const isMacOS = /Macintosh|Mac OS X/.test(navigator.userAgent);
         const isLinux = /Linux/.test(navigator.userAgent) && !/Android/.test(navigator.userAgent);
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome|CriOS|FxiOS|OPiOS/.test(navigator.userAgent);
+        const isIOSNonSafari = isIOS && !isSafari;
+        
+        // iOS non-Safari browsers - redirect to install guide with Safari instructions
+        if (isIOSNonSafari) {
+            const installUrl = window.location.origin + '/install.php';
+            window.location.href = installUrl;
+            return;
+        }
         
         if (this.deferredPrompt) {
             // Chrome/Edge/Brave - use native prompt
@@ -327,7 +370,7 @@ window.pwaInstallHandler = {
                 window.location.href = installUrl;
             }
         } else {
-            // Fallback: show instructions
+            // Fallback: show instructions (will be Safari-specific for iOS)
             this.showInstallInstructions();
         }
     },
@@ -376,9 +419,11 @@ window.pwaInstallHandler = {
         }
         
         if (text) {
-            footerInstallBtn.innerHTML = '<i class="fas fa-download"></i> ' + text;
+            footerInstallBtn.innerHTML = '<i class="fas fa-download"></i> <span>' + text + '</span>';
         }
         footerInstallBtn.style.display = 'inline-flex';
+        footerInstallBtn.style.gap = '0.5rem';
+        footerInstallBtn.style.alignItems = 'center';
         // #region agent log
         fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pwa-install-prompt.php:showFooterButton',message:'Showing footer install button',data:{buttonFound:!!footerInstallBtn,text:text||'default',display:footerInstallBtn.style.display,platform:isFirefox?(isWindows?'Windows':isAndroid?'Android':'Other'):'Chrome/Edge'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
         // #endregion
@@ -387,10 +432,18 @@ window.pwaInstallHandler = {
     showInstallInstructions: function() {
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
         const isAndroid = /Android/.test(navigator.userAgent);
+        const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome|CriOS|FxiOS|OPiOS/.test(navigator.userAgent);
+        const isIOSNonSafari = isIOS && !isSafari;
         
         let message = '';
-        if (isIOS) {
-            message = 'To install:\n1. Tap the Share button\n2. Select "Add to Home Screen"\n3. Tap "Add"';
+        if (isIOSNonSafari) {
+            // iOS non-Safari - redirect to install guide
+            const installUrl = window.location.origin + '/install.php';
+            window.location.href = installUrl;
+            return;
+        } else if (isIOS) {
+            // iOS Safari - show Safari-specific instructions
+            message = 'To install on iPhone/iPad:\n\n1. Tap the Share button (square with arrow) at the bottom of Safari\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add" to confirm\n\nThe app will appear on your home screen.\n\nNote: You must use Safari browser. Chrome and other browsers on iOS do not support app installation.';
         } else if (isAndroid) {
             message = 'To install:\n1. Tap the menu (three dots)\n2. Select "Add to Home screen" or "Install app"\n3. Confirm';
         } else {
