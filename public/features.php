@@ -182,7 +182,7 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .cta-section {
-    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+    background: #2563eb;
     color: white;
     padding: 3rem 2rem;
     border-radius: 0;

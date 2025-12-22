@@ -134,8 +134,101 @@ $pageTitle = 'Photo Approvals';
 include dirname(__DIR__, 2) . '/includes/header.php';
 ?>
 
+<style>
+.photo-approval-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.pending-count-badge {
+    background: #fef3c7;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0;
+    border: 2px solid #f59e0b;
+    white-space: nowrap;
+}
+
+.photo-approval-item {
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 0;
+    padding: 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.photo-approval-content {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.photo-preview {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 0;
+    border: 3px solid #f59e0b;
+    display: block;
+}
+
+.photo-placeholder {
+    width: 200px;
+    height: 200px;
+    background: #f3f4f6;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    border: 3px solid #f59e0b;
+}
+
+.approval-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .photo-approval-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .pending-count-badge {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .photo-approval-content {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .photo-preview,
+    .photo-placeholder {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .approval-actions {
+        flex-direction: column;
+    }
+    
+    .approval-actions .btn {
+        width: 100%;
+    }
+}
+</style>
+
 <div class="card">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <div class="photo-approval-header">
         <div>
             <h1 style="margin: 0;">Photo Approvals</h1>
             <p style="color: #6b7280; margin-top: 0.5rem;">
@@ -143,7 +236,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
             </p>
         </div>
         <?php if ($pendingCount > 0): ?>
-            <div style="background: #fef3c7; padding: 0.75rem 1.5rem; border-radius: 0; border: 2px solid #f59e0b;">
+            <div class="pending-count-badge">
                 <span style="font-size: 1.5rem; font-weight: bold; color: #92400e;">
                     <?php echo $pendingCount; ?>
                 </span>
@@ -173,8 +266,8 @@ include dirname(__DIR__, 2) . '/includes/header.php';
     <?php else: ?>
         <div style="display: grid; gap: 2rem; margin-top: 2rem;">
             <?php foreach ($pendingPhotos as $emp): ?>
-                <div style="background: white; border: 2px solid #e5e7eb; border-radius: 0; padding: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                    <div style="display: grid; grid-template-columns: 200px 1fr; gap: 2rem; align-items: start;">
+                <div class="photo-approval-item">
+                    <div class="photo-approval-content">
                         <!-- Photo -->
                         <div>
                             <?php 
@@ -189,12 +282,12 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                                 ?>
                                 <img src="<?php echo htmlspecialchars($imageUrl); ?>" 
                                      alt="Pending Photo" 
-                                     style="width: 200px; height: 200px; object-fit: cover; border-radius: 0; border: 3px solid #f59e0b; display: block;">
+                                     class="photo-preview">
                                 <p style="text-align: center; margin-top: 0.5rem; color: #f59e0b; font-size: 0.875rem; font-weight: 600;">
                                     <i class="fas fa-clock"></i> Pending Review
                                 </p>
                             <?php else: ?>
-                                <div style="width: 200px; height: 200px; background: #f3f4f6; border-radius: 0; display: flex; align-items: center; justify-content: center; color: #9ca3af; border: 3px solid #f59e0b;">
+                                <div class="photo-placeholder">
                                     <i class="fas fa-image" style="font-size: 3rem;"></i>
                                 </div>
                                 <p style="text-align: center; margin-top: 0.5rem; color: #ef4444; font-size: 0.875rem;">
@@ -234,7 +327,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                                     <small>This will be shown to the employee to help them upload a better photo.</small>
                                 </div>
                                 
-                                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <div class="approval-actions">
                                     <button type="submit" name="action" value="approve" class="btn" style="background: #10b981; color: white; border: none;">
                                         <i class="fas fa-check"></i> Approve Photo
                                     </button>
