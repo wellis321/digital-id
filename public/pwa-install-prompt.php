@@ -109,41 +109,59 @@ window.pwaInstallHandler = {
     isInstalled: false,
     
     init: function() {
+        // #region agent log
+        fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pwa-install-prompt.php:init',message:'PWA handler init started',data:{userAgent:navigator.userAgent,standalone:window.matchMedia('(display-mode: standalone)').matches,navigatorStandalone:!!window.navigator.standalone},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+        // #endregion
+        
         // Check if already installed
         if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
             this.isInstalled = true;
+            // #region agent log
+            fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pwa-install-prompt.php:alreadyInstalled',message:'PWA already installed, returning early',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+            // #endregion
             return; // Already installed
         }
 
-        // Detect browser
+        // Detect browser and platform
         const isFirefox = /Firefox/.test(navigator.userAgent) && !/Seamonkey/.test(navigator.userAgent);
         const isChrome = /Chrome/.test(navigator.userAgent) && !/Edg|OPR/.test(navigator.userAgent);
         const isEdge = /Edg/.test(navigator.userAgent);
         const isBrave = navigator.brave && typeof navigator.brave.isBrave === 'function';
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        const isAndroid = /Android/.test(navigator.userAgent);
+        const isWindows = /Windows/.test(navigator.userAgent);
+        const isMacOS = /Macintosh|Mac OS X/.test(navigator.userAgent);
+        const isLinux = /Linux/.test(navigator.userAgent) && !/Android/.test(navigator.userAgent);
+        
+        // #region agent log
+        fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pwa-install-prompt.php:browserDetection',message:'Browser and platform detection',data:{isFirefox:isFirefox,isChrome:isChrome,isEdge:isEdge,isBrave:isBrave,isIOS:isIOS,isAndroid:isAndroid,isWindows:isWindows,isMacOS:isMacOS,isLinux:isLinux},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+        // #endregion
 
         // Store deferred prompt globally when available (Chrome/Edge/Brave)
         window.addEventListener('beforeinstallprompt', (e) => {
+            // #region agent log
+            fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pwa-install-prompt.php:beforeinstallprompt',message:'beforeinstallprompt event fired',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+            // #endregion
             e.preventDefault();
             this.deferredPrompt = e;
             // Show install button in prompt if it exists
             const installButton = document.getElementById('pwa-install-button');
             if (installButton) {
                 installButton.style.display = 'block';
+                // #region agent log
+                fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pwa-install-prompt.php:showPromptButton',message:'Showing prompt install button',data:{buttonFound:!!installButton},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+                // #endregion
             }
             // Show install button in footer if it exists
-            const footerInstallBtn = document.getElementById('footer-install-button');
-            if (footerInstallBtn) {
-                footerInstallBtn.style.display = 'inline-flex';
-            }
+            this.showFooterInstallButton('Install App');
         });
 
         // Firefox doesn't fire beforeinstallprompt, but we can still show install options
         // Firefox supports PWA installation via menu on Windows (143+) and Android
         if (isFirefox) {
-            const isWindows = /Windows/.test(navigator.userAgent);
-            const isAndroid = /Android/.test(navigator.userAgent);
-            const isMacOS = /Macintosh|Mac OS X/.test(navigator.userAgent);
-            const isLinux = /Linux/.test(navigator.userAgent) && !/Android/.test(navigator.userAgent);
+            // #region agent log
+            fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pwa-install-prompt.php:firefoxDetected',message:'Firefox detected, checking platform support',data:{isWindows:isWindows,isAndroid:isAndroid,isMacOS:isMacOS,isLinux:isLinux},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
+            // #endregion
             
             // Show install button for Firefox on Windows (143+) and Android
             if ((isWindows || isAndroid) && !isMacOS && !isLinux) {
@@ -151,14 +169,31 @@ window.pwaInstallHandler = {
                 if (installButton) {
                     installButton.style.display = 'block';
                     installButton.textContent = 'Install App (Use Browser Menu)';
+                    // #region agent log
+                    fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pwa-install-prompt.php:firefoxShowButton',message:'Showing Firefox install button',data:{buttonFound:!!installButton},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
+                    // #endregion
                 }
-                const footerInstallBtn = document.getElementById('footer-install-button');
-                if (footerInstallBtn) {
-                    footerInstallBtn.style.display = 'inline-flex';
-                    footerInstallBtn.innerHTML = '<i class="fas fa-download"></i> Install App (Use Browser Menu)';
-                }
+                this.showFooterInstallButton('Install App (Use Browser Menu)');
+            } else {
+                // #region agent log
+                fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pwa-install-prompt.php:firefoxNotSupported',message:'Firefox on unsupported platform',data:{platform:isMacOS?'macOS':isLinux?'Linux':'Other'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
+                // #endregion
             }
         }
+        
+        // iOS with Chrome/Edge/Brave - these browsers don't support PWA installation on iOS
+        // Only Safari supports PWA installation on iOS
+        if (isIOS && (isChrome || isEdge || isBrave)) {
+            // #region agent log
+            fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pwa-install-prompt.php:iosChrome',message:'iOS with Chrome/Edge detected - PWA not supported',data:{browser:isChrome?'Chrome':isEdge?'Edge':'Brave'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
+            // #endregion
+            // Don't show install button - user needs Safari
+        }
+        
+        // Call showFooterInstallButton after a delay to ensure DOM is ready
+        setTimeout(() => {
+            this.showFooterInstallButton();
+        }, 100);
 
         // Handle prompt-specific functionality
         const prompt = document.getElementById('pwa-install-prompt');
@@ -306,6 +341,23 @@ window.pwaInstallHandler = {
             message = 'Firefox Installation:\n\nUse the browser menu to find "Install" option, or visit the Installation Guide page for detailed instructions.';
         }
         alert(message);
+    },
+    
+    showFooterInstallButton: function(text) {
+        const footerInstallBtn = document.getElementById('footer-install-button');
+        if (footerInstallBtn) {
+            if (text) {
+                footerInstallBtn.innerHTML = '<i class="fas fa-download"></i> ' + text;
+            }
+            footerInstallBtn.style.display = 'inline-flex';
+            // #region agent log
+            fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pwa-install-prompt.php:showFooterButton',message:'Showing footer install button',data:{buttonFound:!!footerInstallBtn,text:text||'default',display:footerInstallBtn.style.display},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
+            // #endregion
+        } else {
+            // #region agent log
+            fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pwa-install-prompt.php:footerButtonNotFound',message:'Footer install button not found',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
+            // #endregion
+        }
     },
     
     showInstallInstructions: function() {
