@@ -191,10 +191,9 @@ window.pwaInstallHandler = {
             // Don't show install button - user needs Safari
         }
         
-        // Call showFooterInstallButton after a delay to ensure DOM is ready
-        setTimeout(() => {
-            this.showFooterInstallButton();
-        }, 100);
+        // Don't automatically show footer button - it will be shown by:
+        // 1. beforeinstallprompt event (Chrome/Edge/Brave)
+        // 2. Firefox detection above (only on Windows/Android)
 
         // Handle prompt-specific functionality
         const prompt = document.getElementById('pwa-install-prompt');
@@ -300,6 +299,10 @@ window.pwaInstallHandler = {
     
     triggerInstall: function() {
         const isFirefox = /Firefox/.test(navigator.userAgent) && !/Seamonkey/.test(navigator.userAgent);
+        const isWindows = /Windows/.test(navigator.userAgent);
+        const isAndroid = /Android/.test(navigator.userAgent);
+        const isMacOS = /Macintosh|Mac OS X/.test(navigator.userAgent);
+        const isLinux = /Linux/.test(navigator.userAgent) && !/Android/.test(navigator.userAgent);
         
         if (this.deferredPrompt) {
             // Chrome/Edge/Brave - use native prompt
@@ -314,8 +317,15 @@ window.pwaInstallHandler = {
                 this.deferredPrompt = null;
             });
         } else if (isFirefox) {
-            // Firefox - show instructions since it doesn't support beforeinstallprompt
-            this.showFirefoxInstructions();
+            // Firefox - check platform support before showing instructions
+            if ((isWindows || isAndroid) && !isMacOS && !isLinux) {
+                // Supported platform - show instructions
+                this.showFirefoxInstructions();
+            } else {
+                // Unsupported platform - redirect to install guide
+                const installUrl = window.location.origin + '/install.php';
+                window.location.href = installUrl;
+            }
         } else {
             // Fallback: show instructions
             this.showInstallInstructions();
@@ -343,19 +353,35 @@ window.pwaInstallHandler = {
     
     showFooterInstallButton: function(text) {
         const footerInstallBtn = document.getElementById('footer-install-button');
-        if (footerInstallBtn) {
-            if (text) {
-                footerInstallBtn.innerHTML = '<i class="fas fa-download"></i> ' + text;
-            }
-            footerInstallBtn.style.display = 'inline-flex';
-            // #region agent log
-            fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pwa-install-prompt.php:showFooterButton',message:'Showing footer install button',data:{buttonFound:!!footerInstallBtn,text:text||'default',display:footerInstallBtn.style.display},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
-            // #endregion
-        } else {
+        if (!footerInstallBtn) {
             // #region agent log
             fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pwa-install-prompt.php:footerButtonNotFound',message:'Footer install button not found',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
             // #endregion
+            return;
         }
+        
+        // Check platform before showing - only show on supported platforms
+        const isFirefox = /Firefox/.test(navigator.userAgent) && !/Seamonkey/.test(navigator.userAgent);
+        const isWindows = /Windows/.test(navigator.userAgent);
+        const isAndroid = /Android/.test(navigator.userAgent);
+        const isMacOS = /Macintosh|Mac OS X/.test(navigator.userAgent);
+        const isLinux = /Linux/.test(navigator.userAgent) && !/Android/.test(navigator.userAgent);
+        
+        // For Firefox, only show on Windows/Android (not macOS/Linux)
+        if (isFirefox && (isMacOS || isLinux)) {
+            // #region agent log
+            fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pwa-install-prompt.php:firefoxUnsupportedPlatform',message:'Not showing footer button - Firefox on unsupported platform',data:{platform:isMacOS?'macOS':'Linux'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
+            // #endregion
+            return; // Don't show button on Firefox macOS/Linux
+        }
+        
+        if (text) {
+            footerInstallBtn.innerHTML = '<i class="fas fa-download"></i> ' + text;
+        }
+        footerInstallBtn.style.display = 'inline-flex';
+        // #region agent log
+        fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pwa-install-prompt.php:showFooterButton',message:'Showing footer install button',data:{buttonFound:!!footerInstallBtn,text:text||'default',display:footerInstallBtn.style.display,platform:isFirefox?(isWindows?'Windows':isAndroid?'Android':'Other'):'Chrome/Edge'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
+        // #endregion
     },
     
     showInstallInstructions: function() {

@@ -87,13 +87,19 @@
                     fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'footer.php:firefoxCheck',message:'Checking Firefox platform support',data:{isWindows:isWindows,isAndroid:isAndroid,isMacOS:isMacOS,isLinux:isLinux,currentDisplay:footerInstallBtn.style.display},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H'})}).catch(()=>{});
                     // #endregion
                     
-                    // Show for Firefox on Windows (143+) and Android
+                    // Show for Firefox on Windows (143+) and Android ONLY
                     if ((isWindows || isAndroid) && !isMacOS && !isLinux) {
                         footerInstallBtn.style.display = 'inline-flex';
                         footerInstallBtn.innerHTML = '<i class="fas fa-download"></i> Install App (Use Browser Menu)';
                         // #region agent log
-                        fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'footer.php:firefoxShowButton',message:'Showing Firefox install button in footer',data:{display:footerInstallBtn.style.display},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H'})}).catch(()=>{});
+                        fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'footer.php:firefoxShowButton',message:'Showing Firefox install button in footer',data:{display:footerInstallBtn.style.display,platform:isWindows?'Windows':'Android'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H'})}).catch(()=>{});
                         // #endregion
+                    } else {
+                        // #region agent log
+                        fetch('http://127.0.0.1:7245/ingest/1fc7ae7c-df4c-4686-a382-3cb17e5a246c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'footer.php:firefoxHideButton',message:'Hiding Firefox install button - unsupported platform',data:{platform:isMacOS?'macOS':isLinux?'Linux':'Other'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H'})}).catch(()=>{});
+                        // #endregion
+                        // Explicitly hide button on unsupported platforms
+                        footerInstallBtn.style.display = 'none';
                     }
                 }
             } else {
