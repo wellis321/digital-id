@@ -103,83 +103,138 @@
 </style>
 
 <script>
-(function() {
-    // Check if already installed
-    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
-        return; // Already installed
-    }
+// Global PWA install handler - accessible from anywhere on the page
+window.pwaInstallHandler = {
+    deferredPrompt: null,
+    isInstalled: false,
+    
+    init: function() {
+        // Check if already installed
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+            this.isInstalled = true;
+            return; // Already installed
+        }
 
-    // Check if prompt was dismissed
-    if (localStorage.getItem('pwa-install-dismissed')) {
-        return;
-    }
-
-    const prompt = document.getElementById('pwa-install-prompt');
-    const closeButton = document.getElementById('pwa-install-close');
-    const installButton = document.getElementById('pwa-install-button');
-    const instructions = document.getElementById('pwa-install-instructions');
-
-    // Detect device and show appropriate instructions
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const isAndroid = /Android/.test(navigator.userAgent);
-
-    if (isIOS) {
-        instructions.innerHTML = `
-            <ol>
-                <li>Tap the <i class="fas fa-share"></i> Share button at the bottom of your screen</li>
-                <li>Scroll down and tap "Add to Home Screen"</li>
-                <li>Tap "Add" to confirm</li>
-            </ol>
-        `;
-        installButton.style.display = 'none';
-    } else if (isAndroid) {
-        instructions.innerHTML = `
-            <ol>
-                <li>Tap the menu <i class="fas fa-ellipsis-vertical"></i> button in your browser</li>
-                <li>Select "Add to Home screen" or "Install app"</li>
-                <li>Confirm the installation</li>
-            </ol>
-        `;
-    } else {
-        // Desktop/other - show generic instructions
-        instructions.innerHTML = `
-            <p>To install this app:</p>
-            <ol>
-                <li>Look for an install icon in your browser's address bar</li>
-                <li>Or use your browser's menu to find "Install" or "Add to Home Screen"</li>
-            </ol>
-        `;
-    }
-
-    // Show prompt after a delay (only on mobile)
-    if (isIOS || isAndroid) {
-        setTimeout(() => {
-            prompt.style.display = 'block';
-        }, 3000); // Show after 3 seconds
-    }
-
-    // Handle install button click (for browsers that support it)
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        installButton.style.display = 'block';
-        installButton.addEventListener('click', () => {
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === 'accepted') {
-                    prompt.style.display = 'none';
-                }
-                deferredPrompt = null;
-            });
+        // Store deferred prompt globally when available
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            this.deferredPrompt = e;
+            // Show install button in prompt if it exists
+            const installButton = document.getElementById('pwa-install-button');
+            if (installButton) {
+                installButton.style.display = 'block';
+            }
+            // Show install button in footer if it exists
+            const footerInstallBtn = document.getElementById('footer-install-button');
+            if (footerInstallBtn) {
+                footerInstallBtn.style.display = 'inline-flex';
+            }
         });
-    });
 
-    // Close button
-    closeButton.addEventListener('click', () => {
-        prompt.style.display = 'none';
-        localStorage.setItem('pwa-install-dismissed', 'true');
+        // Handle prompt-specific functionality
+        const prompt = document.getElementById('pwa-install-prompt');
+        if (!prompt) return;
+
+        const closeButton = document.getElementById('pwa-install-close');
+        const installButton = document.getElementById('pwa-install-button');
+        const instructions = document.getElementById('pwa-install-instructions');
+
+        // Detect device and show appropriate instructions
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        const isAndroid = /Android/.test(navigator.userAgent);
+
+        if (isIOS) {
+            instructions.innerHTML = `
+                <ol>
+                    <li>Tap the <i class="fas fa-share"></i> Share button at the bottom of your screen</li>
+                    <li>Scroll down and tap "Add to Home Screen"</li>
+                    <li>Tap "Add" to confirm</li>
+                </ol>
+            `;
+            installButton.style.display = 'none';
+        } else if (isAndroid) {
+            instructions.innerHTML = `
+                <ol>
+                    <li>Tap the menu <i class="fas fa-ellipsis-vertical"></i> button in your browser</li>
+                    <li>Select "Add to Home screen" or "Install app"</li>
+                    <li>Confirm the installation</li>
+                </ol>
+            `;
+        } else {
+            // Desktop/other - show generic instructions
+            instructions.innerHTML = `
+                <p>To install this app:</p>
+                <ol>
+                    <li>Look for an install icon in your browser's address bar</li>
+                    <li>Or use your browser's menu to find "Install" or "Add to Home Screen"</li>
+                </ol>
+            `;
+        }
+
+        // Show prompt after a delay (only on mobile, and only if not dismissed in this session)
+        if ((isIOS || isAndroid) && !sessionStorage.getItem('pwa-prompt-dismissed-session')) {
+            setTimeout(() => {
+                prompt.style.display = 'block';
+            }, 3000); // Show after 3 seconds
+        }
+
+        // Handle install button click in prompt
+        if (installButton) {
+            installButton.addEventListener('click', () => {
+                this.triggerInstall();
+            });
+        }
+
+        // Close button - only dismisses for this session, not permanently
+        if (closeButton) {
+            closeButton.addEventListener('click', () => {
+                prompt.style.display = 'none';
+                sessionStorage.setItem('pwa-prompt-dismissed-session', 'true');
+            });
+        }
+    },
+    
+    triggerInstall: function() {
+        if (this.deferredPrompt) {
+            this.deferredPrompt.prompt();
+            this.deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    const prompt = document.getElementById('pwa-install-prompt');
+                    if (prompt) {
+                        prompt.style.display = 'none';
+                    }
+                }
+                this.deferredPrompt = null;
+            });
+        } else {
+            // Fallback: show instructions
+            this.showInstallInstructions();
+        }
+    },
+    
+    showInstallInstructions: function() {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        const isAndroid = /Android/.test(navigator.userAgent);
+        
+        let message = '';
+        if (isIOS) {
+            message = 'To install:\n1. Tap the Share button\n2. Select "Add to Home Screen"\n3. Tap "Add"';
+        } else if (isAndroid) {
+            message = 'To install:\n1. Tap the menu (three dots)\n2. Select "Add to Home screen" or "Install app"\n3. Confirm';
+        } else {
+            message = 'Look for an install icon in your browser\'s address bar, or use the browser menu to find "Install" or "Add to Home Screen"';
+        }
+        alert(message);
+    }
+};
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        window.pwaInstallHandler.init();
     });
-})();
+} else {
+    window.pwaInstallHandler.init();
+}
 </script>
 

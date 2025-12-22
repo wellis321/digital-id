@@ -32,9 +32,6 @@ if (!$employee && RBAC::isSuperAdmin()) {
 $pageTitle = 'Digital ID Card';
 include dirname(__DIR__) . '/includes/header.php';
 
-// Include PWA install prompt (only show on mobile)
-include __DIR__ . '/pwa-install-prompt.php';
-
 // If no employee record exists, find contact person and send notifications
 if (!$employee):
     $user = Auth::getUser();

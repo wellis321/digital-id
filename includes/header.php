@@ -354,6 +354,10 @@
                 <?php endif; ?>
             </div>
         </nav>
-    </header>
-    <main id="main-content" class="container">
+            </header>
+            
+            <!-- PWA Install Prompt - Available on all pages -->
+            <?php include __DIR__ . '/../public/pwa-install-prompt.php'; ?>
+            
+            <main id="main-content" class="container">
 

@@ -43,11 +43,36 @@
                     <li><a href="<?php echo url('terms-of-service.php'); ?>">Terms of Service</a></li>
                 </ul>
             </div>
+            
+            <div class="footer-section">
+                <h3>Install App</h3>
+                <p style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 1rem;">
+                    Install Digital ID as an app on your phone for quick access
+                </p>
+                <button id="footer-install-button" class="btn btn-primary" style="display: none; width: 100%; margin-bottom: 0.5rem;">
+                    <i class="fas fa-download"></i> Install App
+                </button>
+                <a href="<?php echo url('install.php'); ?>" class="btn btn-secondary" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                    <i class="fas fa-mobile-alt"></i> Installation Guide
+                </a>
+            </div>
         </div>
         
         <div class="footer-bottom">
             <p>&copy; <?php echo date('Y'); ?> <?php echo APP_NAME; ?>. All rights reserved.</p>
         </div>
+        
+        <script>
+        // Handle footer install button
+        document.addEventListener('DOMContentLoaded', function() {
+            const footerInstallBtn = document.getElementById('footer-install-button');
+            if (footerInstallBtn && window.pwaInstallHandler) {
+                footerInstallBtn.addEventListener('click', function() {
+                    window.pwaInstallHandler.triggerInstall();
+                });
+            }
+        });
+        </script>
     </footer>
 </body>
 </html>
