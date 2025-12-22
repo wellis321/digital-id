@@ -50,6 +50,8 @@ $isMobile = $isIOS || $isAndroid;
             <h2 style="margin-top: 0; color: #047857;">
                 <i class="fas fa-mobile-alt"></i> Android Installation
             </h2>
+            
+            <h3 style="color: #047857; margin-top: 1.5rem;">Chrome or Edge Browser</h3>
             <ol style="line-height: 2; color: #047857;">
                 <li>Open this page in <strong>Chrome</strong> or <strong>Edge</strong> browser</li>
                 <li>Tap the <i class="fas fa-ellipsis-vertical"></i> <strong>menu</strong> button (three dots) in the top right</li>
@@ -57,8 +59,18 @@ $isMobile = $isIOS || $isAndroid;
                 <li>Tap <strong>"Install"</strong> or <strong>"Add"</strong> to confirm</li>
                 <li>The Digital ID icon will appear on your home screen</li>
             </ol>
+            
+            <h3 style="color: #047857; margin-top: 1.5rem;">Firefox Browser</h3>
+            <ol style="line-height: 2; color: #047857;">
+                <li>Open this page in <strong>Firefox</strong> browser</li>
+                <li>Tap the <strong>menu</strong> button (three horizontal lines) in the top right</li>
+                <li>Select <strong>"Install"</strong> or <strong>"Add to Home Screen"</strong></li>
+                <li>Confirm the installation</li>
+                <li>The Digital ID icon will appear on your home screen</li>
+            </ol>
+            
             <p style="color: #047857; margin-top: 1rem; font-weight: 600;">
-                <i class="fas fa-info-circle"></i> Note: If you see an "Install App" button above, tap it for automatic installation.
+                <i class="fas fa-info-circle"></i> Note: If you see an "Install App" button above, tap it for automatic installation (Chrome/Edge only).
             </p>
         </div>
     <?php endif; ?>
@@ -68,17 +80,26 @@ $isMobile = $isIOS || $isAndroid;
             <h2 style="margin-top: 0;">
                 <i class="fas fa-desktop"></i> Desktop Installation
             </h2>
-            <p>To install Digital ID on your desktop computer:</p>
+            <h3 style="margin-top: 1.5rem;">Chrome or Edge Browser</h3>
             <ol style="line-height: 2;">
                 <li>Look for an <strong>install icon</strong> in your browser's address bar (usually appears as a "+" or download icon)</li>
-                <li>Or use your browser's menu:
-                    <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
-                        <li><strong>Chrome/Edge:</strong> Menu → "Install Digital ID"</li>
-                        <li><strong>Firefox:</strong> Menu → "Install"</li>
-                        <li><strong>Safari:</strong> File → "Add to Dock"</li>
-                    </ul>
-                </li>
+                <li>Or use your browser's menu: Menu → "Install Digital ID"</li>
                 <li>Follow the prompts to complete installation</li>
+            </ol>
+            
+            <h3 style="margin-top: 1.5rem;">Firefox Browser</h3>
+            <ol style="line-height: 2;">
+                <li><strong>Windows:</strong> Click the menu button (three horizontal lines) → Select "Install" (requires Firefox 143.0+)</li>
+                <li><strong>macOS/Linux:</strong> PWA installation is not natively supported in Firefox. Please use Chrome or Edge browser instead.</li>
+            </ol>
+            <p style="margin-top: 1rem; color: #6b7280; font-size: 0.875rem;">
+                <i class="fas fa-info-circle"></i> Firefox PWA support varies by platform. Windows users need Firefox 143.0 or later.
+            </p>
+            
+            <h3 style="margin-top: 1.5rem;">Safari Browser</h3>
+            <ol style="line-height: 2;">
+                <li>Use File → "Add to Dock" to add the site to your dock</li>
+                <li>Or use the Share menu to add to your home screen (macOS)</li>
             </ol>
         </div>
     <?php endif; ?>

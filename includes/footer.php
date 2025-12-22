@@ -70,6 +70,21 @@
                 footerInstallBtn.addEventListener('click', function() {
                     window.pwaInstallHandler.triggerInstall();
                 });
+                
+                // Show install button for Firefox on supported platforms
+                const isFirefox = /Firefox/.test(navigator.userAgent) && !/Seamonkey/.test(navigator.userAgent);
+                if (isFirefox) {
+                    const isWindows = /Windows/.test(navigator.userAgent);
+                    const isAndroid = /Android/.test(navigator.userAgent);
+                    const isMacOS = /Macintosh|Mac OS X/.test(navigator.userAgent);
+                    const isLinux = /Linux/.test(navigator.userAgent) && !/Android/.test(navigator.userAgent);
+                    
+                    // Show for Firefox on Windows (143+) and Android
+                    if ((isWindows || isAndroid) && !isMacOS && !isLinux) {
+                        footerInstallBtn.style.display = 'inline-flex';
+                        footerInstallBtn.innerHTML = '<i class="fas fa-download"></i> Install App (Use Browser Menu)';
+                    }
+                }
             }
         });
         </script>

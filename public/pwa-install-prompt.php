@@ -115,7 +115,13 @@ window.pwaInstallHandler = {
             return; // Already installed
         }
 
-        // Store deferred prompt globally when available
+        // Detect browser
+        const isFirefox = /Firefox/.test(navigator.userAgent) && !/Seamonkey/.test(navigator.userAgent);
+        const isChrome = /Chrome/.test(navigator.userAgent) && !/Edg|OPR/.test(navigator.userAgent);
+        const isEdge = /Edg/.test(navigator.userAgent);
+        const isBrave = navigator.brave && typeof navigator.brave.isBrave === 'function';
+
+        // Store deferred prompt globally when available (Chrome/Edge/Brave)
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             this.deferredPrompt = e;
@@ -131,6 +137,29 @@ window.pwaInstallHandler = {
             }
         });
 
+        // Firefox doesn't fire beforeinstallprompt, but we can still show install options
+        // Firefox supports PWA installation via menu on Windows (143+) and Android
+        if (isFirefox) {
+            const isWindows = /Windows/.test(navigator.userAgent);
+            const isAndroid = /Android/.test(navigator.userAgent);
+            const isMacOS = /Macintosh|Mac OS X/.test(navigator.userAgent);
+            const isLinux = /Linux/.test(navigator.userAgent) && !/Android/.test(navigator.userAgent);
+            
+            // Show install button for Firefox on Windows (143+) and Android
+            if ((isWindows || isAndroid) && !isMacOS && !isLinux) {
+                const installButton = document.getElementById('pwa-install-button');
+                if (installButton) {
+                    installButton.style.display = 'block';
+                    installButton.textContent = 'Install App (Use Browser Menu)';
+                }
+                const footerInstallBtn = document.getElementById('footer-install-button');
+                if (footerInstallBtn) {
+                    footerInstallBtn.style.display = 'inline-flex';
+                    footerInstallBtn.innerHTML = '<i class="fas fa-download"></i> Install App (Use Browser Menu)';
+                }
+            }
+        }
+
         // Handle prompt-specific functionality
         const prompt = document.getElementById('pwa-install-prompt');
         if (!prompt) return;
@@ -139,9 +168,11 @@ window.pwaInstallHandler = {
         const installButton = document.getElementById('pwa-install-button');
         const instructions = document.getElementById('pwa-install-instructions');
 
-        // Detect device and show appropriate instructions
+        // Detect device and browser
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
         const isAndroid = /Android/.test(navigator.userAgent);
+        const isFirefox = /Firefox/.test(navigator.userAgent) && !/Seamonkey/.test(navigator.userAgent);
+        const isWindows = /Windows/.test(navigator.userAgent);
 
         if (isIOS) {
             instructions.innerHTML = `
@@ -151,24 +182,64 @@ window.pwaInstallHandler = {
                     <li>Tap "Add" to confirm</li>
                 </ol>
             `;
-            installButton.style.display = 'none';
+            if (installButton) installButton.style.display = 'none';
         } else if (isAndroid) {
-            instructions.innerHTML = `
-                <ol>
-                    <li>Tap the menu <i class="fas fa-ellipsis-vertical"></i> button in your browser</li>
-                    <li>Select "Add to Home screen" or "Install app"</li>
-                    <li>Confirm the installation</li>
-                </ol>
-            `;
+            if (isFirefox) {
+                instructions.innerHTML = `
+                    <ol>
+                        <li>Tap the menu <i class="fas fa-ellipsis-vertical"></i> button (three horizontal lines) in the top right</li>
+                        <li>Select <strong>"Install"</strong> or <strong>"Add to Home Screen"</strong></li>
+                        <li>Confirm the installation</li>
+                    </ol>
+                    <p style="margin-top: 1rem; color: #6b7280; font-size: 0.875rem;">
+                        <i class="fas fa-info-circle"></i> Firefox supports PWA installation on Android. Look for the "Install" option in the browser menu.
+                    </p>
+                `;
+            } else {
+                instructions.innerHTML = `
+                    <ol>
+                        <li>Tap the menu <i class="fas fa-ellipsis-vertical"></i> button in your browser</li>
+                        <li>Select "Add to Home screen" or "Install app"</li>
+                        <li>Confirm the installation</li>
+                    </ol>
+                `;
+            }
         } else {
-            // Desktop/other - show generic instructions
-            instructions.innerHTML = `
-                <p>To install this app:</p>
-                <ol>
-                    <li>Look for an install icon in your browser's address bar</li>
-                    <li>Or use your browser's menu to find "Install" or "Add to Home Screen"</li>
-                </ol>
-            `;
+            // Desktop/other
+            if (isFirefox && isWindows) {
+                instructions.innerHTML = `
+                    <p>To install this app in Firefox:</p>
+                    <ol>
+                        <li>Click the <strong>menu button</strong> (three horizontal lines) in the top right</li>
+                        <li>Select <strong>"Install"</strong> or look for the install icon in the address bar</li>
+                        <li>Confirm the installation</li>
+                    </ol>
+                    <p style="margin-top: 1rem; color: #6b7280; font-size: 0.875rem;">
+                        <i class="fas fa-info-circle"></i> Requires Firefox 143.0 or later on Windows. macOS and Linux users should use Chrome or Edge for PWA installation.
+                    </p>
+                `;
+            } else if (isFirefox) {
+                instructions.innerHTML = `
+                    <p>Firefox PWA installation:</p>
+                    <ol>
+                        <li><strong>Windows:</strong> Use Firefox 143.0+ and look for "Install" in the menu</li>
+                        <li><strong>macOS/Linux:</strong> PWA installation is not natively supported. Please use Chrome or Edge browser instead.</li>
+                    </ol>
+                    <p style="margin-top: 1rem;">
+                        <a href="<?php echo url('install.php'); ?>" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-info-circle"></i> View Installation Guide
+                        </a>
+                    </p>
+                `;
+            } else {
+                instructions.innerHTML = `
+                    <p>To install this app:</p>
+                    <ol>
+                        <li>Look for an install icon in your browser's address bar</li>
+                        <li>Or use your browser's menu to find "Install" or "Add to Home Screen"</li>
+                    </ol>
+                `;
+            }
         }
 
         // Show prompt after a delay (only on mobile, and only if not dismissed in this session)
@@ -195,7 +266,10 @@ window.pwaInstallHandler = {
     },
     
     triggerInstall: function() {
+        const isFirefox = /Firefox/.test(navigator.userAgent) && !/Seamonkey/.test(navigator.userAgent);
+        
         if (this.deferredPrompt) {
+            // Chrome/Edge/Brave - use native prompt
             this.deferredPrompt.prompt();
             this.deferredPrompt.userChoice.then((choiceResult) => {
                 if (choiceResult.outcome === 'accepted') {
@@ -206,10 +280,32 @@ window.pwaInstallHandler = {
                 }
                 this.deferredPrompt = null;
             });
+        } else if (isFirefox) {
+            // Firefox - show instructions since it doesn't support beforeinstallprompt
+            this.showFirefoxInstructions();
         } else {
             // Fallback: show instructions
             this.showInstallInstructions();
         }
+    },
+    
+    showFirefoxInstructions: function() {
+        const isWindows = /Windows/.test(navigator.userAgent);
+        const isAndroid = /Android/.test(navigator.userAgent);
+        const isMacOS = /Macintosh|Mac OS X/.test(navigator.userAgent);
+        const isLinux = /Linux/.test(navigator.userAgent) && !/Android/.test(navigator.userAgent);
+        
+        let message = '';
+        if (isAndroid) {
+            message = 'Firefox on Android:\n\n1. Tap the menu button (three horizontal lines) in the top right\n2. Select "Install" or "Add to Home Screen"\n3. Confirm the installation\n\nThe app will appear on your home screen.';
+        } else if (isWindows) {
+            message = 'Firefox on Windows:\n\n1. Click the menu button (three horizontal lines) in the top right\n2. Select "Install" or look for the install icon in the address bar\n3. Confirm the installation\n\nNote: Requires Firefox 143.0 or later.';
+        } else if (isMacOS || isLinux) {
+            message = 'Firefox on macOS/Linux:\n\nPWA installation is not natively supported in Firefox on macOS/Linux.\n\nPlease use Chrome or Edge browser for PWA installation, or visit the Installation Guide page for more options.';
+        } else {
+            message = 'Firefox Installation:\n\nUse the browser menu to find "Install" option, or visit the Installation Guide page for detailed instructions.';
+        }
+        alert(message);
     },
     
     showInstallInstructions: function() {
