@@ -145,6 +145,43 @@
                         }
                     });
                     
+                    // Handle dropdown toggles
+                    navLinks.querySelectorAll('.nav-dropdown-toggle').forEach(function(toggle) {
+                        toggle.addEventListener('click', function(e) {
+                            // Only work on desktop
+                            if (window.innerWidth <= 968) {
+                                return; // On mobile, let it expand naturally
+                            }
+                            
+                            e.preventDefault();
+                            e.stopPropagation();
+                            
+                            const dropdown = toggle.closest('.nav-dropdown');
+                            const isActive = dropdown.classList.contains('active');
+                            
+                            // Close all dropdowns
+                            navLinks.querySelectorAll('.nav-dropdown').forEach(function(dd) {
+                                dd.classList.remove('active');
+                            });
+                            
+                            // Toggle this dropdown if it wasn't active
+                            if (!isActive) {
+                                dropdown.classList.add('active');
+                            }
+                        });
+                    });
+                    
+                    // Close dropdowns when clicking outside
+                    document.addEventListener('click', function(e) {
+                        if (window.innerWidth > 968) {
+                            if (!e.target.closest('.nav-dropdown')) {
+                                navLinks.querySelectorAll('.nav-dropdown').forEach(function(dd) {
+                                    dd.classList.remove('active');
+                                });
+                            }
+                        }
+                    });
+                    
                     // Close menu when clicking on a link
                     navLinks.querySelectorAll('a').forEach(function(link) {
                         link.addEventListener('click', function() {
@@ -157,6 +194,12 @@
                                     icon.classList.remove('fa-times');
                                     icon.classList.add('fa-bars');
                                 }
+                            }
+                            // Close dropdowns on desktop when clicking a link
+                            if (window.innerWidth > 968) {
+                                navLinks.querySelectorAll('.nav-dropdown').forEach(function(dd) {
+                                    dd.classList.remove('active');
+                                });
                             }
                         });
                     });
@@ -206,55 +249,79 @@
                             <a href="<?php echo url('id-card.php'); ?>" class="<?php echo $isActive('id-card.php'); ?>">My ID Card</a>
                         <?php endif; ?>
                         <?php if (RBAC::isOrganisationAdmin()): ?>
-                            <a href="<?php echo url('admin/employees.php'); ?>" class="<?php echo (strpos($currentPage, 'employees.php') !== false) ? 'active' : ''; ?>">
-                                Employees
-                                <?php
-                                // Show badge for users needing employee records (only for organisation admins)
-                                try {
-                                    if (Auth::isLoggedIn() && RBAC::isOrganisationAdmin()) {
-                                        require_once SRC_PATH . '/classes/AdminNotifications.php';
-                                        $orgId = Auth::getOrganisationId();
-                                        if ($orgId) {
-                                            $usersNeedingNumbers = AdminNotifications::getUsersNeedingEmployeeNumbers($orgId);
-                                            $countNeedingNumbers = count($usersNeedingNumbers);
-                                            if ($countNeedingNumbers > 0) {
-                                                echo '<span style="background: #ef4444; color: white; border-radius: 0; padding: 0.125rem 0.5rem; font-size: 0.75rem; margin-left: 0.25rem;">' . $countNeedingNumbers . '</span>';
-                                            }
-                                        }
-                                    }
-                                } catch (Exception $e) {
-                                    // Silently fail if database isn't available
-                                }
-                                ?>
-                            </a>
-                            <a href="<?php echo url('admin/organisational-structure.php'); ?>" class="<?php echo (strpos($currentPage, 'organisational-structure') !== false) ? 'active' : ''; ?>">Structure</a>
-                            <a href="<?php echo url('admin/photo-approvals.php'); ?>" class="<?php echo (strpos($currentPage, 'photo-approvals.php') !== false) ? 'active' : ''; ?>">
-                                Photos
-                                <?php
-                                // Show badge for pending photos (only for organisation admins)
-                                try {
-                                    if (Auth::isLoggedIn() && RBAC::isOrganisationAdmin()) {
+                            <?php
+                            // Check if any admin page is active for dropdown highlighting
+                            $isAdminPageActive = (strpos($currentPage, 'employees.php') !== false || 
+                                                 strpos($currentPage, 'organisational-structure') !== false || 
+                                                 strpos($currentPage, 'photo-approvals.php') !== false || 
+                                                 strpos($currentPage, 'reference-settings.php') !== false);
+                            
+                            // Get notification counts
+                            $employeesBadgeCount = 0;
+                            $photosBadgeCount = 0;
+                            try {
+                                if (Auth::isLoggedIn() && RBAC::isOrganisationAdmin()) {
+                                    require_once SRC_PATH . '/classes/AdminNotifications.php';
+                                    $orgId = Auth::getOrganisationId();
+                                    if ($orgId) {
+                                        // Employees badge
+                                        $usersNeedingNumbers = AdminNotifications::getUsersNeedingEmployeeNumbers($orgId);
+                                        $employeesBadgeCount = count($usersNeedingNumbers);
+                                        
+                                        // Photos badge
                                         $db = getDbConnection();
-                                        $orgId = Auth::getOrganisationId();
-                                        if ($orgId) {
-                                            $stmt = $db->prepare("SELECT COUNT(*) as count FROM employees WHERE organisation_id = ? AND photo_approval_status = 'pending' AND photo_pending_path IS NOT NULL");
-                                            $stmt->execute([$orgId]);
-                                            $pending = $stmt->fetch();
-                                            if ($pending && $pending['count'] > 0) {
-                                                echo '<span style="background: #ef4444; color: white; border-radius: 0; padding: 0.125rem 0.5rem; font-size: 0.75rem; margin-left: 0.25rem;">' . $pending['count'] . '</span>';
-                                            }
+                                        $stmt = $db->prepare("SELECT COUNT(*) as count FROM employees WHERE organisation_id = ? AND photo_approval_status = 'pending' AND photo_pending_path IS NOT NULL");
+                                        $stmt->execute([$orgId]);
+                                        $pending = $stmt->fetch();
+                                        if ($pending && $pending['count'] > 0) {
+                                            $photosBadgeCount = $pending['count'];
                                         }
                                     }
-                                } catch (Exception $e) {
-                                    // Silently fail if database isn't available
                                 }
-                                ?>
-                            </a>
-                            <a href="<?php echo url('admin/reference-settings.php'); ?>" class="<?php echo (strpos($currentPage, 'reference-settings.php') !== false) ? 'active' : ''; ?>">Settings</a>
+                            } catch (Exception $e) {
+                                // Silently fail if database isn't available
+                            }
+                            ?>
+                            <div class="nav-dropdown">
+                                <a href="#" class="nav-dropdown-toggle <?php echo $isAdminPageActive ? 'active' : ''; ?>">
+                                    Organisation <i class="fas fa-chevron-down"></i>
+                                </a>
+                                <div class="nav-dropdown-menu">
+                                    <a href="<?php echo url('admin/employees.php'); ?>" class="<?php echo (strpos($currentPage, 'employees.php') !== false) ? 'active' : ''; ?>">
+                                        <i class="fas fa-users"></i> Employees
+                                        <?php if ($employeesBadgeCount > 0): ?>
+                                            <span class="nav-badge"><?php echo $employeesBadgeCount; ?></span>
+                                        <?php endif; ?>
+                                    </a>
+                                    <a href="<?php echo url('admin/organisational-structure.php'); ?>" class="<?php echo (strpos($currentPage, 'organisational-structure') !== false) ? 'active' : ''; ?>">
+                                        <i class="fas fa-sitemap"></i> Structure
+                                    </a>
+                                    <a href="<?php echo url('admin/photo-approvals.php'); ?>" class="<?php echo (strpos($currentPage, 'photo-approvals.php') !== false) ? 'active' : ''; ?>">
+                                        <i class="fas fa-images"></i> Photos
+                                        <?php if ($photosBadgeCount > 0): ?>
+                                            <span class="nav-badge"><?php echo $photosBadgeCount; ?></span>
+                                        <?php endif; ?>
+                                    </a>
+                                    <a href="<?php echo url('admin/reference-settings.php'); ?>" class="<?php echo (strpos($currentPage, 'reference-settings.php') !== false) ? 'active' : ''; ?>">
+                                        <i class="fas fa-cog"></i> Settings
+                                    </a>
+                                </div>
+                            </div>
                         <?php endif; ?>
                         <?php if (RBAC::isSuperAdmin()): ?>
-                            <a href="<?php echo url('admin/organisations.php'); ?>" class="<?php echo (strpos($currentPage, 'organisations.php') !== false) ? 'active' : ''; ?>">Organisations</a>
-                            <a href="<?php echo url('admin/users.php'); ?>" class="<?php echo (strpos($currentPage, 'users.php') !== false) ? 'active' : ''; ?>">Users</a>
+                            <div class="nav-dropdown">
+                                <a href="#" class="nav-dropdown-toggle <?php echo (strpos($currentPage, 'organisations.php') !== false || strpos($currentPage, 'users.php') !== false) ? 'active' : ''; ?>">
+                                    System <i class="fas fa-chevron-down"></i>
+                                </a>
+                                <div class="nav-dropdown-menu">
+                                    <a href="<?php echo url('admin/organisations.php'); ?>" class="<?php echo (strpos($currentPage, 'organisations.php') !== false) ? 'active' : ''; ?>">
+                                        <i class="fas fa-building"></i> Organisations
+                                    </a>
+                                    <a href="<?php echo url('admin/users.php'); ?>" class="<?php echo (strpos($currentPage, 'users.php') !== false) ? 'active' : ''; ?>">
+                                        <i class="fas fa-user-friends"></i> Users
+                                    </a>
+                                </div>
+                            </div>
                         <?php endif; ?>
                         <a href="<?php echo url('logout.php'); ?>">Logout</a>
                     </div>
