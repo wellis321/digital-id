@@ -4,6 +4,12 @@ require_once dirname(__DIR__, 2) . '/config/config.php';
 Auth::requireLogin();
 RBAC::requireAdmin();
 
+// Superadmins don't manage photos - they manage organisations
+if (RBAC::isSuperAdmin()) {
+    header('Location: ' . url('admin/organisations.php'));
+    exit;
+}
+
 $organisationId = Auth::getOrganisationId();
 $error = '';
 $success = '';

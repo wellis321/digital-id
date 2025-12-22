@@ -11,14 +11,24 @@ if (!Auth::isLoggedIn() || !RBAC::isAdmin()) {
     exit;
 }
 
+// Superadmins don't manage employees - they manage organisations
+if (RBAC::isSuperAdmin()) {
+    header('Location: ' . url('admin/organisations.php'));
+    exit;
+}
+
 $organisationId = Auth::getOrganisationId();
 $error = '';
 $success = '';
 
-// Get users needing employee numbers
+// Get users needing employee numbers (only for organisation admins)
 require_once dirname(__DIR__, 2) . '/src/classes/AdminNotifications.php';
-$usersNeedingEmployeeNumbers = AdminNotifications::getUsersNeedingEmployeeNumbers($organisationId);
-$countUsersNeedingNumbers = count($usersNeedingEmployeeNumbers);
+$usersNeedingEmployeeNumbers = [];
+$countUsersNeedingNumbers = 0;
+if ($organisationId) {
+    $usersNeedingEmployeeNumbers = AdminNotifications::getUsersNeedingEmployeeNumbers($organisationId);
+    $countUsersNeedingNumbers = count($usersNeedingEmployeeNumbers);
+}
 
 // Handle employee creation
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'create') {

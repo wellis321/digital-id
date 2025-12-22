@@ -205,13 +205,13 @@
                         <?php if (!RBAC::isSuperAdmin()): ?>
                             <a href="<?php echo url('id-card.php'); ?>" class="<?php echo $isActive('id-card.php'); ?>">My ID Card</a>
                         <?php endif; ?>
-                        <?php if (RBAC::isAdmin()): ?>
+                        <?php if (RBAC::isOrganisationAdmin()): ?>
                             <a href="<?php echo url('admin/employees.php'); ?>" class="<?php echo (strpos($currentPage, 'employees.php') !== false) ? 'active' : ''; ?>">
                                 Employees
                                 <?php
-                                // Show badge for users needing employee records
+                                // Show badge for users needing employee records (only for organisation admins)
                                 try {
-                                    if (Auth::isLoggedIn() && RBAC::isAdmin()) {
+                                    if (Auth::isLoggedIn() && RBAC::isOrganisationAdmin()) {
                                         require_once SRC_PATH . '/classes/AdminNotifications.php';
                                         $orgId = Auth::getOrganisationId();
                                         if ($orgId) {
@@ -231,9 +231,9 @@
                             <a href="<?php echo url('admin/photo-approvals.php'); ?>" class="<?php echo (strpos($currentPage, 'photo-approvals.php') !== false) ? 'active' : ''; ?>">
                                 Photos
                                 <?php
-                                // Show badge for pending photos
+                                // Show badge for pending photos (only for organisation admins)
                                 try {
-                                    if (Auth::isLoggedIn() && RBAC::isAdmin()) {
+                                    if (Auth::isLoggedIn() && RBAC::isOrganisationAdmin()) {
                                         $db = getDbConnection();
                                         $orgId = Auth::getOrganisationId();
                                         if ($orgId) {
