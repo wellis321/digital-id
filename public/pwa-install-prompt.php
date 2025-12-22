@@ -103,6 +103,7 @@
 </style>
 
 <script>
+(function() {
 // Global PWA install handler - accessible from anywhere on the page
 window.pwaInstallHandler = {
     deferredPrompt: null,
@@ -203,11 +204,8 @@ window.pwaInstallHandler = {
         const installButton = document.getElementById('pwa-install-button');
         const instructions = document.getElementById('pwa-install-instructions');
 
-        // Detect device and browser
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-        const isAndroid = /Android/.test(navigator.userAgent);
-        const isFirefox = /Firefox/.test(navigator.userAgent) && !/Seamonkey/.test(navigator.userAgent);
-        const isWindows = /Windows/.test(navigator.userAgent);
+        // Reuse browser/platform detection variables already declared above
+        // (isIOS, isAndroid, isFirefox, isWindows are already declared in init function scope)
 
         if (isIOS) {
             instructions.innerHTML = `
@@ -384,5 +382,6 @@ if (document.readyState === 'loading') {
 } else {
     window.pwaInstallHandler.init();
 }
+})(); // End IIFE
 </script>
 
