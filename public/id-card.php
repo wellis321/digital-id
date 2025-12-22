@@ -223,16 +223,19 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
     </div>
     
     <?php 
-    // Show approved photo, or pending photo if no approved photo yet
+    // Show approved photo if it exists, otherwise show pending photo
+    // Always prioritize approved photo - keep showing it even when new photo is pending
     $photoPath = null;
     $photoStatus = $employee['photo_approval_status'] ?? 'none';
+    $hasApprovedPhoto = !empty($employee['photo_path']) && file_exists(dirname(__DIR__) . '/' . $employee['photo_path']);
+    $hasPendingPhoto = !empty($employee['photo_pending_path']) && file_exists(dirname(__DIR__) . '/' . $employee['photo_pending_path']);
     
-    // First priority: approved photo
-    if ($photoStatus === 'approved' && $employee['photo_path'] && file_exists(dirname(__DIR__) . '/' . $employee['photo_path'])) {
+    // First priority: always show approved photo if it exists (even if status is pending)
+    if ($hasApprovedPhoto) {
         $photoPath = url('view-image.php?path=' . urlencode($employee['photo_path']));
     }
-    // Second priority: pending photo (show what user uploaded)
-    elseif ($photoStatus === 'pending' && !empty($employee['photo_pending_path']) && file_exists(dirname(__DIR__) . '/' . $employee['photo_pending_path'])) {
+    // Second priority: pending photo only if no approved photo exists
+    elseif ($hasPendingPhoto && $photoStatus === 'pending') {
         $photoPath = url('view-image.php?path=' . urlencode($employee['photo_pending_path']));
     }
     ?>
@@ -240,11 +243,12 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
         <?php if ($photoPath): ?>
             <?php
             $photoAltText = 'ID card photo for ' . htmlspecialchars($employee['first_name'] . ' ' . $employee['last_name']);
-            if ($photoStatus === 'pending') {
+            // Only show pending indicator if we're actually showing a pending photo (no approved photo exists)
+            if ($photoStatus === 'pending' && !$hasApprovedPhoto) {
                 $photoAltText .= ' (pending approval)';
             }
             ?>
-            <img src="<?php echo htmlspecialchars($photoPath); ?>" alt="<?php echo $photoAltText; ?>" class="id-card-photo" style="<?php echo $photoStatus === 'pending' ? 'opacity: 0.7; border: 2px dashed #f59e0b;' : ''; ?>">
+            <img src="<?php echo htmlspecialchars($photoPath); ?>" alt="<?php echo $photoAltText; ?>" class="id-card-photo" style="<?php echo ($photoStatus === 'pending' && !$hasApprovedPhoto) ? 'opacity: 0.7; border: 2px dashed #f59e0b;' : ''; ?>">
     <?php else: ?>
         <div class="id-card-photo" style="background-color: #f3f4f6; border: 3px solid #e5e7eb; display: flex; align-items: center; justify-content: center; color: #6b7280;">
             No Photo
@@ -253,9 +257,17 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
     
     <!-- Photo Upload/Status Info -->
     <div style="text-align: center; margin-top: 1rem;">
-        <?php if (($employee['photo_approval_status'] ?? 'none') === 'pending'): ?>
+        <?php 
+        // Only show pending message if there's no approved photo (meaning we're showing a pending photo)
+        $showPendingMessage = ($photoStatus === 'pending' && !$hasApprovedPhoto);
+        ?>
+        <?php if ($showPendingMessage): ?>
             <p style="color: #f59e0b; font-size: 0.875rem; margin: 0 0 0.75rem 0;">
                 <i class="fas fa-clock"></i> Photo pending approval
+            </p>
+        <?php elseif ($photoStatus === 'pending' && $hasApprovedPhoto): ?>
+            <p style="color: #06b6d4; font-size: 0.875rem; margin: 0 0 0.75rem 0;">
+                <i class="fas fa-info-circle"></i> New photo uploaded - awaiting approval (current photo shown)
             </p>
         <?php elseif (($employee['photo_approval_status'] ?? 'none') === 'rejected'): ?>
             <p style="color: #ef4444; font-size: 0.875rem; margin: 0 0 0.75rem 0;">
