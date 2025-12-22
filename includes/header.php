@@ -202,7 +202,9 @@
                 ?>
                     <div class="nav-links" data-menu-state="closed">
                         <a href="<?php echo url('index.php'); ?>" class="<?php echo $isActive('index.php'); ?>">Home</a>
-                        <a href="<?php echo url('id-card.php'); ?>" class="<?php echo $isActive('id-card.php'); ?>">My ID Card</a>
+                        <?php if (!RBAC::isSuperAdmin()): ?>
+                            <a href="<?php echo url('id-card.php'); ?>" class="<?php echo $isActive('id-card.php'); ?>">My ID Card</a>
+                        <?php endif; ?>
                         <?php if (RBAC::isAdmin()): ?>
                             <a href="<?php echo url('admin/employees.php'); ?>" class="<?php echo (strpos($currentPage, 'employees.php') !== false) ? 'active' : ''; ?>">
                                 Employees
