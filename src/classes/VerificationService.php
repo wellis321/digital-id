@@ -13,7 +13,12 @@ class VerificationService {
         $validation = DigitalID::validateToken($token, $type);
         
         if (!$validation['valid']) {
-            self::logVerification(null, $validation['id_card']['employee_id'] ?? null, $type, 'failed', $validation['reason']);
+            // When validation fails, id_card may not exist, so extract employee_id safely
+            $employeeId = null;
+            if (isset($validation['id_card']) && isset($validation['id_card']['employee_id'])) {
+                $employeeId = $validation['id_card']['employee_id'];
+            }
+            self::logVerification(null, $employeeId, $type, 'failed', $validation['reason']);
             return [
                 'success' => false,
                 'reason' => $validation['reason'],
@@ -87,30 +92,43 @@ class VerificationService {
     
     /**
      * Log verification attempt
+     * Note: employee_id is required - we only log when we have a valid employee_id
      */
     public static function logVerification($idCardId, $employeeId, $type, $result, $reason = null) {
+        // Only log if we have an employee_id (required by database schema)
+        if ($employeeId === null) {
+            // Can't log without employee_id - this happens when token validation fails
+            // and we can't identify which employee the token belongs to
+            return;
+        }
+        
         $db = getDbConnection();
         
         $verifiedBy = Auth::isLoggedIn() ? Auth::getUserId() : null;
         $verifiedByIp = $_SERVER['REMOTE_ADDR'] ?? null;
         $verifiedByDevice = $_SERVER['HTTP_USER_AGENT'] ?? null;
         
-        $stmt = $db->prepare("
-            INSERT INTO verification_logs 
-            (id_card_id, employee_id, verification_type, verified_by, verified_by_ip, verified_by_device, verification_result, notes)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ");
-        
-        $stmt->execute([
-            $idCardId,
-            $employeeId,
-            $type,
-            $verifiedBy,
-            $verifiedByIp,
-            $verifiedByDevice,
-            $result,
-            $reason
-        ]);
+        try {
+            $stmt = $db->prepare("
+                INSERT INTO verification_logs 
+                (id_card_id, employee_id, verification_type, verified_by, verified_by_ip, verified_by_device, verification_result, notes)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ");
+            
+            $stmt->execute([
+                $idCardId,
+                $employeeId,
+                $type,
+                $verifiedBy,
+                $verifiedByIp,
+                $verifiedByDevice,
+                $result,
+                $reason
+            ]);
+        } catch (Exception $e) {
+            // Log error but don't break verification flow
+            error_log("Failed to log verification: " . $e->getMessage());
+        }
     }
     
     /**

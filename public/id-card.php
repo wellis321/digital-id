@@ -277,21 +277,56 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
 
 <script>
 // NFC activation (requires Web NFC API - only available on supported devices)
-document.getElementById('nfc-activate').addEventListener('click', function() {
+document.getElementById('nfc-activate').addEventListener('click', async function() {
+    const nfcToken = '<?php echo $idCard['nfc_token']; ?>';
+    const verificationUrl = '<?php echo APP_URL . url('verify.php?token=' . urlencode($idCard['nfc_token']) . '&type=nfc'); ?>';
+    
+    // Check if we're on HTTPS (required for Web NFC)
+    if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+        alert('NFC requires HTTPS. Please access this site over HTTPS to use NFC features.');
+        return;
+    }
+    
+    // Check for modern Web NFC API (NDEFWriter - Chrome/Edge on Android)
+    // Note: Web NFC API is experimental and only works on Chrome/Edge for Android
     if ('NDEFWriter' in window) {
-        const nfcToken = '<?php echo $idCard['nfc_token']; ?>';
-        const verificationUrl = '<?php echo APP_URL . url('verify.php?token=' . urlencode($idCard['nfc_token']) . '&type=nfc'); ?>';
-        
-        const writer = new NDEFWriter();
-        writer.write(verificationUrl)
-            .then(() => {
-                alert('NFC tag written successfully!');
-            })
-            .catch(err => {
-                alert('NFC write failed: ' + err.message);
-            });
+        try {
+            const writer = new NDEFWriter();
+            await writer.write(verificationUrl);
+            alert('NFC tag written successfully!');
+        } catch (err) {
+            if (err.name === 'NotAllowedError' || err.name === 'SecurityError') {
+                alert('NFC permission denied. Please:\n1. Allow NFC access in your browser settings\n2. Ensure NFC is enabled on your device\n3. Grant location permission if prompted');
+            } else if (err.name === 'NotSupportedError') {
+                alert('NFC is not supported on this device or browser.\n\nWeb NFC requires:\n- Chrome or Edge browser on Android\n- NFC-enabled device\n- HTTPS connection');
+            } else if (err.name === 'NotFoundError' || err.message.includes('tag')) {
+                alert('No NFC tag detected. Please:\n1. Ensure NFC is enabled on your device\n2. Hold your device near an NFC tag or reader\n3. Try again');
+            } else {
+                alert('NFC error: ' + err.message + '\n\nPlease ensure:\n- NFC is enabled on your device\n- You are using Chrome or Edge on Android\n- You have granted NFC permissions');
+            }
+        }
+    } 
+    // Check for NDEFReader (alternative API - for reading, but indicates NFC support)
+    else if ('NDEFReader' in window) {
+        try {
+            // Try to write using NDEFReader (some implementations support both)
+            const reader = new NDEFReader();
+            // Note: NDEFReader is primarily for reading, but we can check if device supports NFC
+            alert('NFC is detected on your device, but writing may not be supported.\n\nPlease use Chrome or Edge browser on Android for full NFC write support.');
+        } catch (err) {
+            alert('NFC is available but cannot write tags.\n\nPlease use Chrome or Edge browser on Android for NFC writing.');
+        }
     } else {
-        alert('NFC is not supported on this device. Please use QR code for verification.');
+        // Provide helpful error message
+        const isAndroid = /Android/.test(navigator.userAgent);
+        const isChrome = /Chrome/.test(navigator.userAgent) && !/Edge|Edg/.test(navigator.userAgent);
+        const isEdge = /Edg/.test(navigator.userAgent);
+        
+        if (isAndroid && (isChrome || isEdge)) {
+            alert('NFC API not available.\n\nPlease ensure:\n1. You are using the latest version of Chrome or Edge\n2. NFC is enabled in your device settings\n3. The page is loaded over HTTPS\n4. You have granted necessary permissions\n\nIf the issue persists, please use QR code for verification.');
+        } else {
+            alert('NFC is not supported on this device or browser.\n\nWeb NFC is currently only supported on:\n- Chrome or Edge browser\n- Android devices\n- Requires HTTPS connection\n- Requires NFC-enabled device\n\nPlease use QR code for verification instead.');
+        }
     }
 });
 </script>
