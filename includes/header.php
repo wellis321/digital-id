@@ -15,11 +15,14 @@
     <meta name="apple-mobile-web-app-title" content="Digital ID">
     <meta name="description" content="Secure digital ID card for social care providers">
     
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="<?php echo url('assets/images/favicon_io/favicon.ico'); ?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?php echo url('assets/images/favicon_io/favicon-16x16.png'); ?>">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo url('assets/images/favicon_io/favicon-32x32.png'); ?>">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo url('assets/images/favicon_io/apple-touch-icon.png'); ?>">
+    
     <!-- PWA Manifest -->
     <link rel="manifest" href="<?php echo url('manifest.json'); ?>">
-    
-    <!-- Apple Touch Icons -->
-    <link rel="apple-touch-icon" href="<?php echo url('assets/icons/icon-192x192.png'); ?>">
     
     <!-- Font Awesome 6 (Free) - Icon Library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -248,7 +251,10 @@
     <header>
         <nav>
             <div class="container">
-                <a href="<?php echo url('index.php'); ?>" class="logo"><?php echo APP_NAME; ?></a>
+                <a href="<?php echo url('index.php'); ?>" class="logo">
+                    <img src="<?php echo url('assets/images/300-high-digitalID-logo.png'); ?>" alt="<?php echo APP_NAME; ?>" class="logo-image">
+                    <span class="logo-text"><?php echo APP_NAME; ?></span>
+                </a>
                 <button class="mobile-menu-toggle" aria-label="Toggle menu" style="display: none;">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -264,6 +270,7 @@
                         <a href="<?php echo url('index.php'); ?>" class="<?php echo $isActive('index.php'); ?>">Home</a>
                         <?php if (!RBAC::isSuperAdmin()): ?>
                             <a href="<?php echo url('id-card.php'); ?>" class="<?php echo $isActive('id-card.php'); ?>">My ID Card</a>
+                            <a href="<?php echo url('check-in.php'); ?>" class="<?php echo $isActive('check-in.php'); ?>">Check In</a>
                         <?php endif; ?>
                         <?php if (RBAC::isOrganisationAdmin()): ?>
                             <?php
@@ -273,6 +280,7 @@
                                                  strpos($currentPage, 'photo-approvals.php') !== false || 
                                                  strpos($currentPage, 'reference-settings.php') !== false ||
                                                  strpos($currentPage, 'entra-settings.php') !== false ||
+                                                 strpos($currentPage, 'staff-service-settings.php') !== false ||
                                                  strpos($currentPage, 'verification-logs.php') !== false);
                             
                             // Get notification counts
@@ -324,11 +332,20 @@
                                     <a href="<?php echo url('admin/reference-settings.php'); ?>" class="<?php echo (strpos($currentPage, 'reference-settings.php') !== false) ? 'active' : ''; ?>">
                                         <i class="fas fa-cog"></i> Settings
                                     </a>
+                                    <a href="<?php echo url('admin/staff-service-settings.php'); ?>" class="<?php echo (strpos($currentPage, 'staff-service-settings.php') !== false) ? 'active' : ''; ?>">
+                                        <i class="fas fa-link"></i> Staff Service
+                                    </a>
                                     <a href="<?php echo url('admin/entra-settings.php'); ?>" class="<?php echo (strpos($currentPage, 'entra-settings.php') !== false) ? 'active' : ''; ?>">
                                         <i class="fas fa-microsoft"></i> Microsoft 365 SSO
                                     </a>
                                     <a href="<?php echo url('admin/verification-logs.php'); ?>" class="<?php echo (strpos($currentPage, 'verification-logs.php') !== false) ? 'active' : ''; ?>">
                                         <i class="fas fa-clipboard-list"></i> Verification Logs
+                                    </a>
+                                    <a href="<?php echo url('admin/check-in-sessions.php'); ?>" class="<?php echo (strpos($currentPage, 'check-in-sessions') !== false) ? 'active' : ''; ?>">
+                                        <i class="fas fa-clipboard-check"></i> Check-In Sessions
+                                    </a>
+                                    <a href="<?php echo url('admin/microsoft-365-settings.php'); ?>" class="<?php echo (strpos($currentPage, 'microsoft-365-settings.php') !== false) ? 'active' : ''; ?>">
+                                        <i class="fas fa-microsoft"></i> Microsoft 365 Settings
                                     </a>
                                 </div>
                             </div>

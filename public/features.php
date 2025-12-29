@@ -43,18 +43,6 @@ include INCLUDES_PATH . '/header.php';
     overflow: hidden;
 }
 
-.hero-image::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f3f4f6"/><path d="M20 20h60v60h-60z" fill="none" stroke="%23d1d5db" stroke-width="2"/><circle cx="50" cy="50" r="15" fill="none" stroke="%23d1d5db" stroke-width="2"/></svg>');
-    background-repeat: repeat;
-    opacity: 0.3;
-}
-
 .hero-image-placeholder {
     position: relative;
     z-index: 1;
@@ -261,23 +249,232 @@ include INCLUDES_PATH . '/header.php';
         grid-template-columns: 1fr;
     }
 }
+
+/* Features Slider Styles */
+.features-slider-wrapper {
+    max-width: 1200px;
+    margin: 4rem auto;
+    padding: 0 20px;
+}
+
+.features-slider {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
+    border-radius: 0.75rem;
+}
+
+.features-slider-track {
+    display: flex;
+    width: 400%;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+    will-change: transform;
+}
+
+.feature-slide {
+    width: 25%;
+    height: 100%;
+    position: relative;
+    flex-shrink: 0;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+.feature-slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.3) 0%, rgba(37, 99, 235, 0.25) 100%);
+    z-index: 1;
+}
+
+.feature-slide-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem 4rem 4rem 6rem;
+    color: white;
+    max-width: 800px;
+    margin-left: 30px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 0.75rem;
+    backdrop-filter: blur(1px);
+}
+
+.feature-slide-content h3 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: white;
+    font-weight: 700;
+}
+
+.feature-slide-content p {
+    color: rgba(255, 255, 255, 0.95);
+    line-height: 1.8;
+    font-size: 1.125rem;
+    margin-bottom: 1rem;
+}
+
+.feature-slide-content p:last-child {
+    margin-bottom: 0;
+}
+
+.slider-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #06b6d4;
+    z-index: 10;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    flex-shrink: 0;
+}
+
+.slider-nav:hover {
+    background: white;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.slider-prev {
+    left: 1rem;
+}
+
+.slider-next {
+    right: 1rem;
+}
+
+.slider-dots {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.75rem;
+    z-index: 10;
+}
+
+.slider-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    border: 2px solid white;
+    cursor: pointer;
+    transition: all 0.3s;
+    padding: 0;
+}
+
+.slider-dot.active {
+    background: white;
+    transform: scale(1.2);
+}
+
+@media (max-width: 968px) {
+    .features-slider-wrapper {
+        padding: 0 20px;
+    }
+    
+    .features-slider {
+        height: 500px;
+    }
+    
+    .feature-slide-content {
+        padding: 2rem;
+    }
+    
+    .feature-slide-content h3 {
+        font-size: 2rem;
+    }
+    
+    .feature-slide-content p {
+        font-size: 1rem;
+    }
+    
+    .slider-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 1.25rem;
+    }
+    
+    .slider-nav.prev {
+        left: 1rem;
+    }
+    
+    .slider-nav.next {
+        right: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .features-slider {
+        height: 400px;
+    }
+    
+    .feature-slide-content {
+        padding: 1.5rem;
+        margin-left: 0;
+    }
+    
+    .feature-slide-content h3 {
+        font-size: 1.5rem;
+    }
+    
+    .feature-slide-content p {
+        font-size: 0.9rem;
+    }
+    
+    .slider-nav {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+    
+    .slider-nav.prev {
+        left: 0.5rem;
+    }
+    
+    .slider-nav.next {
+        right: 0.5rem;
+    }
+}
 </style>
 
 <div class="hero-section">
     <div class="hero-content">
         <h1>Transform Your Identity Management</h1>
         <p>Secure, verifiable digital ID cards designed specifically for social care providers. Replace paper-based systems with modern, secure technology.</p>
-        <?php if (!Auth::isLoggedIn()): ?>
-            <a href="<?php echo url('request-access.php'); ?>" class="btn btn-primary">Request Access</a>
-        <?php else: ?>
-            <a href="<?php echo url('id-card.php'); ?>" class="btn btn-primary">View Your ID Card</a>
-        <?php endif; ?>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem;">
+            <?php if (!Auth::isLoggedIn()): ?>
+                <a href="<?php echo url('request-access.php'); ?>" class="btn btn-primary">Request Access</a>
+                <a href="<?php echo url('demo-id-card.php'); ?>" class="btn btn-secondary">See Example ID Card</a>
+            <?php else: ?>
+                <a href="<?php echo url('id-card.php'); ?>" class="btn btn-primary">View Your ID Card</a>
+            <?php endif; ?>
+        </div>
     </div>
     <div class="hero-image">
-        <div class="hero-image-placeholder">
-            <i class="fas fa-id-card"></i>
-            <div>Digital ID Card Preview</div>
-        </div>
+        <img src="<?php echo url('assets/images/features/Transform Your Identity Management.png'); ?>" alt="Transform Your Identity Management" style="width: 100%; height: 100%; object-fit: cover; border-radius: 0;">
     </div>
 </div>
 
@@ -285,6 +482,7 @@ include INCLUDES_PATH . '/header.php';
     <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2.5rem;">Why Choose Digital ID?</h2>
     
     <div class="features-grid">
+        <!-- Keep 6 cards visible -->
         <div class="feature-card">
             <i class="fas fa-shield-alt feature-icon"></i>
             <h3>Bank-Grade Security</h3>
@@ -320,7 +518,75 @@ include INCLUDES_PATH . '/header.php';
             <h3>Microsoft 365 Integration</h3>
             <p>Seamlessly integrate with Microsoft Entra ID. Single sign-on login and automatic user synchronisation directly from Microsoft 365 - no CSV exports needed.</p>
         </div>
-        
+    </div>
+    
+    <!-- Feature Slider -->
+    <div class="features-slider-wrapper" style="margin-top: 4rem;">
+        <div class="features-slider">
+            <div class="features-slider-track" id="featuresPageSliderTrack">
+                <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/home/home-silder/slide-one.png'); ?>');">
+                    <div class="feature-slide-content">
+                        <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                            <i class="fas fa-door-open" style="font-size: 2.5rem; color: white;"></i>
+                        </div>
+                        <h3>Smart Access Control</h3>
+                        <p>Use your digital ID for door access systems, meeting attendance, fire drill tracking, and lone working safety checks.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/home/home-silder/slide-two.png'); ?>');">
+                    <div class="feature-slide-content">
+                        <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                            <i class="fas fa-database" style="font-size: 2.5rem; color: white;"></i>
+                        </div>
+                        <h3>Data Portability</h3>
+                        <p>Export and import employee data in JSON format. Easy migration when staff move between organisations or roles.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/home/home-silder/slide-three.png'); ?>');">
+                    <div class="feature-slide-content">
+                        <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                            <i class="fas fa-users" style="font-size: 2.5rem; color: white;"></i>
+                        </div>
+                        <h3>Service User Friendly</h3>
+                        <p>Service users, families, and carers can easily verify staff identity through our public verification system.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/home/home-silder/slide-four.png'); ?>');">
+                    <div class="feature-slide-content">
+                        <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                            <i class="fas fa-microsoft" style="font-size: 2.5rem; color: white;"></i>
+                        </div>
+                        <h3>Microsoft 365 Workflows</h3>
+                        <p>Seamlessly sync check-in data to SharePoint Lists, trigger Power Automate workflows, and send Teams notifications. Perfect for organisations already using Microsoft 365.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="slider-nav slider-prev" aria-label="Previous slide" onclick="changeFeaturesPageSlide(-1)">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="slider-nav slider-next" aria-label="Next slide" onclick="changeFeaturesPageSlide(1)">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            
+            <div class="slider-dots">
+                <span class="slider-dot active" onclick="goToFeaturesPageSlide(0)"></span>
+                <span class="slider-dot" onclick="goToFeaturesPageSlide(1)"></span>
+                <span class="slider-dot" onclick="goToFeaturesPageSlide(2)"></span>
+                <span class="slider-dot" onclick="goToFeaturesPageSlide(3)"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Additional Features Section -->
+<div class="card" style="margin-top: 4rem;">
+    <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2.5rem;">Advanced Features</h2>
+    
+    <div class="features-grid">
         <div class="feature-card">
             <i class="fas fa-chart-line feature-icon"></i>
             <h3>Complete Audit Trail</h3>
@@ -328,21 +594,15 @@ include INCLUDES_PATH . '/header.php';
         </div>
         
         <div class="feature-card">
-            <i class="fas fa-door-open feature-icon"></i>
-            <h3>Smart Access Control</h3>
-            <p>Use your digital ID for door access systems, meeting attendance, fire drill tracking, and lone working safety checks.</p>
+            <i class="fas fa-clipboard-check feature-icon"></i>
+            <h3>Check-In Sessions</h3>
+            <p>Create check-in sessions for fire drills, safety meetings, and emergencies. Staff can check in using QR codes or manually, with automatic attendance tracking and Microsoft 365 integration.</p>
         </div>
         
         <div class="feature-card">
-            <i class="fas fa-database feature-icon"></i>
-            <h3>Data Portability</h3>
-            <p>Export and import employee data in JSON format. Easy migration when staff move between organisations or roles.</p>
-        </div>
-        
-        <div class="feature-card">
-            <i class="fas fa-users feature-icon"></i>
-            <h3>Service User Friendly</h3>
-            <p>Service users, families, and carers can easily verify staff identity through our public verification system.</p>
+            <i class="fas fa-fire feature-icon"></i>
+            <h3>Fire Drill & Emergency Tracking</h3>
+            <p>Track attendance during fire drills and emergency evacuations. Real-time check-in system ensures accurate headcounts and compliance reporting. Export attendance records for safety audits.</p>
         </div>
     </div>
 </div>
@@ -448,6 +708,92 @@ include INCLUDES_PATH . '/header.php';
         <?php endif; ?>
     </div>
 </div>
+
+<script>
+// Features Page Slider
+let currentFeaturesPageSlide = 0;
+const totalFeaturesPageSlides = 4;
+let featuresPageAutoAdvanceInterval = null;
+let isFeaturesPagePaused = false;
+
+function updateFeaturesPageSlider() {
+    const slides = document.getElementById('featuresPageSliderTrack');
+    const dots = document.querySelectorAll('.features-slider-wrapper .slider-dot');
+    
+    if (!slides) return;
+    
+    slides.style.transform = `translateX(-${currentFeaturesPageSlide * 25}%)`;
+    
+    dots.forEach((dot, index) => {
+        if (index === currentFeaturesPageSlide) {
+            dot.classList.add('active');
+        } else {
+            dot.classList.remove('active');
+        }
+    });
+}
+
+function changeFeaturesPageSlide(direction) {
+    currentFeaturesPageSlide += direction;
+    
+    if (currentFeaturesPageSlide < 0) {
+        currentFeaturesPageSlide = totalFeaturesPageSlides - 1;
+    } else if (currentFeaturesPageSlide >= totalFeaturesPageSlides) {
+        currentFeaturesPageSlide = 0;
+    }
+    
+    updateFeaturesPageSlider();
+    pauseFeaturesPageAutoAdvance();
+    setTimeout(() => {
+        if (!isFeaturesPagePaused) {
+            startFeaturesPageAutoAdvance();
+        }
+    }, 20000);
+}
+
+function goToFeaturesPageSlide(index) {
+    currentFeaturesPageSlide = index;
+    updateFeaturesPageSlider();
+    pauseFeaturesPageAutoAdvance();
+    setTimeout(() => {
+        if (!isFeaturesPagePaused) {
+            startFeaturesPageAutoAdvance();
+        }
+    }, 20000);
+}
+
+function startFeaturesPageAutoAdvance() {
+    pauseFeaturesPageAutoAdvance();
+    featuresPageAutoAdvanceInterval = setInterval(() => {
+        if (!isFeaturesPagePaused) {
+            changeFeaturesPageSlide(1);
+        }
+    }, 15000);
+}
+
+function pauseFeaturesPageAutoAdvance() {
+    if (featuresPageAutoAdvanceInterval) {
+        clearInterval(featuresPageAutoAdvanceInterval);
+        featuresPageAutoAdvanceInterval = null;
+    }
+}
+
+const featuresPageSlider = document.querySelector('.features-slider-wrapper .features-slider');
+if (featuresPageSlider) {
+    featuresPageSlider.addEventListener('mouseenter', () => {
+        isFeaturesPagePaused = true;
+        pauseFeaturesPageAutoAdvance();
+    });
+    
+    featuresPageSlider.addEventListener('mouseleave', () => {
+        isFeaturesPagePaused = false;
+        startFeaturesPageAutoAdvance();
+    });
+}
+
+updateFeaturesPageSlider();
+startFeaturesPageAutoAdvance();
+</script>
 
 <?php include INCLUDES_PATH . '/footer.php'; ?>
 

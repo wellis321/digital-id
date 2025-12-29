@@ -129,7 +129,7 @@ include INCLUDES_PATH . '/header.php';
             <p>To exercise these rights, please contact your organisation administrator or email us at <a href="mailto:<?php echo CONTACT_EMAIL; ?>"><?php echo CONTACT_EMAIL; ?></a>.</p>
         </section>
         
-        <section style="margin-bottom: 3rem;">
+        <section id="cookies" style="margin-bottom: 3rem;">
             <h2>8. Cookies and Tracking Technologies</h2>
             <p>We use cookies and similar tracking technologies to:</p>
             <ul style="margin-left: 2rem; margin-top: 0.5rem;">

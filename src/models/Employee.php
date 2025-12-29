@@ -119,6 +119,7 @@ class Employee {
     
     /**
      * Get employee by ID
+     * If Staff Service is enabled and employee is linked, syncs data from Staff Service
      */
     public static function findById($id) {
         $db = getDbConnection();
@@ -130,11 +131,22 @@ class Employee {
             WHERE e.id = ?
         ");
         $stmt->execute([$id]);
-        return $stmt->fetch();
+        $employee = $stmt->fetch();
+        
+        // If Staff Service is enabled and employee is linked, sync data
+        if ($employee && defined('USE_STAFF_SERVICE') && USE_STAFF_SERVICE && !empty($employee['staff_service_person_id'])) {
+            self::syncFromStaffService($employee['staff_service_person_id'], $employee['id']);
+            // Re-fetch after sync
+            $stmt->execute([$id]);
+            $employee = $stmt->fetch();
+        }
+        
+        return $employee;
     }
     
     /**
      * Get employee by user ID
+     * If Staff Service is enabled, attempts to sync from Staff Service
      */
     public static function findByUserId($userId) {
         $db = getDbConnection();
@@ -146,7 +158,29 @@ class Employee {
             WHERE e.user_id = ?
         ");
         $stmt->execute([$userId]);
-        return $stmt->fetch();
+        $employee = $stmt->fetch();
+        
+        // If Staff Service is enabled, try to sync
+        if ($employee && defined('USE_STAFF_SERVICE') && USE_STAFF_SERVICE) {
+            if (!empty($employee['staff_service_person_id'])) {
+                // Employee is linked, sync from Staff Service
+                self::syncFromStaffService($employee['staff_service_person_id'], $employee['id']);
+            } else {
+                // Employee not linked yet, try to find and link
+                require_once SRC_PATH . '/classes/StaffServiceClient.php';
+                $staffData = StaffServiceClient::getStaffByUserId($userId);
+                if ($staffData && isset($staffData['id'])) {
+                    // Link and sync
+                    self::linkToStaffService($employee['id'], $staffData['id']);
+                    self::syncFromStaffService($staffData['id'], $employee['id']);
+                }
+            }
+            // Re-fetch after sync
+            $stmt->execute([$userId]);
+            $employee = $stmt->fetch();
+        }
+        
+        return $employee;
     }
     
     /**
@@ -307,6 +341,120 @@ class Employee {
         $stmt->execute([$organisationId]);
         $org = $stmt->fetch();
         return $org ? $org['name'] : '';
+    }
+    
+    /**
+     * Sync employee data from Staff Service
+     * @param int $personId Staff Service person ID
+     * @param int $employeeId Digital ID employee ID
+     * @return bool Success
+     */
+    public static function syncFromStaffService($personId, $employeeId) {
+        if (!defined('USE_STAFF_SERVICE') || !USE_STAFF_SERVICE) {
+            return false;
+        }
+        
+        require_once SRC_PATH . '/classes/StaffServiceClient.php';
+        
+        $staffData = StaffServiceClient::getStaffMember($personId);
+        if (!$staffData) {
+            return false;
+        }
+        
+        $db = getDbConnection();
+        
+        try {
+            // Get signature from Staff Service
+            $signatureData = StaffServiceClient::getStaffSignature($personId);
+            $signatureUrl = null;
+            if ($signatureData && isset($signatureData['signature_url'])) {
+                $signatureUrl = $signatureData['signature_url'];
+            }
+            
+            // Update employee record with Staff Service data
+            $updates = [];
+            $values = [];
+            
+            // Map Staff Service fields to Digital ID fields
+            if (isset($staffData['employee_reference'])) {
+                $updates[] = "employee_reference = ?";
+                $values[] = $staffData['employee_reference'];
+            }
+            
+            if (isset($staffData['photo_path'])) {
+                $updates[] = "photo_path = ?";
+                $values[] = $staffData['photo_path'];
+            }
+            
+            if (isset($staffData['is_active'])) {
+                $updates[] = "is_active = ?";
+                $values[] = $staffData['is_active'] ? 1 : 0;
+            }
+            
+            if ($signatureUrl !== null) {
+                $updates[] = "signature_url = ?";
+                $values[] = $signatureUrl;
+            }
+            
+            // Update sync timestamp
+            $updates[] = "last_synced_from_staff_service = CURRENT_TIMESTAMP";
+            
+            if (!empty($updates)) {
+                $values[] = $employeeId;
+                $sql = "UPDATE employees SET " . implode(', ', $updates) . " WHERE id = ?";
+                $stmt = $db->prepare($sql);
+                $stmt->execute($values);
+            }
+            
+            return true;
+        } catch (Exception $e) {
+            error_log('Error syncing employee from Staff Service: ' . $e->getMessage());
+            return false;
+        }
+    }
+    
+    /**
+     * Link employee to Staff Service person
+     * @param int $employeeId Digital ID employee ID
+     * @param int $personId Staff Service person ID
+     * @return bool Success
+     */
+    public static function linkToStaffService($employeeId, $personId) {
+        $db = getDbConnection();
+        
+        try {
+            $stmt = $db->prepare("UPDATE employees SET staff_service_person_id = ? WHERE id = ?");
+            $stmt->execute([$personId, $employeeId]);
+            return true;
+        } catch (Exception $e) {
+            error_log('Error linking employee to Staff Service: ' . $e->getMessage());
+            return false;
+        }
+    }
+    
+    /**
+     * Create employee with optional Staff Service link
+     * @param int $userId User ID
+     * @param int $organisationId Organisation ID
+     * @param string $employeeNumber Internal employee number
+     * @param string|null $displayReference Display reference
+     * @param string|null $photoPath Photo path
+     * @param int|null $staffServicePersonId Optional Staff Service person ID to link
+     * @return array Success/failure result
+     */
+    public static function createWithStaffService($userId, $organisationId, $employeeNumber, $displayReference = null, $photoPath = null, $staffServicePersonId = null) {
+        $result = self::create($userId, $organisationId, $employeeNumber, $displayReference, $photoPath);
+        
+        // If creation successful and Staff Service person ID provided, link them
+        if ($result['success'] && $staffServicePersonId !== null) {
+            $linked = self::linkToStaffService($result['employee_id'], $staffServicePersonId);
+            if ($linked) {
+                // Sync data from Staff Service
+                self::syncFromStaffService($staffServicePersonId, $result['employee_id']);
+            }
+        }
+        
+        return $result;
     }
 }
 

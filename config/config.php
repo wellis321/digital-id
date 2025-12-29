@@ -58,6 +58,62 @@ define('QR_TOKEN_EXPIRY_MINUTES', 5); // QR code tokens expire after 5 minutes
 define('NFC_TOKEN_EXPIRY_MINUTES', 5); // NFC tokens expire after 5 minutes
 define('ID_CARD_EXPIRY_DAYS', 365); // ID cards expire after 1 year
 
+// Staff Service Integration
+// Check database first (for web-configured settings), then fall back to .env
+function getStaffServiceSetting($key, $default = '') {
+    static $settings = null;
+    
+    if ($settings === null) {
+        $settings = [];
+        try {
+            if (function_exists('getDbConnection')) {
+                $db = getDbConnection();
+                // Only check if we have an organisation context (user is logged in)
+                if (defined('Auth') && class_exists('Auth') && Auth::isLoggedIn()) {
+                    $organisationId = Auth::getOrganisationId();
+                    if ($organisationId) {
+                        try {
+                            $stmt = $db->prepare("SELECT setting_key, setting_value FROM organisation_settings WHERE organisation_id = ?");
+                            $stmt->execute([$organisationId]);
+                            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            foreach ($results as $row) {
+                                $settings[$row['setting_key']] = $row['setting_value'];
+                            }
+                        } catch (PDOException $e) {
+                            // Table might not exist yet, ignore
+                        }
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            // Ignore errors during config loading
+        }
+    }
+    
+    return $settings[$key] ?? $default;
+}
+
+// Get settings from database or .env
+$useStaffServiceDb = getStaffServiceSetting('use_staff_service', '');
+$staffServiceUrlDb = getStaffServiceSetting('staff_service_url', '');
+$staffServiceApiKeyDb = getStaffServiceSetting('staff_service_api_key', '');
+$staffSyncIntervalDb = getStaffServiceSetting('staff_sync_interval', '');
+
+define('USE_STAFF_SERVICE', 
+    $useStaffServiceDb === '1' || 
+    getenv('USE_STAFF_SERVICE') === 'true' || 
+    getenv('USE_STAFF_SERVICE') === '1'
+);
+define('STAFF_SERVICE_URL', 
+    !empty($staffServiceUrlDb) ? $staffServiceUrlDb : (getenv('STAFF_SERVICE_URL') ?: '')
+);
+define('STAFF_SERVICE_API_KEY', 
+    !empty($staffServiceApiKeyDb) ? $staffServiceApiKeyDb : (getenv('STAFF_SERVICE_API_KEY') ?: '')
+);
+define('STAFF_SYNC_INTERVAL', 
+    !empty($staffSyncIntervalDb) ? (int)$staffSyncIntervalDb : ((int)(getenv('STAFF_SYNC_INTERVAL') ?: 3600))
+);
+
 // Pagination
 define('ITEMS_PER_PAGE', 20);
 

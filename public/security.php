@@ -577,8 +577,8 @@ include INCLUDES_PATH . '/header.php';
                 </tr>
                 <tr>
                     <td><strong>Access Control</strong></td>
-                    <td>Biometric (Face ID, Touch ID)</td>
-                    <td>Password + role-based access</td>
+                    <td>Device-level security (user's phone may have biometrics)</td>
+                    <td>Strong password + role-based access control</td>
                 </tr>
                 <tr>
                     <td><strong>Audit Trail</strong></td>

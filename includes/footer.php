@@ -2,8 +2,11 @@
     <footer>
         <div class="container">
             <div class="footer-section">
-                <h3><?php echo APP_NAME; ?></h3>
-                <p style="color: #9ca3af; line-height: 1.6;">
+                <a href="<?php echo url('index.php'); ?>" class="footer-logo">
+                    <img src="<?php echo url('assets/images/300-high-digitalID-logo.png'); ?>" alt="<?php echo APP_NAME; ?>" class="footer-logo-image">
+                    <span class="footer-logo-text"><?php echo APP_NAME; ?></span>
+                </a>
+                <p style="color: #9ca3af; line-height: 1.6; margin-top: 1rem;">
                     Secure, verifiable digital identification for social care providers. 
                     Replace paper-based ID cards with modern, secure technology.
                 </p>
@@ -27,9 +30,9 @@
             <div class="footer-section">
                 <h3>Resources</h3>
                 <ul>
-                    <li><a href="#">Documentation</a></li>
-                    <li><a href="#">API Reference</a></li>
-                    <li><a href="#">Support</a></li>
+                    <li><a href="<?php echo url('docs.php'); ?>">Documentation</a></li>
+                    <li><a href="<?php echo url('docs.php?section=mcp-integration'); ?>">AI Integration (MCP)</a></li>
+                    <li><a href="<?php echo url('contact.php'); ?>">Support</a></li>
                     <li><a href="<?php echo url('case-studies.php'); ?>">Case Studies</a></li>
                 </ul>
             </div>
@@ -37,7 +40,7 @@
             <div class="footer-section">
                 <h3>Company</h3>
                 <ul>
-                    <li><a href="mailto:<?php echo CONTACT_EMAIL; ?>">Contact</a></li>
+                    <li><a href="<?php echo url('contact.php'); ?>">Contact</a></li>
                     <li><a href="<?php echo url('request-access.php'); ?>">Request Access</a></li>
                     <li><a href="<?php echo url('privacy-policy.php'); ?>">Privacy Policy</a></li>
                     <li><a href="<?php echo url('terms-of-service.php'); ?>">Terms of Service</a></li>
@@ -102,6 +105,79 @@
         });
         </script>
     </footer>
+    
+    <!-- Cookie Banner -->
+    <div id="cookieBanner" class="cookie-banner">
+        <div class="cookie-banner-content">
+            <div class="cookie-banner-text">
+                <p>
+                    We use cookies to enhance your experience, maintain your login session, and improve our service. 
+                    By clicking "Accept", you consent to our use of cookies. 
+                    <a href="<?php echo url('privacy-policy.php'); ?>#cookies">Learn more in our Privacy Policy</a>.
+                </p>
+            </div>
+            <div class="cookie-banner-buttons">
+                <button class="cookie-banner-btn cookie-banner-btn-reject" onclick="rejectCookies()">
+                    Reject
+                </button>
+                <button class="cookie-banner-btn cookie-banner-btn-accept" onclick="acceptCookies()">
+                    Accept
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // Cookie Banner Functionality
+    (function() {
+        const COOKIE_CONSENT_KEY = 'digital_id_cookie_consent';
+        const COOKIE_CONSENT_EXPIRY_DAYS = 365;
+        
+        function getCookieConsent() {
+            return localStorage.getItem(COOKIE_CONSENT_KEY);
+        }
+        
+        function setCookieConsent(consent) {
+            const expiryDate = new Date();
+            expiryDate.setDate(expiryDate.getDate() + COOKIE_CONSENT_EXPIRY_DAYS);
+            localStorage.setItem(COOKIE_CONSENT_KEY, consent);
+            localStorage.setItem(COOKIE_CONSENT_KEY + '_date', expiryDate.toISOString());
+        }
+        
+        function showCookieBanner() {
+            const banner = document.getElementById('cookieBanner');
+            if (banner) {
+                banner.classList.add('show');
+            }
+        }
+        
+        function hideCookieBanner() {
+            const banner = document.getElementById('cookieBanner');
+            if (banner) {
+                banner.classList.remove('show');
+            }
+        }
+        
+        window.acceptCookies = function() {
+            setCookieConsent('accepted');
+            hideCookieBanner();
+        };
+        
+        window.rejectCookies = function() {
+            setCookieConsent('rejected');
+            hideCookieBanner();
+        };
+        
+        // Check if consent has been given
+        document.addEventListener('DOMContentLoaded', function() {
+            const consent = getCookieConsent();
+            if (!consent) {
+                // Show banner after a short delay for better UX
+                setTimeout(showCookieBanner, 500);
+            }
+        });
+    })();
+    </script>
 </body>
 </html>
 

@@ -54,7 +54,11 @@ if (!in_array($mimeType, ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']))
 
 // For pending photos, require login
 if (strpos($imagePath, 'pending') !== false) {
-    Auth::requireLogin();
+    // Check if user is logged in (don't use requireLogin which redirects on failure)
+    if (!Auth::isLoggedIn()) {
+        http_response_code(401);
+        die('Authentication required');
+    }
     
     // Admins can view any pending photo
     if (RBAC::isAdmin()) {

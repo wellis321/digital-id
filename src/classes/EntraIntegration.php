@@ -8,8 +8,49 @@ class EntraIntegration {
     
     /**
      * Check if Entra integration is enabled for an organisation
+     * Checks Staff Service first if available, then falls back to local config
      */
     public static function isEnabled($organisationId) {
+        // Check Staff Service first if integration is enabled
+        if (defined('USE_STAFF_SERVICE') && USE_STAFF_SERVICE) {
+            require_once SRC_PATH . '/classes/StaffServiceClient.php';
+            
+            if (StaffServiceClient::isAvailable()) {
+                try {
+                    $url = defined('STAFF_SERVICE_URL') ? rtrim(STAFF_SERVICE_URL, '/') : '';
+                    $apiKey = defined('STAFF_SERVICE_API_KEY') ? STAFF_SERVICE_API_KEY : '';
+                    
+                    if (!empty($url) && !empty($apiKey)) {
+                        $configUrl = $url . '/api/entra-config.php';
+                        
+                        $ch = curl_init($configUrl);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+                        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+                        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                            'Authorization: Bearer ' . $apiKey,
+                            'Accept: application/json'
+                        ]);
+                        
+                        $response = curl_exec($ch);
+                        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                        // curl_close() is deprecated in PHP 8.5+ - resources are automatically closed
+                        
+                        if ($httpCode === 200) {
+                            $data = json_decode($response, true);
+                            if ($data && isset($data['success']) && $data['success'] && isset($data['data']['entra_enabled'])) {
+                                return $data['data']['entra_enabled'];
+                            }
+                        }
+                    }
+                } catch (Exception $e) {
+                    // Fall through to local check
+                    error_log('Error checking Staff Service Entra config: ' . $e->getMessage());
+                }
+            }
+        }
+        
+        // Fall back to local configuration
         $db = getDbConnection();
         
         // Check if Entra columns exist
@@ -44,8 +85,49 @@ class EntraIntegration {
     
     /**
      * Get Entra configuration for organisation
+     * Checks Staff Service first if available, then falls back to local config
      */
     public static function getConfig($organisationId) {
+        // Check Staff Service first if integration is enabled
+        if (defined('USE_STAFF_SERVICE') && USE_STAFF_SERVICE) {
+            require_once SRC_PATH . '/classes/StaffServiceClient.php';
+            
+            if (StaffServiceClient::isAvailable()) {
+                try {
+                    $url = defined('STAFF_SERVICE_URL') ? rtrim(STAFF_SERVICE_URL, '/') : '';
+                    $apiKey = defined('STAFF_SERVICE_API_KEY') ? STAFF_SERVICE_API_KEY : '';
+                    
+                    if (!empty($url) && !empty($apiKey)) {
+                        $configUrl = $url . '/api/entra-config.php';
+                        
+                        $ch = curl_init($configUrl);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+                        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+                        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                            'Authorization: Bearer ' . $apiKey,
+                            'Accept: application/json'
+                        ]);
+                        
+                        $response = curl_exec($ch);
+                        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                        // curl_close() is deprecated in PHP 8.5+ - resources are automatically closed
+                        
+                        if ($httpCode === 200) {
+                            $data = json_decode($response, true);
+                            if ($data && isset($data['success']) && $data['success'] && isset($data['data'])) {
+                                return $data['data'];
+                            }
+                        }
+                    }
+                } catch (Exception $e) {
+                    // Fall through to local check
+                    error_log('Error fetching Staff Service Entra config: ' . $e->getMessage());
+                }
+            }
+        }
+        
+        // Fall back to local configuration
         $db = getDbConnection();
         
         try {

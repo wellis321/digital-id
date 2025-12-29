@@ -25,8 +25,28 @@ if (!$employee || $employee['organisation_id'] != $organisationId) {
 // Get current ID card
 $idCard = DigitalID::getOrCreateIdCard($employeeId);
 
+// Handle sync from Staff Service
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'sync_staff_service') {
+    if (!CSRF::validatePost()) {
+        $error = 'Invalid security token.';
+    } else {
+        if (!empty($employee['staff_service_person_id'])) {
+            $synced = Employee::syncFromStaffService($employee['staff_service_person_id'], $employeeId);
+            if ($synced) {
+                $success = 'Employee synced from Staff Service successfully.';
+                // Re-fetch employee data
+                $employee = Employee::findById($employeeId);
+            } else {
+                $error = 'Failed to sync from Staff Service.';
+            }
+        } else {
+            $error = 'Employee is not linked to Staff Service.';
+        }
+    }
+}
+
 // Handle form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && (!isset($_POST['action']) || $_POST['action'] !== 'sync_staff_service')) {
     if (!CSRF::validatePost()) {
         $error = 'Invalid security token.';
     } else {
@@ -197,6 +217,41 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                    value="<?php echo htmlspecialchars($employee['display_reference'] ?? $employee['employee_reference'] ?? ''); ?>" required>
             <small><i class="fas fa-id-card"></i> This is the reference shown on the digital ID card. Must be unique within your organisation.</small>
         </div>
+        
+        <?php if (defined('USE_STAFF_SERVICE') && USE_STAFF_SERVICE): ?>
+        <div class="form-group" style="background: #f9fafb; padding: 1rem; border-radius: 0; border-left: 3px solid #3b82f6;">
+            <label style="font-weight: 600; margin-bottom: 0.5rem;">Staff Service Integration</label>
+            <?php if (!empty($employee['staff_service_person_id'])): ?>
+                <p style="margin: 0.5rem 0; color: #10b981;">
+                    <i class="fas fa-link"></i> <strong>Linked to Staff Service</strong>
+                    <br><small style="color: #6b7280;">Person ID: <?php echo $employee['staff_service_person_id']; ?></small>
+                </p>
+                <?php if (!empty($employee['last_synced_from_staff_service'])): ?>
+                    <p style="margin: 0.5rem 0; color: #6b7280; font-size: 0.875rem;">
+                        Last synced: <?php echo date('d/m/Y H:i', strtotime($employee['last_synced_from_staff_service'])); ?>
+                    </p>
+                <?php else: ?>
+                    <p style="margin: 0.5rem 0; color: #f59e0b; font-size: 0.875rem;">
+                        <i class="fas fa-exclamation-triangle"></i> Never synced
+                    </p>
+                <?php endif; ?>
+                <form method="POST" action="" style="margin-top: 0.75rem;">
+                    <?php echo CSRF::tokenField(); ?>
+                    <input type="hidden" name="action" value="sync_staff_service">
+                    <button type="submit" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                        <i class="fas fa-sync"></i> Sync from Staff Service
+                    </button>
+                </form>
+            <?php else: ?>
+                <p style="margin: 0.5rem 0; color: #6b7280;">
+                    <i class="fas fa-unlink"></i> Not linked to Staff Service
+                </p>
+                <p style="margin: 0.5rem 0; color: #6b7280; font-size: 0.875rem;">
+                    Link this employee to a Staff Service person record to enable automatic syncing.
+                </p>
+            <?php endif; ?>
+        </div>
+        <?php endif; ?>
         
         <div class="form-group">
             <label>Photo Status</label>

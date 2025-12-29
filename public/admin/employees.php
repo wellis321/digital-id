@@ -38,20 +38,72 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $userId = $_POST['user_id'] ?? '';
         $employeeNumber = trim($_POST['employee_number'] ?? '');
         $displayReference = trim($_POST['display_reference'] ?? '');
+        $staffServicePersonId = !empty($_POST['staff_service_person_id']) ? (int)$_POST['staff_service_person_id'] : null;
         
         if (empty($userId) || empty($employeeNumber)) {
             $error = 'User ID and employee number are required.';
         } else {
             // If display reference is empty, it will be auto-generated
-            $result = Employee::create($userId, $organisationId, $employeeNumber, $displayReference ?: null);
+            if ($staffServicePersonId !== null) {
+                $result = Employee::createWithStaffService($userId, $organisationId, $employeeNumber, $displayReference ?: null, null, $staffServicePersonId);
+            } else {
+                $result = Employee::create($userId, $organisationId, $employeeNumber, $displayReference ?: null);
+            }
             if ($result['success']) {
                 $success = 'Employee created successfully.';
                 if (isset($result['display_reference']) && empty($displayReference)) {
                     $success .= ' Display reference "' . htmlspecialchars($result['display_reference']) . '" was automatically generated.';
                 }
+                if ($staffServicePersonId !== null) {
+                    $success .= ' Linked to Staff Service and synced.';
+                }
             } else {
                 $error = $result['message'];
             }
+        }
+    }
+}
+
+// Handle sync from Staff Service
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'sync_all') {
+    if (!CSRF::validatePost()) {
+        $error = 'Invalid security token.';
+    } else {
+        require_once SRC_PATH . '/classes/StaffSyncService.php';
+        $syncResult = StaffSyncService::syncAllStaff($organisationId);
+        
+        if ($syncResult['success']) {
+            $success = "Synced {$syncResult['synced']} staff member(s) from Staff Service.";
+            if (!empty($syncResult['errors'])) {
+                $error = 'Some errors occurred: ' . implode(', ', $syncResult['errors']);
+            }
+            if (isset($syncResult['skipped_by_org_id']) && $syncResult['skipped_by_org_id'] > 0) {
+                $error = ($error ? $error . ' ' : '') . "Skipped {$syncResult['skipped_by_org_id']} staff member(s) due to organisation ID mismatch.";
+            }
+        } else {
+            $error = $syncResult['message'] ?? 'Failed to sync from Staff Service.';
+        }
+    }
+}
+
+// Handle link to Staff Service
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'link_staff_service') {
+    if (!CSRF::validatePost()) {
+        $error = 'Invalid security token.';
+    } else {
+        $employeeId = isset($_POST['employee_id']) ? (int)$_POST['employee_id'] : 0;
+        $personId = isset($_POST['person_id']) ? (int)$_POST['person_id'] : 0;
+        
+        if ($employeeId && $personId) {
+            $linked = Employee::linkToStaffService($employeeId, $personId);
+            if ($linked) {
+                Employee::syncFromStaffService($personId, $employeeId);
+                $success = 'Employee linked to Staff Service and synced.';
+            } else {
+                $error = 'Failed to link employee to Staff Service.';
+            }
+        } else {
+            $error = 'Employee ID and Staff Service person ID are required.';
         }
     }
 }
@@ -80,9 +132,20 @@ include dirname(__DIR__, 2) . '/includes/header.php';
 <div class="card">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
         <h1 style="margin: 0;">Manage Employees</h1>
-        <a href="<?php echo url('admin/users-import.php'); ?>" class="btn btn-primary">
-            <i class="fas fa-upload"></i> Bulk Import Users
-        </a>
+        <div style="display: flex; gap: 0.5rem;">
+            <?php if (defined('USE_STAFF_SERVICE') && USE_STAFF_SERVICE): ?>
+            <form method="POST" action="" style="margin: 0;">
+                <?php echo CSRF::tokenField(); ?>
+                <input type="hidden" name="action" value="sync_all">
+                <button type="submit" class="btn btn-secondary">
+                    <i class="fas fa-sync"></i> Sync from Staff Service
+                </button>
+            </form>
+            <?php endif; ?>
+            <a href="<?php echo url('admin/users-import.php'); ?>" class="btn btn-primary">
+                <i class="fas fa-upload"></i> Bulk Import Users
+            </a>
+        </div>
     </div>
     
     <?php if ($error): ?>
@@ -148,6 +211,9 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                     <th style="padding: 0.75rem; text-align: left;">Email</th>
                     <th style="padding: 0.75rem; text-align: left;">Employee Reference</th>
                     <th style="padding: 0.75rem; text-align: left;">Status</th>
+                    <?php if (defined('USE_STAFF_SERVICE') && USE_STAFF_SERVICE): ?>
+                    <th style="padding: 0.75rem; text-align: left;">Staff Service</th>
+                    <?php endif; ?>
                     <th style="padding: 0.75rem; text-align: left;">Actions</th>
                 </tr>
             </thead>
@@ -171,6 +237,24 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                         <td style="padding: 0.75rem;">
                             <?php echo $employee['is_active'] ? '<span style="color: green;">Active</span>' : '<span style="color: red;">Inactive</span>'; ?>
                         </td>
+                        <?php if (defined('USE_STAFF_SERVICE') && USE_STAFF_SERVICE): ?>
+                        <td style="padding: 0.75rem;">
+                            <?php if (!empty($employee['staff_service_person_id'])): ?>
+                                <span style="color: green;" title="Linked to Staff Service Person ID: <?php echo $employee['staff_service_person_id']; ?>">
+                                    <i class="fas fa-link"></i> Linked
+                                </span>
+                                <?php if (!empty($employee['last_synced_from_staff_service'])): ?>
+                                    <small style="display: block; color: #6b7280; font-size: 0.75rem;">
+                                        Synced: <?php echo date('d/m/Y H:i', strtotime($employee['last_synced_from_staff_service'])); ?>
+                                    </small>
+                                <?php endif; ?>
+                            <?php else: ?>
+                                <span style="color: #6b7280;">
+                                    <i class="fas fa-unlink"></i> Not Linked
+                                </span>
+                            <?php endif; ?>
+                        </td>
+                        <?php endif; ?>
                         <td style="padding: 0.75rem;">
                             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                                 <a href="<?php echo url('admin/employees-edit.php?id=' . $employee['id']); ?>" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">

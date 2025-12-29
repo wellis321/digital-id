@@ -82,6 +82,53 @@ include dirname(__DIR__, 2) . '/includes/header.php';
     
     <p>Configure optional Microsoft Entra ID (Azure AD) integration for single sign-on and employee synchronisation.</p>
     
+    <?php if (defined('USE_STAFF_SERVICE') && USE_STAFF_SERVICE): ?>
+        <?php
+        require_once SRC_PATH . '/classes/StaffServiceClient.php';
+        $staffServiceAvailable = StaffServiceClient::isAvailable();
+        $staffServiceConfig = null;
+        if ($staffServiceAvailable) {
+            try {
+                $staffServiceConfig = EntraIntegration::getConfig($organisationId);
+                // Check if this came from Staff Service by checking if local config is different
+                $localConfig = null;
+                try {
+                    $db = getDbConnection();
+                    $stmt = $db->prepare("SELECT entra_enabled, entra_tenant_id, entra_client_id FROM organisations WHERE id = ?");
+                    $stmt->execute([$organisationId]);
+                    $localConfig = $stmt->fetch();
+                } catch (Exception $e) {
+                    // Local config not available
+                }
+                $isFromStaffService = ($localConfig === null || !isset($localConfig['entra_enabled']) || !$localConfig['entra_enabled']) && ($staffServiceConfig['entra_enabled'] ?? false);
+            } catch (Exception $e) {
+                $staffServiceConfig = null;
+            }
+        }
+        ?>
+        
+        <?php if ($staffServiceAvailable && isset($staffServiceConfig) && ($staffServiceConfig['entra_enabled'] ?? false)): ?>
+            <div class="alert alert-info" style="background-color: #eff6ff; border-left: 4px solid #3b82f6;">
+                <strong><i class="fas fa-info-circle"></i> Entra Integration Managed by Staff Service</strong>
+                <p style="margin: 0.5rem 0 0; color: #1e40af;">
+                    Entra integration is configured in Staff Service and is being used as the source of truth. 
+                    Staff data is synced from Entra to Staff Service, and then to Digital ID.
+                </p>
+                <p style="margin: 0.5rem 0 0; color: #1e40af;">
+                    To configure Entra integration, visit the <a href="<?php echo defined('STAFF_SERVICE_URL') ? rtrim(STAFF_SERVICE_URL, '/') . '/admin/entra-settings.php' : '#'; ?>" style="color: #0284c7; font-weight: 600;">Entra Settings page in Staff Service</a>.
+                </p>
+            </div>
+        <?php elseif ($staffServiceAvailable): ?>
+            <div class="alert alert-info" style="background-color: #f0f9ff; border-left: 4px solid #06b6d4;">
+                <strong><i class="fas fa-info-circle"></i> Staff Service Available</strong>
+                <p style="margin: 0.5rem 0 0; color: #0e7490;">
+                    Staff Service is available but Entra integration is not enabled there. 
+                    You can configure Entra integration here for standalone use, or enable it in Staff Service to use it as the central hub.
+                </p>
+            </div>
+        <?php endif; ?>
+    <?php endif; ?>
+    
     <?php if ($config && $config['entra_enabled']): ?>
         <div class="alert alert-success">
             <strong>Entra integration is enabled</strong>
@@ -156,6 +203,23 @@ include dirname(__DIR__, 2) . '/includes/header.php';
             <button type="submit" class="btn btn-danger">Disable Entra Integration</button>
         </form>
     <?php else: ?>
+        <?php if (defined('USE_STAFF_SERVICE') && USE_STAFF_SERVICE): ?>
+            <?php
+            require_once SRC_PATH . '/classes/StaffServiceClient.php';
+            $staffServiceAvailable = StaffServiceClient::isAvailable();
+            ?>
+            <?php if ($staffServiceAvailable): ?>
+                <div class="alert alert-warning" style="background-color: #fef3c7; border-left: 4px solid #f59e0b;">
+                    <strong><i class="fas fa-exclamation-triangle"></i> Standalone Mode</strong>
+                    <p style="margin: 0.5rem 0 0; color: #92400e;">
+                        You can configure Entra integration here for standalone use. However, if you're using Staff Service, 
+                        it's recommended to configure Entra integration in Staff Service instead, so it acts as the central hub 
+                        for all applications.
+                    </p>
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
+        
         <form method="POST" action="">
             <?php echo CSRF::tokenField(); ?>
             <input type="hidden" name="action" value="enable">

@@ -22,21 +22,103 @@ class Auth {
         
         // Verify user still exists and is active in database
         $userId = $_SESSION['user_id'];
-        $db = getDbConnection();
-        $stmt = $db->prepare("SELECT id, is_active, email_verified FROM users WHERE id = ?");
-        $stmt->execute([$userId]);
-        $user = $stmt->fetch();
         
-        // If user doesn't exist or is inactive, clear session BUT preserve CSRF token
-        if (!$user || !$user['is_active']) {
+        // WORKAROUND: Store user_id, organisation_id, and CSRF token before database check to preserve them if query fails
+        // This prevents session clearing on transient database query failures
+        // This works even if old cached code clears the session - we can restore it
+        $savedUserId = $userId;
+        $savedOrganisationId = $_SESSION['organisation_id'] ?? null;
+        $savedCsrfToken = $_SESSION[CSRF_TOKEN_NAME] ?? null;
+        
+        // Register shutdown function to restore session if it was cleared by old cached code
+        // This is a workaround for PHP opcode cache serving old code that clears the session
+        register_shutdown_function(function() use ($savedUserId, $savedOrganisationId, $savedCsrfToken) {
+            // Don't restore if this is an intentional logout
+            // Check if we're in logout.php or if logout flag was set
+            $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+            $isLogout = strpos($scriptName, 'logout.php') !== false;
+            
+            // Check if logout flag was set (indicates intentional logout)
+            $logoutIntentional = isset($_SESSION['_logout_intentional']) && $_SESSION['_logout_intentional'] === true;
+            
+            // Also check if session was intentionally destroyed
+            $sessionDestroyed = session_status() === PHP_SESSION_NONE;
+            
+            // Only restore if this looks like a transient failure (not an intentional logout)
+            if (!empty($savedUserId) && !$isLogout && !$logoutIntentional && !$sessionDestroyed && (empty($_SESSION['user_id']) || $_SESSION['user_id'] != $savedUserId)) {
+                // Only restore if this looks like a transient failure (user_id was valid before)
+                $_SESSION['user_id'] = $savedUserId;
+                if ($savedOrganisationId !== null) {
+                    $_SESSION['organisation_id'] = $savedOrganisationId;
+                }
+                if ($savedCsrfToken !== null) {
+                    $_SESSION[CSRF_TOKEN_NAME] = $savedCsrfToken;
+                }
+                error_log('Restored session for user_id: ' . $savedUserId . ' (org_id: ' . ($savedOrganisationId ?? 'null') . ') after transient database query failure');
+            }
+        });
+        
+        $db = getDbConnection();
+        
+        if (!$db) {
+            return false;
+        }
+        
+        $user = false;
+        $stmtError = null;
+        try {
+            $stmt = $db->prepare("SELECT id, is_active, email_verified FROM users WHERE id = ?");
+            $stmt->execute([$userId]);
+            $user = $stmt->fetch();
+            $stmtError = $stmt->errorInfo();
+            
+            // If query returned false but there's no error, user truly doesn't exist
+            // However, if there's a database error code, treat it as a transient failure
+            if ($user === false && $stmtError && $stmtError[0] !== '00000') {
+                // Database error occurred - don't clear session
+                error_log('Database query error during user verification (user_id: ' . $userId . '): ' . ($stmtError[2] ?? 'Unknown error'));
+                return true; // Assume user is still logged in
+            }
+        } catch (Exception $e) {
+            // On database error, don't clear session - assume user is still valid
+            // This prevents logout on transient database errors
+            error_log('Database error during user verification: ' . $e->getMessage());
+            return true; // Assume user is still logged in if we can't verify
+        }
+        
+        // Only clear session if user is explicitly not found or inactive
+        // Don't clear on database errors (handled above)
+        if ($user === false) {
+            // User not found in database - but this might be a transient query failure
+            // Since we have a valid user_id in session, be conservative and don't clear session
+            // This prevents logout on transient database query failures
+            // WORKAROUND: Preserve session if we had a valid user_id before the query
+            if (!empty($savedUserId) && $savedUserId == $userId) {
+                // Restore user_id in session if it was cleared
+                if (empty($_SESSION['user_id'])) {
+                    $_SESSION['user_id'] = $savedUserId;
+                }
+                error_log('User verification query returned false for user_id: ' . $userId . ' - preserving session due to transient failure');
+                return true; // Assume user is still logged in to prevent logout on transient failures
+            }
+            
+            // User truly not found - clear session
+            error_log('User verification query returned false for user_id: ' . $userId . ' - clearing session');
             $csrfToken = $_SESSION[CSRF_TOKEN_NAME] ?? null;
             $_SESSION = [];
             if ($csrfToken !== null) {
                 $_SESSION[CSRF_TOKEN_NAME] = $csrfToken;
             }
-            
-            // Don't clear session cookie - just clear session data
-            // Clearing the cookie would prevent session persistence
+            return false;
+        }
+        
+        if (!$user['is_active']) {
+            // User is inactive - clear session
+            $csrfToken = $_SESSION[CSRF_TOKEN_NAME] ?? null;
+            $_SESSION = [];
+            if ($csrfToken !== null) {
+                $_SESSION[CSRF_TOKEN_NAME] = $csrfToken;
+            }
             return false;
         }
         

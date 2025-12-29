@@ -7,6 +7,12 @@ if (!file_exists($configPath)) {
 }
 require_once $configPath;
 
+// Set flag to indicate intentional logout (prevents shutdown function from restoring session)
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+$_SESSION['_logout_intentional'] = true;
+
 // Check if actually logged in before logging out
 if (Auth::isLoggedIn()) {
     // Logout user

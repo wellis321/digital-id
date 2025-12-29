@@ -59,7 +59,25 @@ nav .container {
     margin-right: 1rem;
 }
 
+.logo-image {
+    height: 80px;
+    width: auto;
+    max-width: 400px;
+    object-fit: contain;
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    white-space: nowrap;
+}
+
 .logo:hover {
+    opacity: 0.9;
+}
+
+.logo:hover .logo-image {
     opacity: 0.9;
 }
 
@@ -95,7 +113,7 @@ nav .container {
     color: white;
     text-decoration: none;
     font-weight: 500;
-    font-size: 0.8125rem;
+    font-size: 0.9375rem;
     transition: all 0.2s;
     padding: 0.5rem 0.625rem;
     border-radius: 0;
@@ -449,6 +467,37 @@ footer .container {
     margin-bottom: 1rem;
 }
 
+.footer-logo {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: white;
+}
+
+.footer-logo-image {
+    height: 80px;
+    width: auto;
+    max-width: 400px;
+    object-fit: contain;
+}
+
+.footer-logo-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    white-space: nowrap;
+}
+
+.footer-logo:hover {
+    opacity: 0.9;
+}
+
+.footer-logo:hover .footer-logo-image {
+    opacity: 0.9;
+}
+
 .footer-section ul {
     list-style: none;
     padding: 0;
@@ -561,7 +610,7 @@ footer .container {
     }
     
     .nav-links a {
-        font-size: 0.875rem;
+        font-size: 0.9375rem;
         padding: 0.5rem 0.75rem;
     }
 }
@@ -640,5 +689,111 @@ footer .container {
     color: #dc2626;
     font-size: 1.5rem;
     margin-bottom: 1rem;
+}
+
+/* Cookie Banner */
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 2px solid #06b6d4;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+    padding: 1.5rem 2rem;
+    z-index: 10000;
+    display: none;
+}
+
+.cookie-banner.show {
+    display: block;
+}
+
+.cookie-banner-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.cookie-banner-text {
+    flex: 1;
+    min-width: 300px;
+}
+
+.cookie-banner-text p {
+    margin: 0;
+    color: #1f2937;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+}
+
+.cookie-banner-text a {
+    color: #06b6d4;
+    text-decoration: underline;
+}
+
+.cookie-banner-text a:hover {
+    color: #0891b2;
+}
+
+.cookie-banner-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+
+.cookie-banner-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.cookie-banner-btn-accept {
+    background: #06b6d4;
+    color: white;
+}
+
+.cookie-banner-btn-accept:hover {
+    background: #0891b2;
+}
+
+.cookie-banner-btn-reject {
+    background: #f3f4f6;
+    color: #1f2937;
+    border: 1px solid #d1d5db;
+}
+
+.cookie-banner-btn-reject:hover {
+    background: #e5e7eb;
+}
+
+@media (max-width: 768px) {
+    .cookie-banner {
+        padding: 1rem;
+    }
+    
+    .cookie-banner-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+    
+    .cookie-banner-buttons {
+        width: 100%;
+        flex-direction: column;
+    }
+    
+    .cookie-banner-btn {
+        width: 100%;
+    }
 }
 

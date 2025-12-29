@@ -192,6 +192,188 @@ include INCLUDES_PATH . '/header.php';
     line-height: 1.6;
 }
 
+/* Features Slider */
+.features-slider-wrapper {
+    max-width: 1200px;
+    margin: 4rem auto;
+    padding: 0 20px;
+}
+
+.features-slider {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
+    border-radius: 0.75rem;
+}
+
+.features-slider-track {
+    display: flex;
+    width: 500%;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+    will-change: transform;
+}
+
+.feature-slide {
+    width: 20%;
+    height: 100%;
+    position: relative;
+    flex-shrink: 0;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+.feature-slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.3) 0%, rgba(37, 99, 235, 0.25) 100%);
+    z-index: 1;
+}
+
+.feature-slide-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem 4rem 4rem 6rem;
+    color: white;
+    max-width: 800px;
+    margin-left: 30px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 0.75rem;
+    backdrop-filter: blur(1px);
+}
+
+.feature-slide-content h3 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: white;
+    font-weight: 700;
+}
+
+.feature-slide-content p {
+    color: rgba(255, 255, 255, 0.95);
+    line-height: 1.8;
+    font-size: 1.125rem;
+    margin-bottom: 1rem;
+}
+
+.feature-slide-content p:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 968px) {
+    .features-slider-wrapper {
+        padding: 0 20px;
+    }
+    
+    .features-slider {
+        height: 500px;
+    }
+    
+    .feature-slide-content {
+        padding: 2rem;
+    }
+    
+    .feature-slide-content h3 {
+        font-size: 2rem;
+    }
+    
+    .feature-slide-content p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .features-slider {
+        height: 400px;
+    }
+    
+    .feature-slide-content {
+        padding: 1.5rem;
+        margin-left: 0;
+    }
+    
+    .feature-slide-content h3 {
+        font-size: 1.5rem;
+    }
+    
+    .feature-slide-content p {
+        font-size: 0.9rem;
+    }
+}
+
+.slider-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #06b6d4;
+    z-index: 10;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    flex-shrink: 0;
+}
+
+.slider-nav:hover {
+    background: white;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+
+.slider-prev {
+    left: 1rem;
+}
+
+.slider-next {
+    right: 1rem;
+}
+
+.slider-dots {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.75rem;
+    z-index: 10;
+}
+
+.slider-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    border: 2px solid white;
+    cursor: pointer;
+    transition: all 0.3s;
+    padding: 0;
+}
+
+.slider-dot.active {
+    background: white;
+    transform: scale(1.2);
+}
+
 /* Why Section */
 .why-section {
     background: #ffffff;
@@ -360,15 +542,29 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .two-column-image {
-    background: #f3f4f6;
+    background: transparent;
     border-radius: 0;
-    padding: 3rem;
-    min-height: 300px;
+    padding: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #9ca3af;
     text-align: center;
+}
+
+.two-column-image img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 600px;
+    object-fit: contain;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.two-column-image a:hover img {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    cursor: pointer;
 }
 
 .two-column-image.placeholder {
@@ -651,30 +847,18 @@ include INCLUDES_PATH . '/header.php';
                             <a href="<?php echo url('features.php'); ?>" class="btn btn-hero-secondary" style="background-color: white; color: #2563eb; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; border: 1px solid #2563eb; transition: all 0.2s; text-decoration: none;">Learn More</a>
                         <?php else: ?>
                             <a href="<?php echo url('register.php'); ?>" class="btn btn-hero-primary" style="background-color: #06b6d4; color: white; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; transition: all 0.2s; border: none; text-decoration: none;">Register</a>
+                            <a href="<?php echo url('demo-id-card.php'); ?>" class="btn btn-hero-secondary" style="background-color: white; color: #2563eb; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; border: 1px solid #2563eb; transition: all 0.2s; text-decoration: none;">See Example ID Card</a>
                             <a href="<?php echo url('login.php'); ?>" class="btn btn-hero-secondary" style="background-color: white; color: #2563eb; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; border: 1px solid #2563eb; transition: all 0.2s; text-decoration: none;">Login</a>
-                            <a href="<?php echo url('request-access.php'); ?>" class="btn btn-hero-secondary" style="background-color: white; color: #2563eb; padding: 0.875rem 2rem; font-size: 0.9375rem; font-weight: 500; border-radius: 0; border: 1px solid #2563eb; transition: all 0.2s; text-decoration: none;">Request Organisation Access</a>
                         <?php endif; ?>
                     </div>
                 </div>
-                <div class="two-column-image placeholder">
-                    <div>
-                        <i class="fas fa-id-card fa-3x" style="margin-bottom: 1rem; display: block; color: #06b6d4;"></i>
-                        <p style="color: #6b7280; font-size: 1rem;">Digital ID Card</p>
-                    </div>
+                <div class="two-column-image">
+                    <a href="<?php echo url('demo-id-card.php'); ?>" style="display: block; text-decoration: none; transition: transform 0.2s;">
+                        <img src="<?php echo url('assets/images/home/id-image.png'); ?>" alt="Digital ID Card" style="transition: transform 0.2s;">
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
-<!-- Trust Indicators Section (Placeholder) -->
-<div class="trust-section">
-    <p>Trusted by organisations</p>
-    <div class="trust-logos">
-        <div class="placeholder-logo">Logo 1</div>
-        <div class="placeholder-logo">Logo 2</div>
-        <div class="placeholder-logo">Logo 3</div>
-        <div class="placeholder-logo">Logo 4</div>
     </div>
 </div>
 
@@ -737,156 +921,120 @@ include INCLUDES_PATH . '/header.php';
             <h3>Multi-Tenant Ready</h3>
             <p>Perfect for organisations with multiple teams. Each organisation has isolated data with their own administrators and settings.</p>
         </div>
-        
-        <div class="feature-item">
-            <div class="feature-icon-wrapper">
-                <i class="fas fa-qrcode"></i>
-            </div>
-            <h3>QR Code Verification</h3>
-            <p>Universal QR code support works on all devices and browsers. Time-limited tokens ensure secure verification every time.</p>
         </div>
         
-        <div class="feature-item">
-            <div class="feature-icon-wrapper">
-                <i class="fas fa-wifi"></i>
+        <!-- Feature Slider -->
+        <div class="features-slider-wrapper" style="margin-top: 4rem;">
+            <div class="features-slider">
+                <div class="features-slider-track" id="featuresSliderTrack">
+                    <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/home/home-silder/slide-one.png'); ?>');">
+                        <div class="feature-slide-content">
+                            <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                                <i class="fas fa-qrcode" style="font-size: 2.5rem; color: white;"></i>
+                            </div>
+                            <h3>QR Code Verification</h3>
+                            <p>Universal QR code support works on all devices and browsers. Time-limited tokens ensure secure verification every time.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/home/home-silder/slide-two.png'); ?>');">
+                        <div class="feature-slide-content">
+                            <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                                <i class="fas fa-wifi" style="font-size: 2.5rem; color: white;"></i>
+                            </div>
+                            <h3>Offline Capable</h3>
+                            <p>View your ID card even without internet connection. PWA technology caches your card for reliable access anywhere.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/home/home-silder/slide-three.png'); ?>');">
+                        <div class="feature-slide-content">
+                            <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                                <i class="fas fa-user-check" style="font-size: 2.5rem; color: white;"></i>
+                            </div>
+                            <h3>Photo Verification</h3>
+                            <p>Admin-approved employee photos ensure visual identity confirmation. Clear guidelines help staff upload professional photos.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/home/home-silder/slide-four.png'); ?>');">
+                        <div class="feature-slide-content">
+                            <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                                <i class="fas fa-clipboard-check" style="font-size: 2.5rem; color: white;"></i>
+                            </div>
+                            <h3>Check-In Sessions</h3>
+                            <p>Track attendance for fire drills, safety meetings, and emergencies. Staff check in using QR codes or manually, with automatic Microsoft 365 synchronisation.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/home/home-silder/slide-five.png'); ?>');">
+                        <div class="feature-slide-content">
+                            <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                                <i class="fas fa-fire" style="font-size: 2.5rem; color: white;"></i>
+                            </div>
+                            <h3>Fire Drill Tracking</h3>
+                            <p>Real-time attendance tracking during fire drills and emergency evacuations. Export attendance records for compliance and safety audits.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="slider-nav slider-prev" aria-label="Previous slide" onclick="changeFeatureSlide(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="slider-nav slider-next" aria-label="Next slide" onclick="changeFeatureSlide(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                
+                <div class="slider-dots">
+                    <span class="slider-dot active" onclick="goToFeatureSlide(0)"></span>
+                    <span class="slider-dot" onclick="goToFeatureSlide(1)"></span>
+                    <span class="slider-dot" onclick="goToFeatureSlide(2)"></span>
+                    <span class="slider-dot" onclick="goToFeatureSlide(3)"></span>
+                    <span class="slider-dot" onclick="goToFeatureSlide(4)"></span>
+                </div>
             </div>
-            <h3>Offline Capable</h3>
-            <p>View your ID card even without internet connection. PWA technology caches your card for reliable access anywhere.</p>
-        </div>
-        
-        <div class="feature-item">
-            <div class="feature-icon-wrapper">
-                <i class="fas fa-user-check"></i>
-            </div>
-            <h3>Photo Verification</h3>
-            <p>Admin-approved employee photos ensure visual identity confirmation. Clear guidelines help staff upload professional photos.</p>
-        </div>
         </div>
     </div>
 </div>
 
-<!-- Two Column Section - Product Showcase (Placeholder) -->
-<div class="full-width-section main-section">
-    <div class="section-content">
-        <div class="two-column-section">
-    <div class="two-column-content">
-        <div class="two-column-text">
-            <h2>Secure accounts with biometrics</h2>
-            <p>
-                Digital ID's verification system uses secure, time-limited tokens to ensure only genuine account holders can access their ID cards.
-            </p>
-            <ul>
-                <li>Certified security standards</li>
-                <li>Face match accuracy against enrolled templates</li>
-                <li>Proprietary defences against fraud</li>
-                <li>Single integration via APIs</li>
-            </ul>
-        </div>
-        <div class="two-column-image placeholder">
-            <div>
-                <i class="fas fa-image fa-3x" style="margin-bottom: 1rem; display: block;"></i>
-                <p>Product Image Placeholder</p>
-            </div>
-        </div>
-        </div>
-    </div>
-</div>
-
-<!-- Works With Section (Placeholder) -->
+<!-- Integrations Section -->
 <div class="full-width-section main-section-light-gray">
     <div class="section-content">
         <div class="section-header">
-        <h2>Works with</h2>
-        <p>Integrate Digital ID with your existing systems and workflows</p>
-    </div>
-    
-    <div class="works-with-grid">
-        <div class="works-with-item">
-            <i class="fas fa-shield-halved"></i>
-            <h4>Trust and Safety</h4>
-            <p>Compliant moderation and safeguarding</p>
+            <h2>Integrations</h2>
+            <p>Digital ID integrates with your existing systems and workflows</p>
         </div>
         
-        <div class="works-with-item">
-            <i class="fas fa-user-check"></i>
-            <h4>Onboarding & Access</h4>
-            <p>Verify and authenticate users</p>
-        </div>
-        
-        <div class="works-with-item">
-            <i class="fas fa-file-signature"></i>
-            <h4>Contracts & Agreements</h4>
-            <p>Advanced signing with verified identity</p>
-        </div>
-        
-        <div class="works-with-item">
-            <i class="fas fa-exclamation-triangle"></i>
-            <h4>Fraud Detection</h4>
-            <p>Comprehensive anti-fraud measures</p>
-        </div>
-        
-        <div class="works-with-item">
-            <i class="fas fa-robot"></i>
-            <h4>AI Attack Prevention</h4>
-            <p>Prevent AI and bot attacks</p>
-        </div>
-        
-        <div class="works-with-item">
-            <i class="fas fa-phone"></i>
-            <h4>Verified Calls</h4>
-            <p>Know who you're really talking to</p>
-        </div>
-        
-        <div class="works-with-item">
-            <i class="fas fa-users-gear"></i>
-            <h4>Access Management</h4>
-            <p>Control who can access what</p>
-        </div>
-        
-        <div class="works-with-item">
-            <i class="fas fa-clock"></i>
-            <h4>Time Tracking</h4>
-            <p>Monitor attendance and hours</p>
-        </div>
-        
-        <div class="works-with-item">
-            <i class="fas fa-building-shield"></i>
-            <h4>Compliance</h4>
-            <p>Meet regulatory requirements</p>
-        </div>
-        
-        <div class="works-with-item">
-            <i class="fas fa-chart-pie"></i>
-            <h4>Analytics</h4>
-            <p>Track usage and insights</p>
-        </div>
-        </div>
-    </div>
-</div>
-
-<!-- Two Column Section - Reverse Layout (Placeholder) -->
-<div class="full-width-section main-section">
-    <div class="section-content">
-        <div class="two-column-section">
-    <div class="two-column-content reverse">
-        <div class="two-column-text">
-            <h2>Passwordless & multifactor authentication</h2>
-            <p>
-                Protect accounts by replacing weak passwords with verified digital identity. Digital ID offers secure, passwordless login and multifactor authentication anchored in trusted credentials.
-            </p>
-            <ul>
-                <li>Passwordless access for faster, safer login</li>
-                <li>Verified identity as a stronger factor than SMS or email codes</li>
-                <li>Account recovery without risky reset flows</li>
-                <li>Grant and revoke credentials with digital ID</li>
-            </ul>
-        </div>
-        <div class="two-column-image placeholder">
-            <div>
-                <i class="fas fa-image fa-3x" style="margin-bottom: 1rem; display: block;"></i>
-                <p>Product Image Placeholder</p>
+        <div class="works-with-grid">
+            <div class="works-with-item">
+                <i class="fab fa-microsoft"></i>
+                <h4>Microsoft 365</h4>
+                <p>Single sign-on and user synchronisation</p>
             </div>
-        </div>
+            
+            <div class="works-with-item">
+                <i class="fas fa-share-alt"></i>
+                <h4>SharePoint Lists</h4>
+                <p>Sync check-in data automatically</p>
+            </div>
+            
+            <div class="works-with-item">
+                <i class="fas fa-bolt"></i>
+                <h4>Power Automate</h4>
+                <p>Trigger workflows from check-ins</p>
+            </div>
+            
+            <div class="works-with-item">
+                <i class="fas fa-users"></i>
+                <h4>Microsoft Teams</h4>
+                <p>Send notifications to channels</p>
+            </div>
+            
+            <div class="works-with-item">
+                <i class="fas fa-clipboard-check"></i>
+                <h4>Check-In Sessions</h4>
+                <p>Fire drill and safety tracking</p>
+            </div>
         </div>
     </div>
 </div>
@@ -971,42 +1119,25 @@ include INCLUDES_PATH . '/header.php';
         
         <div class="two-column-section">
             <div class="two-column-content">
+                <div class="two-column-image">
+                    <img src="<?php echo url('assets/images/home/microsoft.jpeg'); ?>" alt="Microsoft 365 Integration">
+                </div>
                 <div class="two-column-text">
-                    <h3>Single Sign-On (SSO)</h3>
+                    <h3>Seamless Microsoft 365 Integration</h3>
                     <p>
-                        Enable your staff to log in to Digital ID using their existing Microsoft 365 credentials. 
-                        No need to remember another password - they can use the same login they use for Office 365, Teams, and other Microsoft services.
+                        Digital ID integrates seamlessly with your existing Microsoft 365 infrastructure, making it easy for your staff to access their digital ID cards and for administrators to manage users.
                     </p>
-                    <ul>
-                        <li>One-click login with Microsoft 365</li>
-                        <li>No additional passwords to manage</li>
-                        <li>Works with existing Microsoft Entra ID</li>
-                        <li>Secure OAuth 2.0 authentication</li>
-                    </ul>
-                    
-                    <h3 style="margin-top: 2rem;">Automatic User Synchronisation</h3>
                     <p>
-                        Keep your Digital ID user list in sync with Microsoft 365 automatically. 
-                        No need to export CSV files or manually manage user accounts.
+                        Enable single sign-on so staff can log in using their existing Microsoft 365 credentials - no need to remember another password. They can use the same login they use for Office 365, Teams, SharePoint, and other Microsoft services.
                     </p>
-                    <ul>
-                        <li>Sync all users from Microsoft Entra ID</li>
-                        <li>Automatic user creation and updates</li>
-                        <li>Optionally create employee profiles</li>
-                        <li>Uses the same reliable import system</li>
-                    </ul>
+                    <p>
+                        Keep your Digital ID user list in sync with Microsoft 365 automatically. User accounts are created and updated automatically from Microsoft Entra ID, eliminating the need for manual CSV exports or duplicate user management.
+                    </p>
                     
                     <div style="margin-top: 2rem;">
                         <a href="<?php echo url('docs.php?section=entra-integration'); ?>" class="btn btn-primary">
                             <i class="fas fa-book"></i> Learn More About Integration
                         </a>
-                    </div>
-                </div>
-                <div class="two-column-image placeholder">
-                    <div>
-                        <i class="fas fa-microsoft fa-3x" style="margin-bottom: 1rem; display: block; color: #06b6d4;"></i>
-                        <p style="color: #6b7280; font-size: 1rem;">Microsoft 365</p>
-                        <p style="color: #9ca3af; font-size: 0.875rem; margin-top: 0.5rem;">Seamless Integration</p>
                     </div>
                 </div>
             </div>
@@ -1057,6 +1188,98 @@ include INCLUDES_PATH . '/header.php';
 </div>
 <?php endif; ?>
 
+
+<script>
+// Features Slider
+let currentFeatureSlide = 0;
+const totalFeatureSlides = 5;
+let featureAutoAdvanceInterval = null;
+let isFeaturePaused = false;
+
+function updateFeatureSlider() {
+    const slides = document.getElementById('featuresSliderTrack');
+    const dots = document.querySelectorAll('.slider-dot');
+    
+    if (!slides) return;
+    
+    slides.style.transform = `translateX(-${currentFeatureSlide * 20}%)`;
+    
+    dots.forEach((dot, index) => {
+        if (index === currentFeatureSlide) {
+            dot.classList.add('active');
+        } else {
+            dot.classList.remove('active');
+        }
+    });
+}
+
+function changeFeatureSlide(direction) {
+    currentFeatureSlide += direction;
+    
+    if (currentFeatureSlide < 0) {
+        currentFeatureSlide = totalFeatureSlides - 1;
+    } else if (currentFeatureSlide >= totalFeatureSlides) {
+        currentFeatureSlide = 0;
+    }
+    
+    updateFeatureSlider();
+    // Pause auto-advance when user manually navigates
+    pauseFeatureAutoAdvance();
+    // Resume after 20 seconds of inactivity
+    setTimeout(() => {
+        if (!isFeaturePaused) {
+            startFeatureAutoAdvance();
+        }
+    }, 20000);
+}
+
+function goToFeatureSlide(index) {
+    currentFeatureSlide = index;
+    updateFeatureSlider();
+    // Pause auto-advance when user manually navigates
+    pauseFeatureAutoAdvance();
+    // Resume after 20 seconds of inactivity
+    setTimeout(() => {
+        if (!isFeaturePaused) {
+            startFeatureAutoAdvance();
+        }
+    }, 20000);
+}
+
+function startFeatureAutoAdvance() {
+    pauseFeatureAutoAdvance(); // Clear any existing interval
+    featureAutoAdvanceInterval = setInterval(() => {
+        if (!isFeaturePaused) {
+            changeFeatureSlide(1);
+        }
+    }, 15000);
+}
+
+function pauseFeatureAutoAdvance() {
+    if (featureAutoAdvanceInterval) {
+        clearInterval(featureAutoAdvanceInterval);
+        featureAutoAdvanceInterval = null;
+    }
+}
+
+// Pause on hover
+const featureSlider = document.querySelector('.features-slider');
+if (featureSlider) {
+    featureSlider.addEventListener('mouseenter', () => {
+        isFeaturePaused = true;
+        pauseFeatureAutoAdvance();
+    });
+    
+    featureSlider.addEventListener('mouseleave', () => {
+        isFeaturePaused = false;
+        startFeatureAutoAdvance();
+    });
+}
+
+// Initialize
+updateFeatureSlider();
+startFeatureAutoAdvance();
+</script>
 
 <?php include INCLUDES_PATH . '/footer.php'; ?>
 

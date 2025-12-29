@@ -25,6 +25,30 @@ A secure digital ID application for social care providers, built with PHP and SQ
 - **Audit Trail**: Complete logging of all verification attempts
 - **Data Portability**: JSON export/import for employee ID data
 - **Optional Microsoft Entra/365 Integration**: SSO and employee synchronisation
+- **MCP Server**: Model Context Protocol server for programmatic access and AI assistant integration
+
+## MCP Server
+
+The Digital ID application includes an MCP (Model Context Protocol) server that allows AI assistants and other applications to interact with the system programmatically.
+
+### Features
+
+- **Employee Management**: Get employee information, list employees, manage ID cards
+- **Verification**: Verify ID cards using QR codes or NFC tokens
+- **Logging**: Access verification logs with filtering options
+- **Administration**: Revoke ID cards, view pending photo approvals
+
+### Quick Start
+
+See [`mcp-server/README.md`](mcp-server/README.md) and [`mcp-server/SETUP.md`](mcp-server/SETUP.md) for detailed setup instructions.
+
+```bash
+cd mcp-server
+npm install
+npm run build
+```
+
+Configure in Cursor or Claude Desktop to enable AI assistant access to your Digital ID system.
 
 ## Requirements
 
@@ -131,6 +155,7 @@ digital-id/
 │   ├── classes/        # Core classes
 │   └── models/         # Data models
 ├── sql/                # Database schema
+├── mcp-server/         # MCP server for AI assistant integration
 └── uploads/            # User uploads (photos)
 ```
 

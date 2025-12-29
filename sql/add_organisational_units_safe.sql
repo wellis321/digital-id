@@ -66,3 +66,6 @@ PREPARE createIfNotExists FROM @preparedStatement;
 EXECUTE createIfNotExists;
 DEALLOCATE PREPARE createIfNotExists;
 
+
+
+
