@@ -23,7 +23,6 @@
                     <li><a href="<?php echo url('features.php'); ?>">Features</a></li>
                     <li><a href="<?php echo url('security.php'); ?>#how-it-works">How It Works</a></li>
                     <li><a href="<?php echo url('security.php'); ?>">Security</a></li>
-                    <li><a href="<?php echo url('docs.php'); ?>">Documentation</a></li>
                 </ul>
             </div>
             
@@ -32,6 +31,7 @@
                 <ul>
                     <li><a href="<?php echo url('docs.php'); ?>">Documentation</a></li>
                     <li><a href="<?php echo url('docs.php?section=mcp-integration'); ?>">AI Integration (MCP)</a></li>
+                    <li><a href="https://salmon-tarsier-739827.hostingersite.com/public/landing.php" target="_blank" rel="noopener noreferrer">Staff Service</a></li>
                     <li><a href="<?php echo url('contact.php'); ?>">Support</a></li>
                     <li><a href="<?php echo url('case-studies.php'); ?>">Case Studies</a></li>
                 </ul>
@@ -46,8 +46,10 @@
                     <li><a href="<?php echo url('terms-of-service.php'); ?>">Terms of Service</a></li>
                 </ul>
             </div>
-            
-            <div class="footer-section">
+        </div>
+        
+        <div class="footer-bottom-section">
+            <div class="footer-section footer-install-app">
                 <h3>Install App</h3>
                 <p style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 1rem;">
                     Install Digital ID as an app on your phone for quick access
@@ -57,6 +59,16 @@
                 </button>
                 <a href="<?php echo url('install.php'); ?>" class="btn btn-secondary" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
                     <i class="fas fa-mobile-alt"></i> Installation Guide
+                </a>
+            </div>
+            
+            <div class="footer-section footer-staff-service">
+                <h3>Staff Service</h3>
+                <p style="color: #9ca3af; font-size: 0.875rem; line-height: 1.6; margin-bottom: 1rem;">
+                    Centralised staff management designed for organisations where data ownership is critical. Take control of your staff information and integrate with existing systems without duplication or vendor lock-in.
+                </p>
+                <a href="https://salmon-tarsier-739827.hostingersite.com/public/landing.php" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                    <i class="fas fa-external-link-alt"></i> <span>Learn More</span>
                 </a>
             </div>
         </div>
