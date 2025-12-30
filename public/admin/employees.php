@@ -21,15 +21,6 @@ $organisationId = Auth::getOrganisationId();
 $error = '';
 $success = '';
 
-// Get users needing employee numbers (only for organisation admins)
-require_once dirname(__DIR__, 2) . '/src/classes/AdminNotifications.php';
-$usersNeedingEmployeeNumbers = [];
-$countUsersNeedingNumbers = 0;
-if ($organisationId) {
-    $usersNeedingEmployeeNumbers = AdminNotifications::getUsersNeedingEmployeeNumbers($organisationId);
-    $countUsersNeedingNumbers = count($usersNeedingEmployeeNumbers);
-}
-
 // Handle employee creation
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'create') {
     if (!CSRF::validatePost()) {
@@ -108,6 +99,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
 }
 
+// Check Staff Service settings directly from database (after Auth is loaded)
+// This ensures we get the current settings even if USE_STAFF_SERVICE constant was set before Auth loaded
+$db = getDbConnection();
+$useStaffServiceEnabled = false;
+try {
+    $stmt = $db->prepare("SELECT setting_value FROM organisation_settings WHERE organisation_id = ? AND setting_key = 'use_staff_service'");
+    $stmt->execute([$organisationId]);
+    $result = $stmt->fetch();
+    if ($result && $result['setting_value'] === '1') {
+        $useStaffServiceEnabled = true;
+    }
+} catch (PDOException $e) {
+    // Table might not exist, fall back to constant
+    $useStaffServiceEnabled = defined('USE_STAFF_SERVICE') && USE_STAFF_SERVICE;
+}
+
+// Get users needing employee numbers (only for organisation admins)
+// Calculate AFTER handling POST requests so the count is accurate
+require_once dirname(__DIR__, 2) . '/src/classes/AdminNotifications.php';
+$usersNeedingEmployeeNumbers = [];
+$countUsersNeedingNumbers = 0;
+if ($organisationId) {
+    $usersNeedingEmployeeNumbers = AdminNotifications::getUsersNeedingEmployeeNumbers($organisationId);
+    $countUsersNeedingNumbers = count($usersNeedingEmployeeNumbers);
+}
+
 // Get all employees
 $employees = Employee::getByOrganisation($organisationId);
 
@@ -133,7 +150,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
         <h1 style="margin: 0;">Manage Employees</h1>
         <div style="display: flex; gap: 0.5rem;">
-            <?php if (defined('USE_STAFF_SERVICE') && USE_STAFF_SERVICE): ?>
+            <?php if ($useStaffServiceEnabled): ?>
             <form method="POST" action="" style="margin: 0;">
                 <?php echo CSRF::tokenField(); ?>
                 <input type="hidden" name="action" value="sync_all">
@@ -211,7 +228,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                     <th style="padding: 0.75rem; text-align: left;">Email</th>
                     <th style="padding: 0.75rem; text-align: left;">Employee Reference</th>
                     <th style="padding: 0.75rem; text-align: left;">Status</th>
-                    <?php if (defined('USE_STAFF_SERVICE') && USE_STAFF_SERVICE): ?>
+                    <?php if ($useStaffServiceEnabled): ?>
                     <th style="padding: 0.75rem; text-align: left;">Staff Service</th>
                     <?php endif; ?>
                     <th style="padding: 0.75rem; text-align: left;">Actions</th>
