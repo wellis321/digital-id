@@ -96,7 +96,18 @@ try {
             if ($employee) {
                 // Deactivate employee
                 Employee::update($employee['id'], ['is_active' => false]);
-                $result = ['success' => true, 'message' => 'Employee deactivated'];
+                
+                // Automatically revoke all ID cards for this employee
+                require_once SRC_PATH . '/classes/DigitalID.php';
+                $stmt = $db->prepare("SELECT id FROM digital_id_cards WHERE employee_id = ? AND is_revoked = FALSE");
+                $stmt->execute([$employee['id']]);
+                $idCards = $stmt->fetchAll();
+                
+                foreach ($idCards as $idCard) {
+                    DigitalID::revoke($idCard['id'], null); // null = revoked by system/Staff Service
+                }
+                
+                $result = ['success' => true, 'message' => 'Employee deactivated and ID cards revoked'];
             } else {
                 $result = ['success' => false, 'message' => 'Employee not found'];
             }
