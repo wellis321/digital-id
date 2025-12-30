@@ -85,6 +85,20 @@ include INCLUDES_PATH . '/header.php';
     background-color: #f3f4f6;
 }
 
+/* ID Card on Homepage - Only card animates, not child elements */
+.two-column-image a:hover .id-card {
+    transform: scale(0.95);
+    box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+}
+
+.two-column-image .id-card * {
+    transition: none !important;
+}
+
+.two-column-image .id-card img {
+    transition: none !important;
+}
+
 /* Full Width Section Wrapper */
 .full-width-section {
     width: 100vw;
@@ -195,7 +209,7 @@ include INCLUDES_PATH . '/header.php';
 /* Features Slider */
 .features-slider-wrapper {
     max-width: 1200px;
-    margin: 4rem auto;
+    margin: 4rem auto 2rem;
     padding: 0 20px;
 }
 
@@ -853,8 +867,29 @@ include INCLUDES_PATH . '/header.php';
                     </div>
                 </div>
                 <div class="two-column-image">
-                    <a href="<?php echo url('demo-id-card.php'); ?>" style="display: block; text-decoration: none; transition: transform 0.2s;">
-                        <img src="<?php echo url('assets/images/home/id-image.png'); ?>" alt="Digital ID Card" style="transition: transform 0.2s;">
+                    <a href="<?php echo url('demo-id-card.php'); ?>" style="display: block; text-decoration: none;">
+                        <div class="id-card" style="position: relative; margin: 0 auto; max-width: 350px; transform: scale(0.9); transform-origin: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s, box-shadow 0.2s;">
+                            <div style="position: absolute; top: 0.5rem; right: 0.5rem; background: #f59e0b; color: white; padding: 0.25rem 0.75rem; font-size: 0.6rem; font-weight: 600; border-radius: 0; z-index: 10;">DEMO</div>
+                            <div class="id-card-header" style="padding: 1rem; margin-bottom: 1rem;">
+                                <h2 style="margin: 0; font-size: 1.2rem;">Example Organisation</h2>
+                                <p style="margin: 0; font-size: 0.8rem;">Digital ID Card</p>
+                            </div>
+                            <img src="<?php echo url('assets/images/home/Digital ID.jpg'); ?>" alt="Example ID Card Photo" class="id-card-photo" style="width: 120px; height: 120px; margin: 0 auto 0.5rem; object-fit: cover; transition: none !important;">
+                            <div class="id-card-details" style="padding: 0.75rem 1rem; background: #f9fafb;">
+                                <p style="font-size: 0.9rem; margin: 0.25rem 0;"><strong>Name:</strong> Sarah Doe</p>
+                                <p style="font-size: 0.9rem; margin: 0.25rem 0;"><strong>Ref:</strong> EXMP-L0Z7H7</p>
+                            </div>
+                            <div class="id-card-qr" style="margin-top: 1rem; text-align: center; padding: 0.5rem;">
+                                <?php
+                                require_once SRC_PATH . '/classes/QRCodeGenerator.php';
+                                $demoUrl = APP_URL . url('demo-id-card.php');
+                                $encodedUrl = urlencode($demoUrl);
+                                $qrImageUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={$encodedUrl}";
+                                ?>
+                                <img src="<?php echo htmlspecialchars($qrImageUrl); ?>" alt="QR Code" style="max-width: 100px; background: white; padding: 0.5rem; border: 1px solid #e5e7eb; transition: none !important;">
+                                <p style="font-size: 0.6rem; color: #9ca3af; margin-top: 0.5rem;">Scan to see demo</p>
+                            </div>
+                        </div>
                     </a>
                 </div>
             </div>
@@ -924,7 +959,7 @@ include INCLUDES_PATH . '/header.php';
         </div>
         
         <!-- Feature Slider -->
-        <div class="features-slider-wrapper" style="margin-top: 4rem;">
+        <div class="features-slider-wrapper" style="margin-top: 4rem; margin-bottom: 2rem;">
             <div class="features-slider">
                 <div class="features-slider-track" id="featuresSliderTrack">
                     <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/home/home-silder/slide-one.png'); ?>');">

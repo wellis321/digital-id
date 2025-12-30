@@ -110,6 +110,24 @@ include INCLUDES_PATH . '/header.php';
     color: #8b5cf6;
 }
 
+/* Why Choose Digital ID section - all icons green */
+.why-choose-section .feature-card .feature-icon {
+    color: #10b981 !important;
+}
+
+.why-choose-section .feature-card h3 {
+    color: #10b981 !important;
+}
+
+/* Advanced Features section - all icons blue (same as first) */
+.advanced-features-section .feature-card .feature-icon {
+    color: #3b82f6 !important;
+}
+
+.advanced-features-section .feature-card h3 {
+    color: #3b82f6 !important;
+}
+
 .feature-card h3 {
     margin-bottom: 1rem;
     font-size: 1.5rem;
@@ -478,7 +496,7 @@ include INCLUDES_PATH . '/header.php';
     </div>
 </div>
 
-<div class="card">
+<div class="card why-choose-section">
     <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2.5rem;">Why Choose Digital ID?</h2>
     
     <div class="features-grid">
@@ -524,7 +542,7 @@ include INCLUDES_PATH . '/header.php';
     <div class="features-slider-wrapper" style="margin-top: 4rem;">
         <div class="features-slider">
             <div class="features-slider-track" id="featuresPageSliderTrack">
-                <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/home/home-silder/slide-one.png'); ?>');">
+                <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/features/slider/slide-one.png'); ?>');">
                     <div class="feature-slide-content">
                         <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
                             <i class="fas fa-door-open" style="font-size: 2.5rem; color: white;"></i>
@@ -534,7 +552,7 @@ include INCLUDES_PATH . '/header.php';
                     </div>
                 </div>
                 
-                <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/home/home-silder/slide-two.png'); ?>');">
+                <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/features/slider/slide-two.png'); ?>');">
                     <div class="feature-slide-content">
                         <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
                             <i class="fas fa-database" style="font-size: 2.5rem; color: white;"></i>
@@ -544,17 +562,17 @@ include INCLUDES_PATH . '/header.php';
                     </div>
                 </div>
                 
-                <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/home/home-silder/slide-three.png'); ?>');">
+                <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/features/slider/slide-threeew.png'); ?>');">
                     <div class="feature-slide-content">
                         <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
                             <i class="fas fa-users" style="font-size: 2.5rem; color: white;"></i>
                         </div>
-                        <h3>Service User Friendly</h3>
+                        <h3>People Friendly</h3>
                         <p>Service users, families, and carers can easily verify staff identity through our public verification system.</p>
                     </div>
                 </div>
                 
-                <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/home/home-silder/slide-four.png'); ?>');">
+                <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/features/slider/slide-four.png'); ?>');">
                     <div class="feature-slide-content">
                         <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
                             <i class="fas fa-microsoft" style="font-size: 2.5rem; color: white;"></i>
@@ -583,7 +601,7 @@ include INCLUDES_PATH . '/header.php';
 </div>
 
 <!-- Additional Features Section -->
-<div class="card" style="margin-top: 4rem;">
+<div class="card advanced-features-section" style="margin-top: 4rem;">
     <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2.5rem;">Advanced Features</h2>
     
     <div class="features-grid">
