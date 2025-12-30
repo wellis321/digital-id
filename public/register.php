@@ -1,30 +1,34 @@
 <?php
-// #region agent log
-$logData = ['location' => 'register.php:7', 'message' => 'Register page loaded', 'data' => ['method' => $_SERVER['REQUEST_METHOD'] ?? 'GET', 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'A'];
-file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
-// #endregion
-
 require_once dirname(__DIR__) . '/config/config.php';
+
+// #region agent log
+$debugLogPath = defined('ROOT_PATH') ? ROOT_PATH . '/.cursor/debug.log' : dirname(__DIR__) . '/.cursor/debug.log';
+$logData = ['location' => 'register.php:7', 'message' => 'Register page loaded', 'data' => ['method' => $_SERVER['REQUEST_METHOD'] ?? 'GET', 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'A'];
+@file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
+// #endregion
 
 $error = '';
 $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // #region agent log
+    $debugLogPath = defined('ROOT_PATH') ? ROOT_PATH . '/.cursor/debug.log' : dirname(__DIR__) . '/.cursor/debug.log';
     $logData = ['location' => 'register.php:15', 'message' => 'POST request received', 'data' => ['post_keys' => array_keys($_POST), 'has_csrf' => isset($_POST['csrf_token']), 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'B'];
-    file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
+    @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
     // #endregion
     
     if (!CSRF::validatePost()) {
         // #region agent log
+        $debugLogPath = defined('ROOT_PATH') ? ROOT_PATH . '/.cursor/debug.log' : dirname(__DIR__) . '/.cursor/debug.log';
         $logData = ['location' => 'register.php:19', 'message' => 'CSRF validation failed', 'data' => ['timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'B'];
-        file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
+        @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
         // #endregion
         $error = 'Invalid security token. Please try again.';
     } else {
         // #region agent log
+        $debugLogPath = defined('ROOT_PATH') ? ROOT_PATH . '/.cursor/debug.log' : dirname(__DIR__) . '/.cursor/debug.log';
         $logData = ['location' => 'register.php:24', 'message' => 'CSRF validation passed', 'data' => ['timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'B'];
-        file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
+        @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
         // #endregion
         
         $email = $_POST['email'] ?? '';
@@ -34,15 +38,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $lastName = $_POST['last_name'] ?? '';
         
         // #region agent log
+        $debugLogPath = defined('ROOT_PATH') ? ROOT_PATH . '/.cursor/debug.log' : dirname(__DIR__) . '/.cursor/debug.log';
         $logData = ['location' => 'register.php:32', 'message' => 'Form data extracted', 'data' => ['email' => substr($email, 0, 10) . '...', 'has_password' => !empty($password), 'has_first_name' => !empty($firstName), 'has_last_name' => !empty($lastName), 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'C'];
-        file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
+        @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
         // #endregion
         
         // Validate password confirmation
         if ($password !== $passwordConfirm) {
             // #region agent log
+            $debugLogPath = defined('ROOT_PATH') ? ROOT_PATH . '/.cursor/debug.log' : dirname(__DIR__) . '/.cursor/debug.log';
             $logData = ['location' => 'register.php:37', 'message' => 'Password mismatch', 'data' => ['timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'C'];
-            file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
+            @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
             // #endregion
             $error = 'Passwords do not match.';
         } else {
@@ -50,22 +56,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $passwordErrors = Auth::validatePasswordStrength($password);
             if (!empty($passwordErrors)) {
                 // #region agent log
+                $debugLogPath = defined('ROOT_PATH') ? ROOT_PATH . '/.cursor/debug.log' : dirname(__DIR__) . '/.cursor/debug.log';
                 $logData = ['location' => 'register.php:44', 'message' => 'Password validation failed', 'data' => ['errors' => $passwordErrors, 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'C'];
-                file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
+                @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
                 // #endregion
                 $error = implode(' ', $passwordErrors);
             } else {
                 // #region agent log
+                $debugLogPath = defined('ROOT_PATH') ? ROOT_PATH . '/.cursor/debug.log' : dirname(__DIR__) . '/.cursor/debug.log';
                 $logData = ['location' => 'register.php:48', 'message' => 'Calling Auth::register', 'data' => ['email' => substr($email, 0, 10) . '...', 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'D'];
-                file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
+                @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
                 // #endregion
                 
                 try {
                     $result = Auth::register($email, $password, $firstName, $lastName);
                     
                     // #region agent log
+                    $debugLogPath = defined('ROOT_PATH') ? ROOT_PATH . '/.cursor/debug.log' : dirname(__DIR__) . '/.cursor/debug.log';
                     $logData = ['location' => 'register.php:53', 'message' => 'Auth::register returned', 'data' => ['success' => $result['success'] ?? false, 'has_message' => isset($result['message']), 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'D'];
-                    file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
+                    @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
                     // #endregion
                     
                     if ($result['success']) {
@@ -75,8 +84,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 } catch (Exception $e) {
                     // #region agent log
+                    $debugLogPath = defined('ROOT_PATH') ? ROOT_PATH . '/.cursor/debug.log' : dirname(__DIR__) . '/.cursor/debug.log';
                     $logData = ['location' => 'register.php:62', 'message' => 'Exception in Auth::register', 'data' => ['error' => $e->getMessage(), 'trace' => substr($e->getTraceAsString(), 0, 200), 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'E'];
-                    file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
+                    @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
                     // #endregion
                     $error = 'Registration failed: ' . $e->getMessage();
                 }

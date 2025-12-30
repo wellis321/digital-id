@@ -399,8 +399,9 @@ class Auth {
      */
     public static function register($email, $password, $firstName, $lastName, $domain = null) {
         // #region agent log
+        $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
         $logData = ['location' => 'Auth.php:400', 'message' => 'Auth::register called', 'data' => ['email' => substr($email, 0, 10) . '...', 'has_domain' => $domain !== null, 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'D'];
-        file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
+        @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
         // #endregion
         
         $db = getDbConnection();
@@ -410,16 +411,18 @@ class Auth {
             $domain = substr(strrchr($email, '@'), 1);
             if (empty($domain)) {
                 // #region agent log
+                $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
                 $logData = ['location' => 'Auth.php:408', 'message' => 'Invalid email format', 'data' => ['email' => substr($email, 0, 10) . '...', 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'F'];
-                file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
+                @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
                 // #endregion
                 return ['success' => false, 'message' => 'Invalid email address format.'];
             }
         }
         
         // #region agent log
+        $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
         $logData = ['location' => 'Auth.php:414', 'message' => 'Looking up organisation', 'data' => ['domain' => $domain, 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'F'];
-        file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
+        @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
         // #endregion
         
         // Find organisation by domain
@@ -429,15 +432,17 @@ class Auth {
         
         if (!$organisation) {
             // #region agent log
+            $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
             $logData = ['location' => 'Auth.php:418', 'message' => 'Organisation not found', 'data' => ['domain' => $domain, 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'F'];
-            file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
+            @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
             // #endregion
             return ['success' => false, 'message' => 'No organisation found for email domain "' . htmlspecialchars($domain) . '". Your organisation needs to be set up before you can register. Please <a href="' . url('request-access.php') . '">request access</a> for your organisation first.'];
         }
         
         // #region agent log
+        $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
         $logData = ['location' => 'Auth.php:430', 'message' => 'Organisation found', 'data' => ['org_id' => $organisation['id'], 'seats_allocated' => $organisation['seats_allocated'], 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'G'];
-        file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
+        @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
         // #endregion
         
         // Check if seats are available (only count verified and active users)
@@ -450,14 +455,16 @@ class Auth {
         $verifiedActiveCount = $stmt->fetch()['verified_active_count'];
         
         // #region agent log
+        $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
         $logData = ['location' => 'Auth.php:437', 'message' => 'Seats check', 'data' => ['verified_active_count' => $verifiedActiveCount, 'seats_allocated' => $organisation['seats_allocated'], 'has_available_seats' => $verifiedActiveCount < $organisation['seats_allocated'], 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'G'];
-        file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
+        @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
         // #endregion
         
         if ($verifiedActiveCount >= $organisation['seats_allocated']) {
             // #region agent log
+            $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
             $logData = ['location' => 'Auth.php:440', 'message' => 'No seats available', 'data' => ['timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'G'];
-            file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
+            @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
             // #endregion
             return ['success' => false, 'message' => 'No available seats for this organisation.'];
         }
@@ -467,16 +474,18 @@ class Auth {
         $stmt->execute([$email]);
         if ($stmt->fetch()) {
             // #region agent log
+            $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
             $logData = ['location' => 'Auth.php:447', 'message' => 'Email already exists', 'data' => ['timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'H'];
-            file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
+            @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
             // #endregion
             return ['success' => false, 'message' => 'Email already registered.'];
         }
         
         try {
             // #region agent log
+            $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
             $logData = ['location' => 'Auth.php:451', 'message' => 'Starting transaction', 'data' => ['timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'I'];
-            file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
+            @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
             // #endregion
             
             $db->beginTransaction();
@@ -504,8 +513,9 @@ class Auth {
             $userId = $db->lastInsertId();
             
             // #region agent log
+            $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
             $logData = ['location' => 'Auth.php:475', 'message' => 'User created', 'data' => ['user_id' => $userId, 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'I'];
-            file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
+            @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
             // #endregion
             
             // Assign default staff role
@@ -524,8 +534,9 @@ class Auth {
             $db->commit();
             
             // #region agent log
+            $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
             $logData = ['location' => 'Auth.php:491', 'message' => 'Transaction committed', 'data' => ['timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'I'];
-            file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
+            @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
             // #endregion
             
             // Send verification email
@@ -537,8 +548,9 @@ class Auth {
             }
             
             // #region agent log
+            $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
             $logData = ['location' => 'Auth.php:500', 'message' => 'Registration successful', 'data' => ['email_sent' => $emailSent, 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'I'];
-            file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
+            @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
             // #endregion
             
             return [
@@ -547,8 +559,9 @@ class Auth {
             ];
         } catch (Exception $e) {
             // #region agent log
+            $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
             $logData = ['location' => 'Auth.php:507', 'message' => 'Exception caught', 'data' => ['error' => $e->getMessage(), 'trace' => substr($e->getTraceAsString(), 0, 300), 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'E'];
-            file_put_contents('/Users/wellis/Desktop/Cursor/digital-id/.cursor/debug.log', json_encode($logData) . "\n", FILE_APPEND);
+            @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
             // #endregion
             $db->rollBack();
             return ['success' => false, 'message' => 'Registration failed: ' . $e->getMessage()];
