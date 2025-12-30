@@ -13,11 +13,30 @@ class StaffSyncService {
      */
     public static function syncAllStaff($organisationId) {
         
-        if (!defined('USE_STAFF_SERVICE') || !USE_STAFF_SERVICE) {
+        // Check Staff Service settings directly from database (after Auth is loaded)
+        // This ensures we get the current settings even if USE_STAFF_SERVICE constant was set before Auth loaded
+        $useStaffServiceEnabled = false;
+        try {
+            $db = getDbConnection();
+            $stmt = $db->prepare("SELECT setting_value FROM organisation_settings WHERE organisation_id = ? AND setting_key = 'use_staff_service'");
+            $stmt->execute([$organisationId]);
+            $result = $stmt->fetch();
+            if ($result && $result['setting_value'] === '1') {
+                $useStaffServiceEnabled = true;
+            }
+        } catch (PDOException $e) {
+            // Table might not exist, fall back to constant
+            $useStaffServiceEnabled = defined('USE_STAFF_SERVICE') && USE_STAFF_SERVICE;
+        }
+        
+        if (!$useStaffServiceEnabled) {
             return ['success' => false, 'message' => 'Staff Service integration is not enabled'];
         }
         
         require_once SRC_PATH . '/classes/StaffServiceClient.php';
+        
+        // Initialize StaffServiceClient to load settings from database
+        StaffServiceClient::init();
         
         if (!StaffServiceClient::isAvailable()) {
             return ['success' => false, 'message' => 'Staff Service is not available'];
