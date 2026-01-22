@@ -20,7 +20,14 @@ $dateTo = $_GET['date_to'] ?? '';
 $employeeId = $_GET['employee_id'] ?? '';
 $verificationType = $_GET['verification_type'] ?? '';
 $verificationResult = $_GET['verification_result'] ?? '';
+$location = $_GET['location'] ?? '';
+$deviceId = $_GET['device_id'] ?? '';
 $export = $_GET['export'] ?? '';
+
+// Default to last 30 days if no date filter is set (improves performance)
+if (empty($dateFrom) && empty($dateTo)) {
+    $dateFrom = date('Y-m-d', strtotime('-30 days'));
+}
 
 $db = getDbConnection();
 
@@ -36,6 +43,7 @@ $stmt->execute([$organisationId]);
 $employees = $stmt->fetchAll();
 
 // Build query with filters
+// Start from employees filtered by organisation_id for better performance
 $whereConditions = ["e.organisation_id = ?"];
 $params = [$organisationId];
 
@@ -64,6 +72,18 @@ if (!empty($verificationResult)) {
     $params[] = $verificationResult;
 }
 
+// Note: LIKE queries on notes are slow but necessary for location/device filtering
+// Consider adding separate location/device columns in future for better performance
+if (!empty($location)) {
+    $whereConditions[] = "vl.notes LIKE ?";
+    $params[] = '%Location: ' . $location . '%';
+}
+
+if (!empty($deviceId)) {
+    $whereConditions[] = "vl.notes LIKE ?";
+    $params[] = '%Device: ' . $deviceId . '%';
+}
+
 $whereClause = implode(' AND ', $whereConditions);
 
 // Handle CSV export
@@ -83,10 +103,13 @@ if ($export === 'csv') {
         'Verified By',
         'IP Address',
         'Device',
+        'Location',
+        'Device ID',
         'Notes'
     ]);
     
     // Get all matching records (no limit for export)
+    // Optimize: Start from employees (indexed by organisation_id) then join to logs
     $stmt = $db->prepare("
         SELECT 
             vl.verified_at,
@@ -101,8 +124,8 @@ if ($export === 'csv') {
             vl.verified_by_ip,
             vl.verified_by_device,
             vl.notes
-        FROM verification_logs vl
-        INNER JOIN employees e ON vl.employee_id = e.id
+        FROM employees e
+        INNER JOIN verification_logs vl ON vl.employee_id = e.id
         INNER JOIN users u_emp ON e.user_id = u_emp.id
         LEFT JOIN users u_verifier ON vl.verified_by = u_verifier.id
         WHERE $whereClause
@@ -120,6 +143,18 @@ if ($export === 'csv') {
             $verifierName = 'Public Verification';
         }
         
+        // Extract location and device from notes
+        $locationValue = '';
+        $deviceIdValue = '';
+        if ($row['notes']) {
+            if (preg_match('/Location: ([^|]+)/', $row['notes'], $matches)) {
+                $locationValue = trim($matches[1]);
+            }
+            if (preg_match('/Device: ([^|]+)/', $row['notes'], $matches)) {
+                $deviceIdValue = trim($matches[1]);
+            }
+        }
+        
         fputcsv($output, [
             $row['verified_at'],
             $employeeName,
@@ -129,6 +164,8 @@ if ($export === 'csv') {
             $verifierName,
             $row['verified_by_ip'] ?? 'N/A',
             $row['verified_by_device'] ?? 'N/A',
+            $locationValue,
+            $deviceIdValue,
             $row['notes'] ?? ''
         ]);
     }
@@ -143,10 +180,11 @@ $perPage = 50;
 $offset = ($page - 1) * $perPage;
 
 // Get total count for pagination
+// Optimize: Start from employees (indexed by organisation_id) then join to logs
 $countStmt = $db->prepare("
     SELECT COUNT(*) as total
-    FROM verification_logs vl
-    INNER JOIN employees e ON vl.employee_id = e.id
+    FROM employees e
+    INNER JOIN verification_logs vl ON vl.employee_id = e.id
     WHERE $whereClause
 ");
 $countStmt->execute($params);
@@ -154,6 +192,8 @@ $totalRecords = $countStmt->fetch()['total'];
 $totalPages = ceil($totalRecords / $perPage);
 
 // Get verification logs
+// Optimize: Start from employees (indexed by organisation_id) then join to logs
+// This uses the employees.organisation_id index first, reducing the dataset before joining
 $stmt = $db->prepare("
     SELECT 
         vl.id,
@@ -171,8 +211,8 @@ $stmt = $db->prepare("
         u_verifier.id as verifier_id,
         u_verifier.first_name as verifier_first_name,
         u_verifier.last_name as verifier_last_name
-    FROM verification_logs vl
-    INNER JOIN employees e ON vl.employee_id = e.id
+    FROM employees e
+    INNER JOIN verification_logs vl ON vl.employee_id = e.id
     INNER JOIN users u_emp ON e.user_id = u_emp.id
     LEFT JOIN users u_verifier ON vl.verified_by = u_verifier.id
     WHERE $whereClause
@@ -192,6 +232,12 @@ include dirname(__DIR__, 2) . '/includes/header.php';
     <div class="card">
         <h1>Verification Logs</h1>
         <p>View and export audit trail of all verification attempts for compliance and security monitoring.</p>
+        
+        <?php if (empty($_GET['date_from']) && empty($_GET['date_to'])): ?>
+            <div class="alert alert-info" style="margin-top: 1rem;">
+                <i class="fas fa-info-circle"></i> Showing results from the last 30 days. Use the date filters to view older records.
+            </div>
+        <?php endif; ?>
         
         <?php if ($error): ?>
             <div class="alert alert-error"><?php echo htmlspecialchars($error); ?></div>
@@ -248,6 +294,16 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                         <option value="revoked" <?php echo ($verificationResult === 'revoked') ? 'selected' : ''; ?>>Revoked</option>
                     </select>
                 </div>
+                
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" name="location" value="<?php echo htmlspecialchars($location); ?>" class="form-control" placeholder="e.g. Main_Entrance, Building_A">
+                </div>
+                
+                <div class="form-group">
+                    <label for="device_id">Device ID</label>
+                    <input type="text" id="device_id" name="device_id" value="<?php echo htmlspecialchars($deviceId); ?>" class="form-control" placeholder="e.g. TURNSTILE_01, ACCESS_PANEL_03">
+                </div>
             </div>
             
             <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
@@ -287,6 +343,8 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                             <th style="padding: 0.75rem; text-align: left; font-weight: 600;">Result</th>
                             <th style="padding: 0.75rem; text-align: left; font-weight: 600;">Verified By</th>
                             <th style="padding: 0.75rem; text-align: left; font-weight: 600;">IP Address</th>
+                            <th style="padding: 0.75rem; text-align: left; font-weight: 600;">Location</th>
+                            <th style="padding: 0.75rem; text-align: left; font-weight: 600;">Device ID</th>
                             <th style="padding: 0.75rem; text-align: left; font-weight: 600;">Notes</th>
                         </tr>
                     </thead>
@@ -322,6 +380,18 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                                     $resultIcon = '<i class="fas fa-ban"></i> ';
                                     break;
                             }
+                            
+                            // Extract location and device from notes
+                            $locationValue = '';
+                            $deviceIdValue = '';
+                            if ($log['notes']) {
+                                if (preg_match('/Location: ([^|]+)/', $log['notes'], $matches)) {
+                                    $locationValue = trim($matches[1]);
+                                }
+                                if (preg_match('/Device: ([^|]+)/', $log['notes'], $matches)) {
+                                    $deviceIdValue = trim($matches[1]);
+                                }
+                            }
                             ?>
                             <tr style="border-bottom: 1px solid #e5e7eb;">
                                 <td style="padding: 0.75rem;">
@@ -346,6 +416,20 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                                     <span style="font-family: monospace; font-size: 0.875rem; color: #6b7280;">
                                         <?php echo htmlspecialchars($log['verified_by_ip'] ?? 'N/A'); ?>
                                     </span>
+                                </td>
+                                <td style="padding: 0.75rem;">
+                                    <?php if ($locationValue): ?>
+                                        <span style="color: #3b82f6; font-weight: 500;"><?php echo htmlspecialchars($locationValue); ?></span>
+                                    <?php else: ?>
+                                        <span style="color: #9ca3af;">—</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td style="padding: 0.75rem;">
+                                    <?php if ($deviceIdValue): ?>
+                                        <span style="font-family: monospace; font-size: 0.875rem; color: #6b7280;"><?php echo htmlspecialchars($deviceIdValue); ?></span>
+                                    <?php else: ?>
+                                        <span style="color: #9ca3af;">—</span>
+                                    <?php endif; ?>
                                 </td>
                                 <td style="padding: 0.75rem;">
                                     <?php if ($log['notes']): ?>

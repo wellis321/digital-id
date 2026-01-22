@@ -121,12 +121,15 @@ define('ITEMS_PER_PAGE', 20);
 define('DATE_FORMAT', 'd/m/Y');
 define('DATETIME_FORMAT', 'd/m/Y H:i');
 
-// Start session
+// Start session (skip headers in CLI mode for testing)
 if (session_status() === PHP_SESSION_NONE) {
-    // Prevent caching of pages with forms to avoid CSRF token mismatches
-    header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
-    header('Pragma: no-cache');
-    header('Expires: 0');
+    // Only send headers if not in CLI mode
+    if (php_sapi_name() !== 'cli') {
+        // Prevent caching of pages with forms to avoid CSRF token mismatches
+        header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+        header('Pragma: no-cache');
+        header('Expires: 0');
+    }
     
     session_start();
 }

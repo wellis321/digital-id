@@ -10,8 +10,9 @@ $idCard = null;
 // Get employee for current user or specified employee_id (if admin)
 $requestedEmployeeId = $_GET['employee_id'] ?? null;
 if ($requestedEmployeeId && RBAC::isAdmin()) {
-    // Admin viewing another employee's card
-    $employee = Employee::findById($requestedEmployeeId);
+    // Admin viewing another employee's card (with organisation filter)
+    $adminOrgId = Auth::getOrganisationId();
+    $employee = Employee::findById($requestedEmployeeId, $adminOrgId);
     if ($employee && RBAC::canAccessOrganisation($employee['organisation_id'])) {
         $employeeId = $employee['id'];
     }
@@ -131,7 +132,7 @@ if (!$employee):
     <?php else: ?>
         <?php if ($contactPerson): ?>
             <div class="card" style="margin-top: 1.5rem; background-color: #e8f5e9; border-left: 4px solid #4CAF50;">
-                <h2 style="margin-top: 0;">✓ Help is on the way!</h2>
+                <h2 style="margin-top: 0;"><i class="fas fa-check-circle"></i> Help is on the way!</h2>
                 <p>We've automatically notified the appropriate person in your organisation about your missing employee profile.</p>
                 
                 <div style="background-color: white; padding: 1rem; border-radius: 0; margin-top: 1rem;">
@@ -151,7 +152,7 @@ if (!$employee):
             </div>
         <?php else: ?>
             <div class="card" style="margin-top: 1.5rem; background-color: #fff3cd; border-left: 4px solid #ffc107;">
-                <h2 style="margin-top: 0;">⚠️ Escalated to Support</h2>
+                <h2 style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> Escalated to Support</h2>
                 <p>We couldn't find an administrator in your organisation to assist you.</p>
                 <p>Your request has been automatically escalated to our support team, who will contact you shortly to help resolve this issue.</p>
                 
@@ -324,6 +325,24 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
         $qrAltText = 'QR code for verifying ' . htmlspecialchars($employee['first_name'] . ' ' . $employee['last_name']) . ' ID card';
         ?>
         <img src="<?php echo htmlspecialchars($qrImageUrl); ?>" alt="<?php echo $qrAltText; ?>" style="max-width: 200px; background: white; padding: 1rem; border-radius: 0;">
+    </div>
+    
+    <!-- Building Access Information -->
+    <div class="info-box" style="margin-top: 2rem; padding: 1.5rem; background: #f0f9ff; border-left: 4px solid #06b6d4; border-radius: 0.5rem;">
+        <h3 style="margin-top: 0; margin-bottom: 1rem; color: #0369a1; font-size: 1.125rem;">
+            <i class="fas fa-door-open"></i> Using Your ID for Building Access
+        </h3>
+        <p style="margin-bottom: 1rem; color: #0c4a6e;">
+            Your Digital ID card can be used to access buildings, turnstiles, and secure areas. Simply scan your QR code at the access point.
+        </p>
+        <ul style="margin: 0; padding-left: 1.5rem; color: #0c4a6e;">
+            <li><strong>Turnstiles:</strong> Scan your QR code at the turnstile scanner</li>
+            <li><strong>Building Access:</strong> Present your QR code at door access panels</li>
+            <li><strong>Secure Areas:</strong> Use your QR code for entry to restricted locations</li>
+        </ul>
+        <p style="margin-top: 1rem; margin-bottom: 0; font-size: 0.875rem; color: #075985;">
+            <i class="fas fa-info-circle"></i> All access attempts are logged for security and compliance purposes.
+        </p>
     </div>
     
     <div style="margin-top: 1.5rem; text-align: center;">

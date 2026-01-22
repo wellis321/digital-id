@@ -15,9 +15,9 @@ if (!$employeeId) {
     exit;
 }
 
-// Get employee
-$employee = Employee::findById($employeeId);
-if (!$employee || $employee['organisation_id'] != $organisationId) {
+// Get employee (with organisation filter for multi-tenant isolation)
+$employee = Employee::findById($employeeId, $organisationId);
+if (!$employee) {
     header('Location: ' . url('admin/employees.php?error=not_found'));
     exit;
 }
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             if ($synced) {
                 $success = 'Employee synced from Staff Service successfully.';
                 // Re-fetch employee data
-                $employee = Employee::findById($employeeId);
+                $employee = Employee::findById($employeeId, $organisationId);
             } else {
                 $error = 'Failed to sync from Staff Service.';
             }
@@ -150,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (!isset($_POST['action']) || $_POST
             if ($result['success']) {
                 $success = 'Employee updated successfully.';
                 // Refresh employee data
-                $employee = Employee::findById($employeeId);
+                $employee = Employee::findById($employeeId, $organisationId);
                 $idCard = DigitalID::getOrCreateIdCard($employeeId);
             } else {
                 $error = $result['message'] ?? 'Failed to update employee.';

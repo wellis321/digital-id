@@ -69,7 +69,14 @@ class StaffServiceClient {
      * Check if Staff Service is available and enabled
      */
     public static function isAvailable() {
+        self::init();
+        
         if (!self::$isEnabled) {
+            return false;
+        }
+        
+        // Ensure base URL is set
+        if (empty(self::$baseUrl)) {
             return false;
         }
         

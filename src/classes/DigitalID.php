@@ -89,29 +89,43 @@ class DigitalID {
     
     /**
      * Find ID card by ID
+     *
+     * @param int $id ID card ID
+     * @param int|null $organisationId Optional organisation ID for multi-tenant isolation
      */
-    public static function findById($id) {
+    public static function findById($id, $organisationId = null) {
         $db = getDbConnection();
-        $stmt = $db->prepare("
-            SELECT dic.*, e.employee_reference, e.photo_path, 
+
+        $sql = "
+            SELECT dic.*, e.employee_reference, e.photo_path, e.organisation_id,
                    u.first_name, u.last_name, o.name as organisation_name
             FROM digital_id_cards dic
             JOIN employees e ON dic.employee_id = e.id
             JOIN users u ON e.user_id = u.id
             JOIN organisations o ON e.organisation_id = o.id
             WHERE dic.id = ?
-        ");
-        $stmt->execute([$id]);
+        ";
+        $params = [$id];
+
+        if ($organisationId !== null) {
+            $sql .= " AND e.organisation_id = ?";
+            $params[] = $organisationId;
+        }
+
+        $stmt = $db->prepare($sql);
+        $stmt->execute($params);
         return $stmt->fetch();
     }
     
     /**
      * Find ID card by QR token
+     * Note: Token lookup is inherently secure (requires knowledge of cryptographic token)
+     * Organisation ID is included in result for downstream verification
      */
     public static function findByQrToken($token) {
         $db = getDbConnection();
         $stmt = $db->prepare("
-            SELECT dic.*, e.employee_reference, e.photo_path, 
+            SELECT dic.*, e.employee_reference, e.photo_path, e.organisation_id,
                    u.first_name, u.last_name, o.name as organisation_name
             FROM digital_id_cards dic
             JOIN employees e ON dic.employee_id = e.id
@@ -125,11 +139,13 @@ class DigitalID {
     
     /**
      * Find ID card by NFC token
+     * Note: Token lookup is inherently secure (requires knowledge of cryptographic token)
+     * Organisation ID is included in result for downstream verification
      */
     public static function findByNfcToken($token) {
         $db = getDbConnection();
         $stmt = $db->prepare("
-            SELECT dic.*, e.employee_reference, e.photo_path, 
+            SELECT dic.*, e.employee_reference, e.photo_path, e.organisation_id,
                    u.first_name, u.last_name, o.name as organisation_name
             FROM digital_id_cards dic
             JOIN employees e ON dic.employee_id = e.id

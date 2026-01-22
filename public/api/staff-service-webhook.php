@@ -34,11 +34,22 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     exit;
 }
 
-// Verify webhook signature (if configured)
+// Verify webhook signature
 $signature = $_SERVER['HTTP_X_WEBHOOK_SIGNATURE'] ?? '';
 $webhookSecret = getenv('STAFF_SERVICE_WEBHOOK_SECRET') ?: '';
+$allowUnsignedWebhooks = getenv('ALLOW_UNSIGNED_WEBHOOKS') === '1';
 
-if (!empty($webhookSecret)) {
+if (empty($webhookSecret)) {
+    if (!$allowUnsignedWebhooks) {
+        // Webhook secret not configured and unsigned webhooks not allowed
+        error_log('Webhook rejected: STAFF_SERVICE_WEBHOOK_SECRET not configured. Set ALLOW_UNSIGNED_WEBHOOKS=1 for development.');
+        http_response_code(500);
+        echo json_encode(['error' => 'Webhook signature verification not configured']);
+        exit;
+    }
+    // Unsigned webhooks explicitly allowed (development mode)
+} else {
+    // Verify signature
     $expectedSignature = hash_hmac('sha256', $payload, $webhookSecret);
     if (!hash_equals($expectedSignature, $signature)) {
         http_response_code(401);

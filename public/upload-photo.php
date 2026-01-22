@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                         $stmt->execute(['uploads/employees/pending/' . $filename, $employee['id']]);
                         
                         // Refresh employee data to get updated photo status
-                        $employee = Employee::findById($employee['id']);
+                        $employee = Employee::findById($employee['id'], Auth::getOrganisationId());
                         $success = 'Photo uploaded successfully! An administrator will review it shortly. You\'ll be notified once it\'s been approved.';
                         
                         // Notify admins about pending photo (optional - could add email notification here)

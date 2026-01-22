@@ -110,27 +110,43 @@ class Employee {
                     return ['success' => false, 'message' => 'Display reference "' . htmlspecialchars($displayReference) . '" already exists in this organisation.'];
                 }
             }
-            return ['success' => false, 'message' => 'Failed to create employee: ' . $e->getMessage()];
+            error_log('Employee creation failed (PDOException): ' . $e->getMessage());
+            return ['success' => false, 'message' => 'Failed to create employee. Please try again or contact support.'];
         } catch (Exception $e) {
             $db->rollBack();
-            return ['success' => false, 'message' => 'Failed to create employee: ' . $e->getMessage()];
+            error_log('Employee creation failed (Exception): ' . $e->getMessage());
+            return ['success' => false, 'message' => 'Failed to create employee. Please try again or contact support.'];
         }
     }
     
     /**
      * Get employee by ID
      * If Staff Service is enabled and employee is linked, syncs data from Staff Service
+     *
+     * @param int $id Employee ID
+     * @param int|null $organisationId Optional organisation ID for multi-tenant isolation
+     *                                  When provided, ensures employee belongs to this organisation
      */
-    public static function findById($id) {
+    public static function findById($id, $organisationId = null) {
         $db = getDbConnection();
-        $stmt = $db->prepare("
+
+        $sql = "
             SELECT e.*, u.first_name, u.last_name, u.email, o.name as organisation_name
             FROM employees e
             JOIN users u ON e.user_id = u.id
             JOIN organisations o ON e.organisation_id = o.id
             WHERE e.id = ?
-        ");
-        $stmt->execute([$id]);
+        ";
+        $params = [$id];
+
+        // Add organisation filter for multi-tenant isolation
+        if ($organisationId !== null) {
+            $sql .= " AND e.organisation_id = ?";
+            $params[] = $organisationId;
+        }
+
+        $stmt = $db->prepare($sql);
+        $stmt->execute($params);
         $employee = $stmt->fetch();
         
         // If Staff Service is enabled and employee is linked, sync data
@@ -305,12 +321,14 @@ class Employee {
                     return ['success' => false, 'message' => 'Display reference "' . $ref . '" already exists in this organisation.'];
                 }
             }
-            return ['success' => false, 'message' => 'Failed to update employee: ' . $e->getMessage()];
+            error_log('Employee update failed (PDOException): ' . $e->getMessage());
+            return ['success' => false, 'message' => 'Failed to update employee. Please try again or contact support.'];
         } catch (Exception $e) {
-            return ['success' => false, 'message' => 'Failed to update employee: ' . $e->getMessage()];
+            error_log('Employee update failed (Exception): ' . $e->getMessage());
+            return ['success' => false, 'message' => 'Failed to update employee. Please try again or contact support.'];
         }
     }
-    
+
     /**
      * Update ID card data JSON
      */

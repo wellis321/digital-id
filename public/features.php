@@ -622,6 +622,24 @@ include INCLUDES_PATH . '/header.php';
             <h3>Fire Drill & Emergency Tracking</h3>
             <p>Track attendance during fire drills and emergency evacuations. Real-time check-in system ensures accurate headcounts and compliance reporting. Export attendance records for safety audits.</p>
         </div>
+        
+        <div class="feature-card">
+            <i class="fas fa-door-open feature-icon"></i>
+            <h3>Building Access Control</h3>
+            <p>Use your Digital ID card to access buildings, turnstiles, and secure areas. Simply scan your QR code at access points for automatic verification and logging.</p>
+        </div>
+        
+        <div class="feature-card">
+            <i class="fas fa-wifi feature-icon"></i>
+            <h3>NFC Support</h3>
+            <p>Contactless verification using NFC technology. Tap your device to NFC-enabled readers for instant, secure verification without scanning QR codes.</p>
+        </div>
+        
+        <div class="feature-card">
+            <i class="fas fa-microsoft feature-icon"></i>
+            <h3>Microsoft 365 Integration</h3>
+            <p>Seamless integration with Microsoft Entra ID and Microsoft 365. Single sign-on, automatic employee synchronisation, and SharePoint attendance tracking.</p>
+        </div>
     </div>
 </div>
 

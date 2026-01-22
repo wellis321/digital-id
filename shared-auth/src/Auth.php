@@ -8,121 +8,64 @@ class Auth {
     
     /**
      * Check if user is logged in
+     * Security: Uses "fail closed" approach - if we can't verify, deny access
      */
     public static function isLoggedIn() {
         // Ensure session is started
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        
+
         // Check if user_id exists in session
         if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
             return false;
         }
-        
+
         // Verify user still exists and is active in database
         $userId = $_SESSION['user_id'];
-        
-        // WORKAROUND: Store user_id, organisation_id, and CSRF token before database check to preserve them if query fails
-        // This prevents session clearing on transient database query failures
-        // This works even if old cached code clears the session - we can restore it
-        $savedUserId = $userId;
-        $savedOrganisationId = $_SESSION['organisation_id'] ?? null;
-        $savedCsrfToken = $_SESSION[CSRF_TOKEN_NAME] ?? null;
-        
-        // Register shutdown function to restore session if it was cleared by old cached code
-        // This is a workaround for PHP opcode cache serving old code that clears the session
-        register_shutdown_function(function() use ($savedUserId, $savedOrganisationId, $savedCsrfToken) {
-            // Don't restore if this is an intentional logout
-            // Check if we're in logout.php or if logout flag was set
-            $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
-            $isLogout = strpos($scriptName, 'logout.php') !== false;
-            
-            // Check if logout flag was set (indicates intentional logout)
-            $logoutIntentional = isset($_SESSION['_logout_intentional']) && $_SESSION['_logout_intentional'] === true;
-            
-            // Also check if session was intentionally destroyed
-            $sessionDestroyed = session_status() === PHP_SESSION_NONE;
-            
-            // Only restore if this looks like a transient failure (not an intentional logout)
-            if (!empty($savedUserId) && !$isLogout && !$logoutIntentional && !$sessionDestroyed && (empty($_SESSION['user_id']) || $_SESSION['user_id'] != $savedUserId)) {
-                // Only restore if this looks like a transient failure (user_id was valid before)
-                $_SESSION['user_id'] = $savedUserId;
-                if ($savedOrganisationId !== null) {
-                    $_SESSION['organisation_id'] = $savedOrganisationId;
-                }
-                if ($savedCsrfToken !== null) {
-                    $_SESSION[CSRF_TOKEN_NAME] = $savedCsrfToken;
-                }
-                error_log('Restored session for user_id: ' . $savedUserId . ' (org_id: ' . ($savedOrganisationId ?? 'null') . ') after transient database query failure');
-            }
-        });
-        
+
         $db = getDbConnection();
-        
         if (!$db) {
+            // Cannot verify user - fail closed for security
+            error_log('Database connection failed during user verification for user_id: ' . $userId);
             return false;
         }
-        
-        $user = false;
-        $stmtError = null;
+
         try {
             $stmt = $db->prepare("SELECT id, is_active, email_verified FROM users WHERE id = ?");
             $stmt->execute([$userId]);
             $user = $stmt->fetch();
-            $stmtError = $stmt->errorInfo();
-            
-            // If query returned false but there's no error, user truly doesn't exist
-            // However, if there's a database error code, treat it as a transient failure
-            if ($user === false && $stmtError && $stmtError[0] !== '00000') {
-                // Database error occurred - don't clear session
-                error_log('Database query error during user verification (user_id: ' . $userId . '): ' . ($stmtError[2] ?? 'Unknown error'));
-                return true; // Assume user is still logged in
+
+            // User not found - clear session
+            if ($user === false) {
+                self::clearSessionPreserveCsrf();
+                return false;
             }
-        } catch (Exception $e) {
-            // On database error, don't clear session - assume user is still valid
-            // This prevents logout on transient database errors
-            error_log('Database error during user verification: ' . $e->getMessage());
-            return true; // Assume user is still logged in if we can't verify
-        }
-        
-        // Only clear session if user is explicitly not found or inactive
-        // Don't clear on database errors (handled above)
-        if ($user === false) {
-            // User not found in database - but this might be a transient query failure
-            // Since we have a valid user_id in session, be conservative and don't clear session
-            // This prevents logout on transient database query failures
-            // WORKAROUND: Preserve session if we had a valid user_id before the query
-            if (!empty($savedUserId) && $savedUserId == $userId) {
-                // Restore user_id in session if it was cleared
-                if (empty($_SESSION['user_id'])) {
-                    $_SESSION['user_id'] = $savedUserId;
-                }
-                error_log('User verification query returned false for user_id: ' . $userId . ' - preserving session due to transient failure');
-                return true; // Assume user is still logged in to prevent logout on transient failures
-            }
-            
-            // User truly not found - clear session
-            error_log('User verification query returned false for user_id: ' . $userId . ' - clearing session');
-            $csrfToken = $_SESSION[CSRF_TOKEN_NAME] ?? null;
-            $_SESSION = [];
-            if ($csrfToken !== null) {
-                $_SESSION[CSRF_TOKEN_NAME] = $csrfToken;
-            }
-            return false;
-        }
-        
-        if (!$user['is_active']) {
+
             // User is inactive - clear session
-            $csrfToken = $_SESSION[CSRF_TOKEN_NAME] ?? null;
-            $_SESSION = [];
-            if ($csrfToken !== null) {
-                $_SESSION[CSRF_TOKEN_NAME] = $csrfToken;
+            if (!$user['is_active']) {
+                self::clearSessionPreserveCsrf();
+                return false;
             }
+
+            return true;
+        } catch (Exception $e) {
+            // Database error - fail closed for security
+            // Log the error but don't grant access without verification
+            error_log('Database error during user verification for user_id ' . $userId . ': ' . $e->getMessage());
             return false;
         }
-        
-        return true;
+    }
+
+    /**
+     * Clear session data while preserving CSRF token
+     */
+    private static function clearSessionPreserveCsrf() {
+        $csrfToken = $_SESSION[CSRF_TOKEN_NAME] ?? null;
+        $_SESSION = [];
+        if ($csrfToken !== null) {
+            $_SESSION[CSRF_TOKEN_NAME] = $csrfToken;
+        }
     }
     
     /**
@@ -398,96 +341,46 @@ class Auth {
      * Domain is automatically extracted from email address
      */
     public static function register($email, $password, $firstName, $lastName, $domain = null) {
-        // #region agent log
-        $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
-        $logData = ['location' => 'Auth.php:400', 'message' => 'Auth::register called', 'data' => ['email' => substr($email, 0, 10) . '...', 'has_domain' => $domain !== null, 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'D'];
-        @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
-        // #endregion
-        
         $db = getDbConnection();
-        
+
         // Extract domain from email if not provided
         if ($domain === null) {
             $domain = substr(strrchr($email, '@'), 1);
             if (empty($domain)) {
-                // #region agent log
-                $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
-                $logData = ['location' => 'Auth.php:408', 'message' => 'Invalid email format', 'data' => ['email' => substr($email, 0, 10) . '...', 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'F'];
-                @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
-                // #endregion
                 return ['success' => false, 'message' => 'Invalid email address format.'];
             }
         }
-        
-        // #region agent log
-        $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
-        $logData = ['location' => 'Auth.php:414', 'message' => 'Looking up organisation', 'data' => ['domain' => $domain, 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'F'];
-        @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
-        // #endregion
-        
+
         // Find organisation by domain
         $stmt = $db->prepare("SELECT id, seats_allocated, seats_used FROM organisations WHERE domain = ?");
         $stmt->execute([$domain]);
         $organisation = $stmt->fetch();
-        
+
         if (!$organisation) {
-            // #region agent log
-            $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
-            $logData = ['location' => 'Auth.php:418', 'message' => 'Organisation not found', 'data' => ['domain' => $domain, 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'F'];
-            @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
-            // #endregion
             return ['success' => false, 'message' => 'No organisation found for email domain "' . htmlspecialchars($domain) . '". Your organisation needs to be set up before you can register. Please <a href="' . url('request-access.php') . '">request access</a> for your organisation first.'];
         }
-        
-        // #region agent log
-        $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
-        $logData = ['location' => 'Auth.php:430', 'message' => 'Organisation found', 'data' => ['org_id' => $organisation['id'], 'seats_allocated' => $organisation['seats_allocated'], 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'G'];
-        @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
-        // #endregion
-        
+
         // Check if seats are available (only count verified and active users)
         $stmt = $db->prepare("
-            SELECT COUNT(*) as verified_active_count 
-            FROM users 
+            SELECT COUNT(*) as verified_active_count
+            FROM users
             WHERE organisation_id = ? AND email_verified = TRUE AND is_active = TRUE
         ");
         $stmt->execute([$organisation['id']]);
         $verifiedActiveCount = $stmt->fetch()['verified_active_count'];
-        
-        // #region agent log
-        $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
-        $logData = ['location' => 'Auth.php:437', 'message' => 'Seats check', 'data' => ['verified_active_count' => $verifiedActiveCount, 'seats_allocated' => $organisation['seats_allocated'], 'has_available_seats' => $verifiedActiveCount < $organisation['seats_allocated'], 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'G'];
-        @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
-        // #endregion
-        
+
         if ($verifiedActiveCount >= $organisation['seats_allocated']) {
-            // #region agent log
-            $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
-            $logData = ['location' => 'Auth.php:440', 'message' => 'No seats available', 'data' => ['timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'G'];
-            @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
-            // #endregion
             return ['success' => false, 'message' => 'No available seats for this organisation.'];
         }
-        
+
         // Check if email already exists
         $stmt = $db->prepare("SELECT id FROM users WHERE email = ?");
         $stmt->execute([$email]);
         if ($stmt->fetch()) {
-            // #region agent log
-            $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
-            $logData = ['location' => 'Auth.php:447', 'message' => 'Email already exists', 'data' => ['timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'H'];
-            @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
-            // #endregion
             return ['success' => false, 'message' => 'Email already registered.'];
         }
-        
+
         try {
-            // #region agent log
-            $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
-            $logData = ['location' => 'Auth.php:451', 'message' => 'Starting transaction', 'data' => ['timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'I'];
-            @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
-            // #endregion
-            
             $db->beginTransaction();
             
             // Generate verification token
@@ -511,13 +404,7 @@ class Auth {
             ]);
             
             $userId = $db->lastInsertId();
-            
-            // #region agent log
-            $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
-            $logData = ['location' => 'Auth.php:475', 'message' => 'User created', 'data' => ['user_id' => $userId, 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'I'];
-            @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
-            // #endregion
-            
+
             // Assign default staff role
             $stmt = $db->prepare("SELECT id FROM roles WHERE name = 'staff'");
             $stmt->execute();
@@ -532,13 +419,7 @@ class Auth {
             // Seats will be updated when verifyEmail() is called
             
             $db->commit();
-            
-            // #region agent log
-            $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
-            $logData = ['location' => 'Auth.php:491', 'message' => 'Transaction committed', 'data' => ['timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'I'];
-            @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
-            // #endregion
-            
+
             // Send verification email
             $emailSent = Email::sendVerificationEmail($email, $firstName, $verificationToken);
             
@@ -546,25 +427,15 @@ class Auth {
                 // Log error but don't fail registration - user can request resend
                 error_log("Failed to send verification email to: $email");
             }
-            
-            // #region agent log
-            $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
-            $logData = ['location' => 'Auth.php:500', 'message' => 'Registration successful', 'data' => ['email_sent' => $emailSent, 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'I'];
-            @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
-            // #endregion
-            
+
             return [
                 'success' => true, 
                 'message' => 'Registration successful! Please check your email to verify your account. The verification link will expire in ' . VERIFICATION_TOKEN_EXPIRY_HOURS . ' hours.'
             ];
         } catch (Exception $e) {
-            // #region agent log
-            $debugLogPath = (defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2)) . '/.cursor/debug.log';
-            $logData = ['location' => 'Auth.php:507', 'message' => 'Exception caught', 'data' => ['error' => $e->getMessage(), 'trace' => substr($e->getTraceAsString(), 0, 300), 'timestamp' => date('Y-m-d H:i:s')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'E'];
-            @file_put_contents($debugLogPath, json_encode($logData) . "\n", FILE_APPEND | LOCK_EX);
-            // #endregion
             $db->rollBack();
-            return ['success' => false, 'message' => 'Registration failed: ' . $e->getMessage()];
+            error_log("Registration failed for $email: " . $e->getMessage());
+            return ['success' => false, 'message' => 'Registration failed. Please try again.'];
         }
     }
     

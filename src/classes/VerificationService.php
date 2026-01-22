@@ -27,7 +27,8 @@ class VerificationService {
         }
         
         $idCard = $validation['id_card'];
-        $employee = Employee::findById($idCard['employee_id']);
+        // Use organisation_id from idCard for defense in depth
+        $employee = Employee::findById($idCard['employee_id'], $idCard['organisation_id'] ?? null);
         
         if (!$employee || !$employee['is_active']) {
             self::logVerification($idCard['id'], $idCard['employee_id'], $type, 'failed', 'employee_inactive');

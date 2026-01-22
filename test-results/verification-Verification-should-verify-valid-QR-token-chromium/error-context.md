@@ -1,0 +1,142 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=e3]:
+    - navigation [ref=e4]:
+      - generic [ref=e5]:
+        - link "Digital ID Digital ID" [ref=e6] [cursor=pointer]:
+          - /url: /index.php
+          - img "Digital ID" [ref=e7]
+          - generic [ref=e8]: Digital ID
+        - navigation "Main navigation" [ref=e9]:
+          - link "Home" [ref=e10] [cursor=pointer]:
+            - /url: /index.php
+          - link "Features" [ref=e11] [cursor=pointer]:
+            - /url: /features.php
+          - link "Housing & Social Care" [ref=e12] [cursor=pointer]:
+            - /url: /housing-social-care.php
+          - link "Security" [ref=e13] [cursor=pointer]:
+            - /url: /security.php
+          - link "Documentation" [ref=e14] [cursor=pointer]:
+            - /url: /docs.php
+          - link "Request Access" [ref=e15] [cursor=pointer]:
+            - /url: /request-access.php
+          - link "Login" [ref=e16] [cursor=pointer]:
+            - /url: /login.php
+  - text:   
+  - main [ref=e17]:
+    - generic [ref=e18]:
+      - heading "Login" [level=1] [ref=e19]
+      - alert [ref=e20]: Too many login attempts. Please try again in 15 minutes.
+      - generic [ref=e21]:
+        - generic [ref=e22]:
+          - generic [ref=e23]: Email
+          - textbox "Email" [ref=e24]
+        - generic [ref=e25]:
+          - generic [ref=e26]: Password
+          - textbox "Password" [ref=e27]
+        - button "Login" [ref=e28] [cursor=pointer]
+      - generic [ref=e29]:
+        - paragraph [ref=e30]: Don't have an account?
+        - link " Register Now" [ref=e31] [cursor=pointer]:
+          - /url: /register.php
+          - generic [ref=e32]: 
+          - text: Register Now
+      - paragraph [ref=e33]:
+        - strong [ref=e34]: New organisation?
+        - link "Request access" [ref=e35] [cursor=pointer]:
+          - /url: /request-access.php
+        - text: for your organisation first.
+  - contentinfo [ref=e36]:
+    - generic [ref=e37]:
+      - generic [ref=e38]:
+        - link "Digital ID Digital ID" [ref=e39] [cursor=pointer]:
+          - /url: /index.php
+          - img "Digital ID" [ref=e40]
+          - generic [ref=e41]: Digital ID
+        - paragraph [ref=e42]: Secure, verifiable digital identification for social care providers. Replace paper-based ID cards with modern, secure technology.
+        - generic [ref=e43]:
+          - link "Facebook" [ref=e44] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=e45]: 
+          - link "Twitter" [ref=e46] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=e47]: 
+          - link "LinkedIn" [ref=e48] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=e49]: 
+      - generic [ref=e50]:
+        - heading "Product" [level=3] [ref=e51]
+        - list [ref=e52]:
+          - listitem [ref=e53]:
+            - link "Features" [ref=e54] [cursor=pointer]:
+              - /url: /features.php
+          - listitem [ref=e55]:
+            - link "How It Works" [ref=e56] [cursor=pointer]:
+              - /url: /security.php#how-it-works
+          - listitem [ref=e57]:
+            - link "Security" [ref=e58] [cursor=pointer]:
+              - /url: /security.php
+      - generic [ref=e59]:
+        - heading "Resources" [level=3] [ref=e60]
+        - list [ref=e61]:
+          - listitem [ref=e62]:
+            - link "Documentation" [ref=e63] [cursor=pointer]:
+              - /url: /docs.php
+          - listitem [ref=e64]:
+            - link "AI Integration (MCP)" [ref=e65] [cursor=pointer]:
+              - /url: /docs.php?section=mcp-integration
+          - listitem [ref=e66]:
+            - link "Staff Service" [ref=e67] [cursor=pointer]:
+              - /url: https://salmon-tarsier-739827.hostingersite.com/public/landing.php
+          - listitem [ref=e68]:
+            - link "Support" [ref=e69] [cursor=pointer]:
+              - /url: /contact.php
+          - listitem [ref=e70]:
+            - link "Case Studies" [ref=e71] [cursor=pointer]:
+              - /url: /case-studies.php
+      - generic [ref=e72]:
+        - heading "Company" [level=3] [ref=e73]
+        - list [ref=e74]:
+          - listitem [ref=e75]:
+            - link "Contact" [ref=e76] [cursor=pointer]:
+              - /url: /contact.php
+          - listitem [ref=e77]:
+            - link "Request Access" [ref=e78] [cursor=pointer]:
+              - /url: /request-access.php
+          - listitem [ref=e79]:
+            - link "Privacy Policy" [ref=e80] [cursor=pointer]:
+              - /url: /privacy-policy.php
+          - listitem [ref=e81]:
+            - link "Terms of Service" [ref=e82] [cursor=pointer]:
+              - /url: /terms-of-service.php
+    - generic [ref=e83]:
+      - generic [ref=e84]:
+        - heading "Install App" [level=3] [ref=e85]
+        - paragraph [ref=e86]: Install Digital ID as an app on your phone for quick access
+        - text: 
+        - link " Installation Guide" [ref=e87] [cursor=pointer]:
+          - /url: /install.php
+          - generic [ref=e88]: 
+          - text: Installation Guide
+      - generic [ref=e89]:
+        - heading "Staff Service" [level=3] [ref=e90]
+        - paragraph [ref=e91]: Centralised staff management designed for organisations where data ownership is critical. Take control of your staff information and integrate with existing systems without duplication or vendor lock-in.
+        - link " Learn More" [ref=e92] [cursor=pointer]:
+          - /url: https://salmon-tarsier-739827.hostingersite.com/public/landing.php
+          - generic [ref=e93]: 
+          - generic [ref=e94]: Learn More
+    - paragraph [ref=e96]: © 2026 Digital ID. All rights reserved.
+  - generic [ref=e98]:
+    - paragraph [ref=e100]:
+      - text: We use cookies to enhance your experience, maintain your login session, and improve our service. By clicking "Accept", you consent to our use of cookies.
+      - link "Learn more in our Privacy Policy" [ref=e101] [cursor=pointer]:
+        - /url: /privacy-policy.php#cookies
+      - text: .
+    - generic [ref=e102]:
+      - button "Reject" [ref=e103] [cursor=pointer]
+      - button "Accept" [ref=e104] [cursor=pointer]
+```

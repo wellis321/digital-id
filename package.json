@@ -1,0 +1,16 @@
+{
+  "name": "digital-id-app",
+  "version": "1.0.0",
+  "description": "Digital ID Application",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0"
+  }
+}
+
+

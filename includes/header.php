@@ -10,6 +10,7 @@
     
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#2563eb">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Digital ID">
@@ -34,10 +35,13 @@
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('<?php echo url('service-worker.js'); ?>')
                     .then((registration) => {
-                        console.log('Service Worker registered:', registration.scope);
+                        // Service Worker registered successfully (silent)
                     })
                     .catch((error) => {
-                        console.log('Service Worker registration failed:', error);
+                        // Service Worker registration failed (silent - only log in development)
+                        <?php if (defined('APP_ENV') && APP_ENV === 'development'): ?>
+                        console.error('Service Worker registration failed:', error);
+                        <?php endif; ?>
                     });
             });
         }
@@ -371,6 +375,7 @@
                     <nav id="nav-links" class="nav-links" data-menu-state="closed" role="navigation" aria-label="Main navigation">
                         <a href="<?php echo url('index.php'); ?>" class="<?php echo $isActive('index.php'); ?>">Home</a>
                         <a href="<?php echo url('features.php'); ?>" class="<?php echo $isActive('features.php'); ?>">Features</a>
+                        <a href="<?php echo url('housing-social-care.php'); ?>" class="<?php echo $isActive('housing-social-care.php'); ?>">Housing & Social Care</a>
                         <a href="<?php echo url('security.php'); ?>" class="<?php echo $isActive('security.php'); ?>">Security</a>
                         <a href="<?php echo url('docs.php'); ?>" class="<?php echo $isActive('docs.php'); ?>">Documentation</a>
                         <a href="<?php echo url('request-access.php'); ?>" class="<?php echo $isActive('request-access.php'); ?>">Request Access</a>

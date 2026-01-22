@@ -39,7 +39,7 @@ include dirname(__DIR__) . '/includes/header.php';
     <?php if ($verificationResult): ?>
         <?php if ($verificationResult['success']): ?>
             <div class="verification-result">
-                <div class="verification-success">✓ Verification Successful</div>
+                <div class="verification-success"><i class="fas fa-check-circle"></i> Verification Successful</div>
                 
                 <div class="id-card" style="margin: 2rem auto;">
                     <div class="id-card-header">
@@ -102,7 +102,7 @@ include dirname(__DIR__) . '/includes/header.php';
             </div>
         <?php else: ?>
             <div class="verification-result">
-                <div class="verification-failed">✗ Verification Failed</div>
+                <div class="verification-failed"><i class="fas fa-times-circle"></i> Verification Failed</div>
                 <p><?php echo htmlspecialchars($verificationResult['message'] ?? 'Verification failed.'); ?></p>
             </div>
         <?php endif; ?>
