@@ -3,6 +3,18 @@ require_once dirname(__DIR__) . '/config/config.php';
 
 $pageTitle = 'Housing & Social Care';
 include INCLUDES_PATH . '/header.php';
+
+// Unsplash images - professional stock photos for housing & social care context
+$unsplash = [
+    'hero' => 'https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=1200&q=80',
+    'building' => 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80',
+    'care_home' => 'https://images.unsplash.com/photo-1417325384643-aac51acc9e5d?auto=format&fit=crop&w=1200&q=80',
+    'banking' => 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1200&q=80',
+    'housing' => 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80',
+    'hospital' => 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80',
+    'training' => 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80',
+    'rewards' => 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80',
+];
 ?>
 
 <style>
@@ -236,7 +248,7 @@ include INCLUDES_PATH . '/header.php';
         </div>
     </div>
     <div class="hero-image">
-        <img src="<?php echo url('assets/images/housing-social-care/hero.jpg'); ?>" alt="Digital ID for Housing & Social Care" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <img src="<?php echo htmlspecialchars($unsplash['hero']); ?>" alt="Digital ID for Housing & Social Care" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
         <div class="hero-image-placeholder" style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; flex-direction: column;">
             <i class="fas fa-home"></i>
             <span>Hero Image</span>
@@ -269,7 +281,7 @@ include INCLUDES_PATH . '/header.php';
                 </ul>
             </div>
             <div class="use-case-image">
-                <img src="<?php echo url('assets/images/housing-social-care/building-access.jpg'); ?>" alt="Staff member scanning QR code at building entrance" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <img src="<?php echo htmlspecialchars($unsplash['building']); ?>" alt="Staff member scanning QR code at building entrance" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; color: #9ca3af;">
                     <span>Building Access Image</span>
                 </div>
@@ -296,7 +308,7 @@ include INCLUDES_PATH . '/header.php';
                 </ul>
             </div>
             <div class="use-case-image">
-                <img src="<?php echo url('assets/images/housing-social-care/care-home-access.jpg'); ?>" alt="Staff member being verified at care home" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <img src="<?php echo htmlspecialchars($unsplash['care_home']); ?>" alt="Staff member being verified at care home" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; color: #9ca3af;">
                     <span>Care Home Access Image</span>
                 </div>
@@ -323,7 +335,7 @@ include INCLUDES_PATH . '/header.php';
                 </ul>
             </div>
             <div class="use-case-image">
-                <img src="<?php echo url('assets/images/housing-social-care/banking.jpg'); ?>" alt="Staff member showing Digital ID at bank" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <img src="<?php echo htmlspecialchars($unsplash['banking']); ?>" alt="Staff member showing Digital ID at bank" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; color: #9ca3af;">
                     <span>Banking Image</span>
                 </div>
@@ -350,7 +362,7 @@ include INCLUDES_PATH . '/header.php';
                 </ul>
             </div>
             <div class="use-case-image">
-                <img src="<?php echo url('assets/images/housing-social-care/housing-provider.jpg'); ?>" alt="Staff member at housing provider office" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <img src="<?php echo htmlspecialchars($unsplash['housing']); ?>" alt="Staff member at housing provider office" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; color: #9ca3af;">
                     <span>Housing Provider Image</span>
                 </div>
@@ -377,7 +389,7 @@ include INCLUDES_PATH . '/header.php';
                 </ul>
             </div>
             <div class="use-case-image">
-                <img src="<?php echo url('assets/images/housing-social-care/hospital.jpg'); ?>" alt="Staff member at hospital" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <img src="<?php echo htmlspecialchars($unsplash['hospital']); ?>" alt="Staff member at hospital" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; color: #9ca3af;">
                     <span>Hospital Image</span>
                 </div>
@@ -404,7 +416,7 @@ include INCLUDES_PATH . '/header.php';
                 </ul>
             </div>
             <div class="use-case-image">
-                <img src="<?php echo url('assets/images/housing-social-care/training.jpg'); ?>" alt="Staff checking in for training session" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <img src="<?php echo htmlspecialchars($unsplash['training']); ?>" alt="Staff checking in for training session" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; color: #9ca3af;">
                     <span>Training Session Image</span>
                 </div>
@@ -431,7 +443,7 @@ include INCLUDES_PATH . '/header.php';
                 </ul>
             </div>
             <div class="use-case-image">
-                <img src="<?php echo url('assets/images/housing-social-care/rewards.jpg'); ?>" alt="Staff member registering for employee discount" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <img src="<?php echo htmlspecialchars($unsplash['rewards']); ?>" alt="Staff member registering for employee discount" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; color: #9ca3af;">
                     <span>Employee Rewards Image</span>
                 </div>
