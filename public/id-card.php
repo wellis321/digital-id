@@ -223,20 +223,27 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
         </div>
     </div>
     
-    <?php 
-    // Show approved photo if it exists, otherwise show pending photo
-    // Always prioritize approved photo - keep showing it even when new photo is pending
-    $photoPath = null;
+    <?php
+    // Determine photo to display — priority order:
+    // 1. Staff Service photo (via proxy) if employee is linked and PMS has an approved photo
+    // 2. Locally-uploaded approved photo
+    // 3. Locally-uploaded pending photo (only when no approved photo exists)
+    $photoPath   = null;
     $photoStatus = $employee['photo_approval_status'] ?? 'none';
-    $hasApprovedPhoto = !empty($employee['photo_path']) && file_exists(dirname(__DIR__) . '/' . $employee['photo_path']);
-    $hasPendingPhoto = !empty($employee['photo_pending_path']) && file_exists(dirname(__DIR__) . '/' . $employee['photo_pending_path']);
-    
-    // First priority: always show approved photo if it exists (even if status is pending)
-    if ($hasApprovedPhoto) {
+
+    $hasStaffServicePhoto = !empty($employee['staff_service_person_id'])
+                         && !empty($employee['staff_service_photo_url']);
+    $hasApprovedPhoto     = !empty($employee['photo_path'])
+                         && file_exists(dirname(__DIR__) . '/' . $employee['photo_path']);
+    $hasPendingPhoto      = !empty($employee['photo_pending_path'])
+                         && file_exists(dirname(__DIR__) . '/' . $employee['photo_pending_path']);
+
+    if ($hasStaffServicePhoto) {
+        // Proxy the image through Digital ID so the API key stays server-side
+        $photoPath = url('api/proxy-image.php?employee_id=' . $employee['id'] . '&type=photo');
+    } elseif ($hasApprovedPhoto) {
         $photoPath = url('view-image.php?path=' . urlencode($employee['photo_path']));
-    }
-    // Second priority: pending photo only if no approved photo exists
-    elseif ($hasPendingPhoto && $photoStatus === 'pending') {
+    } elseif ($hasPendingPhoto && $photoStatus === 'pending') {
         $photoPath = url('view-image.php?path=' . urlencode($employee['photo_pending_path']));
     }
     ?>
@@ -290,25 +297,10 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
     </div>
     
     <?php
-    // Get signature from Staff Service if available
+    // Signature: use proxy if employee is linked to Staff Service and has a cached signature URL
     $signatureUrl = null;
-    if (defined('USE_STAFF_SERVICE') && USE_STAFF_SERVICE && !empty($employee['staff_service_person_id'])) {
-        require_once SRC_PATH . '/classes/StaffServiceClient.php';
-        
-        // First check cached signature URL
-        if (!empty($employee['signature_url'])) {
-            $signatureUrl = $employee['signature_url'];
-        } else {
-            // Fetch from API
-            $signatureData = StaffServiceClient::getStaffSignature($employee['staff_service_person_id']);
-            if ($signatureData && isset($signatureData['signature_url'])) {
-                $signatureUrl = $signatureData['signature_url'];
-                // Cache it
-                $db = getDbConnection();
-                $stmt = $db->prepare("UPDATE employees SET signature_url = ? WHERE id = ?");
-                $stmt->execute([$signatureUrl, $employee['id']]);
-            }
-        }
+    if (!empty($employee['staff_service_person_id']) && !empty($employee['signature_url'])) {
+        $signatureUrl = url('api/proxy-image.php?employee_id=' . $employee['id'] . '&type=signature');
     }
     ?>
     

@@ -399,19 +399,26 @@ class Employee {
                 $values[] = $staffData['employee_reference'];
             }
             
-            if (isset($staffData['photo_path'])) {
-                $updates[] = "photo_path = ?";
-                $values[] = $staffData['photo_path'];
+            // Store PMS photo URL (not photo_path) — photo_path is reserved for locally-uploaded photos
+            if (!empty($staffData['photo_url'])) {
+                $updates[] = "staff_service_photo_url = ?";
+                $values[] = $staffData['photo_url'];
             }
-            
+
             if (isset($staffData['is_active'])) {
                 $updates[] = "is_active = ?";
                 $values[] = $staffData['is_active'] ? 1 : 0;
             }
-            
+
             if ($signatureUrl !== null) {
                 $updates[] = "signature_url = ?";
                 $values[] = $signatureUrl;
+            }
+
+            // Also cache signature URL from staff-data response if signature_url included
+            if (empty($signatureUrl) && !empty($staffData['signature_url'])) {
+                $updates[] = "signature_url = ?";
+                $values[] = $staffData['signature_url'];
             }
             
             // Update sync timestamp
