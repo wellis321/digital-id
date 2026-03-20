@@ -34,14 +34,38 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     exit;
 }
 
-// Verify webhook signature
+// Verify webhook signature — look up per-org secret from DB, fall back to env var
 $signature = $_SERVER['HTTP_X_WEBHOOK_SIGNATURE'] ?? '';
-$webhookSecret = getenv('STAFF_SERVICE_WEBHOOK_SECRET') ?: '';
 $allowUnsignedWebhooks = getenv('ALLOW_UNSIGNED_WEBHOOKS') === '1';
+
+$webhookSecret = '';
+$pmsOrgId = isset($data['organisation_id']) ? (int)$data['organisation_id'] : 0;
+if ($pmsOrgId) {
+    // Try to find the Digital ID org whose PMS connection matches this org_id,
+    // and retrieve the stored webhook secret.
+    $secretDb = getDbConnection();
+    $secretStmt = $secretDb->prepare("
+        SELECT os.setting_value
+        FROM organisation_settings os
+        WHERE os.setting_key = 'staff_service_webhook_secret'
+          AND os.organisation_id IN (
+              SELECT organisation_id FROM organisation_settings
+              WHERE setting_key = 'use_staff_service' AND setting_value = '1'
+          )
+        LIMIT 1
+    ");
+    $secretStmt->execute();
+    $secretRow = $secretStmt->fetch();
+    if ($secretRow) {
+        $webhookSecret = $secretRow['setting_value'];
+    }
+}
+if (empty($webhookSecret)) {
+    $webhookSecret = getenv('STAFF_SERVICE_WEBHOOK_SECRET') ?: '';
+}
 
 if (empty($webhookSecret)) {
     if (!$allowUnsignedWebhooks) {
-        // Webhook secret not configured and unsigned webhooks not allowed
         error_log('Webhook rejected: STAFF_SERVICE_WEBHOOK_SECRET not configured. Set ALLOW_UNSIGNED_WEBHOOKS=1 for development.');
         http_response_code(500);
         echo json_encode(['error' => 'Webhook signature verification not configured']);
@@ -49,7 +73,6 @@ if (empty($webhookSecret)) {
     }
     // Unsigned webhooks explicitly allowed (development mode)
 } else {
-    // Verify signature
     $expectedSignature = hash_hmac('sha256', $payload, $webhookSecret);
     if (!hash_equals($expectedSignature, $signature)) {
         http_response_code(401);
@@ -95,32 +118,83 @@ try {
             if (!isset($eventData['id'])) {
                 throw new Exception('Missing person ID in event data');
             }
-            
+
             $personId = (int)$eventData['id'];
             $db = getDbConnection();
-            
+
             // Find employee linked to this person
-            $stmt = $db->prepare("SELECT id FROM employees WHERE staff_service_person_id = ?");
+            $stmt = $db->prepare("SELECT id, organisation_id FROM employees WHERE staff_service_person_id = ?");
             $stmt->execute([$personId]);
             $employee = $stmt->fetch();
-            
+
             if ($employee) {
-                // Deactivate employee
+                // Deactivate employee record
                 Employee::update($employee['id'], ['is_active' => false]);
-                
-                // Automatically revoke all ID cards for this employee
+
+                // Deactivate the linked user account so existing sessions are rejected
+                if (!empty($eventData['email'])) {
+                    $db->prepare("UPDATE users SET is_active = 0 WHERE email = ? AND organisation_id = ?")
+                       ->execute([$eventData['email'], $employee['organisation_id']]);
+                }
+
+                // Revoke all active ID cards
                 require_once SRC_PATH . '/classes/DigitalID.php';
                 $stmt = $db->prepare("SELECT id FROM digital_id_cards WHERE employee_id = ? AND is_revoked = FALSE");
                 $stmt->execute([$employee['id']]);
                 $idCards = $stmt->fetchAll();
-                
+
                 foreach ($idCards as $idCard) {
-                    DigitalID::revoke($idCard['id'], null); // null = revoked by system/Staff Service
+                    DigitalID::revoke($idCard['id'], null);
                 }
-                
+
                 $result = ['success' => true, 'message' => 'Employee deactivated and ID cards revoked'];
             } else {
                 $result = ['success' => false, 'message' => 'Employee not found'];
+            }
+            break;
+
+        case 'organisation.deactivated':
+            // Revoke access for all users in the Digital ID org matching the PMS org domain
+            if (empty($eventData['organisation_domain'])) {
+                throw new Exception('Missing organisation_domain in event data');
+            }
+
+            $orgDomain = $eventData['organisation_domain'];
+            $db = getDbConnection();
+
+            // Find the Digital ID organisation by domain
+            $orgStmt = $db->prepare("SELECT id FROM organisations WHERE domain = ? LIMIT 1");
+            $orgStmt->execute([$orgDomain]);
+            $localOrg = $orgStmt->fetch();
+
+            if ($localOrg) {
+                $localOrgId = (int)$localOrg['id'];
+
+                // Deactivate all users in this org
+                $db->prepare("UPDATE users SET is_active = 0 WHERE organisation_id = ?")
+                   ->execute([$localOrgId]);
+
+                // Deactivate all employees in this org
+                $db->prepare("UPDATE employees SET is_active = 0 WHERE organisation_id = ?")
+                   ->execute([$localOrgId]);
+
+                // Revoke all active ID cards for this org
+                require_once SRC_PATH . '/classes/DigitalID.php';
+                $stmt = $db->prepare("
+                    SELECT dc.id FROM digital_id_cards dc
+                    JOIN employees e ON e.id = dc.employee_id
+                    WHERE e.organisation_id = ? AND dc.is_revoked = FALSE
+                ");
+                $stmt->execute([$localOrgId]);
+                $idCards = $stmt->fetchAll();
+
+                foreach ($idCards as $idCard) {
+                    DigitalID::revoke($idCard['id'], null);
+                }
+
+                $result = ['success' => true, 'message' => 'Organisation access revoked'];
+            } else {
+                $result = ['success' => false, 'message' => 'Organisation not found'];
             }
             break;
             

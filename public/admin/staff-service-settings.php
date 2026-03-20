@@ -75,8 +75,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         setSetting($db, $organisationId, 'staff_service_url', $staffServiceUrl);
                         setSetting($db, $organisationId, 'staff_service_api_key', $staffServiceApiKey);
                         setSetting($db, $organisationId, 'staff_sync_interval', (string)$syncInterval);
-                        
+
+                        // Auto-register webhook with PMS so real-time events are delivered
+                        $existingSecret = getSetting($db, $organisationId, 'staff_service_webhook_secret', '');
+                        if (empty($existingSecret)) {
+                            $existingSecret = bin2hex(random_bytes(32));
+                            setSetting($db, $organisationId, 'staff_service_webhook_secret', $existingSecret);
+                        }
+
+                        $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+                        $webhookUrl = $scheme . '://' . $_SERVER['HTTP_HOST'] . '/api/staff-service-webhook.php';
+
+                        $webhookPayload = json_encode([
+                            'action'  => 'subscribe',
+                            'url'     => $webhookUrl,
+                            'secret'  => $existingSecret,
+                            'events'  => [
+                                'person.created',
+                                'person.updated',
+                                'person.deactivated',
+                                'organisation.deactivated',
+                                'signature.uploaded',
+                                'photo.updated',
+                            ],
+                        ]);
+                        $wch = curl_init(rtrim($staffServiceUrl, '/') . '/api/webhooks.php');
+                        curl_setopt($wch, CURLOPT_RETURNTRANSFER, true);
+                        curl_setopt($wch, CURLOPT_POST, true);
+                        curl_setopt($wch, CURLOPT_POSTFIELDS, $webhookPayload);
+                        curl_setopt($wch, CURLOPT_TIMEOUT, 10);
+                        curl_setopt($wch, CURLOPT_CONNECTTIMEOUT, 5);
+                        curl_setopt($wch, CURLOPT_HTTPHEADER, [
+                            'Content-Type: application/json',
+                            'Authorization: Bearer ' . $staffServiceApiKey,
+                        ]);
+                        $wchResponse = curl_exec($wch);
+                        $wchCode = curl_getinfo($wch, CURLINFO_HTTP_CODE);
+                        curl_close($wch);
+
                         $success = 'Staff Service integration settings saved successfully.';
+                        if ($wchCode >= 200 && $wchCode < 300) {
+                            $success .= ' Webhook registered for real-time updates.';
+                        } else {
+                            $success .= ' Settings saved, but webhook registration failed (HTTP ' . $wchCode . '). Real-time updates may not work until Staff Service is reachable.';
+                        }
                     }
                 }
             } else {
