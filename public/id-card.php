@@ -190,6 +190,39 @@ if (!$idCard) {
     die('Failed to generate ID card. Please contact support.');
 }
 
+// If linked to Staff Service but photo/signature URLs are missing, refresh from PMS now
+if (!empty($employee['staff_service_person_id'])
+    && (empty($employee['staff_service_photo_url']) || empty($employee['signature_url']))
+) {
+    try {
+        require_once SRC_PATH . '/classes/StaffServiceClient.php';
+        StaffServiceClient::init();
+        $freshData = StaffServiceClient::getStaffMember($employee['staff_service_person_id']);
+        if ($freshData) {
+            $db  = getDbConnection();
+            $set = [];
+            $val = [];
+            if (!empty($freshData['photo_url']) && empty($employee['staff_service_photo_url'])) {
+                $set[] = 'staff_service_photo_url = ?';
+                $val[] = $freshData['photo_url'];
+                $employee['staff_service_photo_url'] = $freshData['photo_url'];
+            }
+            if (!empty($freshData['signature_url']) && empty($employee['signature_url'])) {
+                $set[] = 'signature_url = ?';
+                $val[] = $freshData['signature_url'];
+                $employee['signature_url'] = $freshData['signature_url'];
+            }
+            if ($set) {
+                $val[] = $employee['id'];
+                $db->prepare('UPDATE employees SET ' . implode(', ', $set) . ' WHERE id = ?')->execute($val);
+            }
+        }
+    } catch (Exception $e) {
+        error_log('ID card on-demand PMS sync failed: ' . $e->getMessage());
+        // Non-fatal — card still renders without photo
+    }
+}
+
 // Generate QR code
 $qrData = QRCodeGenerator::generate($idCard['qr_token']);
 $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
