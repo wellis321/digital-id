@@ -216,6 +216,116 @@ class StaffServiceClient {
     }
     
     /**
+     * Load Staff Service settings for a given email domain.
+     * Used before login when Auth::isLoggedIn() is false, so init() cannot read
+     * the session to determine which organisation's settings to load.
+     */
+    private static function initForEmail($email) {
+        $domain = ltrim(strrchr($email, '@'), '@');
+
+        $useStaffService = false;
+        $baseUrl         = '';
+        $apiKey          = '';
+
+        try {
+            if (function_exists('getDbConnection')) {
+                $db   = getDbConnection();
+                $stmt = $db->prepare("SELECT id FROM organisations WHERE domain = ? LIMIT 1");
+                $stmt->execute([$domain]);
+                $org  = $stmt->fetch();
+
+                if ($org) {
+                    $stmt = $db->prepare("
+                        SELECT setting_key, setting_value
+                        FROM organisation_settings
+                        WHERE organisation_id = ?
+                          AND setting_key IN ('use_staff_service', 'staff_service_url', 'staff_service_api_key')
+                    ");
+                    $stmt->execute([$org['id']]);
+                    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+                        if ($row['setting_key'] === 'use_staff_service') {
+                            $useStaffService = ($row['setting_value'] === '1');
+                        } elseif ($row['setting_key'] === 'staff_service_url') {
+                            $baseUrl = $row['setting_value'];
+                        } elseif ($row['setting_key'] === 'staff_service_api_key') {
+                            $apiKey = $row['setting_value'];
+                        }
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            error_log('Error loading Staff Service settings for domain ' . $domain . ': ' . $e->getMessage());
+        }
+
+        // Fall back to .env constants
+        if (empty($baseUrl)   && defined('STAFF_SERVICE_URL'))     $baseUrl         = STAFF_SERVICE_URL;
+        if (empty($apiKey)    && defined('STAFF_SERVICE_API_KEY')) $apiKey          = STAFF_SERVICE_API_KEY;
+        if (!$useStaffService && defined('USE_STAFF_SERVICE'))     $useStaffService = USE_STAFF_SERVICE;
+
+        self::$isEnabled = $useStaffService;
+        self::$baseUrl   = rtrim($baseUrl, '/');
+        self::$apiKey    = $apiKey;
+
+        if (self::$isEnabled && (empty(self::$baseUrl) || empty(self::$apiKey))) {
+            error_log('Staff Service integration enabled but URL or API key not configured');
+            self::$isEnabled = false;
+        }
+    }
+
+    /**
+     * Authenticate a user's credentials against PMS.
+     * Called during Digital ID login when local authentication fails.
+     * On success, returns the PMS user data so the caller can provision a local account.
+     * Returns false if PMS is not connected, credentials are wrong, or user is inactive.
+     *
+     * IMPORTANT: Credentials are sent server-to-server. HTTPS is required in production.
+     */
+    public static function authenticateUser($email, $password) {
+        self::initForEmail($email);
+
+        if (!self::$isEnabled || empty(self::$baseUrl) || empty(self::$apiKey)) {
+            return false;
+        }
+
+        try {
+            $url     = self::$baseUrl . '/api/auth-token.php';
+            $payload = json_encode(['email' => $email, 'password' => $password]);
+
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Authorization: Bearer ' . self::$apiKey,
+                'Content-Type: application/json',
+                'Accept: application/json',
+            ]);
+
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $error    = curl_error($ch);
+
+            if ($error || $httpCode !== 200) {
+                error_log('PMS authenticateUser failed: HTTP ' . $httpCode . ($error ? ' — ' . $error : ''));
+                return false;
+            }
+
+            $data = json_decode($response, true);
+            if (!$data || !isset($data['authenticated'])) {
+                return false;
+            }
+
+            return $data['authenticated'] ? ($data['user'] ?? false) : false;
+
+        } catch (Exception $e) {
+            error_log('PMS authenticateUser error: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
      * Verify a user is active in the Staff Service.
      * Called during login to gate access for connected organisations.
      *

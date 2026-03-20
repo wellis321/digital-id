@@ -36,13 +36,86 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header('Location: ' . url('id-card.php'));
                 exit;
             }
-        } elseif (is_array($result) && isset($result['error'])) {
-            $error = $result['message'];
         } else {
-            $error = 'Invalid email or password.';
-            $remaining = RateLimiter::getRemainingAttempts($rateLimitKey, 5);
-            if ($remaining > 0) {
-                $error .= " You have {$remaining} attempt" . ($remaining !== 1 ? 's' : '') . " remaining.";
+            // Local auth failed — try PMS if this organisation is connected
+            $pmsUser = StaffServiceClient::authenticateUser($email, $password);
+
+            if ($pmsUser) {
+                // PMS confirmed credentials — create or reactivate the local account
+                try {
+                    $db   = getDbConnection();
+                    $stmt = $db->prepare("SELECT id, organisation_id FROM users WHERE email = ? LIMIT 1");
+                    $stmt->execute([$email]);
+                    $existingUser = $stmt->fetch();
+
+                    $newHash = password_hash($password, PASSWORD_DEFAULT);
+
+                    if ($existingUser) {
+                        // Reactivate and sync name + password so local login works next time
+                        $stmt = $db->prepare("
+                            UPDATE users
+                            SET is_active = 1, email_verified = 1,
+                                first_name = ?, last_name = ?,
+                                password_hash = ?, last_login = NOW()
+                            WHERE id = ?
+                        ");
+                        $stmt->execute([$pmsUser['first_name'], $pmsUser['last_name'], $newHash, $existingUser['id']]);
+                        $userId = $existingUser['id'];
+                    } else {
+                        // New user — find the local organisation by email domain
+                        $domain = ltrim(strrchr($email, '@'), '@');
+                        $stmt   = $db->prepare("SELECT id FROM organisations WHERE domain = ? LIMIT 1");
+                        $stmt->execute([$domain]);
+                        $org = $stmt->fetch();
+
+                        if (!$org) {
+                            throw new Exception('Organisation not found in Digital ID for domain: ' . $domain);
+                        }
+
+                        $stmt = $db->prepare("
+                            INSERT INTO users
+                                (email, password_hash, first_name, last_name, organisation_id, is_active, email_verified, created_at, last_login)
+                            VALUES (?, ?, ?, ?, ?, 1, 1, NOW(), NOW())
+                        ");
+                        $stmt->execute([$email, $newHash, $pmsUser['first_name'], $pmsUser['last_name'], $org['id']]);
+                        $userId = $db->lastInsertId();
+                    }
+
+                    // Load full user record and set session exactly as Auth::login() does
+                    $stmt = $db->prepare("
+                        SELECT u.*, o.id AS organisation_id, o.name AS organisation_name
+                        FROM users u
+                        LEFT JOIN organisations o ON u.organisation_id = o.id
+                        WHERE u.id = ?
+                    ");
+                    $stmt->execute([$userId]);
+                    $user = $stmt->fetch();
+
+                    if ($user) {
+                        session_regenerate_id(true);
+                        $_SESSION['user_id']       = $user['id'];
+                        $_SESSION['organisation_id'] = $user['organisation_id'];
+                        $_SESSION['email']         = $user['email'];
+                        $_SESSION['user_data']     = $user;
+
+                        RateLimiter::reset($rateLimitKey);
+                        header('Location: ' . url('id-card.php'));
+                        exit;
+                    }
+                } catch (Exception $e) {
+                    error_log('PMS user provisioning error: ' . $e->getMessage());
+                }
+            }
+
+            // PMS also failed (or not connected) — show the original local-auth error
+            if (is_array($result) && isset($result['error'])) {
+                $error = $result['message'];
+            } else {
+                $error = 'Invalid email or password.';
+                $remaining = RateLimiter::getRemainingAttempts($rateLimitKey, 5);
+                if ($remaining > 0) {
+                    $error .= " You have {$remaining} attempt" . ($remaining !== 1 ? 's' : '') . " remaining.";
+                }
             }
         }
     }

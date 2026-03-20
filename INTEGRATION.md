@@ -237,15 +237,42 @@ If Staff Service integration is disabled or unavailable:
 - No external API calls are made
 - All functionality works as before
 
+## Connected App Login
+
+When Digital ID is connected to Staff Service via an API key, staff members can log into Digital ID using their Staff Service credentials — no separate Digital ID registration is required.
+
+### How it works
+
+1. Staff member enters their Staff Service email and password on the Digital ID login page
+2. Digital ID tries local authentication first
+3. If local authentication fails, Digital ID calls `POST /api/auth-token.php` on Staff Service with the credentials
+4. Staff Service verifies the credentials against its own user records
+5. On success, Digital ID automatically creates or reactivates the local account and logs the user in
+6. The password is synced locally so future logins are fast and do not require a Staff Service call
+
+### Access control
+
+- If Staff Service is **not connected** for an organisation, login works as normal (local accounts only)
+- If Staff Service **is connected** and a user logs in successfully with local credentials, Digital ID also checks `GET /api/verify-user.php` to confirm the user is still active in Staff Service — if not, access is denied
+- If Staff Service is **unreachable**, existing local logins continue to work (fail open)
+
+### Requirements
+
+- The organisation must have an API key configured in Staff Service
+- Staff Service must be enabled in Digital ID's admin settings for that organisation
+- HTTPS must be used in production (credentials are sent server-to-server)
+
+---
+
 ## Getting Digital ID Cards for New Staff Members
 
 When a new staff member is created in Staff Service, follow these steps to get them a digital ID card:
 
 ### Quick Steps
 
-1. **Ensure User Account Exists**: Staff member needs a user account in Digital ID (or shared-auth if using shared authentication)
+1. **No separate account needed**: If Staff Service integration is enabled, the staff member can log in to Digital ID directly with their Staff Service credentials. A Digital ID account is created automatically on first login.
 
-2. **Sync from Staff Service** (if integration enabled):
+2. **Sync from Staff Service** to create the employee record (required for the ID card):
    - Go to **Admin** → **Manage Employees**
    - Click **"Sync from Staff Service"** button
    - This will automatically create employee records for staff members from Staff Service
@@ -305,6 +332,8 @@ If webhooks aren't being received:
 - `searchStaff($query)` - Search staff by name/email/reference
 - `getStaffSignature($personId)` - Get signature URL
 - `isAvailable()` - Check if Staff Service is reachable
+- `verifyUser($email)` - Confirm a user is active in Staff Service (called after successful local login)
+- `authenticateUser($email, $password)` - Verify credentials against Staff Service and return user data (called when local login fails; triggers auto-provisioning on success)
 
 ### StaffSyncService
 
