@@ -216,6 +216,41 @@ class StaffServiceClient {
     }
     
     /**
+     * Verify a user is active in the Staff Service.
+     * Called during login to gate access for connected organisations.
+     *
+     * Returns true if:
+     *   - Staff Service is not connected for this organisation (no gate needed)
+     *   - PMS confirms the user is active
+     *   - PMS is unreachable (fail open to avoid locking out users on connectivity issues)
+     *
+     * Returns false only when PMS explicitly says the user is not active.
+     */
+    public static function verifyUser($email) {
+        self::init(); // reload settings now that the user session is established
+
+        if (!self::$isEnabled) {
+            return true;
+        }
+
+        try {
+            $url = self::$baseUrl . '/api/verify-user.php?email=' . urlencode($email);
+            $response = self::makeRequest($url);
+
+            if ($response && isset($response['verified'])) {
+                return $response['verified'] === true;
+            }
+
+            // PMS unreachable or unexpected response — fail open
+            error_log('Staff Service user verification inconclusive for: ' . $email . ' — allowing access');
+            return true;
+        } catch (Exception $e) {
+            error_log('Staff Service verifyUser error: ' . $e->getMessage());
+            return true;
+        }
+    }
+
+    /**
      * Make HTTP request to Staff Service API
      */
     private static function makeRequest($url) {

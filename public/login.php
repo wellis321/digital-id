@@ -26,10 +26,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = Auth::login($email, $password);
         
         if ($result === true) {
-            // Successful login - reset rate limit
-            RateLimiter::reset($rateLimitKey);
-            header('Location: ' . url('id-card.php'));
-            exit;
+            // If this organisation is connected to the Staff Service, verify the user is active there
+            if (!StaffServiceClient::verifyUser($email)) {
+                Auth::logout();
+                $error = 'Your account is not active in the staff directory. Please contact your administrator.';
+            } else {
+                // Successful login - reset rate limit
+                RateLimiter::reset($rateLimitKey);
+                header('Location: ' . url('id-card.php'));
+                exit;
+            }
         } elseif (is_array($result) && isset($result['error'])) {
             $error = $result['message'];
         } else {
