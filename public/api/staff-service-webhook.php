@@ -39,25 +39,27 @@ $signature = $_SERVER['HTTP_X_WEBHOOK_SIGNATURE'] ?? '';
 $allowUnsignedWebhooks = getenv('ALLOW_UNSIGNED_WEBHOOKS') === '1';
 
 $webhookSecret = '';
+$localOrgIdFromWebhook = null;
 $pmsOrgId = isset($data['organisation_id']) ? (int)$data['organisation_id'] : 0;
 if ($pmsOrgId) {
-    // Try to find the Digital ID org whose PMS connection matches this org_id,
-    // and retrieve the stored webhook secret.
+    // Find the Digital ID org that is connected to this specific PMS org,
+    // using the staff_service_organisation_id mapping stored at setup time.
     $secretDb = getDbConnection();
     $secretStmt = $secretDb->prepare("
-        SELECT os.setting_value
-        FROM organisation_settings os
-        WHERE os.setting_key = 'staff_service_webhook_secret'
-          AND os.organisation_id IN (
-              SELECT organisation_id FROM organisation_settings
-              WHERE setting_key = 'use_staff_service' AND setting_value = '1'
-          )
+        SELECT os_secret.organisation_id, os_secret.setting_value AS webhook_secret
+        FROM organisation_settings os_secret
+        JOIN organisation_settings os_org
+          ON os_org.organisation_id = os_secret.organisation_id
+         AND os_org.setting_key = 'staff_service_organisation_id'
+         AND os_org.setting_value = ?
+        WHERE os_secret.setting_key = 'staff_service_webhook_secret'
         LIMIT 1
     ");
-    $secretStmt->execute();
+    $secretStmt->execute([(string)$pmsOrgId]);
     $secretRow = $secretStmt->fetch();
     if ($secretRow) {
-        $webhookSecret = $secretRow['setting_value'];
+        $webhookSecret = $secretRow['webhook_secret'];
+        $localOrgIdFromWebhook = (int)$secretRow['organisation_id'];
     }
 }
 if (empty($webhookSecret)) {
@@ -154,48 +156,48 @@ try {
             break;
 
         case 'organisation.deactivated':
-            // Revoke access for all users in the Digital ID org matching the PMS org domain
-            if (empty($eventData['organisation_domain'])) {
-                throw new Exception('Missing organisation_domain in event data');
-            }
-
-            $orgDomain = $eventData['organisation_domain'];
             $db = getDbConnection();
 
-            // Find the Digital ID organisation by domain
-            $orgStmt = $db->prepare("SELECT id FROM organisations WHERE domain = ? LIMIT 1");
-            $orgStmt->execute([$orgDomain]);
-            $localOrg = $orgStmt->fetch();
-
-            if ($localOrg) {
-                $localOrgId = (int)$localOrg['id'];
-
-                // Deactivate all users in this org
-                $db->prepare("UPDATE users SET is_active = 0 WHERE organisation_id = ?")
-                   ->execute([$localOrgId]);
-
-                // Deactivate all employees in this org
-                $db->prepare("UPDATE employees SET is_active = 0 WHERE organisation_id = ?")
-                   ->execute([$localOrgId]);
-
-                // Revoke all active ID cards for this org
-                require_once SRC_PATH . '/classes/DigitalID.php';
-                $stmt = $db->prepare("
-                    SELECT dc.id FROM digital_id_cards dc
-                    JOIN employees e ON e.id = dc.employee_id
-                    WHERE e.organisation_id = ? AND dc.is_revoked = FALSE
-                ");
-                $stmt->execute([$localOrgId]);
-                $idCards = $stmt->fetchAll();
-
-                foreach ($idCards as $idCard) {
-                    DigitalID::revoke($idCard['id'], null);
-                }
-
-                $result = ['success' => true, 'message' => 'Organisation access revoked'];
-            } else {
-                $result = ['success' => false, 'message' => 'Organisation not found'];
+            // Use the org mapping established at setup time (most reliable).
+            // Fall back to domain matching if mapping not available.
+            $localOrg = null;
+            if ($localOrgIdFromWebhook) {
+                $localOrg = ['id' => $localOrgIdFromWebhook];
+            } elseif (!empty($eventData['organisation_domain'])) {
+                $orgStmt = $db->prepare("SELECT id FROM organisations WHERE domain = ? LIMIT 1");
+                $orgStmt->execute([$eventData['organisation_domain']]);
+                $localOrg = $orgStmt->fetch();
             }
+
+            if (!$localOrg) {
+                throw new Exception('Cannot identify local organisation for deactivation event');
+            }
+
+            $localOrgId = (int)$localOrg['id'];
+
+            // Deactivate all users in this org
+            $db->prepare("UPDATE users SET is_active = 0 WHERE organisation_id = ?")
+               ->execute([$localOrgId]);
+
+            // Deactivate all employees in this org
+            $db->prepare("UPDATE employees SET is_active = 0 WHERE organisation_id = ?")
+               ->execute([$localOrgId]);
+
+            // Revoke all active ID cards for this org
+            require_once SRC_PATH . '/classes/DigitalID.php';
+            $stmt = $db->prepare("
+                SELECT dc.id FROM digital_id_cards dc
+                JOIN employees e ON e.id = dc.employee_id
+                WHERE e.organisation_id = ? AND dc.is_revoked = FALSE
+            ");
+            $stmt->execute([$localOrgId]);
+            $idCards = $stmt->fetchAll();
+
+            foreach ($idCards as $idCard) {
+                DigitalID::revoke($idCard['id'], null);
+            }
+
+            $result = ['success' => true, 'message' => 'Organisation access revoked'];
             break;
             
         case 'signature.uploaded':

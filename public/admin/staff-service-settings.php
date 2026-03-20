@@ -113,6 +113,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $wchCode = curl_getinfo($wch, CURLINFO_HTTP_CODE);
                         curl_close($wch);
 
+                        // Store the PMS organisation_id so webhook events can be routed to the right org
+                        $pmsOrgResponse = curl_init(rtrim($staffServiceUrl, '/') . '/api/staff-data.php?limit=1');
+                        curl_setopt($pmsOrgResponse, CURLOPT_RETURNTRANSFER, true);
+                        curl_setopt($pmsOrgResponse, CURLOPT_TIMEOUT, 10);
+                        curl_setopt($pmsOrgResponse, CURLOPT_CONNECTTIMEOUT, 5);
+                        curl_setopt($pmsOrgResponse, CURLOPT_HTTPHEADER, [
+                            'Authorization: Bearer ' . $staffServiceApiKey,
+                            'Accept: application/json',
+                        ]);
+                        $pmsOrgBody = curl_exec($pmsOrgResponse);
+                        $pmsOrgCode = curl_getinfo($pmsOrgResponse, CURLINFO_HTTP_CODE);
+                        curl_close($pmsOrgResponse);
+                        if ($pmsOrgCode === 200) {
+                            $pmsOrgData = json_decode($pmsOrgBody, true);
+                            $pmsOrgId = $pmsOrgData['data'][0]['organisation_id']
+                                     ?? $pmsOrgData['data']['organisation_id']
+                                     ?? null;
+                            if ($pmsOrgId) {
+                                setSetting($db, $organisationId, 'staff_service_organisation_id', (string)$pmsOrgId);
+                            }
+                        }
+
                         $success = 'Staff Service integration settings saved successfully.';
                         if ($wchCode >= 200 && $wchCode < 300) {
                             $success .= ' Webhook registered for real-time updates.';
