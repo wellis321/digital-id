@@ -39,6 +39,16 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=10
+    env:
+      # phpunit.xml's <env> only applies to the PHPUnit CLI process itself -
+      # a separately-spawned `php -S` server needs these set independently,
+      # otherwise it falls back to config/database.php's defaults (wrong port).
+      DB_HOST: localhost:8889
+      DB_NAME: digital_ids_test
+      DB_USER: root
+      DB_PASS: ''
+      APP_ENV: testing
+      APP_URL: http://localhost:8000
     steps:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
@@ -50,8 +60,18 @@ jobs:
         run: composer install --prefer-dist --no-progress --no-interaction
       - name: Load test database schema
         run: mysql -h127.0.0.1 -P8889 -uroot digital_ids_test < tests/fixtures/schema.sql
+      - name: Start PHP built-in server
+        run: |
+          php -S localhost:8000 -t public > /tmp/phpunit-server.log 2>&1 &
+          for i in $(seq 1 20); do
+            curl -sS -o /dev/null http://localhost:8000/verify.php && break
+            sleep 0.5
+          done
       - name: Run PHPUnit
         run: ./vendor/bin/phpunit
+      - name: Show PHP server log on failure
+        if: failure()
+        run: cat /tmp/phpunit-server.log || true
 
   e2e:
     name: End-to-End Tests (Playwright)
