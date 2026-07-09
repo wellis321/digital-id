@@ -30,3 +30,8 @@ composer.lock
 tmp/
 temp/
 
+# Test artifacts
+test-results/
+playwright-report/
+.phpunit.result.cache
+
