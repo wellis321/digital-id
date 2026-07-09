@@ -57,8 +57,9 @@ class Email {
     /**
      * Send email using PHP mail() function
      * In production, you may want to use a service like SendGrid, Mailgun, or SMTP
+     * Protected so subclasses can call it for application-specific email types.
      */
-    private static function sendEmail($to, $subject, $message) {
+    protected static function sendEmail($to, $subject, $message) {
         $headers = [
             'MIME-Version: 1.0',
             'Content-type: text/html; charset=UTF-8',
