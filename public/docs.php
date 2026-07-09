@@ -962,10 +962,20 @@ $section = $_GET['section'] ?? 'getting-started';
             <p>The public verification page allows anyone to verify employee identity:</p>
             <ol>
                 <li>Visit the verification page</li>
-                <li>Scan the QR code or enter the employee reference</li>
+                <li>Scan the QR code, or use manual lookup by entering the organisation name and employee reference</li>
                 <li>View the verification results</li>
             </ol>
-            
+
+            <div class="info-box">
+                <h4><i class="fas fa-info-circle"></i> Manual Lookup Needs the Organisation Name</h4>
+                <p>For manual lookup, enter the organisation name exactly as shown on the person's digital ID card, along with their employee reference. Both are required together - this keeps the lookup scoped to the right organisation and means the verification page never displays a list of other organisations using Digital ID.</p>
+            </div>
+
+            <div class="warning-box">
+                <h4><i class="fas fa-exclamation-triangle"></i> Rate Limited to Prevent Abuse</h4>
+                <p>To protect against automated guessing, both QR/NFC verification and manual lookup are rate limited per visitor. If you see a "Too many verification attempts" message, wait a few minutes before trying again.</p>
+            </div>
+
             <h3>What Information Is Shown</h3>
             <ul>
                 <li>Employee name</li>
@@ -2960,7 +2970,22 @@ else:
                 <li>Ensure you're using a fresh QR code (less than 5 minutes old)</li>
                 <li>Check that you're still an active employee</li>
             </ul>
-            
+
+            <h3>Manual Lookup Says "Employee Not Found"</h3>
+            <ul>
+                <li>Double-check the organisation name is spelt exactly as shown on the digital ID card</li>
+                <li>Double-check the employee reference is correct</li>
+                <li>Note that this message is shown for both an incorrect organisation name and an incorrect employee reference, so it won't confirm which one was wrong</li>
+                <li>Ask the ID card holder to confirm their organisation name and reference directly</li>
+            </ul>
+
+            <h3>"Too Many Verification Attempts" Message</h3>
+            <ul>
+                <li>This appears after repeated failed verification attempts from the same visitor, and is a security measure to prevent automated guessing</li>
+                <li>Wait for the time shown in the message (up to 15 minutes), then try again</li>
+                <li>If this happens regularly during legitimate use (e.g. a busy reception desk), contact your organisation administrator</li>
+            </ul>
+
             <h3>NFC Not Working</h3>
             <ul>
                 <li>Ensure NFC is enabled on your device</li>

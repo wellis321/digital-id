@@ -1,33 +1,48 @@
 <?php
 require_once dirname(__DIR__) . '/config/config.php';
+require_once SRC_PATH . '/classes/RateLimiter.php';
 
 $verificationResult = null;
 $token = $_GET['token'] ?? '';
 $type = $_GET['type'] ?? 'qr';
-$organisationId = $_POST['organisation_id'] ?? null;
+$organisationName = trim($_POST['organisation_name'] ?? '');
 $employeeReference = $_POST['employee_reference'] ?? '';
+
+$clientId = RateLimiter::getClientIdentifier();
 
 // Verify by token (QR or NFC)
 if ($token) {
-    $verificationResult = VerificationService::verifyByToken($token, $type);
-} 
+    $tokenRateLimitKey = 'verify_token_' . $clientId;
+    if (RateLimiter::isRateLimited($tokenRateLimitKey, 30, 900)) { // 30 attempts per 15 minutes
+        $resetTime = RateLimiter::getResetTime($tokenRateLimitKey);
+        $minutes = ceil($resetTime / 60);
+        $verificationResult = [
+            'success' => false,
+            'message' => "Too many verification attempts. Please try again in {$minutes} minute" . ($minutes !== 1 ? 's' : '') . "."
+        ];
+    } else {
+        $verificationResult = VerificationService::verifyByToken($token, $type);
+    }
+}
 // Verify by reference (manual lookup)
-elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && $organisationId && $employeeReference) {
-    if (!CSRF::validatePost()) {
+elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && $organisationName && $employeeReference) {
+    $referenceRateLimitKey = 'verify_ref_' . $clientId;
+    if (RateLimiter::isRateLimited($referenceRateLimitKey, 10, 900)) { // 10 attempts per 15 minutes
+        $resetTime = RateLimiter::getResetTime($referenceRateLimitKey);
+        $minutes = ceil($resetTime / 60);
+        $verificationResult = [
+            'success' => false,
+            'message' => "Too many verification attempts. Please try again in {$minutes} minute" . ($minutes !== 1 ? 's' : '') . "."
+        ];
+    } elseif (!CSRF::validatePost()) {
         $verificationResult = [
             'success' => false,
             'message' => 'Invalid security token.'
         ];
     } else {
-        $verificationResult = VerificationService::verifyByReference($organisationId, $employeeReference);
+        $verificationResult = VerificationService::verifyByReference($organisationName, $employeeReference);
     }
 }
-
-// Get all organisations for manual lookup
-$db = getDbConnection();
-$stmt = $db->prepare("SELECT id, name FROM organisations ORDER BY name");
-$stmt->execute();
-$organisations = $stmt->fetchAll();
 
 $pageTitle = 'Verify Digital ID';
 include dirname(__DIR__) . '/includes/header.php';
@@ -116,15 +131,9 @@ include dirname(__DIR__) . '/includes/header.php';
             <?php echo CSRF::tokenField(); ?>
             
             <div class="form-group">
-                <label for="organisation_id">Organisation</label>
-                <select id="organisation_id" name="organisation_id" required>
-                    <option value="">Select an organisation...</option>
-                    <?php foreach ($organisations as $org): ?>
-                        <option value="<?php echo $org['id']; ?>" <?php echo ($organisationId == $org['id']) ? 'selected' : ''; ?>>
-                            <?php echo htmlspecialchars($org['name']); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
+                <label for="organisation_name">Organisation</label>
+                <input type="text" id="organisation_name" name="organisation_name" value="<?php echo htmlspecialchars($organisationName); ?>" required>
+                <small>Enter the organisation name exactly as shown on the person's digital ID card</small>
             </div>
             
             <div class="form-group">

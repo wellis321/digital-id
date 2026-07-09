@@ -53,9 +53,23 @@ class VerificationService {
     /**
      * Verify employee by reference (visual/manual lookup)
      */
-    public static function verifyByReference($organisationId, $employeeReference) {
-        $employee = Employee::findByReference($organisationId, $employeeReference);
-        
+    public static function verifyByReference($organisationName, $employeeReference) {
+        $db = getDbConnection();
+        $stmt = $db->prepare("SELECT id FROM organisations WHERE name = ? LIMIT 1");
+        $stmt->execute([trim($organisationName)]);
+        $organisation = $stmt->fetch();
+
+        if (!$organisation) {
+            // Same generic message as "employee not found" below - don't reveal
+            // whether the organisation name itself is valid
+            return [
+                'success' => false,
+                'message' => 'Employee not found.'
+            ];
+        }
+
+        $employee = Employee::findByReference($organisation['id'], $employeeReference);
+
         if (!$employee) {
             return [
                 'success' => false,

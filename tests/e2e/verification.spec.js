@@ -26,37 +26,56 @@ test.describe('Verification', () => {
   });
   
   /**
-   * TC-010: Manual lookup by employee reference
+   * TC-010: Manual lookup by organisation name + employee reference
+   * The organisation picker used to be a <select> listing every organisation
+   * in the system (a data exposure issue - see docs.php Verification Methods
+   * section). It's now a plain text field: the verifier must already know
+   * the organisation name, exactly as shown on the person's digital ID card.
    */
-  test('should verify employee by reference', async ({ page }) => {
+  test('should verify employee by organisation name and reference', async ({ page }) => {
     await page.goto('/verify.php');
-    
-    // Select organisation
+
+    // The full organisation list must never be exposed on this page
     const orgSelect = page.locator('select[name*="organisation"], select[name*="org"]');
-    if (await orgSelect.count() > 0) {
-      await orgSelect.selectOption({ index: 1 }); // Select first organisation
-    }
-    
-    // Enter employee reference
-    const refInput = page.locator('input[name*="reference"], input[name*="employee"]');
-    await refInput.fill('EMP001');
-    
-    // Submit form
+    await expect(orgSelect).toHaveCount(0);
+
+    await page.fill('input[name="organisation_name"]', 'Test Organisation A');
+    await page.fill('input[name="employee_reference"]', 'EMP001');
+
     const submitButton = page.locator('button[type="submit"], input[type="submit"]');
     await submitButton.click();
-    
-    // Wait for verification result
+
     await page.waitForLoadState('networkidle');
-    
-    // Check for success message or employee details
-    const successMessage = page.locator('text=/success|verified|valid/i');
-    const employeeName = page.locator('text=/John|Doe|Employee Name/i');
-    
-    // Either success message or employee details should be visible
-    const hasSuccess = await successMessage.count() > 0;
-    const hasEmployee = await employeeName.count() > 0;
-    
-    expect(hasSuccess || hasEmployee).toBe(true);
+
+    // Should show success and the matched employee's details
+    const successMessage = page.locator('text=/success|verified/i');
+    const employeeName = page.locator('text=/John|Doe/i');
+
+    await expect(successMessage.first()).toBeVisible();
+    await expect(employeeName.first()).toBeVisible();
+  });
+
+  /**
+   * A wrong organisation name and a wrong employee reference must be
+   * indistinguishable - otherwise the error message becomes an oracle for
+   * enumerating valid organisation names.
+   */
+  test('manual lookup gives an identical generic message for wrong org vs wrong reference', async ({ page }) => {
+    await page.goto('/verify.php');
+    await page.fill('input[name="organisation_name"]', 'Not A Real Organisation');
+    await page.fill('input[name="employee_reference"]', 'EMP001');
+    await page.locator('button[type="submit"], input[type="submit"]').click();
+    await page.waitForLoadState('networkidle');
+    const wrongOrgMessage = await page.locator('.verification-failed ~ p, .verification-result p').first().textContent();
+
+    await page.goto('/verify.php');
+    await page.fill('input[name="organisation_name"]', 'Test Organisation A');
+    await page.fill('input[name="employee_reference"]', 'NOT-A-REAL-REFERENCE');
+    await page.locator('button[type="submit"], input[type="submit"]').click();
+    await page.waitForLoadState('networkidle');
+    const wrongRefMessage = await page.locator('.verification-failed ~ p, .verification-result p').first().textContent();
+
+    expect(wrongOrgMessage?.trim()).toEqual(wrongRefMessage?.trim());
   });
   
   /**
