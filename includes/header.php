@@ -377,7 +377,22 @@
                         <a href="<?php echo url('features.php'); ?>" class="<?php echo $isActive('features.php'); ?>">Features</a>
                         <a href="<?php echo url('housing-social-care.php'); ?>" class="<?php echo $isActive('housing-social-care.php'); ?>">Housing & Social Care</a>
                         <a href="<?php echo url('security.php'); ?>" class="<?php echo $isActive('security.php'); ?>">Security</a>
-                        <a href="<?php echo url('docs.php'); ?>" class="<?php echo $isActive('docs.php'); ?>">Documentation</a>
+                        <?php
+                        require_once dirname(__DIR__) . '/includes/docs-sections.php';
+                        $isDocsPageActive = isset($docsSections[$currentPage]) || $currentPage === 'docs.php';
+                        ?>
+                        <div class="nav-dropdown">
+                            <a href="<?php echo url('docs-getting-started.php'); ?>" class="nav-dropdown-toggle <?php echo $isDocsPageActive ? 'active' : ''; ?>">
+                                Documentation <i class="fas fa-chevron-down"></i>
+                            </a>
+                            <div class="nav-dropdown-menu">
+                                <?php foreach ($docsSections as $file => $meta): ?>
+                                    <a href="<?php echo url($file); ?>" class="<?php echo $currentPage === $file ? 'active' : ''; ?>">
+                                        <i class="<?php echo $meta['icon']; ?>"></i> <?php echo $meta['label']; ?>
+                                    </a>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
                         <a href="<?php echo url('request-access.php'); ?>" class="<?php echo $isActive('request-access.php'); ?>">Request Access</a>
                         <a href="<?php echo url('login.php'); ?>" class="<?php echo $isActive('login.php'); ?>">Login</a>
                     </nav>

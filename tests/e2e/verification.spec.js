@@ -28,7 +28,7 @@ test.describe('Verification', () => {
   /**
    * TC-010: Manual lookup by organisation name + employee reference
    * The organisation picker used to be a <select> listing every organisation
-   * in the system (a data exposure issue - see docs.php Verification Methods
+   * in the system (a data exposure issue - see docs-verification.php
    * section). It's now a plain text field: the verifier must already know
    * the organisation name, exactly as shown on the person's digital ID card.
    */

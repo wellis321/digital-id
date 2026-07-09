@@ -1170,7 +1170,7 @@ include INCLUDES_PATH . '/header.php';
                     </p>
                     
                     <div style="margin-top: 2rem;">
-                        <a href="<?php echo url('docs.php?section=entra-integration'); ?>" class="btn btn-primary">
+                        <a href="<?php echo url('docs-entra-integration.php'); ?>" class="btn btn-primary">
                             <i class="fas fa-book"></i> Learn More About Integration
                         </a>
                     </div>

@@ -92,7 +92,7 @@ test.describe('ID Card Display', () => {
    * This is a genuine product/documentation mismatch, not a flaky test -
    * left failing intentionally rather than papered over:
    *
-   * docs.php's PWA section tells users "you can view your cached ID card
+   * docs-pwa.php tells users "you can view your cached ID card
    * even without an internet connection." But service-worker.js explicitly
    * refuses to cache any .php page ("CRITICAL: Never cache PHP pages - they
    * contain authentication state"), so id-card.php itself is never cached

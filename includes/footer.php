@@ -29,8 +29,8 @@
             <div class="footer-section">
                 <h3>Resources</h3>
                 <ul>
-                    <li><a href="<?php echo url('docs.php'); ?>">Documentation</a></li>
-                    <li><a href="<?php echo url('docs.php?section=mcp-integration'); ?>">AI Integration (MCP)</a></li>
+                    <li><a href="<?php echo url('docs-getting-started.php'); ?>">Documentation</a></li>
+                    <li><a href="<?php echo url('docs-mcp-integration.php'); ?>">AI Integration (MCP)</a></li>
                     <li><a href="https://salmon-tarsier-739827.hostingersite.com/public/landing.php" target="_blank" rel="noopener noreferrer">Staff Service</a></li>
                     <li><a href="<?php echo url('contact.php'); ?>">Support</a></li>
                     <li><a href="<?php echo url('case-studies.php'); ?>">Case Studies</a></li>

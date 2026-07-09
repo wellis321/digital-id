@@ -1,0 +1,300 @@
+/* Digital ID Documentation Pages - styles shared across all docs-*.php pages */
+
+.docs-container {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 3rem;
+    margin: 2rem 0;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.docs-sidebar {
+    position: sticky;
+    top: 2rem;
+    height: fit-content;
+    background: #f9fafb;
+    border-radius: 0;
+    padding: 1.5rem;
+    border: 1px solid #e5e7eb;
+}
+
+.docs-sidebar h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #06b6d4;
+}
+
+.docs-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.docs-sidebar li {
+    margin-bottom: 0.5rem;
+}
+
+.docs-sidebar a {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    color: #6b7280;
+    text-decoration: none;
+    border-radius: 0;
+    transition: all 0.2s;
+    font-size: 0.875rem;
+}
+
+.docs-sidebar a:hover {
+    background: #e5e7eb;
+    color: #1f2937;
+}
+
+.docs-sidebar a.active {
+    background: #06b6d4;
+    color: white;
+    font-weight: 500;
+}
+
+.docs-content {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    overflow-x: auto;
+    word-wrap: break-word;
+    max-width: 100%;
+}
+
+.docs-content h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid #10b981;
+}
+
+.docs-content h2 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.docs-content h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.docs-content p {
+    color: #4b5563;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+.docs-content ul, .docs-content ol {
+    color: #4b5563;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+}
+
+.docs-content li {
+    margin-bottom: 0.5rem;
+}
+
+.docs-content code {
+    background: #f3f4f6;
+    padding: 0.125rem 0.375rem;
+    border-radius: 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    color: #dc2626;
+}
+
+.docs-content pre {
+    background: #1f2937;
+    color: #f9fafb;
+    padding: 1rem;
+    border-radius: 0;
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+
+.docs-content pre code {
+    background: none;
+    color: #f9fafb;
+    padding: 0;
+}
+
+.docs-content .info-box {
+    background: #f0f9ff;
+    border-left: 4px solid #06b6d4;
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 0;
+}
+
+.docs-content .info-box h4 {
+    margin: 0 0 0.5rem 0;
+    color: #0e7490;
+    font-size: 1rem;
+}
+
+.docs-content .info-box p {
+    margin: 0;
+    color: #0e7490;
+}
+
+.docs-content .warning-box {
+    background: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 0;
+}
+
+.docs-content .warning-box h4 {
+    margin: 0 0 0.5rem 0;
+    color: #92400e;
+    font-size: 1rem;
+}
+
+.docs-content .warning-box p {
+    margin: 0;
+    color: #92400e;
+}
+
+.docs-content .success-box {
+    background: #d1fae5;
+    border-left: 4px solid #10b981;
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 0;
+}
+
+.docs-content .success-box h4 {
+    margin: 0 0 0.5rem 0;
+    color: #065f46;
+    font-size: 1rem;
+}
+
+.docs-content .success-box p {
+    margin: 0;
+    color: #065f46;
+}
+
+.docs-content .step-list {
+    counter-reset: step-counter;
+    list-style: none;
+    padding-left: 0;
+}
+
+.docs-content .step-list li {
+    counter-increment: step-counter;
+    margin-bottom: 1.5rem;
+    padding-left: 3rem;
+    position: relative;
+}
+
+.docs-content .step-list li::before {
+    content: counter(step-counter);
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #06b6d4;
+    color: white;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.docs-content .step-list li ul {
+    list-style-type: disc;
+    counter-reset: none;
+    margin-left: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.docs-content .step-list li ul li {
+    counter-increment: none;
+    padding-left: 0;
+    margin-bottom: 0.5rem;
+    position: relative;
+}
+
+.docs-content .step-list li ul li::before {
+    display: none;
+}
+
+.docs-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    max-width: 100%;
+    table-layout: auto;
+}
+
+.docs-content .comparison-table {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    display: block;
+}
+
+.docs-content .comparison-table table {
+    width: 100%;
+    min-width: 600px;
+}
+
+.docs-content table th {
+    background: #f3f4f6;
+    padding: 0.75rem;
+    text-align: left;
+    font-weight: 600;
+    color: #1f2937;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.docs-content table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #e5e7eb;
+    color: #4b5563;
+}
+
+.docs-content table tr:hover {
+    background: #f9fafb;
+}
+
+@media (max-width: 968px) {
+    .docs-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .docs-sidebar {
+        position: relative;
+        top: 0;
+    }
+    
+    .docs-sidebar ul {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 0.5rem;
+    }
+}
