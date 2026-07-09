@@ -160,3 +160,30 @@ Schema changes documented in:
 - `RUN_EMPLOYEE_MIGRATION.md`
 - `RUN_REFERENCE_MIGRATION.md`
 - `sql/migrate_organisational_units.sql`
+
+## Design Context
+
+### Users
+Two primary audiences for the public-facing site (marketing pages, docs, verification page):
+
+- **Care sector buyers/admins** — managers, IT leads, and compliance officers at social care organisations, evaluating or configuring the product on desktop during work hours. Need to see credibility, compliance credentials, and clear product capability.
+- **Service users & families** — vulnerable people, elderly clients, and their families verifying a carer's identity via the public verification page. Likely lower digital confidence, may be anxious or unfamiliar with QR/digital verification, and may rely on larger text/higher contrast.
+
+(Care staff using their own ID card day-to-day, and third parties like bank/building security scanning QR codes, are secondary audiences for the logged-in/verification product surfaces — worth keeping in mind for those specific flows even though the critique above focused on buyers and service users.)
+
+### Brand Personality
+**Calm & reassuring.** This is a compliance/safeguarding product in a regulated sector — the interface should feel understated and trustworthy, minimising anxiety rather than projecting startup energy or corporate flash. Confidence should come from clarity and competence, not from bold sales-y styling.
+
+### Aesthetic Direction
+- Keep the existing blue (`#2563eb`) + cyan (`#06b6d4`) brand hues — there's recognition value already built up — but refine into a deliberate, tokenised palette rather than scattered hard-coded hex values.
+- Move off system-default fonts (current stack is `-apple-system, Segoe UI, Roboto...`) toward a considered typographic pairing that still reads as professional/institutional, not playful.
+- Favour calm, low-contrast-noise layouts: generous whitespace, clear hierarchy, minimal decorative flourish. Avoid anything that reads as "generic AI SaaS" (gradient text, glassmorphism, glowing dark-mode accents, identical card grids).
+- No emojis anywhere — Font Awesome 6 icons only (existing project rule).
+- UK English throughout (existing project rule).
+
+### Design Principles
+1. **Reassurance over flash** — every screen a service user or family member lands on (especially verification) should reduce anxiety: clear pass/fail states, plain language, no jargon.
+2. **Tokenise before styling** — introduce CSS custom properties for colour/spacing/type so "refine the palette" work is centralised, not another round of hard-coded hex values.
+3. **Accessible by default (WCAG 2.1 AA)** — colour contrast, keyboard access, readable type sizes, and reduced-motion support are baseline requirements, not nice-to-haves, given elderly/vulnerable end-users.
+4. **Institutional trust, not corporate sales energy** — lean toward calm/official over bold marketing-site tropes (large gradient hero metrics, aggressive CTAs).
+5. **Two audiences, two moods within one system** — buyer/admin-facing marketing and docs pages can be a little more confident/capable in tone; the public verification page should be the calmest, simplest, most reassuring surface in the product.

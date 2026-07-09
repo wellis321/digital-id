@@ -103,13 +103,13 @@ include INCLUDES_PATH . '/header.php';
 <div class="card">
     <h1>Request Access for Your Organisation</h1>
     
-    <div style="background-color: #eff6ff; border-left: 4px solid #3b82f6; padding: 1.5rem; margin-bottom: 2rem; border-radius: 0;">
-        <h3 style="margin-top: 0; color: #1e40af;">How It Works</h3>
-        <p style="margin-bottom: 0.75rem; color: #1e40af;">Getting started with Digital ID is a simple three-step process:</p>
-        <ol style="margin: 0.75rem 0 0 1.5rem; color: #1e40af; line-height: 1.8;">
+    <div class="callout-box">
+        <h3>How It Works</h3>
+        <p>Getting started with Digital ID is a simple three-step process:</p>
+        <ol class="step-list">
             <li><strong>Contact Us:</strong> Fill out the form below with your organisation details. We'll discuss your needs, including how many seats you require and who will be your administrators.</li>
             <li><strong>We Set Up Your Organisation:</strong> Once we've confirmed the details, we'll create your organisation account, configure your domain, and allocate your seats.</li>
-            <li><strong>You Register & Log In:</strong> After setup is complete, you and your team can register using your organisation email addresses and start using Digital ID.</li>
+            <li><strong>You Register &amp; Log In:</strong> After setup is complete, you and your team can register using your organisation email addresses and start using Digital ID.</li>
         </ol>
     </div>
     

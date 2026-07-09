@@ -6,6 +6,16 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     line-height: 1.6;
@@ -443,6 +453,84 @@ main {
     background-color: #f0f9ff;
     color: #0e7490;
     border: 1px solid #67e8f9;
+}
+
+/* Callout box - richer informational highlight (heading + body + optional step list) */
+.callout-box {
+    background-color: #f0f9ff;
+    border: 1px solid #bae6fd;
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 2rem;
+}
+
+.callout-box h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: #0e7490;
+    font-size: 1.125rem;
+}
+
+.callout-box > p {
+    color: #374151;
+    margin-bottom: 1rem;
+}
+
+.callout-box > p:last-child {
+    margin-bottom: 0;
+}
+
+.callout-box--warning {
+    background-color: #fffbeb;
+    border-color: #fde68a;
+}
+
+.callout-box--warning h3,
+.callout-box--warning h4 {
+    color: #92400e;
+}
+
+.callout-box--warning a {
+    color: #92400e;
+    font-weight: 500;
+}
+
+.step-list {
+    counter-reset: step-counter;
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.step-list li {
+    counter-increment: step-counter;
+    padding-left: 3rem;
+    position: relative;
+    color: #374151;
+    line-height: 1.6;
+}
+
+.step-list li:not(:last-child) {
+    margin-bottom: 1.25rem;
+}
+
+.step-list li::before {
+    content: counter(step-counter);
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #0891b2;
+    color: white;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.step-list li strong {
+    color: #1f2937;
 }
 
 /* Footer */

@@ -91,10 +91,10 @@ include INCLUDES_PATH . '/header.php';
 <div class="card">
     <h1>Case Studies</h1>
     
-    <div style="background-color: #eff6ff; border-left: 4px solid #3b82f6; padding: 1.5rem; margin-bottom: 2rem; border-radius: 0;">
-        <h3 style="margin-top: 0; color: #1e40af;">We're Looking for Partners</h3>
-        <p style="margin-bottom: 0.75rem; color: #1e40af;">
-            We're building a library of case studies to showcase how organisations are using Digital ID to improve their identity management, 
+    <div class="callout-box">
+        <h3>We're Looking for Partners</h3>
+        <p>
+            We're building a library of case studies to showcase how organisations are using Digital ID to improve their identity management,
             enhance security, and streamline operations. If you're using Digital ID and would like to share your story, we'd love to work with you.
         </p>
     </div>
@@ -137,10 +137,10 @@ include INCLUDES_PATH . '/header.php';
     <div style="margin-bottom: 3rem;">
         <h2>What's Involved</h2>
         <p>If you're interested in participating, here's what the process typically looks like:</p>
-        <ol style="margin-top: 1rem; padding-left: 1.5rem; line-height: 1.8;">
+        <ol class="step-list" style="margin-top: 1rem;">
             <li><strong>Initial Discussion:</strong> We'll have a conversation to understand your use case and what you'd like to share.</li>
             <li><strong>Content Development:</strong> We'll work together to develop the case study content, ensuring it accurately represents your experience.</li>
-            <li><strong>Review & Approval:</strong> You'll have the opportunity to review and approve the final case study before it's published.</li>
+            <li><strong>Review &amp; Approval:</strong> You'll have the opportunity to review and approve the final case study before it's published.</li>
             <li><strong>Publication:</strong> Once approved, we'll publish the case study on our website and may use it in marketing materials (with your permission).</li>
         </ol>
     </div>
@@ -202,12 +202,12 @@ include INCLUDES_PATH . '/header.php';
             </form>
         </div>
         
-        <div style="margin-top: 2rem; padding: 1.5rem; background-color: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 0;">
-            <h4 style="margin-top: 0; color: #92400e;">
+        <div class="callout-box callout-box--warning" style="margin-top: 2rem;">
+            <h4>
                 <i class="fas fa-info-circle"></i> Prefer to Email Directly?
             </h4>
-            <p style="color: #92400e; margin-bottom: 0;">
-                You can also reach us directly at <a href="mailto:<?php echo CONTACT_EMAIL; ?>" style="color: #92400e; font-weight: 500;"><?php echo CONTACT_EMAIL; ?></a> 
+            <p>
+                You can also reach us directly at <a href="mailto:<?php echo CONTACT_EMAIL; ?>"><?php echo CONTACT_EMAIL; ?></a>
                 if you'd prefer to discuss case study opportunities via email.
             </p>
         </div>
