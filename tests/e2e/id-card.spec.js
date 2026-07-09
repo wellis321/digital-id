@@ -23,28 +23,34 @@ test.describe('ID Card Display', () => {
    */
   test('should display ID card with all elements', async ({ page }) => {
     await page.goto('/id-card.php');
-    
+
     // Wait for page to load
     await page.waitForLoadState('networkidle');
-    
-    // Check ID card container exists
-    const idCard = page.locator('.id-card, #id-card, [class*="id-card"]');
+
+    // Check ID card container exists. Note: the container and every nested
+    // section (header/photo/details/qr) all share "id-card" in their class
+    // names, so a broad [class*="id-card"] selector matches multiple
+    // elements and trips Playwright's strict mode - target the unique id
+    // on the outer container instead.
+    const idCard = page.locator('#id-card-content');
     await expect(idCard).toBeVisible();
-    
+
     // Check employee name is displayed
     const name = page.locator('text=/John|Smith|Employee Name/i');
     await expect(name.first()).toBeVisible();
-    
+
     // Check employee reference is displayed
     const reference = page.locator('text=/EMP001|Employee Reference/i');
     await expect(reference.first()).toBeVisible();
-    
+
     // Check organisation name is displayed
     const orgName = page.locator('text=/Test Organisation|Organisation/i');
     await expect(orgName.first()).toBeVisible();
-    
-    // Check QR code is visible
-    const qrCode = page.locator('img[alt*="QR"], canvas, svg, [class*="qr"]');
+
+    // Check QR code is visible (the app renders a plain <img alt="QR code...">
+    // inside a .id-card-qr wrapper div - matching on the wrapper's class too
+    // would pick the div itself first in DOM order, not the image)
+    const qrCode = page.locator('img[alt*="QR"]');
     await expect(qrCode.first()).toBeVisible();
     
     // Check no JavaScript errors
@@ -61,16 +67,14 @@ test.describe('ID Card Display', () => {
     await page.goto('/id-card.php');
     await page.waitForLoadState('networkidle');
     
-    // Get QR code image
-    const qrCode = page.locator('img[alt*="QR"], canvas, svg, [class*="qr"]').first();
+    // Get QR code image (see note above on why this doesn't also match [class*="qr"])
+    const qrCode = page.locator('img[alt*="QR"]').first();
     await expect(qrCode).toBeVisible();
-    
-    // Check QR code has valid src or data
+
+    // QR image is generated via an external QR service URL (src attribute
+    // always set once rendered) - confirm it's actually present
     const qrSrc = await qrCode.getAttribute('src');
-    const qrDataUrl = await qrCode.getAttribute('data-url');
-    
-    // QR code should have either src or data-url
-    expect(qrSrc || qrDataUrl).toBeTruthy();
+    expect(qrSrc).toBeTruthy();
     
     // Check QR code links to verification page
     // This might be in a link or the QR code itself
@@ -84,6 +88,21 @@ test.describe('ID Card Display', () => {
   
   /**
    * TC-004: ID card works offline (PWA)
+   *
+   * This is a genuine product/documentation mismatch, not a flaky test -
+   * left failing intentionally rather than papered over:
+   *
+   * docs.php's PWA section tells users "you can view your cached ID card
+   * even without an internet connection." But service-worker.js explicitly
+   * refuses to cache any .php page ("CRITICAL: Never cache PHP pages - they
+   * contain authentication state"), so id-card.php itself is never cached
+   * and this reload fails with net::ERR_FAILED while offline on every
+   * browser (verified on chromium, not WebKit-specific).
+   *
+   * Fixing this for real needs a product decision: either the docs are
+   * overpromising and should be corrected, or offline viewing needs a
+   * different mechanism (e.g. caching a JSON snapshot of the card data via
+   * a dedicated endpoint, separate from the authenticated HTML page).
    */
   test('should work offline after initial load', async ({ page, context }) => {
     await page.goto('/id-card.php');
@@ -125,15 +144,17 @@ test.describe('ID Card Display', () => {
    * Test ID card displays for user without photo
    */
   test('should display placeholder for missing photo', async ({ page }) => {
-    // This test would require a user without a photo
-    // You might need to create test data first
-    
+    // The seeded test employee (EMP001) has no photo_path, so id-card.php
+    // renders its "No Photo" placeholder branch - a <div class="id-card-photo">,
+    // not an <img>. Both the real photo and the placeholder use the same
+    // .id-card-photo class (id-card.php picks one or the other), so confirm
+    // it's specifically the placeholder by checking its text.
     await page.goto('/id-card.php');
     await page.waitForLoadState('networkidle');
-    
-    // Check for placeholder image or default avatar
-    const photo = page.locator('img[alt*="photo"], img[alt*="avatar"], .photo-placeholder');
-    await expect(photo.first()).toBeVisible();
+
+    const photoElement = page.locator('.id-card-photo').first();
+    await expect(photoElement).toBeVisible();
+    await expect(photoElement).toContainText('No Photo');
   });
 });
 
