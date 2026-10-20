@@ -31,7 +31,7 @@
                 <ul>
                     <li><a href="<?php echo url('docs-getting-started.php'); ?>">Documentation</a></li>
                     <li><a href="<?php echo url('docs-mcp-integration.php'); ?>">AI Integration (MCP)</a></li>
-                    <li><a href="https://salmon-tarsier-739827.hostingersite.com/public/landing.php" target="_blank" rel="noopener noreferrer">Staff Service</a></li>
+                    <li><a href="https://findcarescotland.com/software/staff-service" target="_blank" rel="noopener noreferrer">Staff Service</a></li>
                     <li><a href="<?php echo url('contact.php'); ?>">Support</a></li>
                     <li><a href="<?php echo url('case-studies.php'); ?>">Case Studies</a></li>
                 </ul>
@@ -67,7 +67,7 @@
                 <p style="color: #c9d3d3; font-size: 0.875rem; line-height: 1.6; margin-bottom: 1rem;">
                     Centralised staff management designed for organisations where data ownership is critical. Take control of your staff information and integrate with existing systems without duplication or vendor lock-in.
                 </p>
-                <a href="https://salmon-tarsier-739827.hostingersite.com/public/landing.php" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                <a href="https://findcarescotland.com/software/staff-service" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
                     <i class="fas fa-external-link-alt"></i> <span>Learn More</span>
                 </a>
             </div>

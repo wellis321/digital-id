@@ -26,7 +26,7 @@
     <link rel="manifest" href="<?php echo url('manifest.json'); ?>">
     
     <!-- Font Awesome 6 (Free) - Icon Library -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="<?php echo htmlspecialchars(url('assets/vendor/fontawesome/css/all.min.css')); ?>?v=6.4.0">
     <link rel="stylesheet" href="<?php echo url('assets/css/style.css'); ?>?v=<?php echo filemtime(dirname(__DIR__) . '/public/assets/css/style.css'); ?>">
     <link rel="stylesheet" href="<?php echo htmlspecialchars(url('assets/suite/suite.css')); ?>?v=<?php echo filemtime(dirname(__DIR__) . '/public/assets/suite/suite.css'); ?>">
     
