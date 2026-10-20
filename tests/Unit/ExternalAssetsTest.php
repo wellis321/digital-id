@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Pages must not load scripts, styles or fonts from other sites: it leaks visitors' IP addresses and page
  * addresses to third parties, and it lets a third party change what runs in the app. Libraries are bundled
- * under public/assets/vendor/.
+ * under public/assets/libs/.
  */
 class ExternalAssetsTest extends TestCase
 {
@@ -16,7 +16,7 @@ class ExternalAssetsTest extends TestCase
         $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($root, FilesystemIterator::SKIP_DOTS));
         foreach ($it as $file) {
             $path = $file->getPathname();
-            if (!preg_match('/\.(php|html|js|css)$/', $path) || preg_match('#/(vendor|node_modules|tests|playwright-report|test-results|assets/vendor|assets/suite)/#', $path)) {
+            if (!preg_match('/\.(php|html|js|css)$/', $path) || preg_match('#/(vendor|node_modules|tests|playwright-report|test-results|assets/libs|assets/suite)/#', $path)) {
                 continue;
             }
             $s = file_get_contents($path);
