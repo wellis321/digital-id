@@ -83,9 +83,7 @@ After database is set up:
 php sql/create_super_admin.php
 ```
 
-**Option B - Via Web:**
-1. Visit: `https://lightslategrey-weasel-963972.hostingersite.com/admin/create-super-admin.php`
-2. Fill in the form to create super admin
+(There is deliberately no web page for this: it would let anyone take over the admin account. Use the command-line script.)
 
 ## Common 403 Error Causes
 

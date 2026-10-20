@@ -193,7 +193,7 @@ If document root is the project root, you need to:
 
 1. **Create Super Admin:**
    - Run: `php sql/create_super_admin.php` via SSH
-   - OR use the web interface: `/admin/create-super-admin.php`
+   - (The old web page for this was removed: it had no login check. Use the command-line script.)
 
 2. **Test All Features:**
    - User registration

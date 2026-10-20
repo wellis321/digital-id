@@ -4,6 +4,12 @@
  * This script will create the organisational_units and organisational_unit_members tables
  */
 
+// Command line only: never reachable from the web.
+if (php_sapi_name() !== 'cli') {
+    http_response_code(404);
+    exit;
+}
+
 require_once dirname(__DIR__) . '/config/config.php';
 
 echo "=== Organisational Units Migration ===\n\n";

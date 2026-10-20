@@ -6,6 +6,12 @@
  * php sql/migrate_check_in_sessions.php
  */
 
+// Command line only: never reachable from the web.
+if (php_sapi_name() !== 'cli') {
+    http_response_code(404);
+    exit;
+}
+
 require_once dirname(__DIR__) . '/config/config.php';
 
 $db = getDbConnection();
