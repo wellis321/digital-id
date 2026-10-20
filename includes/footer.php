@@ -6,7 +6,7 @@
                     <img src="<?php echo url('assets/images/300-high-digitalID-logo.png'); ?>" alt="" class="footer-logo-image">
                     <span class="footer-logo-text"><?php echo APP_NAME; ?></span>
                 </a>
-                <p style="color: #9ca3af; line-height: 1.6; margin-top: 1rem;">
+                <p style="color: #c9d3d3; line-height: 1.6; margin-top: 1rem;">
                     Secure, verifiable digital identification for social care providers. 
                     Replace paper-based ID cards with modern, secure technology.
                 </p>
@@ -51,7 +51,7 @@
         <div class="footer-bottom-section">
             <div class="footer-section footer-install-app">
                 <h2 class="footer-heading">Install App</h2>
-                <p style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 1rem;">
+                <p style="color: #c9d3d3; font-size: 0.875rem; margin-bottom: 1rem;">
                     Install Digital ID as an app on your phone for quick access
                 </p>
                 <button id="footer-install-button" class="btn btn-primary" style="display: none; width: 100%; margin-bottom: 0.5rem; gap: 0.5rem;">
@@ -64,7 +64,7 @@
             
             <div class="footer-section footer-staff-service">
                 <h2 class="footer-heading">Staff Service</h2>
-                <p style="color: #9ca3af; font-size: 0.875rem; line-height: 1.6; margin-bottom: 1rem;">
+                <p style="color: #c9d3d3; font-size: 0.875rem; line-height: 1.6; margin-bottom: 1rem;">
                     Centralised staff management designed for organisations where data ownership is critical. Take control of your staff information and integrate with existing systems without duplication or vendor lock-in.
                 </p>
                 <a href="https://salmon-tarsier-739827.hostingersite.com/public/landing.php" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">

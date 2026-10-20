@@ -120,7 +120,7 @@ if (!$employee):
     </div>
     
     <?php if (RBAC::isAdmin()): ?>
-        <div class="card" style="margin-top: 1.5rem; background-color: #e3f2fd; border-left: 4px solid #2196F3;">
+        <div class="card" style="margin-top: 1.5rem; background-color: #f4f6f5; border-left: 4px solid #0e5f5a;">
             <h2 style="margin-top: 0;">Create Your Employee Profile</h2>
             <p>As an administrator, you can create employee profiles for yourself and other users.</p>
             <p style="margin-top: 1rem;">
@@ -131,7 +131,7 @@ if (!$employee):
         </div>
     <?php else: ?>
         <?php if ($contactPerson): ?>
-            <div class="card" style="margin-top: 1.5rem; background-color: #e8f5e9; border-left: 4px solid #4CAF50;">
+            <div class="card" style="margin-top: 1.5rem; background-color: #e6f1ef; border-left: 4px solid #1f6b45;">
                 <h2 style="margin-top: 0;"><i class="fas fa-check-circle"></i> Help is on the way!</h2>
                 <p>We've automatically notified the appropriate person in your organisation about your missing employee profile.</p>
                 
@@ -151,7 +151,7 @@ if (!$employee):
                 </p>
             </div>
         <?php else: ?>
-            <div class="card" style="margin-top: 1.5rem; background-color: #fff3cd; border-left: 4px solid #ffc107;">
+            <div class="card" style="margin-top: 1.5rem; background-color: #f7f1e1; border-left: 4px solid #8a5a00;">
                 <h2 style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> Escalated to Support</h2>
                 <p>We couldn't find an administrator in your organisation to assist you.</p>
                 <p>Your request has been automatically escalated to our support team, who will contact you shortly to help resolve this issue.</p>
@@ -289,9 +289,9 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
                 $photoAltText .= ' (pending approval)';
             }
             ?>
-            <img src="<?php echo htmlspecialchars($photoPath); ?>" alt="<?php echo $photoAltText; ?>" class="id-card-photo" style="<?php echo ($photoStatus === 'pending' && !$hasApprovedPhoto) ? 'opacity: 0.7; border: 2px dashed #b45309;' : ''; ?>">
+            <img src="<?php echo htmlspecialchars($photoPath); ?>" alt="<?php echo $photoAltText; ?>" class="id-card-photo" style="<?php echo ($photoStatus === 'pending' && !$hasApprovedPhoto) ? 'opacity: 0.7; border: 2px dashed #6b4500;' : ''; ?>">
     <?php else: ?>
-        <div class="id-card-photo" style="background-color: #f3f4f6; border: 3px solid #e5e7eb; display: flex; align-items: center; justify-content: center; color: #5b6371;">
+        <div class="id-card-photo" style="background-color: #f6f5f1; border: 3px solid #dcd8cd; display: flex; align-items: center; justify-content: center; color: #4a5a5c;">
             No Photo
         </div>
     <?php endif; ?>
@@ -303,15 +303,15 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
         $showPendingMessage = ($photoStatus === 'pending' && !$hasApprovedPhoto);
         ?>
         <?php if ($showPendingMessage): ?>
-            <p style="color: #b45309; font-size: 0.875rem; margin: 0 0 0.75rem 0;">
+            <p style="color: #6b4500; font-size: 0.875rem; margin: 0 0 0.75rem 0;">
                 <i class="fas fa-clock"></i> Photo pending approval
             </p>
         <?php elseif ($photoStatus === 'pending' && $hasApprovedPhoto): ?>
-            <p style="color: #0e7490; font-size: 0.875rem; margin: 0 0 0.75rem 0;">
+            <p style="color: #0e5f5a; font-size: 0.875rem; margin: 0 0 0.75rem 0;">
                 <i class="fas fa-info-circle"></i> New photo uploaded - awaiting approval (current photo shown)
             </p>
         <?php elseif (($employee['photo_approval_status'] ?? 'none') === 'rejected'): ?>
-            <p style="color: #ef4444; font-size: 0.875rem; margin: 0 0 0.75rem 0;">
+            <p style="color: #a3322b; font-size: 0.875rem; margin: 0 0 0.75rem 0;">
                 <i class="fas fa-exclamation-triangle"></i> Photo was rejected
             </p>
         <?php endif; ?>
@@ -338,9 +338,9 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
     ?>
     
     <?php if ($signatureUrl): ?>
-    <div class="id-card-signature" style="margin-top: 1.5rem; text-align: center; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
-        <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #5b6371;"><strong>Signature:</strong></p>
-        <img src="<?php echo htmlspecialchars($signatureUrl); ?>" alt="Signature" style="max-width: 200px; max-height: 80px; object-fit: contain; background: white; padding: 0.5rem; border: 1px solid #e5e7eb;">
+    <div class="id-card-signature" style="margin-top: 1.5rem; text-align: center; padding-top: 1rem; border-top: 1px solid #dcd8cd;">
+        <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #4a5a5c;"><strong>Signature:</strong></p>
+        <img src="<?php echo htmlspecialchars($signatureUrl); ?>" alt="Signature" style="max-width: 200px; max-height: 80px; object-fit: contain; background: white; padding: 0.5rem; border: 1px solid #dcd8cd;">
     </div>
     <?php endif; ?>
     
@@ -353,19 +353,19 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
     </div>
     
     <!-- Building Access Information -->
-    <div class="info-box" style="margin-top: 2rem; padding: 1.5rem; background: #f0f9ff; border-left: 4px solid #0e7490; border-radius: 0;">
-        <h3 style="margin-top: 0; margin-bottom: 1rem; color: #0369a1; font-size: 1.125rem;">
+    <div class="info-box" style="margin-top: 2rem; padding: 1.5rem; background: #f4f6f5; border-left: 4px solid #0e5f5a; border-radius: 0;">
+        <h3 style="margin-top: 0; margin-bottom: 1rem; color: #0a4440; font-size: 1.125rem;">
             <i class="fas fa-door-open"></i> Using Your ID for Building Access
         </h3>
-        <p style="margin-bottom: 1rem; color: #0c4a6e;">
+        <p style="margin-bottom: 1rem; color: #0a4440;">
             Your Digital ID card can be used to access buildings, turnstiles, and secure areas. Simply scan your QR code at the access point.
         </p>
-        <ul style="margin: 0; padding-left: 1.5rem; color: #0c4a6e;">
+        <ul style="margin: 0; padding-left: 1.5rem; color: #0a4440;">
             <li><strong>Turnstiles:</strong> Scan your QR code at the turnstile scanner</li>
             <li><strong>Building Access:</strong> Present your QR code at door access panels</li>
             <li><strong>Secure Areas:</strong> Use your QR code for entry to restricted locations</li>
         </ul>
-        <p style="margin-top: 1rem; margin-bottom: 0; font-size: 0.875rem; color: #075985;">
+        <p style="margin-top: 1rem; margin-bottom: 0; font-size: 0.875rem; color: #0a4440;">
             <i class="fas fa-info-circle"></i> All access attempts are logged for security and compliance purposes.
         </p>
     </div>

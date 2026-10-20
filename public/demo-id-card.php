@@ -28,13 +28,13 @@ include INCLUDES_PATH . '/header.php';
 
 <div class="card" style="max-width: 600px; margin: 2rem auto;">
     <h1>Digital ID Card Example</h1>
-    <p style="color: #5b6371; margin-bottom: 2rem;">
+    <p style="color: #4a5a5c; margin-bottom: 2rem;">
         This is an example of what a Digital ID card looks like. When you register and your organisation administrator creates your employee profile, you'll receive your own personalised digital ID card.
     </p>
     
-    <div style="background: #f0f9ff; border: 2px solid #0e7490; border-radius: 0; padding: 1rem; margin-bottom: 2rem; text-align: center;">
-        <i class="fas fa-info-circle" style="color: #0e7490; font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
-        <p style="margin: 0; color: #0369a1; font-weight: 500;">This is a demonstration card with example data</p>
+    <div style="background: #f4f6f5; border: 2px solid #0e5f5a; border-radius: 0; padding: 1rem; margin-bottom: 2rem; text-align: center;">
+        <i class="fas fa-info-circle" style="color: #0e5f5a; font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
+        <p style="margin: 0; color: #0a4440; font-weight: 500;">This is a demonstration card with example data</p>
     </div>
 </div>
 
@@ -72,7 +72,7 @@ include INCLUDES_PATH . '/header.php';
         <div style="position: relative;">
             <div class="id-card" id="id-card-content" style="position: relative; margin: 0;">
                 <!-- Demo Badge -->
-                <div style="position: absolute; top: 1rem; right: 1rem; background: #b45309; color: white; padding: 0.5rem 1rem; font-size: 0.75rem; font-weight: 600; border-radius: 0; z-index: 10;">
+                <div style="position: absolute; top: 1rem; right: 1rem; background: #6b4500; color: white; padding: 0.5rem 1rem; font-size: 0.75rem; font-weight: 600; border-radius: 0; z-index: 10;">
                     <i class="fas fa-eye"></i> DEMO
                 </div>
                 
@@ -96,7 +96,7 @@ include INCLUDES_PATH . '/header.php';
                 
                 <!-- Demo QR Code -->
                 <div class="id-card-qr" style="margin-top: 1.5rem; text-align: center;">
-                    <p style="margin-bottom: 1rem; font-size: 0.875rem; color: #5b6371;">Scan QR code to learn more</p>
+                    <p style="margin-bottom: 1rem; font-size: 0.875rem; color: #4a5a5c;">Scan QR code to learn more</p>
                     <?php
                     // Generate a real QR code that links to the request access page
                     require_once SRC_PATH . '/classes/QRCodeGenerator.php';
@@ -104,8 +104,8 @@ include INCLUDES_PATH . '/header.php';
                     $encodedUrl = urlencode($demoUrl);
                     $qrImageUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={$encodedUrl}";
                     ?>
-                    <img src="<?php echo htmlspecialchars($qrImageUrl); ?>" alt="QR Code - Scan to request access" style="max-width: 200px; background: white; padding: 1rem; border-radius: 0; border: 1px solid #e5e7eb;">
-                    <p style="margin-top: 0.75rem; font-size: 0.75rem; color: #9ca3af;">
+                    <img src="<?php echo htmlspecialchars($qrImageUrl); ?>" alt="QR Code - Scan to request access" style="max-width: 200px; background: white; padding: 1rem; border-radius: 0; border: 1px solid #dcd8cd;">
+                    <p style="margin-top: 0.75rem; font-size: 0.75rem; color: #4a5a5c;">
                         <i class="fas fa-info-circle"></i> Scan this QR code to visit the request access page
                     </p>
                 </div>
@@ -120,8 +120,8 @@ include INCLUDES_PATH . '/header.php';
                     <p style="margin-top: 0.25rem; font-size: 0.75rem; opacity: 0.8;">BLE: Chrome/Edge (Android/Desktop)</p>
                 </div>
                 
-                <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e5e7eb; text-align: center;">
-                    <p style="font-size: 0.75rem; color: #9ca3af; margin: 0;">Card expires: <?php echo date('d/m/Y', strtotime('+1 year')); ?></p>
+                <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #dcd8cd; text-align: center;">
+                    <p style="font-size: 0.75rem; color: #4a5a5c; margin: 0;">Card expires: <?php echo date('d/m/Y', strtotime('+1 year')); ?></p>
                 </div>
             </div>
         </div>

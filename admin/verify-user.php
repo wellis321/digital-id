@@ -68,8 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-weight: bold; }
         input { width: 100%; padding: 8px; box-sizing: border-box; }
-        button { background: #2563eb; color: white; padding: 10px 20px; border: none; cursor: pointer; }
-        button:hover { background: #1d4ed8; }
+        button { background: #0e5f5a; color: white; padding: 10px 20px; border: none; cursor: pointer; }
+        button:hover { background: #0a4440; }
     </style>
 </head>
 <body>
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <hr style="margin: 30px 0;">
     
     <h2>Or use SQL directly:</h2>
-    <pre style="background: #f5f5f5; padding: 15px; border-radius: 4px;">
+    <pre style="background: #f6f5f1; padding: 15px; border-radius: 4px;">
 -- Verify user by ID:
 UPDATE users 
 SET email_verified = TRUE, 

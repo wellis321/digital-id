@@ -1,5 +1,5 @@
 /* =============================================================================
-   Suite design kit v0.2.1  ("Survey sheet": loch ink + thistle)
+   Suite design kit v0.3.0  ("Survey sheet": loch ink + thistle)
    Shared look for Find Care Scotland and its sister apps.
 
    HOW IT WORKS
@@ -48,7 +48,7 @@
   --info-border: #bccbd6;
   /* shape + type */
   --radius: 6px;
-  --radius-lg: 10px;
+  --radius-lg: 8px;
   --font-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-display: 'Bricolage Grotesque', 'IBM Plex Sans', system-ui, sans-serif;
   --ease: cubic-bezier(0.25, 1, 0.5, 1);
@@ -239,3 +239,25 @@ footer, .site-footer { background: var(--ink); color: rgba(255,255,255,0.78); bo
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }
+
+/* ── 12. Solid look (v0.3) ────────────────────────────────────────────────────
+   Restraint reads as reliable: one brand colour, flat surfaces, ruled structure, no gradients, no
+   decorative shadows, no pastel panels. Colour is reserved for meaning (status) and for the primary action. */
+.demo-banner { background: var(--ink-soft); color: #fff; border-bottom: 1px solid rgba(255,255,255,0.12); }
+.demo-banner strong { color: #e8cf86; }
+.demo-login-help { background: var(--surface); border: 1px solid var(--rule); color: var(--ink); }
+.demo-login-help h2 { color: var(--ink); }
+/* a first card sitting hard against the header looks unfinished */
+main > .card:first-child, main > .container > .card:first-child { margin-top: clamp(1rem, 3vw, 2rem); }
+/* no gradients or decorative shadows anywhere */
+[style*="gradient"] { background-image: none !important; }
+.card, .alert, .stat, .table-wrap, .btn, .btn-primary, .btn-secondary { box-shadow: none; }
+/* the only place a shadow belongs: floating menus */
+.nav-dropdown-menu { box-shadow: 0 8px 20px rgba(13, 43, 46, 0.14); }
+/* tables: quiet header, ruled rows, no tinted rows (status is shown in text, not paint) */
+tr[style*="background"] { background: transparent !important; }
+/* Footer and other dark bands: light text, whatever the app stylesheet says (apps set greys for light pages) */
+footer, .footer, .site-footer { color: rgba(255,255,255,0.8); }
+footer p, footer li, footer span, footer .footer-section p, footer .footer-section li, .footer-bottom, .footer-bottom p { color: rgba(255,255,255,0.8); }
+footer a, footer .footer-section a, .footer-bottom a { color: #fff; }
+footer a:hover { color: #e8cf86; }

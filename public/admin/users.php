@@ -180,7 +180,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
     <?php else: ?>
         <table style="width: 100%; border-collapse: collapse;">
             <thead>
-                <tr style="border-bottom: 2px solid #ddd;">
+                <tr style="border-bottom: 2px solid #dcd8cd;">
                     <th style="padding: 0.75rem; text-align: left;">Name</th>
                     <th style="padding: 0.75rem; text-align: left;">Email</th>
                     <th style="padding: 0.75rem; text-align: left;">Organisation</th>
@@ -223,7 +223,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                             }
                             
                             if (empty($displayRoles)) {
-                                echo '<span style="color: #6b7280;">No roles</span>';
+                                echo '<span style="color: #4a5a5c;">No roles</span>';
                             } else {
                                 // Format role names nicely
                                 $formattedRoles = array_map(function($role) {
@@ -242,18 +242,18 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                                     } elseif (stripos($roles[$index], 'admin') !== false) {
                                         $badgeColor = 'warning';
                                     }
-                                    echo '<span class="badge badge-' . $badgeColor . '" style="display: inline-block; padding: 0.25rem 0.5rem; margin-right: 0.25rem; margin-bottom: 0.25rem; background-color: ' . ($badgeColor === 'danger' ? '#dc2626' : ($badgeColor === 'warning' ? '#f59e0b' : '#2563eb')) . '; color: white; border-radius: 0; font-size: 0.75rem; font-weight: 500;">' . htmlspecialchars($formattedRole) . '</span>';
+                                    echo '<span class="badge badge-' . $badgeColor . '" style="display: inline-block; padding: 0.25rem 0.5rem; margin-right: 0.25rem; margin-bottom: 0.25rem; background-color: ' . ($badgeColor === 'danger' ? '#a3322b' : ($badgeColor === 'warning' ? '#8a5a00' : '#0e5f5a')) . '; color: white; border-radius: 0; font-size: 0.75rem; font-weight: 500;">' . htmlspecialchars($formattedRole) . '</span>';
                                 }
                             }
                             ?>
                         </td>
                         <td style="padding: 0.75rem;">
                             <?php if ($user['is_active'] && $user['email_verified']): ?>
-                                <span style="color: #059669; font-weight: 600;">Active</span>
+                                <span style="color: #1f6b45; font-weight: 600;">Active</span>
                             <?php elseif (!$user['email_verified']): ?>
-                                <span style="color: #dc2626; font-weight: 600;">Unverified</span>
+                                <span style="color: #a3322b; font-weight: 600;">Unverified</span>
                             <?php else: ?>
-                                <span style="color: #dc2626; font-weight: 600;">Inactive</span>
+                                <span style="color: #a3322b; font-weight: 600;">Inactive</span>
                             <?php endif; ?>
                         </td>
                         <td style="padding: 0.75rem;">

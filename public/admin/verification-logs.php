@@ -248,7 +248,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
         <?php endif; ?>
         
         <!-- Filters -->
-        <form method="GET" action="" class="filter-form" style="margin: 2rem 0; padding: 1.5rem; background: #f9fafb; border: 1px solid #e5e7eb;">
+        <form method="GET" action="" class="filter-form" style="margin: 2rem 0; padding: 1.5rem; background: #f6f5f1; border: 1px solid #dcd8cd;">
             <h2 style="font-size: 1.25rem; margin-bottom: 1rem;">Filters</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
                 <div class="form-group">
@@ -320,7 +320,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
         </form>
         
         <!-- Results Summary -->
-        <div style="margin: 1.5rem 0; padding: 1rem; background: #f0f9ff; border-left: 4px solid #06b6d4;">
+        <div style="margin: 1.5rem 0; padding: 1rem; background: #f4f6f5; border-left: 4px solid #0e5f5a;">
             <strong>Total Records:</strong> <?php echo number_format($totalRecords); ?> 
             <?php if ($totalRecords > 0): ?>
                 (Showing <?php echo number_format($offset + 1); ?> - <?php echo number_format(min($offset + $perPage, $totalRecords)); ?>)
@@ -336,7 +336,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
             <div style="overflow-x: auto;">
                 <table class="data-table" style="width: 100%; border-collapse: collapse;">
                     <thead>
-                        <tr style="background: #f9fafb; border-bottom: 2px solid #e5e7eb;">
+                        <tr style="background: #f6f5f1; border-bottom: 2px solid #dcd8cd;">
                             <th style="padding: 0.75rem; text-align: left; font-weight: 600;">Date/Time</th>
                             <th style="padding: 0.75rem; text-align: left; font-weight: 600;">Employee</th>
                             <th style="padding: 0.75rem; text-align: left; font-weight: 600;">Type</th>
@@ -357,26 +357,26 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                             if ($log['verifier_first_name'] || $log['verifier_last_name']) {
                                 $verifierName = trim(($log['verifier_first_name'] ?? '') . ' ' . ($log['verifier_last_name'] ?? ''));
                             } else {
-                                $verifierName = '<span style="color: #6b7280;">Public Verification</span>';
+                                $verifierName = '<span style="color: #4a5a5c;">Public Verification</span>';
                             }
                             
                             $resultClass = '';
                             $resultIcon = '';
                             switch ($log['verification_result']) {
                                 case 'success':
-                                    $resultClass = 'color: #10b981;';
+                                    $resultClass = 'color: #1f6b45;';
                                     $resultIcon = '<i class="fas fa-check-circle"></i> ';
                                     break;
                                 case 'failed':
-                                    $resultClass = 'color: #ef4444;';
+                                    $resultClass = 'color: #a3322b;';
                                     $resultIcon = '<i class="fas fa-times-circle"></i> ';
                                     break;
                                 case 'expired':
-                                    $resultClass = 'color: #f59e0b;';
+                                    $resultClass = 'color: #8a5a00;';
                                     $resultIcon = '<i class="fas fa-clock"></i> ';
                                     break;
                                 case 'revoked':
-                                    $resultClass = 'color: #ef4444;';
+                                    $resultClass = 'color: #a3322b;';
                                     $resultIcon = '<i class="fas fa-ban"></i> ';
                                     break;
                             }
@@ -393,13 +393,13 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                                 }
                             }
                             ?>
-                            <tr style="border-bottom: 1px solid #e5e7eb;">
+                            <tr style="border-bottom: 1px solid #dcd8cd;">
                                 <td style="padding: 0.75rem;">
                                     <?php echo date('d/m/Y H:i:s', strtotime($log['verified_at'])); ?>
                                 </td>
                                 <td style="padding: 0.75rem;">
                                     <strong><?php echo htmlspecialchars($employeeName); ?></strong><br>
-                                    <span style="color: #6b7280; font-size: 0.875rem;"><?php echo htmlspecialchars($employeeRef); ?></span>
+                                    <span style="color: #4a5a5c; font-size: 0.875rem;"><?php echo htmlspecialchars($employeeRef); ?></span>
                                 </td>
                                 <td style="padding: 0.75rem;">
                                     <span style="text-transform: uppercase; font-weight: 500;"><?php echo htmlspecialchars($log['verification_type']); ?></span>
@@ -413,31 +413,31 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                                     <?php echo $verifierName; ?>
                                 </td>
                                 <td style="padding: 0.75rem;">
-                                    <span style="font-family: monospace; font-size: 0.875rem; color: #6b7280;">
+                                    <span style="font-family: monospace; font-size: 0.875rem; color: #4a5a5c;">
                                         <?php echo htmlspecialchars($log['verified_by_ip'] ?? 'N/A'); ?>
                                     </span>
                                 </td>
                                 <td style="padding: 0.75rem;">
                                     <?php if ($locationValue): ?>
-                                        <span style="color: #3b82f6; font-weight: 500;"><?php echo htmlspecialchars($locationValue); ?></span>
+                                        <span style="color: #0e5f5a; font-weight: 500;"><?php echo htmlspecialchars($locationValue); ?></span>
                                     <?php else: ?>
-                                        <span style="color: #9ca3af;">—</span>
+                                        <span style="color: #4a5a5c;">—</span>
                                     <?php endif; ?>
                                 </td>
                                 <td style="padding: 0.75rem;">
                                     <?php if ($deviceIdValue): ?>
-                                        <span style="font-family: monospace; font-size: 0.875rem; color: #6b7280;"><?php echo htmlspecialchars($deviceIdValue); ?></span>
+                                        <span style="font-family: monospace; font-size: 0.875rem; color: #4a5a5c;"><?php echo htmlspecialchars($deviceIdValue); ?></span>
                                     <?php else: ?>
-                                        <span style="color: #9ca3af;">—</span>
+                                        <span style="color: #4a5a5c;">—</span>
                                     <?php endif; ?>
                                 </td>
                                 <td style="padding: 0.75rem;">
                                     <?php if ($log['notes']): ?>
-                                        <span style="color: #6b7280; font-size: 0.875rem;" title="<?php echo htmlspecialchars($log['notes']); ?>">
+                                        <span style="color: #4a5a5c; font-size: 0.875rem;" title="<?php echo htmlspecialchars($log['notes']); ?>">
                                             <?php echo htmlspecialchars(substr($log['notes'], 0, 50)); ?><?php echo strlen($log['notes']) > 50 ? '...' : ''; ?>
                                         </span>
                                     <?php else: ?>
-                                        <span style="color: #9ca3af;">—</span>
+                                        <span style="color: #4a5a5c;">—</span>
                                     <?php endif; ?>
                                 </td>
                             </tr>

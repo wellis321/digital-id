@@ -50,8 +50,8 @@ include dirname(__DIR__) . '/includes/header.php';
             require_once SRC_PATH . '/classes/QRCodeGenerator.php';
             $qrImageUrl = QRCodeGenerator::generateImageUrl($qrToken);
             ?>
-            <img src="<?php echo htmlspecialchars($qrImageUrl); ?>" alt="QR Code" style="max-width: 300px; border: 2px solid #e5e7eb; padding: 1rem; background: white;">
-            <p style="margin-top: 1rem; color: #5b6371;">
+            <img src="<?php echo htmlspecialchars($qrImageUrl); ?>" alt="QR Code" style="max-width: 300px; border: 2px solid #dcd8cd; padding: 1rem; background: white;">
+            <p style="margin-top: 1rem; color: #4a5a5c;">
                 <i class="fas fa-mobile-alt"></i> Point your camera at this QR code to scan
             </p>
         </div>
@@ -89,7 +89,7 @@ include dirname(__DIR__) . '/includes/header.php';
         </a>
     <?php endif; ?>
     
-    <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e5e7eb;">
+    <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #dcd8cd;">
         <a href="<?php echo url('check-in.php'); ?>" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> Back to Check-In
         </a>

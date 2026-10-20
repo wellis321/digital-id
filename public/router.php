@@ -29,9 +29,9 @@ if (is_dir($filePath)) {
         include dirname(__DIR__) . '/includes/header.php';
         ?>
         <div class="card" style="text-align: center; padding: 4rem 2rem;">
-            <h1 style="font-size: 6rem; margin-bottom: 1rem; color: #5b6371;">404</h1>
+            <h1 style="font-size: 6rem; margin-bottom: 1rem; color: #4a5a5c;">404</h1>
             <h2 style="margin-bottom: 1rem;">Page Not Found</h2>
-            <p style="color: #5b6371; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+            <p style="color: #4a5a5c; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
                 The page you're looking for doesn't exist or has been moved.
             </p>
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
@@ -73,9 +73,9 @@ $pageTitle = 'Page Not Found';
 include dirname(__DIR__) . '/includes/header.php';
 ?>
 <div class="card" style="text-align: center; padding: 4rem 2rem;">
-    <h1 style="font-size: 6rem; margin-bottom: 1rem; color: #5b6371;">404</h1>
+    <h1 style="font-size: 6rem; margin-bottom: 1rem; color: #4a5a5c;">404</h1>
     <h2 style="margin-bottom: 1rem;">Page Not Found</h2>
-    <p style="color: #5b6371; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+    <p style="color: #4a5a5c; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
         The page you're looking for doesn't exist or has been moved.
     </p>
     <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">

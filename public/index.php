@@ -23,13 +23,13 @@ include INCLUDES_PATH . '/header.php';
     padding: 5rem 2rem 4rem;
     text-align: center;
     margin: -2rem -20px 0 -20px;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid #dcd8cd;
 }
 
 .home-hero h1 {
     font-size: 4rem;
     font-weight: 700;
-    color: #111827;
+    color: #0d2b2e;
     margin-bottom: 1.5rem;
     line-height: 1.1;
     max-width: 900px;
@@ -39,7 +39,7 @@ include INCLUDES_PATH . '/header.php';
 
 .home-hero .subtitle {
     font-size: 1.5rem;
-    color: #4b5563;
+    color: #4a5a5c;
     max-width: 800px;
     margin: 0 auto 2.5rem;
     line-height: 1.6;
@@ -54,7 +54,7 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .home-hero .btn-hero-primary {
-    background-color: #0e7490;
+    background-color: #0e5f5a;
     color: white;
     padding: 0.875rem 2rem;
     font-size: 1.0625rem;
@@ -65,30 +65,30 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .home-hero .btn-hero-primary:hover {
-    background-color: #0891b2;
+    background-color: #0e5f5a;
     transform: translateY(-1px);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: none;
 }
 
 .home-hero .btn-hero-secondary {
     background-color: white;
-    color: #2563eb;
+    color: #0e5f5a;
     padding: 0.875rem 2rem;
     font-size: 1.0625rem;
     font-weight: 500;
     border-radius: 0;
-    border: 1px solid #2563eb;
+    border: 1px solid #0e5f5a;
     transition: all 0.2s;
 }
 
 .home-hero .btn-hero-secondary:hover {
-    background-color: #f3f4f6;
+    background-color: #f6f5f1;
 }
 
 /* ID Card on Homepage - Only card animates, not child elements */
 .two-column-image a:hover .id-card {
     transform: scale(0.95);
-    box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+    box-shadow: none;
 }
 
 .two-column-image .id-card * {
@@ -122,15 +122,15 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .main-section-alt {
-    background: #f9fafb;
+    background: #f6f5f1;
 }
 
 .main-section-light-blue {
-    background: #f0f9ff;
+    background: #f4f6f5;
 }
 
 .main-section-light-gray {
-    background: #f9fafb;
+    background: #f6f5f1;
 }
 
 .section-header {
@@ -142,14 +142,14 @@ include INCLUDES_PATH . '/header.php';
 .section-header h2 {
     font-size: 3rem;
     font-weight: 700;
-    color: #111827;
+    color: #0d2b2e;
     margin-bottom: 1rem;
     line-height: 1.2;
 }
 
 .section-header p {
     font-size: 1.25rem;
-    color: #5b6371;
+    color: #4a5a5c;
     line-height: 1.7;
 }
 
@@ -180,7 +180,7 @@ include INCLUDES_PATH . '/header.php';
 .feature-icon-wrapper {
     width: 64px;
     height: 64px;
-    background-color: #f0f9ff;
+    background-color: #f4f6f5;
     border-radius: 0;
     display: flex;
     align-items: center;
@@ -190,19 +190,19 @@ include INCLUDES_PATH . '/header.php';
 
 .feature-icon-wrapper i {
     font-size: 1.75rem;
-    color: #0e7490;
+    color: #0e5f5a;
 }
 
 .feature-item h3 {
     font-size: 1.5rem;
     font-weight: 600;
-    color: #111827;
+    color: #0d2b2e;
     margin-bottom: 0.75rem;
 }
 
 .feature-item p {
     font-size: 1.125rem;
-    color: #5b6371;
+    color: #4a5a5c;
     line-height: 1.6;
 }
 
@@ -247,7 +247,7 @@ include INCLUDES_PATH . '/header.php';
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(6, 182, 212, 0.3) 0%, rgba(37, 99, 235, 0.25) 100%);
+    background: transparent;
     z-index: 1;
 }
 
@@ -340,17 +340,17 @@ include INCLUDES_PATH . '/header.php';
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
-    color: #0e7490;
+    color: #0e5f5a;
     z-index: 10;
     transition: all 0.3s;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow: none;
     flex-shrink: 0;
 }
 
 .slider-nav:hover {
     background: white;
     transform: translateY(-50%) scale(1.1);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    box-shadow: none;
 }
 
 
@@ -403,27 +403,27 @@ include INCLUDES_PATH . '/header.php';
 
 .why-item {
     padding: 2rem;
-    background: #f9fafb;
+    background: #f6f5f1;
     border-radius: 0;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #dcd8cd;
 }
 
 .why-item h3 {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #111827;
+    color: #0d2b2e;
     margin-bottom: 0.75rem;
 }
 
 .why-item p {
     font-size: 1rem;
-    color: #5b6371;
+    color: #4a5a5c;
     line-height: 1.6;
 }
 
 /* CTA Section */
 .cta-section {
-    background-color: #2563eb;
+    background-color: #0e5f5a;
     color: white;
     padding: 4rem 2rem;
     text-align: center;
@@ -449,26 +449,26 @@ include INCLUDES_PATH . '/header.php';
 
 .cta-section .btn {
     background: white;
-    color: #0e7490;
+    color: #0e5f5a;
     padding: 0.875rem 2rem;
     font-weight: 500;
     margin: 0 0.5rem;
 }
 
 .cta-section .btn:hover {
-    background: #f3f4f6;
+    background: #f6f5f1;
 }
 
 /* Trust Indicators Section */
 .trust-section {
     background: #ffffff;
     padding: 3rem 0;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid #dcd8cd;
 }
 
 .trust-section p {
     text-align: center;
-    color: #5b6371;
+    color: #4a5a5c;
     font-size: 0.875rem;
     font-weight: 500;
     text-transform: uppercase;
@@ -488,12 +488,12 @@ include INCLUDES_PATH . '/header.php';
 .trust-logos .placeholder-logo {
     height: 40px;
     width: 120px;
-    background: #e5e7eb;
+    background: #dcd8cd;
     border-radius: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #9ca3af;
+    color: #4a5a5c;
     font-size: 0.75rem;
 }
 
@@ -522,14 +522,14 @@ include INCLUDES_PATH . '/header.php';
 .two-column-text h2 {
     font-size: 3rem;
     font-weight: 700;
-    color: #111827;
+    color: #0d2b2e;
     margin-bottom: 1.5rem;
     line-height: 1.2;
 }
 
 .two-column-text p {
     font-size: 1.25rem;
-    color: #5b6371;
+    color: #4a5a5c;
     line-height: 1.7;
     margin-bottom: 1.5rem;
 }
@@ -544,7 +544,7 @@ include INCLUDES_PATH . '/header.php';
     padding: 0.75rem 0;
     padding-left: 2rem;
     position: relative;
-    color: #4b5563;
+    color: #4a5a5c;
     font-size: 1.0625rem;
 }
 
@@ -554,7 +554,7 @@ include INCLUDES_PATH . '/header.php';
     font-weight: 900;
     position: absolute;
     left: 0;
-    color: #047857;
+    color: #1f6b45;
 }
 
 .two-column-image {
@@ -564,7 +564,7 @@ include INCLUDES_PATH . '/header.php';
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #9ca3af;
+    color: #4a5a5c;
     text-align: center;
 }
 
@@ -574,22 +574,22 @@ include INCLUDES_PATH . '/header.php';
     max-width: 100%;
     max-height: 600px;
     object-fit: contain;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: none;
 }
 
 .two-column-image a:hover img {
     transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    box-shadow: none;
     cursor: pointer;
 }
 
 .two-column-image.placeholder {
-    border: 2px dashed #d1d5db;
+    border: 2px dashed #dcd8cd;
 }
 
 /* Works With Section */
 .works-with-section {
-    background: #f9fafb;
+    background: #f6f5f1;
     padding: 4rem 0;
 }
 
@@ -617,39 +617,39 @@ include INCLUDES_PATH . '/header.php';
     padding: 1.5rem;
     background: white;
     border-radius: 0;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #dcd8cd;
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .works-with-item:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: none;
 }
 
 .works-with-item i {
     font-size: 2.5rem;
-    color: #0e7490;
+    color: #0e5f5a;
     margin-bottom: 1rem;
 }
 
 .works-with-item h3 {
     font-size: 1.125rem;
     font-weight: 600;
-    color: #111827;
+    color: #0d2b2e;
     margin-bottom: 0.5rem;
 }
 
 .works-with-item p {
     font-size: 0.875rem;
-    color: #5b6371;
+    color: #4a5a5c;
 }
 
 /* Stats Section */
 .stats-section {
     background: #ffffff;
     padding: 4rem 0;
-    border-top: 1px solid #e5e7eb;
-    border-bottom: 1px solid #e5e7eb;
+    border-top: 1px solid #dcd8cd;
+    border-bottom: 1px solid #dcd8cd;
 }
 
 .stats-grid {
@@ -666,7 +666,7 @@ include INCLUDES_PATH . '/header.php';
 .stat-number {
     font-size: 3.5rem;
     font-weight: 700;
-    color: #2563eb;
+    color: #0e5f5a;
     display: block;
     line-height: 1;
     margin-bottom: 0.5rem;
@@ -674,13 +674,13 @@ include INCLUDES_PATH . '/header.php';
 
 .stat-label {
     font-size: 1.125rem;
-    color: #5b6371;
+    color: #4a5a5c;
     font-weight: 500;
 }
 
 /* Testimonial Section */
 .testimonial-section {
-    background: #f9fafb;
+    background: #f6f5f1;
     padding: 5rem 0;
 }
 
@@ -695,12 +695,12 @@ include INCLUDES_PATH . '/header.php';
     background: white;
     padding: 2rem;
     border-radius: 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: none;
 }
 
 .testimonial-text {
     font-size: 1.125rem;
-    color: #4b5563;
+    color: #4a5a5c;
     line-height: 1.7;
     margin-bottom: 1.5rem;
     font-style: italic;
@@ -716,23 +716,23 @@ include INCLUDES_PATH . '/header.php';
     width: 48px;
     height: 48px;
     border-radius: 0;
-    background: #e5e7eb;
+    background: #dcd8cd;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #9ca3af;
+    color: #4a5a5c;
 }
 
 .testimonial-author-info h4 {
     font-size: 1rem;
     font-weight: 600;
-    color: #111827;
+    color: #0d2b2e;
     margin: 0;
 }
 
 .testimonial-author-info p {
     font-size: 0.875rem;
-    color: #5b6371;
+    color: #4a5a5c;
     margin: 0;
 }
 
@@ -744,17 +744,17 @@ include INCLUDES_PATH . '/header.php';
 
 /* Placeholder Styles */
 .placeholder-section {
-    background: #f9fafb;
-    border: 2px dashed #d1d5db;
+    background: #f6f5f1;
+    border: 2px dashed #dcd8cd;
     border-radius: 0;
     padding: 3rem 2rem;
     text-align: center;
-    color: #9ca3af;
+    color: #4a5a5c;
     margin: 2rem 0;
 }
 
 .placeholder-section h3 {
-    color: #5b6371;
+    color: #4a5a5c;
     margin-bottom: 0.5rem;
 }
 
@@ -853,32 +853,32 @@ include INCLUDES_PATH . '/header.php';
                         Integrate with Microsoft 365 for seamless single sign-on and automatic user management.
                     </p>
                     <ul>
-                        <li>Bank-grade security with multi-layered verification</li>
+                        <li>Layered verification: visual check, QR code and NFC</li>
                         <li>Instant verification via QR codes and NFC</li>
                         <li>Complete audit trail for compliance</li>
                         <li>Works offline with PWA technology</li>
                     </ul>
                     <div class="cta-buttons" style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
                         <?php if (Auth::isLoggedIn()): ?>
-                            <a href="<?php echo url('id-card.php'); ?>" class="btn btn-hero-primary" style="background-color: #0e7490; color: white; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; transition: all 0.2s; border: none; text-decoration: none;">View Your ID Card</a>
-                            <a href="<?php echo url('features.php'); ?>" class="btn btn-hero-secondary" style="background-color: white; color: #2563eb; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; border: 1px solid #2563eb; transition: all 0.2s; text-decoration: none;">Learn More</a>
+                            <a href="<?php echo url('id-card.php'); ?>" class="btn btn-hero-primary" style="background-color: #0e5f5a; color: white; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; transition: all 0.2s; border: none; text-decoration: none;">View Your ID Card</a>
+                            <a href="<?php echo url('features.php'); ?>" class="btn btn-hero-secondary" style="background-color: white; color: #0e5f5a; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; border: 1px solid #0e5f5a; transition: all 0.2s; text-decoration: none;">Learn More</a>
                         <?php else: ?>
-                            <a href="<?php echo url('register.php'); ?>" class="btn btn-hero-primary" style="background-color: #0e7490; color: white; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; transition: all 0.2s; border: none; text-decoration: none;">Register</a>
-                            <a href="<?php echo url('demo-id-card.php'); ?>" class="btn btn-hero-secondary" style="background-color: white; color: #2563eb; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; border: 1px solid #2563eb; transition: all 0.2s; text-decoration: none;">See Example ID Card</a>
-                            <a href="<?php echo url('login.php'); ?>" class="btn btn-hero-secondary" style="background-color: white; color: #2563eb; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; border: 1px solid #2563eb; transition: all 0.2s; text-decoration: none;">Login</a>
+                            <a href="<?php echo url('register.php'); ?>" class="btn btn-hero-primary" style="background-color: #0e5f5a; color: white; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; transition: all 0.2s; border: none; text-decoration: none;">Register</a>
+                            <a href="<?php echo url('demo-id-card.php'); ?>" class="btn btn-hero-secondary" style="background-color: white; color: #0e5f5a; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; border: 1px solid #0e5f5a; transition: all 0.2s; text-decoration: none;">See Example ID Card</a>
+                            <a href="<?php echo url('login.php'); ?>" class="btn btn-hero-secondary" style="background-color: white; color: #0e5f5a; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; border: 1px solid #0e5f5a; transition: all 0.2s; text-decoration: none;">Login</a>
                         <?php endif; ?>
                     </div>
                 </div>
                 <div class="two-column-image">
                     <a href="<?php echo url('demo-id-card.php'); ?>" style="display: block; text-decoration: none;">
-                        <div class="id-card" style="position: relative; margin: 0 auto; max-width: 350px; transform: scale(0.9); transform-origin: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s, box-shadow 0.2s;">
-                            <div style="position: absolute; top: 0.5rem; right: 0.5rem; background: #b45309; color: white; padding: 0.25rem 0.75rem; font-size: 0.6rem; font-weight: 600; border-radius: 0; z-index: 10;">DEMO</div>
+                        <div class="id-card" style="position: relative; margin: 0 auto; max-width: 350px; transform: scale(0.9); transform-origin: center; box-shadow: none; transition: transform 0.2s, box-shadow 0.2s;">
+                            <div style="position: absolute; top: 0.5rem; right: 0.5rem; background: #6b4500; color: white; padding: 0.25rem 0.75rem; font-size: 0.6rem; font-weight: 600; border-radius: 0; z-index: 10;">DEMO</div>
                             <div class="id-card-header" style="padding: 1rem; margin-bottom: 1rem;">
                                 <h2 style="margin: 0; font-size: 1.2rem;">Example Organisation</h2>
                                 <p style="margin: 0; font-size: 0.8rem;">Digital ID Card</p>
                             </div>
                             <img src="<?php echo url('assets/images/home/Digital ID.jpg'); ?>" alt="Example ID Card Photo" class="id-card-photo" style="width: 120px; height: 120px; margin: 0 auto 0.5rem; object-fit: cover; transition: none !important;">
-                            <div class="id-card-details" style="padding: 0.75rem 1rem; background: #f9fafb;">
+                            <div class="id-card-details" style="padding: 0.75rem 1rem; background: #f6f5f1;">
                                 <p style="font-size: 0.9rem; margin: 0.25rem 0;"><strong>Name:</strong> Sarah Doe</p>
                                 <p style="font-size: 0.9rem; margin: 0.25rem 0;"><strong>Ref:</strong> EXMP-L0Z7H7</p>
                             </div>
@@ -889,8 +889,8 @@ include INCLUDES_PATH . '/header.php';
                                 $encodedUrl = urlencode($demoUrl);
                                 $qrImageUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={$encodedUrl}";
                                 ?>
-                                <img src="<?php echo htmlspecialchars($qrImageUrl); ?>" alt="QR Code" style="max-width: 100px; background: white; padding: 0.5rem; border: 1px solid #e5e7eb; transition: none !important;">
-                                <p style="font-size: 0.6rem; color: #5b6371; margin-top: 0.5rem;">Scan to see demo</p>
+                                <img src="<?php echo htmlspecialchars($qrImageUrl); ?>" alt="QR Code" style="max-width: 100px; background: white; padding: 0.5rem; border: 1px solid #dcd8cd; transition: none !important;">
+                                <p style="font-size: 0.6rem; color: #4a5a5c; margin-top: 0.5rem;">Scan to see demo</p>
                             </div>
                         </div>
                     </a>
@@ -916,7 +916,7 @@ include INCLUDES_PATH . '/header.php';
             <div class="feature-icon-wrapper">
                 <i class="fas fa-shield-alt"></i>
             </div>
-            <h3>Bank-Grade Security</h3>
+            <h3>Layered Security</h3>
             <p>Multi-layered verification with visual checks, time-limited QR codes, and NFC technology. Every verification is logged and auditable.</p>
         </div>
         
@@ -941,7 +941,7 @@ include INCLUDES_PATH . '/header.php';
                 <i class="fas fa-bolt"></i>
             </div>
             <h3>Instant Verification</h3>
-            <p>Verify employee identity in seconds with QR code scanning or NFC tap. Perfect for banks, service providers, and emergency situations.</p>
+            <p>Verify employee identity in seconds with QR code scanning or NFC tap. Useful for service providers and in emergencies.</p>
         </div>
         
         <div class="feature-item">
@@ -967,7 +967,7 @@ include INCLUDES_PATH . '/header.php';
                 <div class="features-slider-track" id="featuresSliderTrack">
                     <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/home/home-silder/slide-one.png'); ?>');">
                         <div class="feature-slide-content">
-                            <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                            <div class="feature-icon-wrapper" style="background: rgba(14, 95, 90, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
                                 <i class="fas fa-qrcode" style="font-size: 2.5rem; color: white;"></i>
                             </div>
                             <h3>QR Code Verification</h3>
@@ -977,7 +977,7 @@ include INCLUDES_PATH . '/header.php';
                     
                     <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/home/home-silder/slide-two.png'); ?>');">
                         <div class="feature-slide-content">
-                            <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                            <div class="feature-icon-wrapper" style="background: rgba(14, 95, 90, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
                                 <i class="fas fa-wifi" style="font-size: 2.5rem; color: white;"></i>
                             </div>
                             <h3>Offline Capable</h3>
@@ -987,7 +987,7 @@ include INCLUDES_PATH . '/header.php';
                     
                     <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/home/home-silder/slide-three.png'); ?>');">
                         <div class="feature-slide-content">
-                            <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                            <div class="feature-icon-wrapper" style="background: rgba(14, 95, 90, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
                                 <i class="fas fa-user-check" style="font-size: 2.5rem; color: white;"></i>
                             </div>
                             <h3>Photo Verification</h3>
@@ -997,7 +997,7 @@ include INCLUDES_PATH . '/header.php';
                     
                     <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/home/home-silder/slide-four.png'); ?>');">
                         <div class="feature-slide-content">
-                            <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                            <div class="feature-icon-wrapper" style="background: rgba(14, 95, 90, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
                                 <i class="fas fa-clipboard-check" style="font-size: 2.5rem; color: white;"></i>
                             </div>
                             <h3>Check-In Sessions</h3>
@@ -1007,7 +1007,7 @@ include INCLUDES_PATH . '/header.php';
                     
                     <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/home/home-silder/slide-five.png'); ?>');">
                         <div class="feature-slide-content">
-                            <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                            <div class="feature-icon-wrapper" style="background: rgba(14, 95, 90, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
                                 <i class="fas fa-fire" style="font-size: 2.5rem; color: white;"></i>
                             </div>
                             <h3>Fire Drill Tracking</h3>
@@ -1182,28 +1182,28 @@ include INCLUDES_PATH . '/header.php';
         </div>
         
         <div style="margin-top: 3rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
-            <div style="padding: 1.5rem; background: white; border: 1px solid #e5e7eb; border-radius: 0;">
-                <div style="width: 48px; height: 48px; background-color: #f0f9ff; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
-                    <i class="fas fa-sign-in-alt" style="font-size: 1.5rem; color: #0e7490;"></i>
+            <div style="padding: 1.5rem; background: white; border: 1px solid #dcd8cd; border-radius: 0;">
+                <div style="width: 48px; height: 48px; background-color: #f4f6f5; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                    <i class="fas fa-sign-in-alt" style="font-size: 1.5rem; color: #0e5f5a;"></i>
                 </div>
-                <h4 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Single Sign-On</h4>
-                <p style="color: #5b6371; font-size: 0.9375rem; margin: 0;">Users log in with their Microsoft 365 credentials - no separate password needed.</p>
+                <h4 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #0d2b2e; margin-bottom: 0.5rem;">Single Sign-On</h4>
+                <p style="color: #4a5a5c; font-size: 0.9375rem; margin: 0;">Users log in with their Microsoft 365 credentials - no separate password needed.</p>
             </div>
             
-            <div style="padding: 1.5rem; background: white; border: 1px solid #e5e7eb; border-radius: 0;">
-                <div style="width: 48px; height: 48px; background-color: #f0f9ff; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
-                    <i class="fas fa-sync" style="font-size: 1.5rem; color: #0e7490;"></i>
+            <div style="padding: 1.5rem; background: white; border: 1px solid #dcd8cd; border-radius: 0;">
+                <div style="width: 48px; height: 48px; background-color: #f4f6f5; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                    <i class="fas fa-sync" style="font-size: 1.5rem; color: #0e5f5a;"></i>
                 </div>
-                <h4 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">User Sync</h4>
-                <p style="color: #5b6371; font-size: 0.9375rem; margin: 0;">Automatically sync users from Microsoft Entra ID - no CSV exports required.</p>
+                <h4 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #0d2b2e; margin-bottom: 0.5rem;">User Sync</h4>
+                <p style="color: #4a5a5c; font-size: 0.9375rem; margin: 0;">Automatically sync users from Microsoft Entra ID - no CSV exports required.</p>
             </div>
             
-            <div style="padding: 1.5rem; background: white; border: 1px solid #e5e7eb; border-radius: 0;">
-                <div style="width: 48px; height: 48px; background-color: #f0f9ff; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
-                    <i class="fas fa-shield-alt" style="font-size: 1.5rem; color: #0e7490;"></i>
+            <div style="padding: 1.5rem; background: white; border: 1px solid #dcd8cd; border-radius: 0;">
+                <div style="width: 48px; height: 48px; background-color: #f4f6f5; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                    <i class="fas fa-shield-alt" style="font-size: 1.5rem; color: #0e5f5a;"></i>
                 </div>
-                <h4 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Secure & Compliant</h4>
-                <p style="color: #5b6371; font-size: 0.9375rem; margin: 0;">Uses industry-standard OAuth 2.0 and Microsoft Graph API for secure integration.</p>
+                <h4 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #0d2b2e; margin-bottom: 0.5rem;">Secure & Compliant</h4>
+                <p style="color: #4a5a5c; font-size: 0.9375rem; margin: 0;">Uses industry-standard OAuth 2.0 and Microsoft Graph API for secure integration.</p>
             </div>
         </div>
     </div>
@@ -1211,13 +1211,13 @@ include INCLUDES_PATH . '/header.php';
 
 <?php if (!Auth::isLoggedIn()): ?>
 <!-- CTA Section -->
-<div class="full-width-section" style="background: #2563eb; padding: 5rem 0;">
+<div class="full-width-section" style="background: #0e5f5a; padding: 5rem 0;">
     <div class="section-content">
         <div class="cta-section" style="background: transparent; padding: 0; margin: 0;">
             <h2>Ready to Get Started?</h2>
             <p>Join organisations already using Digital ID to streamline their identity management and protect their staff and service users.</p>
             <div>
-                <a href="<?php echo url('register.php'); ?>" class="btn" style="background: white; color: #2563eb; border: none; font-weight: 600;">Register</a>
+                <a href="<?php echo url('register.php'); ?>" class="btn" style="background: white; color: #0e5f5a; border: none; font-weight: 600;">Register</a>
                 <a href="<?php echo url('login.php'); ?>" class="btn" style="background: transparent; color: white; border: 1px solid white;">Login</a>
                 <a href="<?php echo url('request-access.php'); ?>" class="btn" style="background: transparent; color: white; border: 1px solid white; font-size: 0.9375rem;">Request Organisation Access</a>
             </div>

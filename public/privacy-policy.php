@@ -7,7 +7,7 @@ include INCLUDES_PATH . '/header.php';
 
 <div class="card">
     <h1>Privacy Policy</h1>
-    <p style="color: #5b6371; margin-bottom: 2rem;"><strong>Last updated:</strong> <?php echo date('F j, Y'); ?></p>
+    <p style="color: #4a5a5c; margin-bottom: 2rem;"><strong>Last updated:</strong> <?php echo date('F j, Y'); ?></p>
     
     <div style="line-height: 1.8;">
         <section style="margin-bottom: 3rem;">
@@ -183,7 +183,7 @@ include INCLUDES_PATH . '/header.php';
         </section>
     </div>
     
-    <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e5e7eb;">
+    <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #dcd8cd;">
         <a href="<?php echo url('index.php'); ?>" class="btn btn-primary">Return to Home</a>
         <a href="<?php echo url('terms-of-service.php'); ?>" class="btn btn-secondary" style="margin-left: 0.5rem;">View Terms of Service</a>
     </div>

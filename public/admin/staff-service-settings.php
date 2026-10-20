@@ -294,11 +294,11 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                 <small>How often to check for updates from Staff Service (in seconds). Default: 3600 (1 hour). Minimum: 60 seconds.</small>
             </div>
             
-            <div style="margin-top: 1rem; padding: 1rem; background-color: #eff6ff; border-left: 4px solid #3b82f6; border-radius: 0;">
-                <h4 style="margin-top: 0; color: #1e40af; font-size: 0.875rem;">
+            <div style="margin-top: 1rem; padding: 1rem; background-color: #f4f6f5; border-left: 4px solid #0e5f5a; border-radius: 0;">
+                <h4 style="margin-top: 0; color: #0a4440; font-size: 0.875rem;">
                     <i class="fas fa-info-circle"></i> How to Get Your API Key
                 </h4>
-                <ol style="margin: 0.5rem 0 0; padding-left: 1.5rem; color: #1e40af; font-size: 0.875rem;">
+                <ol style="margin: 0.5rem 0 0; padding-left: 1.5rem; color: #0a4440; font-size: 0.875rem;">
                     <li>Log in to <strong>Staff Service</strong> as an organisation administrator</li>
                     <li>Go to <strong>Admin</strong> → <strong>API Keys</strong></li>
                     <li>Click <strong>"Create API Key"</strong></li>

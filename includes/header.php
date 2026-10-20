@@ -9,7 +9,7 @@
     <title><?php echo isset($pageTitle) ? htmlspecialchars($pageTitle) . ' - ' : ''; ?><?php echo APP_NAME; ?></title>
     
     <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#2563eb">
+    <meta name="theme-color" content="#0e5f5a">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -243,7 +243,7 @@
             left: 1rem;
             z-index: 10000;
             padding: 0.75rem 1.5rem;
-            background: #2563eb;
+            background: #0e5f5a;
             color: white;
             text-decoration: none;
             border-radius: 0;

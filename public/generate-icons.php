@@ -38,7 +38,7 @@ foreach ($iconSizes as $size) {
         $img = imagecreatetruecolor($size, $size);
         
         // Set background color (blue theme)
-        $bgColor = imagecolorallocate($img, 37, 99, 235); // #2563eb
+        $bgColor = imagecolorallocate($img, 37, 99, 235); // #0e5f5a
         imagefill($img, 0, 0, $bgColor);
         
         // Add text "ID" in white
@@ -64,7 +64,7 @@ foreach ($iconSizes as $size) {
     } elseif ($hasImagick) {
         // Create image using ImageMagick
         $img = new Imagick();
-        $img->newImage($size, $size, new ImagickPixel('#2563eb'));
+        $img->newImage($size, $size, new ImagickPixel('#0e5f5a'));
         
         // Add text
         $draw = new ImagickDraw();

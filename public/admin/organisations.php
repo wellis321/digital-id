@@ -147,7 +147,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
     <?php else: ?>
         <table style="width: 100%; border-collapse: collapse;">
             <thead>
-                <tr style="border-bottom: 2px solid #ddd;">
+                <tr style="border-bottom: 2px solid #dcd8cd;">
                     <th style="padding: 0.75rem; text-align: left;">Name</th>
                     <th style="padding: 0.75rem; text-align: left;">Domain</th>
                     <th style="padding: 0.75rem; text-align: left;">Seats</th>
@@ -170,7 +170,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                             <?php echo htmlspecialchars($org['seats_allocated']); ?>
                         </td>
                         <td style="padding: 0.75rem;">
-                            <span style="color: <?php echo ($org['active_user_count'] >= $org['seats_allocated']) ? '#dc2626' : '#059669'; ?>;">
+                            <span style="color: <?php echo ($org['active_user_count'] >= $org['seats_allocated']) ? '#a3322b' : '#1f6b45'; ?>;">
                                 <?php echo htmlspecialchars($org['active_user_count']); ?>
                             </span>
                         </td>
@@ -310,8 +310,8 @@ document.getElementById('adminModal').addEventListener('click', function(e) {
                 <p><strong>Domain:</strong> <?php echo htmlspecialchars($selectedOrg['domain']); ?></p>
                 
                 <h3 style="margin-top: 2rem; margin-bottom: 1rem;">Organisation Administrators</h3>
-                <p style="margin-bottom: 1rem; color: #6b7280; font-size: 0.875rem;">
-                    <i class="fas fa-info-circle"></i> Only organisation administrators are shown here. To assign or remove admin roles, use the <a href="<?php echo url('admin/users.php'); ?>" style="color: #2563eb;">Users</a> page.
+                <p style="margin-bottom: 1rem; color: #4a5a5c; font-size: 0.875rem;">
+                    <i class="fas fa-info-circle"></i> Only organisation administrators are shown here. To assign or remove admin roles, use the <a href="<?php echo url('admin/users.php'); ?>" style="color: #0e5f5a;">Users</a> page.
                 </p>
                 
                 <?php if (empty($orgUsers)): ?>
@@ -319,7 +319,7 @@ document.getElementById('adminModal').addEventListener('click', function(e) {
                 <?php else: ?>
                     <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
                         <thead>
-                            <tr style="border-bottom: 2px solid #ddd;">
+                            <tr style="border-bottom: 2px solid #dcd8cd;">
                                 <th style="padding: 0.75rem; text-align: left;">Name</th>
                                 <th style="padding: 0.75rem; text-align: left;">Email</th>
                                 <th style="padding: 0.75rem; text-align: left;">Roles</th>
@@ -341,11 +341,11 @@ document.getElementById('adminModal').addEventListener('click', function(e) {
                                     </td>
                                     <td style="padding: 0.75rem;">
                                         <?php if ($user['is_active'] && $user['email_verified']): ?>
-                                            <span style="color: #059669;">Active</span>
+                                            <span style="color: #1f6b45;">Active</span>
                                         <?php elseif (!$user['email_verified']): ?>
-                                            <span style="color: #dc2626;">Unverified</span>
+                                            <span style="color: #a3322b;">Unverified</span>
                                         <?php else: ?>
-                                            <span style="color: #dc2626;">Inactive</span>
+                                            <span style="color: #a3322b;">Inactive</span>
                                         <?php endif; ?>
                                     </td>
                                     <td style="padding: 0.75rem;">

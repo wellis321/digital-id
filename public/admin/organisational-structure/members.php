@@ -113,15 +113,15 @@ include dirname(__DIR__, 3) . '/includes/header.php';
 
 <div class="card">
     <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
-        <a href="<?php echo url('admin/organisational-structure.php'); ?>" style="color: #6b7280;">
+        <a href="<?php echo url('admin/organisational-structure.php'); ?>" style="color: #4a5a5c;">
             <i class="fas fa-arrow-left"></i>
         </a>
         <div>
             <h1>Manage Members</h1>
-            <p style="color: #6b7280; margin-top: 0.5rem;">
+            <p style="color: #4a5a5c; margin-top: 0.5rem;">
                 <?php echo htmlspecialchars($unit['name']); ?>
                 <?php if (!empty($unit['unit_type'])): ?>
-                    <span style="padding: 0.25rem 0.5rem; background-color: #e5e7eb; border-radius: 0; font-size: 0.75rem; color: #6b7280; margin-left: 0.5rem;">
+                    <span style="padding: 0.25rem 0.5rem; background-color: #dcd8cd; border-radius: 0; font-size: 0.75rem; color: #4a5a5c; margin-left: 0.5rem;">
                         <?php echo htmlspecialchars($unit['unit_type']); ?>
                     </span>
                 <?php endif; ?>
@@ -139,14 +139,14 @@ include dirname(__DIR__, 3) . '/includes/header.php';
     
     <!-- Add Member Form -->
     <?php if (!empty($availableUsers)): ?>
-        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0; padding: 1.5rem; margin-bottom: 2rem;">
+        <div style="background: white; border: 1px solid #dcd8cd; border-radius: 0; padding: 1.5rem; margin-bottom: 2rem;">
             <h3 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.125rem;">Add Staff Member</h3>
             <form method="POST" action="" style="display: grid; grid-template-columns: 2fr 1fr auto; gap: 1rem; align-items: end;">
                 <?php echo CSRF::tokenField(); ?>
                 <input type="hidden" name="action" value="add">
                 
                 <div class="form-group" style="margin-bottom: 0;">
-                    <label for="user_id">Staff Member <span style="color: #dc2626;">*</span></label>
+                    <label for="user_id">Staff Member <span style="color: #a3322b;">*</span></label>
                     <select id="user_id" name="user_id" required>
                         <option value="">Select a staff member...</option>
                         <?php foreach ($availableUsers as $availUser): ?>
@@ -159,7 +159,7 @@ include dirname(__DIR__, 3) . '/includes/header.php';
                 </div>
                 
                 <div class="form-group" style="margin-bottom: 0;">
-                    <label for="role">Role <span style="color: #dc2626;">*</span></label>
+                    <label for="role">Role <span style="color: #a3322b;">*</span></label>
                     <select id="role" name="role" required>
                         <option value="member">Member</option>
                         <option value="lead">Lead</option>
@@ -171,41 +171,41 @@ include dirname(__DIR__, 3) . '/includes/header.php';
             </form>
         </div>
     <?php else: ?>
-        <div style="background-color: #e0f2fe; border-left: 4px solid #2563eb; padding: 1rem; border-radius: 0; margin-bottom: 2rem;">
-            <p style="margin: 0; color: #1e40af; font-size: 0.875rem;">
+        <div style="background-color: #f4f6f5; border-left: 4px solid #0e5f5a; padding: 1rem; border-radius: 0; margin-bottom: 2rem;">
+            <p style="margin: 0; color: #0a4440; font-size: 0.875rem;">
                 All staff members in this organisation are already assigned to this unit.
             </p>
         </div>
     <?php endif; ?>
     
     <!-- Current Members List -->
-    <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0; padding: 1.5rem;">
+    <div style="background: white; border: 1px solid #dcd8cd; border-radius: 0; padding: 1.5rem;">
         <h3 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.125rem;">
             Current Members (<?php echo count($members); ?>)
         </h3>
         
         <?php if (empty($members)): ?>
             <div style="text-align: center; padding: 2rem;">
-                <i class="fas fa-users" style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem;"></i>
-                <p style="color: #6b7280;">No members assigned to this unit yet.</p>
+                <i class="fas fa-users" style="font-size: 3rem; color: #4a5a5c; margin-bottom: 1rem;"></i>
+                <p style="color: #4a5a5c;">No members assigned to this unit yet.</p>
             </div>
         <?php else: ?>
             <div style="display: grid; gap: 0.75rem;">
                 <?php foreach ($members as $member): ?>
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background-color: #f9fafb; border-radius: 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background-color: #f6f5f1; border-radius: 0;">
                         <div style="flex: 1;">
-                            <h4 style="margin: 0; font-size: 1rem; font-weight: 500; color: #1f2937;">
+                            <h4 style="margin: 0; font-size: 1rem; font-weight: 500; color: #0d2b2e;">
                                 <?php echo htmlspecialchars($member['first_name'] . ' ' . $member['last_name']); ?>
                             </h4>
-                            <p style="margin: 0.25rem 0 0; font-size: 0.875rem; color: #6b7280;">
+                            <p style="margin: 0.25rem 0 0; font-size: 0.875rem; color: #4a5a5c;">
                                 <?php echo htmlspecialchars($member['email']); ?>
                             </p>
                             <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; align-items: center;">
-                                <span style="padding: 0.25rem 0.5rem; background-color: #dbeafe; border-radius: 0; font-size: 0.75rem; color: #1e40af;">
+                                <span style="padding: 0.25rem 0.5rem; background-color: #f4f6f5; border-radius: 0; font-size: 0.75rem; color: #0a4440;">
                                     Role: <?php echo htmlspecialchars(ucfirst($member['role'])); ?>
                                 </span>
                                 <?php if (!empty($member['joined_at'])): ?>
-                                    <span style="font-size: 0.75rem; color: #9ca3af;">
+                                    <span style="font-size: 0.75rem; color: #4a5a5c;">
                                         Joined <?php echo date('d/m/Y', strtotime($member['joined_at'])); ?>
                                     </span>
                                 <?php endif; ?>
@@ -218,7 +218,7 @@ include dirname(__DIR__, 3) . '/includes/header.php';
                                 <input type="hidden" name="user_id" value="<?php echo $member['user_id']; ?>">
                                 <select name="role" 
                                         onchange="this.form.submit()"
-                                        style="padding: 0.375rem 0.75rem; font-size: 0.875rem; border: 1px solid #d1d5db; border-radius: 0;">
+                                        style="padding: 0.375rem 0.75rem; font-size: 0.875rem; border: 1px solid #dcd8cd; border-radius: 0;">
                                     <option value="member" <?php echo $member['role'] === 'member' ? 'selected' : ''; ?>>Member</option>
                                     <option value="lead" <?php echo $member['role'] === 'lead' ? 'selected' : ''; ?>>Lead</option>
                                     <option value="admin" <?php echo $member['role'] === 'admin' ? 'selected' : ''; ?>>Admin</option>

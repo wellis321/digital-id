@@ -30,7 +30,7 @@
     left: 0;
     right: 0;
     background: white;
-    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: none;
     z-index: 10000;
     padding: 1.5rem;
     border-top-left-radius: 12px;
@@ -48,7 +48,7 @@
     position: absolute;
     top: -0.5rem;
     right: -0.5rem;
-    background: #f3f4f6;
+    background: #f6f5f1;
     border: none;
     border-radius: 0;
     width: 32px;
@@ -57,38 +57,38 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #5b6371;
+    color: #4a5a5c;
 }
 
 .pwa-install-close:hover {
-    background: #e5e7eb;
+    background: #dcd8cd;
 }
 
 .pwa-install-icon {
-    color: #2563eb;
+    color: #0e5f5a;
     margin-bottom: 1rem;
 }
 
 .pwa-install-prompt h3 {
     margin: 0 0 0.5rem 0;
-    color: #111827;
+    color: #0d2b2e;
     font-size: 1.25rem;
 }
 
 .pwa-install-prompt p {
     margin: 0 0 1rem 0;
-    color: #5b6371;
+    color: #4a5a5c;
     font-size: 0.875rem;
 }
 
 .pwa-install-instructions {
     text-align: left;
-    background: #f9fafb;
+    background: #f6f5f1;
     padding: 1rem;
     border-radius: 0;
     margin: 1rem 0;
     font-size: 0.875rem;
-    color: #4b5563;
+    color: #4a5a5c;
 }
 
 .pwa-install-instructions ol {
@@ -195,15 +195,15 @@ window.pwaInstallHandler = {
                 installButton.style.display = 'none';
             }
             instructions.innerHTML = `
-                <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem; margin: 1rem 0; border-radius: 0;">
-                    <p style="margin: 0; color: #856404; font-weight: 600;">
+                <div style="background-color: #f7f1e1; border-left: 4px solid #8a5a00; padding: 1rem; margin: 1rem 0; border-radius: 0;">
+                    <p style="margin: 0; color: #6b4500; font-weight: 600;">
                         <i class="fas fa-exclamation-triangle"></i> Safari Required
                     </p>
-                    <p style="margin: 0.5rem 0 0 0; color: #856404; font-size: 0.875rem;">
+                    <p style="margin: 0.5rem 0 0 0; color: #6b4500; font-size: 0.875rem;">
                         To install this app on iPhone/iPad, you must use <strong>Safari</strong> browser. Chrome and other browsers on iOS do not support app installation.
                     </p>
-                    <p style="margin: 0.5rem 0 0 0; color: #856404; font-size: 0.875rem;">
-                        <a href="<?php echo url('install.php'); ?>" style="color: #856404; text-decoration: underline; font-weight: 600;">View Installation Guide</a>
+                    <p style="margin: 0.5rem 0 0 0; color: #6b4500; font-size: 0.875rem;">
+                        <a href="<?php echo url('install.php'); ?>" style="color: #6b4500; text-decoration: underline; font-weight: 600;">View Installation Guide</a>
                     </p>
                 </div>
             `;
@@ -225,7 +225,7 @@ window.pwaInstallHandler = {
                         <li>Select <strong>"Install"</strong> or <strong>"Add to Home Screen"</strong></li>
                         <li>Confirm the installation</li>
                     </ol>
-                    <p style="margin-top: 1rem; color: #5b6371; font-size: 0.875rem;">
+                    <p style="margin-top: 1rem; color: #4a5a5c; font-size: 0.875rem;">
                         <i class="fas fa-info-circle"></i> Firefox supports PWA installation on Android. Look for the "Install" option in the browser menu.
                     </p>
                 `;
@@ -248,7 +248,7 @@ window.pwaInstallHandler = {
                         <li>Select <strong>"Install"</strong> or look for the install icon in the address bar</li>
                         <li>Confirm the installation</li>
                     </ol>
-                    <p style="margin-top: 1rem; color: #5b6371; font-size: 0.875rem;">
+                    <p style="margin-top: 1rem; color: #4a5a5c; font-size: 0.875rem;">
                         <i class="fas fa-info-circle"></i> Requires Firefox 143.0 or later on Windows. macOS and Linux users should use Chrome or Edge for PWA installation.
                     </p>
                 `;

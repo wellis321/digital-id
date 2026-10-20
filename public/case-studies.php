@@ -26,14 +26,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <html>
                 <head>
                     <style>
-                        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                        body { font-family: Arial, sans-serif; line-height: 1.6; color: #2f484b; }
                         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                        .header { background-color: #2563eb; color: white; padding: 20px; text-align: center; }
-                        .content { padding: 20px; background-color: #f9f9f9; }
+                        .header { background-color: #0e5f5a; color: white; padding: 20px; text-align: center; }
+                        .content { padding: 20px; background-color: #f6f5f1; }
                         .field { margin-bottom: 15px; }
-                        .label { font-weight: bold; color: #1f2937; }
-                        .value { color: #4b5563; margin-top: 5px; }
-                        .footer { padding: 20px; text-align: center; color: #666; font-size: 12px; }
+                        .label { font-weight: bold; color: #0d2b2e; }
+                        .value { color: #4a5a5c; margin-top: 5px; }
+                        .footer { padding: 20px; text-align: center; color: #4a5a5c; font-size: 12px; }
                     </style>
                 </head>
                 <body>
@@ -109,28 +109,28 @@ include INCLUDES_PATH . '/header.php';
         </p>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
-            <div style="padding: 1.5rem; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0;">
-                <div style="width: 48px; height: 48px; background-color: #eff6ff; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
-                    <i class="fas fa-handshake" style="font-size: 1.5rem; color: #2563eb;"></i>
+            <div style="padding: 1.5rem; background: #f6f5f1; border: 1px solid #dcd8cd; border-radius: 0;">
+                <div style="width: 48px; height: 48px; background-color: #f4f6f5; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                    <i class="fas fa-handshake" style="font-size: 1.5rem; color: #0e5f5a;"></i>
                 </div>
-                <h3 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Collaboration</h3>
-                <p style="color: #5b6371; font-size: 0.9375rem; margin: 0;">We'll work together to tell your story accurately and highlight the benefits you've experienced.</p>
+                <h3 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #0d2b2e; margin-bottom: 0.5rem;">Collaboration</h3>
+                <p style="color: #4a5a5c; font-size: 0.9375rem; margin: 0;">We'll work together to tell your story accurately and highlight the benefits you've experienced.</p>
             </div>
             
-            <div style="padding: 1.5rem; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0;">
-                <div style="width: 48px; height: 48px; background-color: #eff6ff; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
-                    <i class="fas fa-chart-line" style="font-size: 1.5rem; color: #2563eb;"></i>
+            <div style="padding: 1.5rem; background: #f6f5f1; border: 1px solid #dcd8cd; border-radius: 0;">
+                <div style="width: 48px; height: 48px; background-color: #f4f6f5; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                    <i class="fas fa-chart-line" style="font-size: 1.5rem; color: #0e5f5a;"></i>
                 </div>
-                <h3 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Real Results</h3>
-                <p style="color: #5b6371; font-size: 0.9375rem; margin: 0;">Share measurable outcomes, time savings, cost reductions, or improvements in security and compliance.</p>
+                <h3 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #0d2b2e; margin-bottom: 0.5rem;">Real Results</h3>
+                <p style="color: #4a5a5c; font-size: 0.9375rem; margin: 0;">Share measurable outcomes, time savings, cost reductions, or improvements in security and compliance.</p>
             </div>
             
-            <div style="padding: 1.5rem; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0;">
-                <div style="width: 48px; height: 48px; background-color: #eff6ff; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
-                    <i class="fas fa-users" style="font-size: 1.5rem; color: #2563eb;"></i>
+            <div style="padding: 1.5rem; background: #f6f5f1; border: 1px solid #dcd8cd; border-radius: 0;">
+                <div style="width: 48px; height: 48px; background-color: #f4f6f5; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                    <i class="fas fa-users" style="font-size: 1.5rem; color: #0e5f5a;"></i>
                 </div>
-                <h3 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Diverse Stories</h3>
-                <p style="color: #5b6371; font-size: 0.9375rem; margin: 0;">We're interested in organisations of all sizes and use cases - every story helps others understand the possibilities.</p>
+                <h3 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #0d2b2e; margin-bottom: 0.5rem;">Diverse Stories</h3>
+                <p style="color: #4a5a5c; font-size: 0.9375rem; margin: 0;">We're interested in organisations of all sizes and use cases - every story helps others understand the possibilities.</p>
             </div>
         </div>
     </div>
@@ -156,7 +156,7 @@ include INCLUDES_PATH . '/header.php';
             <a href="<?php echo url('index.php'); ?>" class="btn btn-primary">Return to Home</a>
         </p>
     <?php else: ?>
-        <div style="background-color: #f9fafb; border: 1px solid #e5e7eb; padding: 2rem; margin-top: 2rem; border-radius: 0;">
+        <div style="background-color: #f6f5f1; border: 1px solid #dcd8cd; padding: 2rem; margin-top: 2rem; border-radius: 0;">
             <h2 style="margin-top: 0;">Get in Touch</h2>
             <p style="margin-bottom: 1.5rem;">
                 If you're interested in working with us on a case study, please fill out the form below and we'll get back to you soon.
@@ -166,19 +166,19 @@ include INCLUDES_PATH . '/header.php';
                 <?php echo CSRF::tokenField(); ?>
                 
                 <div class="form-group">
-                    <label for="organisation_name">Organisation Name <span style="color: #dc2626;">*</span></label>
+                    <label for="organisation_name">Organisation Name <span style="color: #a3322b;">*</span></label>
                     <input type="text" id="organisation_name" name="organisation_name" required 
                            value="<?php echo htmlspecialchars($_POST['organisation_name'] ?? ''); ?>">
                 </div>
                 
                 <div class="form-group">
-                    <label for="contact_name">Your Name <span style="color: #dc2626;">*</span></label>
+                    <label for="contact_name">Your Name <span style="color: #a3322b;">*</span></label>
                     <input type="text" id="contact_name" name="contact_name" required 
                            value="<?php echo htmlspecialchars($_POST['contact_name'] ?? ''); ?>">
                 </div>
                 
                 <div class="form-group">
-                    <label for="contact_email">Your Email <span style="color: #dc2626;">*</span></label>
+                    <label for="contact_email">Your Email <span style="color: #a3322b;">*</span></label>
                     <input type="email" id="contact_email" name="contact_email" required 
                            value="<?php echo htmlspecialchars($_POST['contact_email'] ?? ''); ?>">
                 </div>

@@ -44,7 +44,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2rem;">
         <div>
             <h1>Organisational Structure</h1>
-            <p style="color: #6b7280; margin-top: 0.5rem;"><?php echo htmlspecialchars($org['name']); ?></p>
+            <p style="color: #4a5a5c; margin-top: 0.5rem;"><?php echo htmlspecialchars($org['name']); ?></p>
         </div>
         <div style="display: flex; gap: 1rem;">
             <a href="<?php echo url('admin/organisational-structure/import.php'); ?>" class="btn btn-secondary">
@@ -65,9 +65,9 @@ include dirname(__DIR__, 2) . '/includes/header.php';
     <?php endif; ?>
     
     <!-- Info Box -->
-    <div style="background-color: #e0f2fe; border-left: 4px solid #2563eb; padding: 1rem; border-radius: 0; margin-bottom: 2rem;">
-        <h4 style="margin-top: 0; color: #1e40af; font-size: 1rem;">About Organisational Structure</h4>
-        <p style="margin: 0; color: #1e40af; font-size: 0.875rem;">
+    <div style="background-color: #f4f6f5; border-left: 4px solid #0e5f5a; padding: 1rem; border-radius: 0; margin-bottom: 2rem;">
+        <h4 style="margin-top: 0; color: #0a4440; font-size: 1rem;">About Organisational Structure</h4>
+        <p style="margin: 0; color: #0a4440; font-size: 0.875rem;">
             Define your organisation's hierarchy however you like. Create teams, departments, areas, regions, or any structure that fits your needs.
             You can have flat teams or nested hierarchies - it's completely flexible.
         </p>
@@ -75,17 +75,17 @@ include dirname(__DIR__, 2) . '/includes/header.php';
     
     <?php if (empty($allUnits)): ?>
         <!-- Empty State -->
-        <div style="text-align: center; padding: 3rem; background-color: #f9fafb; border-radius: 0; border: 2px dashed #d1d5db;">
-            <i class="fas fa-sitemap" style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem;"></i>
-            <h3 style="margin: 0 0 0.5rem; color: #1f2937;">No Organisational Units Yet</h3>
-            <p style="color: #6b7280; margin-bottom: 1.5rem;">Create your first unit to start building your organisational structure.</p>
+        <div style="text-align: center; padding: 3rem; background-color: #f6f5f1; border-radius: 0; border: 2px dashed #dcd8cd;">
+            <i class="fas fa-sitemap" style="font-size: 3rem; color: #4a5a5c; margin-bottom: 1rem;"></i>
+            <h3 style="margin: 0 0 0.5rem; color: #0d2b2e;">No Organisational Units Yet</h3>
+            <p style="color: #4a5a5c; margin-bottom: 1.5rem;">Create your first unit to start building your organisational structure.</p>
             <a href="<?php echo url('admin/organisational-structure/new.php'); ?>" class="btn btn-primary">
                 <i class="fas fa-plus"></i> Add First Unit
             </a>
         </div>
     <?php else: ?>
         <!-- Organisational Structure Tree -->
-        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0; padding: 1.5rem; margin-bottom: 2rem;">
+        <div style="background: white; border: 1px solid #dcd8cd; border-radius: 0; padding: 1.5rem; margin-bottom: 2rem;">
             <h3 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.25rem;">Structure Overview (<?php echo count($allUnits); ?> units)</h3>
             
             <?php
@@ -94,28 +94,28 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                 if (empty($units)) return;
                 
                 foreach ($units as $unit): ?>
-                    <div style="<?php echo $depth > 0 ? 'margin-left: 2rem; margin-top: 0.5rem;' : 'margin-top: 0.5rem;'; ?> border-left: <?php echo $depth > 0 ? '2px solid #d1d5db' : '2px solid #2563eb'; ?> padding-left: 1rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background-color: #f9fafb; border-radius: 0; margin-bottom: 0.5rem; transition: background-color 0.2s;" 
-                             onmouseover="this.style.backgroundColor='#f3f4f6'" 
-                             onmouseout="this.style.backgroundColor='#f9fafb'">
+                    <div style="<?php echo $depth > 0 ? 'margin-left: 2rem; margin-top: 0.5rem;' : 'margin-top: 0.5rem;'; ?> border-left: <?php echo $depth > 0 ? '2px solid #dcd8cd' : '2px solid #0e5f5a'; ?> padding-left: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background-color: #f6f5f1; border-radius: 0; margin-bottom: 0.5rem; transition: background-color 0.2s;" 
+                             onmouseover="this.style.backgroundColor='#f6f5f1'" 
+                             onmouseout="this.style.backgroundColor='#f6f5f1'">
                             <div style="flex: 1;">
                                 <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                                    <h4 style="margin: 0; font-size: 1rem; font-weight: 600; color: #1f2937;">
+                                    <h4 style="margin: 0; font-size: 1rem; font-weight: 600; color: #0d2b2e;">
                                         <?php echo htmlspecialchars($unit['name']); ?>
                                     </h4>
                                     <?php if (!empty($unit['unit_type'])): ?>
-                                        <span style="padding: 0.25rem 0.5rem; background-color: #e5e7eb; border-radius: 0; font-size: 0.75rem; color: #6b7280;">
+                                        <span style="padding: 0.25rem 0.5rem; background-color: #dcd8cd; border-radius: 0; font-size: 0.75rem; color: #4a5a5c;">
                                             <?php echo htmlspecialchars($unit['unit_type']); ?>
                                         </span>
                                     <?php endif; ?>
                                     <?php if (!empty($unit['member_count'])): ?>
-                                        <span style="font-size: 0.75rem; color: #6b7280;">
+                                        <span style="font-size: 0.75rem; color: #4a5a5c;">
                                             <?php echo (int)$unit['member_count']; ?> member<?php echo (int)$unit['member_count'] !== 1 ? 's' : ''; ?>
                                         </span>
                                     <?php endif; ?>
                                 </div>
                                 <?php if (!empty($unit['description'])): ?>
-                                    <p style="margin: 0.25rem 0 0; font-size: 0.875rem; color: #6b7280;">
+                                    <p style="margin: 0.25rem 0 0; font-size: 0.875rem; color: #4a5a5c;">
                                         <?php echo htmlspecialchars($unit['description']); ?>
                                     </p>
                                 <?php endif; ?>
@@ -147,25 +147,25 @@ include dirname(__DIR__, 2) . '/includes/header.php';
         </div>
         
         <!-- Flat List View (Alternative) -->
-        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0; padding: 1.5rem;">
+        <div style="background: white; border: 1px solid #dcd8cd; border-radius: 0; padding: 1.5rem;">
             <h3 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.25rem;">All Units (Flat List)</h3>
             <div style="display: grid; gap: 0.5rem;">
                 <?php foreach ($allUnits as $unit): ?>
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background-color: #f9fafb; border-radius: 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background-color: #f6f5f1; border-radius: 0;">
                         <div style="flex: 1;">
                             <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                                <span style="font-weight: 500; color: #1f2937;"><?php echo htmlspecialchars($unit['name']); ?></span>
+                                <span style="font-weight: 500; color: #0d2b2e;"><?php echo htmlspecialchars($unit['name']); ?></span>
                                 <?php if (!empty($unit['unit_type'])): ?>
-                                    <span style="padding: 0.25rem 0.5rem; background-color: #e5e7eb; border-radius: 0; font-size: 0.75rem; color: #6b7280;">
+                                    <span style="padding: 0.25rem 0.5rem; background-color: #dcd8cd; border-radius: 0; font-size: 0.75rem; color: #4a5a5c;">
                                         <?php echo htmlspecialchars($unit['unit_type']); ?>
                                     </span>
                                 <?php endif; ?>
                             </div>
-                            <div style="display: flex; gap: 1rem; margin-top: 0.25rem; font-size: 0.75rem; color: #6b7280;">
+                            <div style="display: flex; gap: 1rem; margin-top: 0.25rem; font-size: 0.75rem; color: #4a5a5c;">
                                 <?php if (!empty($unit['parent_name'])): ?>
                                     <span>Parent: <?php echo htmlspecialchars($unit['parent_name']); ?></span>
                                 <?php else: ?>
-                                    <span style="color: #2563eb;">Top Level</span>
+                                    <span style="color: #0e5f5a;">Top Level</span>
                                 <?php endif; ?>
                                 <span><?php echo (int)$unit['member_count']; ?> member<?php echo (int)$unit['member_count'] !== 1 ? 's' : ''; ?></span>
                             </div>

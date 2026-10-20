@@ -169,12 +169,12 @@ include dirname(__DIR__, 2) . '/includes/header.php';
 
 <div class="card">
     <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
-        <a href="<?php echo url('admin/employees.php'); ?>" style="color: #6b7280;">
+        <a href="<?php echo url('admin/employees.php'); ?>" style="color: #4a5a5c;">
             <i class="fas fa-arrow-left"></i>
         </a>
         <div>
             <h1>Edit Employee</h1>
-            <p style="color: #6b7280; margin-top: 0.5rem;">
+            <p style="color: #4a5a5c; margin-top: 0.5rem;">
                 <?php echo htmlspecialchars($employee['first_name'] . ' ' . $employee['last_name']); ?>
             </p>
         </div>
@@ -193,10 +193,10 @@ include dirname(__DIR__, 2) . '/includes/header.php';
         
         <div class="form-group">
             <label>User Information</label>
-            <div style="background: #f9fafb; padding: 1rem; border-radius: 0; margin-top: 0.5rem;">
+            <div style="background: #f6f5f1; padding: 1rem; border-radius: 0; margin-top: 0.5rem;">
                 <p style="margin: 0.5rem 0;"><strong>Name:</strong> <?php echo htmlspecialchars($employee['first_name'] . ' ' . $employee['last_name']); ?></p>
                 <p style="margin: 0.5rem 0;"><strong>Email:</strong> <?php echo htmlspecialchars($employee['email']); ?></p>
-                <p style="margin: 0.5rem 0; font-size: 0.875rem; color: #6b7280;">
+                <p style="margin: 0.5rem 0; font-size: 0.875rem; color: #4a5a5c;">
                     <i class="fas fa-info-circle"></i> User name and email are managed in the Users section.
                 </p>
             </div>
@@ -207,31 +207,31 @@ include dirname(__DIR__, 2) . '/includes/header.php';
             <input type="text" id="employee_number" name="employee_number" 
                    value="<?php echo htmlspecialchars($employee['employee_number'] ?? $employee['employee_reference'] ?? ''); ?>" 
                    readonly 
-                   style="background-color: #f3f4f6; cursor: not-allowed;">
+                   style="background-color: #f6f5f1; cursor: not-allowed;">
             <small><i class="fas fa-lock"></i> <strong>This cannot be changed.</strong> This is the employee number from your HR or payroll system and is integral to other systems. It is not displayed on the digital ID card.</small>
         </div>
         
         <div class="form-group">
-            <label for="display_reference">Display Reference <span style="color: #dc2626;">*</span></label>
+            <label for="display_reference">Display Reference <span style="color: #a3322b;">*</span></label>
             <input type="text" id="display_reference" name="display_reference" 
                    value="<?php echo htmlspecialchars($employee['display_reference'] ?? $employee['employee_reference'] ?? ''); ?>" required>
             <small><i class="fas fa-id-card"></i> This is the reference shown on the digital ID card. Must be unique within your organisation.</small>
         </div>
         
         <?php if (defined('USE_STAFF_SERVICE') && USE_STAFF_SERVICE): ?>
-        <div class="form-group" style="background: #f9fafb; padding: 1rem; border-radius: 0; border-left: 3px solid #3b82f6;">
+        <div class="form-group" style="background: #f6f5f1; padding: 1rem; border-radius: 0; border-left: 3px solid #0e5f5a;">
             <label style="font-weight: 600; margin-bottom: 0.5rem;">Staff Service Integration</label>
             <?php if (!empty($employee['staff_service_person_id'])): ?>
-                <p style="margin: 0.5rem 0; color: #10b981;">
+                <p style="margin: 0.5rem 0; color: #1f6b45;">
                     <i class="fas fa-link"></i> <strong>Linked to Staff Service</strong>
-                    <br><small style="color: #6b7280;">Person ID: <?php echo $employee['staff_service_person_id']; ?></small>
+                    <br><small style="color: #4a5a5c;">Person ID: <?php echo $employee['staff_service_person_id']; ?></small>
                 </p>
                 <?php if (!empty($employee['last_synced_from_staff_service'])): ?>
-                    <p style="margin: 0.5rem 0; color: #6b7280; font-size: 0.875rem;">
+                    <p style="margin: 0.5rem 0; color: #4a5a5c; font-size: 0.875rem;">
                         Last synced: <?php echo date('d/m/Y H:i', strtotime($employee['last_synced_from_staff_service'])); ?>
                     </p>
                 <?php else: ?>
-                    <p style="margin: 0.5rem 0; color: #f59e0b; font-size: 0.875rem;">
+                    <p style="margin: 0.5rem 0; color: #8a5a00; font-size: 0.875rem;">
                         <i class="fas fa-exclamation-triangle"></i> Never synced
                     </p>
                 <?php endif; ?>
@@ -243,10 +243,10 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                     </button>
                 </form>
             <?php else: ?>
-                <p style="margin: 0.5rem 0; color: #6b7280;">
+                <p style="margin: 0.5rem 0; color: #4a5a5c;">
                     <i class="fas fa-unlink"></i> Not linked to Staff Service
                 </p>
-                <p style="margin: 0.5rem 0; color: #6b7280; font-size: 0.875rem;">
+                <p style="margin: 0.5rem 0; color: #4a5a5c; font-size: 0.875rem;">
                     Link this employee to a Staff Service person record to enable automatic syncing.
                 </p>
             <?php endif; ?>
@@ -263,56 +263,56 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                 
                 <?php if ($hasApprovedPhoto): ?>
                     <div style="margin-bottom: 1rem;">
-                        <p style="color: #10b981; margin: 0 0 0.5rem 0;">
+                        <p style="color: #1f6b45; margin: 0 0 0.5rem 0;">
                             <i class="fas fa-check-circle"></i> <strong>Approved Photo</strong>
                         </p>
                         <img src="<?php echo htmlspecialchars(url('view-image.php?path=' . urlencode($employee['photo_path']))); ?>" 
                              alt="Employee Photo" 
-                             style="width: 150px; height: 150px; object-fit: cover; border-radius: 0; border: 3px solid #10b981;">
+                             style="width: 150px; height: 150px; object-fit: cover; border-radius: 0; border: 3px solid #1f6b45;">
                         <?php if ($employee['photo_approved_at']): ?>
-                            <p style="color: #6b7280; font-size: 0.875rem; margin: 0.5rem 0 0 0;">
+                            <p style="color: #4a5a5c; font-size: 0.875rem; margin: 0.5rem 0 0 0;">
                                 Approved on <?php echo date('d/m/Y H:i', strtotime($employee['photo_approved_at'])); ?>
                             </p>
                         <?php endif; ?>
                     </div>
                 <?php elseif ($photoStatus === 'pending' && !empty($employee['photo_pending_path']) && file_exists(dirname(__DIR__, 2) . '/' . $employee['photo_pending_path'])): ?>
                     <div style="margin-bottom: 1rem;">
-                        <p style="color: #f59e0b; margin: 0 0 0.5rem 0;">
+                        <p style="color: #8a5a00; margin: 0 0 0.5rem 0;">
                             <i class="fas fa-clock"></i> <strong>Pending Approval</strong>
                         </p>
                         <img src="<?php echo htmlspecialchars($employee['photo_pending_path']); ?>" 
                              alt="Pending Photo" 
-                             style="width: 150px; height: 150px; object-fit: cover; border-radius: 0; border: 3px solid #f59e0b;">
+                             style="width: 150px; height: 150px; object-fit: cover; border-radius: 0; border: 3px solid #8a5a00;">
                         <p style="margin-top: 0.5rem;">
-                            <a href="<?php echo url('admin/photo-approvals.php'); ?>" class="btn" style="background: #f59e0b; color: white; padding: 0.5rem 1rem; font-size: 0.875rem;">
+                            <a href="<?php echo url('admin/photo-approvals.php'); ?>" class="btn" style="background: #8a5a00; color: white; padding: 0.5rem 1rem; font-size: 0.875rem;">
                                 <i class="fas fa-eye"></i> Review Photo
                             </a>
                         </p>
                     </div>
                 <?php elseif ($photoStatus === 'rejected'): ?>
-                    <div style="margin-bottom: 1rem; padding: 1rem; background: #fee2e2; border-radius: 0; border-left: 4px solid #ef4444;">
-                        <p style="color: #991b1b; margin: 0 0 0.5rem 0;">
+                    <div style="margin-bottom: 1rem; padding: 1rem; background: #f8eceb; border-radius: 0; border-left: 4px solid #a3322b;">
+                        <p style="color: #7d2520; margin: 0 0 0.5rem 0;">
                             <i class="fas fa-times-circle"></i> <strong>Rejected</strong>
                         </p>
                         <?php if (!empty($employee['photo_rejection_reason'])): ?>
-                            <p style="color: #7f1d1d; font-size: 0.875rem; margin: 0;">
+                            <p style="color: #7d2520; font-size: 0.875rem; margin: 0;">
                                 <?php echo nl2br(htmlspecialchars($employee['photo_rejection_reason'])); ?>
                             </p>
                         <?php endif; ?>
                     </div>
                 <?php else: ?>
-                    <div style="width: 150px; height: 150px; background: #f3f4f6; border-radius: 0; display: flex; align-items: center; justify-content: center; color: #9ca3af; border: 2px solid #e5e7eb;">
+                    <div style="width: 150px; height: 150px; background: #f6f5f1; border-radius: 0; display: flex; align-items: center; justify-content: center; color: #4a5a5c; border: 2px solid #dcd8cd;">
                         <i class="fas fa-user" style="font-size: 3rem;"></i>
                     </div>
-                    <p style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem;">
+                    <p style="color: #4a5a5c; font-size: 0.875rem; margin-top: 0.5rem;">
                         No photo uploaded
                     </p>
                 <?php endif; ?>
             </div>
         </div>
         
-        <div style="background: #f0f9ff; border-left: 4px solid #0ea5e9; padding: 1rem; border-radius: 0; margin-bottom: 1.5rem;">
-            <p style="margin: 0; color: #0c4a6e; font-size: 0.875rem;">
+        <div style="background: #f4f6f5; border-left: 4px solid #0e5f5a; padding: 1rem; border-radius: 0; margin-bottom: 1.5rem;">
+            <p style="margin: 0; color: #0a4440; font-size: 0.875rem;">
                 <i class="fas fa-info-circle"></i> <strong>Note:</strong> Employees can upload their own photos through their profile. Use the <a href="<?php echo url('admin/photo-approvals.php'); ?>" style="color: #0284c7; font-weight: 600;">Photo Approvals</a> page to review and approve uploaded photos.
             </p>
         </div>
@@ -339,30 +339,30 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                 <small>When this ID card expires. Leave empty to use default expiration period.</small>
             </div>
             
-            <div style="background: #f0f9ff; border-left: 4px solid #06b6d4; padding: 1rem; border-radius: 0; margin-bottom: 1.5rem;">
-                <h4 style="margin: 0 0 0.5rem 0; color: #0e7490; font-size: 1rem;">
+            <div style="background: #f4f6f5; border-left: 4px solid #0e5f5a; padding: 1rem; border-radius: 0; margin-bottom: 1.5rem;">
+                <h4 style="margin: 0 0 0.5rem 0; color: #0e5f5a; font-size: 1rem;">
                     <i class="fas fa-info-circle"></i> ID Card Information
                 </h4>
-                <p style="margin: 0.25rem 0; color: #0e7490; font-size: 0.875rem;">
+                <p style="margin: 0.25rem 0; color: #0e5f5a; font-size: 0.875rem;">
                     <strong>Issued:</strong> <?php echo date('d/m/Y H:i', strtotime($idCard['issued_at'])); ?>
                 </p>
-                <p style="margin: 0.25rem 0; color: #0e7490; font-size: 0.875rem;">
+                <p style="margin: 0.25rem 0; color: #0e5f5a; font-size: 0.875rem;">
                     <strong>Current Expiration:</strong> <?php echo $idCard['expires_at'] ? date('d/m/Y H:i', strtotime($idCard['expires_at'])) : 'Not set'; ?>
                 </p>
-                <p style="margin: 0.25rem 0; color: #0e7490; font-size: 0.875rem;">
+                <p style="margin: 0.25rem 0; color: #0e5f5a; font-size: 0.875rem;">
                     <strong>Status:</strong> 
                     <?php if ($idCard['is_revoked']): ?>
-                        <span style="color: #dc2626;">Revoked</span>
+                        <span style="color: #a3322b;">Revoked</span>
                     <?php elseif ($idCard['expires_at'] && strtotime($idCard['expires_at']) < time()): ?>
-                        <span style="color: #f59e0b;">Expired</span>
+                        <span style="color: #8a5a00;">Expired</span>
                     <?php else: ?>
-                        <span style="color: #10b981;">Active</span>
+                        <span style="color: #1f6b45;">Active</span>
                     <?php endif; ?>
                 </p>
             </div>
         <?php endif; ?>
         
-        <div style="display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #e5e7eb;">
+        <div style="display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #dcd8cd;">
             <button type="submit" class="btn btn-primary">
                 <i class="fas fa-save"></i> Save Changes
             </button>

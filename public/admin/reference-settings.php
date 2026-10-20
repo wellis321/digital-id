@@ -183,12 +183,12 @@ include dirname(__DIR__, 2) . '/includes/header.php';
 
 <div class="container">
     <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
-        <a href="<?php echo url('admin/organisational-structure.php'); ?>" style="color: #6b7280;">
+        <a href="<?php echo url('admin/organisational-structure.php'); ?>" style="color: #4a5a5c;">
             <i class="fas fa-arrow-left"></i>
         </a>
         <div style="flex: 1;">
             <h1>Organisation Settings</h1>
-            <p style="color: #6b7280; margin-top: 0.5rem;">
+            <p style="color: #4a5a5c; margin-top: 0.5rem;">
                 Manage your organisation logo and display reference settings
             </p>
         </div>
@@ -199,17 +199,17 @@ include dirname(__DIR__, 2) . '/includes/header.php';
         </div>
     </div>
     
-    <div style="background-color: #eff6ff; border-left: 4px solid #3b82f6; padding: 1.5rem; margin-bottom: 2rem; border-radius: 0;">
-        <h3 style="margin-top: 0; color: #1e40af;">
+    <div style="background-color: #f4f6f5; border-left: 4px solid #0e5f5a; padding: 1.5rem; margin-bottom: 2rem; border-radius: 0;">
+        <h3 style="margin-top: 0; color: #0a4440;">
             <i class="fas fa-info-circle"></i> About Display References
         </h3>
-        <p style="color: #1e40af; margin-bottom: 0.5rem;">
+        <p style="color: #0a4440; margin-bottom: 0.5rem;">
             <strong>Employee Numbers</strong> come from your HR or payroll system and are used internally. They are not displayed on digital ID cards.
         </p>
-        <p style="color: #1e40af; margin-bottom: 0.5rem;">
+        <p style="color: #0a4440; margin-bottom: 0.5rem;">
             <strong>Display References</strong> are shown on digital ID cards and can be auto-generated based on your preferences below, or set manually when creating employee records.
         </p>
-        <p style="color: #1e40af; margin: 0;">
+        <p style="color: #0a4440; margin: 0;">
             If you choose "Custom" pattern, display references must be set manually for each employee.
         </p>
     </div>
@@ -225,12 +225,12 @@ include dirname(__DIR__, 2) . '/includes/header.php';
     <!-- Organisation Logo Section -->
     <div class="card" style="margin-bottom: 2rem;">
         <h2 style="margin-top: 0;">Organisation Logo</h2>
-        <p style="color: #6b7280; margin-bottom: 1.5rem;">
+        <p style="color: #4a5a5c; margin-bottom: 1.5rem;">
             Upload your organisation's logo to display on all digital ID cards. This makes ID cards look more authentic and branded.
         </p>
         
         <?php if ($org['logo_path'] && file_exists(dirname(__DIR__, 2) . '/' . $org['logo_path'])): ?>
-            <div style="margin-bottom: 1.5rem; padding: 1rem; background: #f9fafb; border: 1px solid #e5e7eb; display: inline-block;">
+            <div style="margin-bottom: 1.5rem; padding: 1rem; background: #f6f5f1; border: 1px solid #dcd8cd; display: inline-block;">
                 <img src="<?php echo url('view-image.php?path=' . urlencode($org['logo_path'])); ?>" 
                      alt="Organisation Logo" 
                      style="max-height: 100px; max-width: 300px; display: block;">

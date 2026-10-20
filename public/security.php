@@ -18,26 +18,26 @@ include INCLUDES_PATH . '/header.php';
 .hero-content h1 {
     font-size: 3.5rem;
     font-weight: 700;
-    color: #1f2937;
+    color: #0d2b2e;
     margin-bottom: 1.5rem;
     line-height: 1.2;
 }
 
 .hero-content p {
     font-size: 1.25rem;
-    color: #5b6371;
+    color: #4a5a5c;
     line-height: 1.7;
     margin-bottom: 2rem;
 }
 
 .hero-image {
-    background-color: #f3f4f6;
+    background-color: #f6f5f1;
     border-radius: 0;
     aspect-ratio: 4/3;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #9ca3af;
+    color: #4a5a5c;
     font-size: 1.125rem;
     position: relative;
     overflow: hidden;
@@ -54,7 +54,7 @@ include INCLUDES_PATH . '/header.php';
     font-size: 4rem;
     margin-bottom: 1rem;
     display: block;
-    color: #9ca3af;
+    color: #4a5a5c;
 }
 
 @media (max-width: 968px) {
@@ -92,13 +92,13 @@ include INCLUDES_PATH . '/header.php';
 .two-column-text h3 {
     font-size: 1.75rem;
     font-weight: 600;
-    color: #1f2937;
+    color: #0d2b2e;
     margin-bottom: 1rem;
 }
 
 .two-column-text p {
     font-size: 1.125rem;
-    color: #5b6371;
+    color: #4a5a5c;
     line-height: 1.8;
     margin-bottom: 1.5rem;
 }
@@ -106,7 +106,7 @@ include INCLUDES_PATH . '/header.php';
 .two-column-text ul {
     margin: 1rem 0;
     padding-left: 1.5rem;
-    color: #4b5563;
+    color: #4a5a5c;
     line-height: 1.8;
 }
 
@@ -115,10 +115,10 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .two-column-image {
-    background-color: #f3f4f6;
+    background-color: #f6f5f1;
     border-radius: 0;
     display: block;
-    color: #9ca3af;
+    color: #4a5a5c;
     font-size: 1.125rem;
     overflow: hidden;
     position: relative;
@@ -143,7 +143,7 @@ include INCLUDES_PATH . '/header.php';
     font-size: 3rem;
     margin-bottom: 1rem;
     display: block;
-    color: #0e7490;
+    color: #0e5f5a;
 }
 
 @media (max-width: 968px) {
@@ -167,7 +167,7 @@ include INCLUDES_PATH . '/header.php';
     top: 0;
     bottom: 0;
     width: 4px;
-    background: linear-gradient(to bottom, #2563eb, #047857, #8b5cf6, #b45309, #0e7490);
+    background: #0e5f5a;
     transform: translateX(-50%);
     z-index: 1;
 }
@@ -217,9 +217,9 @@ include INCLUDES_PATH . '/header.php';
     flex: 1;
     background: white;
     padding: 2rem;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #dcd8cd;
     border-radius: 0;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: none;
     max-width: 45%;
     position: relative;
 }
@@ -240,7 +240,7 @@ include INCLUDES_PATH . '/header.php';
     object-fit: cover;
     border-radius: 0;
     margin-bottom: 1rem;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #dcd8cd;
     display: block;
 }
 
@@ -258,40 +258,40 @@ include INCLUDES_PATH . '/header.php';
     left: 50%;
     transform: translateX(-50%);
     z-index: 3;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow: none;
     border: 4px solid white;
 }
 
 .timeline-step:nth-child(1) .timeline-marker {
-    background-color: #2563eb;
+    background-color: #0e5f5a;
 }
 
 .timeline-step:nth-child(2) .timeline-marker {
-    background-color: #047857;
+    background-color: #1f6b45;
 }
 
 .timeline-step:nth-child(3) .timeline-marker {
-    background-color: #8b5cf6;
+    background-color: #5b3a8c;
 }
 
 .timeline-step:nth-child(4) .timeline-marker {
-    background-color: #b45309;
+    background-color: #6b4500;
 }
 
 .timeline-step:nth-child(5) .timeline-marker {
-    background-color: #0e7490;
+    background-color: #0e5f5a;
 }
 
 .timeline-content h4 {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #1f2937;
+    color: #0d2b2e;
     margin-bottom: 0.75rem;
     margin-top: 0;
 }
 
 .timeline-content p {
-    color: #5b6371;
+    color: #4a5a5c;
     line-height: 1.7;
     margin: 0;
 }
@@ -346,14 +346,14 @@ include INCLUDES_PATH . '/header.php';
 .feature-item {
     background: white;
     padding: 2rem;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #dcd8cd;
     border-radius: 0;
 }
 
 .feature-icon-wrapper {
     width: 64px;
     height: 64px;
-    background-color: #f0f9ff;
+    background-color: #f4f6f5;
     border-radius: 0;
     display: flex;
     align-items: center;
@@ -363,18 +363,18 @@ include INCLUDES_PATH . '/header.php';
 
 .feature-icon-wrapper i {
     font-size: 1.75rem;
-    color: #0e7490;
+    color: #0e5f5a;
 }
 
 .feature-item h3 {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #1f2937;
+    color: #0d2b2e;
     margin-bottom: 0.75rem;
 }
 
 .feature-item p {
-    color: #5b6371;
+    color: #4a5a5c;
     line-height: 1.7;
     margin: 0;
 }
@@ -384,14 +384,14 @@ include INCLUDES_PATH . '/header.php';
     border-collapse: collapse;
     margin: 2rem 0;
     background: white;
-    border: 2px solid #e5e7eb;
+    border: 2px solid #dcd8cd;
     border-radius: 0;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: none;
     overflow: hidden;
 }
 
 .comparison-table th {
-    background-color: #1f2937;
+    background-color: #0d2b2e;
     color: white;
     padding: 1.25rem 1.5rem;
     text-align: left;
@@ -401,42 +401,42 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .comparison-table th:first-child {
-    background-color: #111827;
+    background-color: #0d2b2e;
     width: 25%;
 }
 
 .comparison-table th:nth-child(2) {
-    background-color: #374151;
+    background-color: #2f484b;
     width: 37.5%;
 }
 
 .comparison-table th:nth-child(3) {
-    background-color: #047857;
+    background-color: #1f6b45;
     width: 37.5%;
     border-right: none;
 }
 
 .comparison-table td {
     padding: 1.25rem 1.5rem;
-    border-bottom: 1px solid #e5e7eb;
-    border-right: 1px solid #e5e7eb;
+    border-bottom: 1px solid #dcd8cd;
+    border-right: 1px solid #dcd8cd;
     vertical-align: top;
 }
 
 .comparison-table td:first-child {
-    background-color: #f9fafb;
+    background-color: #f6f5f1;
     font-weight: 600;
-    color: #1f2937;
+    color: #0d2b2e;
 }
 
 .comparison-table td:nth-child(2) {
     background-color: #ffffff;
-    color: #4b5563;
+    color: #4a5a5c;
 }
 
 .comparison-table td:nth-child(3) {
-    background-color: #f0fdf4;
-    color: #047857;
+    background-color: #e6f1ef;
+    color: #1f6b45;
     border-right: none;
     font-weight: 500;
 }
@@ -446,20 +446,20 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .comparison-table tr:hover td {
-    background-color: #f3f4f6;
+    background-color: #f6f5f1;
 }
 
 .comparison-table tr:hover td:first-child {
-    background-color: #f3f4f6;
+    background-color: #f6f5f1;
 }
 
 .comparison-table tr:hover td:nth-child(3) {
-    background-color: #dcfce7;
+    background-color: #e6f1ef;
 }
 
 .highlight-box {
-    background-color: #eff6ff;
-    border-left: 4px solid #2563eb;
+    background-color: #f4f6f5;
+    border-left: 4px solid #0e5f5a;
     padding: 2rem;
     margin: 2rem 0;
     border-radius: 0;
@@ -467,14 +467,14 @@ include INCLUDES_PATH . '/header.php';
 
 .highlight-box h3 {
     margin-top: 0;
-    color: #1e40af;
+    color: #0d2b2e;
     font-size: 1.5rem;
 }
 
 .highlight-box p {
     font-size: 1.125rem;
     line-height: 1.8;
-    color: #1e40af;
+    color: #0a4440;
 }
 </style>
 
@@ -487,9 +487,6 @@ include INCLUDES_PATH . '/header.php';
                 <p>Understanding the security features and verification methods that protect your digital identity. Learn how our multi-layered approach ensures your organisation's data remains secure.</p>
                 <a href="<?php echo url('features.php'); ?>" class="btn btn-primary">Explore Features</a>
             </div>
-            <div class="hero-image">
-                <img src="<?php echo url('assets/images/security/Security & How It Works.png'); ?>" alt="Security & How It Works" style="width: 100%; height: 100%; object-fit: cover; border-radius: 0;">
-            </div>
         </div>
     </div>
 </div>
@@ -499,7 +496,7 @@ include INCLUDES_PATH . '/header.php';
     <div class="section-content">
         <div class="section-header">
             <h2>How Digital ID Works</h2>
-            <h3 style="font-size: 1.5rem; font-weight: 500; color: #4b5563; margin-top: 0.5rem; margin-bottom: 0;">A simple five-step process from employee profile creation to secure verification</h3>
+            <h3 style="font-size: 1.5rem; font-weight: 500; color: #4a5a5c; margin-top: 0.5rem; margin-bottom: 0;">A simple five-step process from employee profile creation to secure verification</h3>
         </div>
         
         <div class="timeline-container">
@@ -508,7 +505,6 @@ include INCLUDES_PATH . '/header.php';
                 <div class="timeline-step">
                     <div class="timeline-marker">1</div>
                     <div class="timeline-content">
-                        <img src="<?php echo url('assets/images/security/timeline/step-1.png'); ?>" alt="Employee Profile Creation" class="timeline-image" onerror="this.style.display='none';">
                         <h4>Employee Profile Creation</h4>
                         <p>Organisation administrators create employee profiles with unique employee reference numbers. Each employee is linked to their user account and organisation.</p>
                     </div>
@@ -517,7 +513,6 @@ include INCLUDES_PATH . '/header.php';
                 <div class="timeline-step">
                     <div class="timeline-marker">2</div>
                     <div class="timeline-content">
-                        <img src="<?php echo url('assets/images/security/timeline/step-2.png'); ?>" alt="Digital ID Card Generation" class="timeline-image" onerror="this.style.display='none';">
                         <h4>Digital ID Card Generation</h4>
                         <p>When an employee views their ID card, the system automatically generates secure, time-limited tokens for QR code and NFC verification. Each card has an expiration date.</p>
                     </div>
@@ -526,7 +521,6 @@ include INCLUDES_PATH . '/header.php';
                 <div class="timeline-step">
                     <div class="timeline-marker">3</div>
                     <div class="timeline-content">
-                        <img src="<?php echo url('assets/images/security/timeline/step-3.png'); ?>" alt="Verification Methods" class="timeline-image" onerror="this.style.display='none';">
                         <h4>Verification Methods</h4>
                         <p>Identity can be verified through three methods: <strong>Visual</strong> (photo and details), <strong>QR Code</strong> (scan for online verification), or <strong>NFC</strong> (tap for contactless verification).</p>
                     </div>
@@ -535,7 +529,6 @@ include INCLUDES_PATH . '/header.php';
                 <div class="timeline-step">
                     <div class="timeline-marker">4</div>
                     <div class="timeline-content">
-                        <img src="<?php echo url('assets/images/security/timeline/step-4.png'); ?>" alt="Secure Token Validation" class="timeline-image" onerror="this.style.display='none';">
                         <h4>Secure Token Validation</h4>
                         <p>When a QR code or NFC tag is scanned, the system validates the token, checks expiration, verifies the card is active, and confirms the employee status before displaying verification results.</p>
                     </div>
@@ -544,7 +537,6 @@ include INCLUDES_PATH . '/header.php';
                 <div class="timeline-step">
                     <div class="timeline-marker">5</div>
                     <div class="timeline-content">
-                        <img src="<?php echo url('assets/images/security/timeline/step-5.png'); ?>" alt="Audit Trail Recording" class="timeline-image" onerror="this.style.display='none';">
                         <h4>Audit Trail Recording</h4>
                         <p>Every verification attempt is logged with timestamp, method, result, and reason (if failed). This creates a complete audit trail for compliance and security monitoring.</p>
                     </div>
@@ -559,7 +551,7 @@ include INCLUDES_PATH . '/header.php';
     <div class="section-content">
         <div class="section-header">
             <h2>Verification Methods</h2>
-            <h3 style="font-size: 1.5rem; font-weight: 500; color: #4b5563; margin-top: 0.5rem; margin-bottom: 0;">Three ways to verify employee identity, each suited to different scenarios</h3>
+            <h3 style="font-size: 1.5rem; font-weight: 500; color: #4a5a5c; margin-top: 0.5rem; margin-bottom: 0;">Three ways to verify employee identity, each suited to different scenarios</h3>
         </div>
         
         <div class="features-grid">
@@ -601,7 +593,7 @@ include INCLUDES_PATH . '/header.php';
     <div class="section-content">
         <div class="section-header">
             <h2>Core Security Features</h2>
-            <h3 style="font-size: 1.5rem; font-weight: 500; color: #4b5563; margin-top: 0.5rem; margin-bottom: 0;">Multi-layered security measures that protect your organisation's data and employee identities</h3>
+            <h3 style="font-size: 1.5rem; font-weight: 500; color: #4a5a5c; margin-top: 0.5rem; margin-bottom: 0;">Multi-layered security measures that protect your organisation's data and employee identities</h3>
         </div>
         
         <div class="two-column-section">
@@ -625,17 +617,11 @@ include INCLUDES_PATH . '/header.php';
                         Revoked cards cannot be verified, even with valid tokens, ensuring immediate security control.
                     </p>
                 </div>
-                <div class="two-column-image">
-                    <img src="<?php echo url('assets/images/security/Core Security Features.png'); ?>" alt="Core Security Features" style="width: 100%; height: 100%; object-fit: cover; border-radius: 0;">
-                </div>
             </div>
         </div>
         
         <div class="two-column-section">
             <div class="two-column-content">
-                <div class="two-column-image">
-                    <img src="<?php echo url('assets/images/security/ Multi-Layer Protection  Multi-Layer Validation.png'); ?>" alt="Multi-Layer Protection & Multi-Layer Validation" style="width: 100%; height: 100%; object-fit: cover; border-radius: 0;">
-                </div>
                 <div class="two-column-text">
                     <h3>Multi-Layer Validation</h3>
                     <p>
@@ -671,7 +657,7 @@ include INCLUDES_PATH . '/header.php';
     <div class="section-content">
         <div class="section-header">
             <h2>Application Security</h2>
-            <h3 style="font-size: 1.5rem; font-weight: 500; color: #4b5563; margin-top: 0.5rem; margin-bottom: 0;">Industry-standard security practices protect against common threats</h3>
+            <h3 style="font-size: 1.5rem; font-weight: 500; color: #4a5a5c; margin-top: 0.5rem; margin-bottom: 0;">Industry-standard security practices protect against common threats</h3>
         </div>
         
         <div class="features-grid">
@@ -731,15 +717,15 @@ include INCLUDES_PATH . '/header.php';
     <div class="section-content">
         <div class="section-header">
             <h2>How We Compare</h2>
-            <h3 style="font-size: 1.5rem; font-weight: 500; color: #4b5563; margin-top: 0.5rem; margin-bottom: 0;">Understanding the difference between consumer and enterprise digital ID systems</h3>
+            <h3 style="font-size: 1.5rem; font-weight: 500; color: #4a5a5c; margin-top: 0.5rem; margin-bottom: 0;">Understanding the difference between consumer and enterprise digital ID systems</h3>
         </div>
         
-        <div class="highlight-box" style="background-color: #f0fdf4; border: 2px solid #047857; border-left: 4px solid #047857; max-width: 900px; margin: 2rem auto 0;">
-            <h3 style="margin-top: 0; color: #047857; font-size: 1.5rem; margin-bottom: 1rem;">
+        <div class="highlight-box" style="background-color: #e6f1ef; border: 2px solid #1f6b45; border-left: 4px solid #1f6b45; max-width: 900px; margin: 2rem auto 0;">
+            <h3 style="margin-top: 0; color: #1f6b45; font-size: 1.5rem; margin-bottom: 1rem;">
                 <i class="fas fa-info-circle" style="margin-right: 0.5rem;"></i>
                 Enterprise vs. Consumer Digital ID Systems
             </h3>
-            <p style="margin: 0; font-size: 1.125rem; line-height: 1.8; color: #047857;">
+            <p style="margin: 0; font-size: 1.125rem; line-height: 1.8; color: #1f6b45;">
                 Our Digital ID system is designed specifically for <strong>organisational employee verification</strong>, 
                 which has different security requirements than consumer identity systems (like government-issued digital IDs).
             </p>
@@ -792,12 +778,12 @@ include INCLUDES_PATH . '/header.php';
             </tbody>
         </table>
         
-        <div class="highlight-box" style="max-width: 900px; margin: 2rem auto 4rem; border: 2px solid #2563eb; border-left: 4px solid #2563eb;">
-            <h3 style="margin-top: 0; color: #1e40af; font-size: 1.25rem; margin-bottom: 1rem;">
+        <div class="highlight-box" style="max-width: 900px; margin: 2rem auto 4rem; border: 2px solid #0e5f5a; border-left: 4px solid #0e5f5a;">
+            <h3 style="margin-top: 0; color: #0a4440; font-size: 1.25rem; margin-bottom: 1rem;">
                 <i class="fas fa-question-circle" style="margin-right: 0.5rem;"></i>
                 Why the difference?
             </h3>
-            <p style="margin: 0; font-size: 1.125rem; line-height: 1.8; color: #1e40af;">
+            <p style="margin: 0; font-size: 1.125rem; line-height: 1.8; color: #0a4440;">
                 Consumer digital ID systems prioritise user privacy and control, 
                 while enterprise systems prioritise organisational control, compliance, and auditability. 
                 Our approach aligns with industry-standard employee verification systems used by organisations worldwide.
@@ -811,7 +797,7 @@ include INCLUDES_PATH . '/header.php';
     <div class="section-content">
         <div class="section-header">
             <h2>Security Best Practices</h2>
-            <h3 style="font-size: 1.5rem; font-weight: 500; color: #4b5563; margin-top: 0.5rem; margin-bottom: 0;">Recommendations for maintaining security in your organisation</h3>
+            <h3 style="font-size: 1.5rem; font-weight: 500; color: #4a5a5c; margin-top: 0.5rem; margin-bottom: 0;">Recommendations for maintaining security in your organisation</h3>
         </div>
         
         <div class="two-column-section">
@@ -835,17 +821,11 @@ include INCLUDES_PATH . '/header.php';
                         The admin interface provides filtering and export capabilities for easy analysis.
                     </p>
                 </div>
-                <div class="two-column-image">
-                    <img src="<?php echo url('assets/images/security/Security Best Practices.png'); ?>" alt="Security Best Practices" style="width: 100%; height: 100%; object-fit: cover; border-radius: 0;">
-                </div>
             </div>
         </div>
         
         <div class="two-column-section">
             <div class="two-column-content">
-                <div class="two-column-image">
-                    <img src="<?php echo url('assets/images/security/Strong Passwords.png'); ?>" alt="Strong Passwords">
-                </div>
                 <div class="two-column-text">
                     <h3>Strong Passwords</h3>
                     <p>
@@ -889,4 +869,8 @@ include INCLUDES_PATH . '/header.php';
     </div>
 </div>
 
+<style>
+.two-column-content { grid-template-columns: minmax(0, 1fr) !important; }
+.two-column-section .two-column-text { max-width: 70ch; }
+</style>
 <?php include INCLUDES_PATH . '/footer.php'; ?>

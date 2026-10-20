@@ -18,12 +18,12 @@ class Email {
         <html>
         <head>
             <style>
-                body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                body { font-family: Arial, sans-serif; line-height: 1.6; color: #2f484b; }
                 .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                .header { background-color: #4CAF50; color: white; padding: 20px; text-align: center; }
-                .content { padding: 20px; background-color: #f9f9f9; }
-                .button { display: inline-block; padding: 12px 24px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px; margin: 20px 0; }
-                .footer { padding: 20px; text-align: center; color: #666; font-size: 12px; }
+                .header { background-color: #1f6b45; color: white; padding: 20px; text-align: center; }
+                .content { padding: 20px; background-color: #f6f5f1; }
+                .button { display: inline-block; padding: 12px 24px; background-color: #1f6b45; color: white; text-decoration: none; border-radius: 4px; margin: 20px 0; }
+                .footer { padding: 20px; text-align: center; color: #4a5a5c; font-size: 12px; }
             </style>
         </head>
         <body>
@@ -38,7 +38,7 @@ class Email {
                         <a href='" . htmlspecialchars($verificationUrl) . "' class='button'>Verify Email Address</a>
                     </p>
                     <p>Or copy and paste this link into your browser:</p>
-                    <p style='word-break: break-all; color: #666;'>" . htmlspecialchars($verificationUrl) . "</p>
+                    <p style='word-break: break-all; color: #4a5a5c;'>" . htmlspecialchars($verificationUrl) . "</p>
                     <p>This link will expire in 24 hours.</p>
                     <p>If you did not create an account, please ignore this email.</p>
                 </div>
@@ -94,13 +94,13 @@ class Email {
         <html>
         <head>
             <style>
-                body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                body { font-family: Arial, sans-serif; line-height: 1.6; color: #2f484b; }
                 .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                .header { background-color: #2196F3; color: white; padding: 20px; text-align: center; }
-                .content { padding: 20px; background-color: #f9f9f9; }
-                .info-box { background-color: #fff; border-left: 4px solid #2196F3; padding: 15px; margin: 15px 0; }
-                .button { display: inline-block; padding: 12px 24px; background-color: #2196F3; color: white; text-decoration: none; border-radius: 4px; margin: 20px 0; }
-                .footer { padding: 20px; text-align: center; color: #666; font-size: 12px; }
+                .header { background-color: #0e5f5a; color: white; padding: 20px; text-align: center; }
+                .content { padding: 20px; background-color: #f6f5f1; }
+                .info-box { background-color: #fff; border-left: 4px solid #0e5f5a; padding: 15px; margin: 15px 0; }
+                .button { display: inline-block; padding: 12px 24px; background-color: #0e5f5a; color: white; text-decoration: none; border-radius: 4px; margin: 20px 0; }
+                .footer { padding: 20px; text-align: center; color: #4a5a5c; font-size: 12px; }
                 .detail-row { margin: 8px 0; }
                 .detail-label { font-weight: bold; display: inline-block; width: 150px; }
             </style>
@@ -167,15 +167,15 @@ class Email {
         <html>
         <head>
             <style>
-                body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                body { font-family: Arial, sans-serif; line-height: 1.6; color: #2f484b; }
                 .container { max-width: 700px; margin: 0 auto; padding: 20px; }
-                .header { background-color: #f44336; color: white; padding: 20px; text-align: center; }
-                .content { padding: 20px; background-color: #f9f9f9; }
-                .info-box { background-color: #fff; border-left: 4px solid #f44336; padding: 15px; margin: 15px 0; }
-                .footer { padding: 20px; text-align: center; color: #666; font-size: 12px; }
+                .header { background-color: #a3322b; color: white; padding: 20px; text-align: center; }
+                .content { padding: 20px; background-color: #f6f5f1; }
+                .info-box { background-color: #fff; border-left: 4px solid #a3322b; padding: 15px; margin: 15px 0; }
+                .footer { padding: 20px; text-align: center; color: #4a5a5c; font-size: 12px; }
                 .detail-row { margin: 8px 0; }
                 .detail-label { font-weight: bold; display: inline-block; width: 180px; }
-                .warning { background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; }
+                .warning { background-color: #f7f1e1; border-left: 4px solid #8a5a00; padding: 15px; margin: 15px 0; }
             </style>
         </head>
         <body>

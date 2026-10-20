@@ -175,8 +175,8 @@ include dirname(__DIR__, 2) . '/includes/header.php';
     
     <?php if ($countUsersNeedingNumbers > 0): ?>
     <!-- Users Needing Employee Numbers Notification -->
-    <div style="background: #f0f9ff; border-left: 3px solid #3b82f6; padding: 1rem; border-radius: 0; margin-bottom: 1.5rem;">
-        <p style="margin: 0; color: #1e40af; font-size: 0.9375rem;">
+    <div style="background: #f4f6f5; border-left: 3px solid #0e5f5a; padding: 1rem; border-radius: 0; margin-bottom: 1.5rem;">
+        <p style="margin: 0; color: #0a4440; font-size: 0.9375rem;">
             <i class="fas fa-info-circle"></i> <strong><?php echo $countUsersNeedingNumbers; ?> verified user<?php echo $countUsersNeedingNumbers !== 1 ? 's' : ''; ?> need<?php echo $countUsersNeedingNumbers === 1 ? 's' : ''; ?> employee records created.</strong> Use the form below to create employee records for them.
         </p>
     </div>
@@ -200,7 +200,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
         </div>
         
         <div class="form-group">
-            <label for="employee_number">Employee Number <span style="color: #dc2626;">*</span></label>
+            <label for="employee_number">Employee Number <span style="color: #a3322b;">*</span></label>
             <input type="text" id="employee_number" name="employee_number" required>
             <small><i class="fas fa-info-circle"></i> <strong>This is the employee number from your HR or payroll system.</strong> This number cannot be changed after creation and is used internally for system integration. It will not be displayed on the digital ID card.</small>
         </div>
@@ -223,7 +223,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
     <?php else: ?>
         <table style="width: 100%; border-collapse: collapse;">
             <thead>
-                <tr style="border-bottom: 2px solid #ddd;">
+                <tr style="border-bottom: 2px solid #dcd8cd;">
                     <th style="padding: 0.75rem; text-align: left;">Name</th>
                     <th style="padding: 0.75rem; text-align: left;">Email</th>
                     <th style="padding: 0.75rem; text-align: left;">Employee Reference</th>
@@ -245,11 +245,11 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                         </td>
                         <td style="padding: 0.75rem;">
                             <?php echo htmlspecialchars($employee['employee_number'] ?? $employee['employee_reference'] ?? 'N/A'); ?>
-                            <small style="display: block; color: #6b7280; font-size: 0.75rem;">(From HR/Payroll)</small>
+                            <small style="display: block; color: #4a5a5c; font-size: 0.75rem;">(From HR/Payroll)</small>
                         </td>
                         <td style="padding: 0.75rem;">
                             <?php echo htmlspecialchars($employee['display_reference'] ?? $employee['employee_reference'] ?? 'N/A'); ?>
-                            <small style="display: block; color: #6b7280; font-size: 0.75rem;">(Shown on ID Card)</small>
+                            <small style="display: block; color: #4a5a5c; font-size: 0.75rem;">(Shown on ID Card)</small>
                         </td>
                         <td style="padding: 0.75rem;">
                             <?php echo $employee['is_active'] ? '<span style="color: green;">Active</span>' : '<span style="color: red;">Inactive</span>'; ?>
@@ -261,12 +261,12 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                                     <i class="fas fa-link"></i> Linked
                                 </span>
                                 <?php if (!empty($employee['last_synced_from_staff_service'])): ?>
-                                    <small style="display: block; color: #6b7280; font-size: 0.75rem;">
+                                    <small style="display: block; color: #4a5a5c; font-size: 0.75rem;">
                                         Synced: <?php echo date('d/m/Y H:i', strtotime($employee['last_synced_from_staff_service'])); ?>
                                     </small>
                                 <?php endif; ?>
                             <?php else: ?>
-                                <span style="color: #6b7280;">
+                                <span style="color: #4a5a5c;">
                                     <i class="fas fa-unlink"></i> Not Linked
                                 </span>
                             <?php endif; ?>

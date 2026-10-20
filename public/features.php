@@ -18,26 +18,26 @@ include INCLUDES_PATH . '/header.php';
 .hero-content h1 {
     font-size: 3.5rem;
     font-weight: 700;
-    color: #1f2937;
+    color: #0d2b2e;
     margin-bottom: 1.5rem;
     line-height: 1.2;
 }
 
 .hero-content p {
     font-size: 1.25rem;
-    color: #5b6371;
+    color: #4a5a5c;
     line-height: 1.7;
     margin-bottom: 2rem;
 }
 
 .hero-image {
-    background-color: #f3f4f6;
+    background-color: #f6f5f1;
     border-radius: 0;
     aspect-ratio: 4/3;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #9ca3af;
+    color: #4a5a5c;
     font-size: 1.125rem;
     position: relative;
     overflow: hidden;
@@ -54,7 +54,7 @@ include INCLUDES_PATH . '/header.php';
     font-size: 4rem;
     margin-bottom: 1rem;
     display: block;
-    color: #d1d5db;
+    color: #dcd8cd;
 }
 
 @media (max-width: 968px) {
@@ -83,13 +83,13 @@ include INCLUDES_PATH . '/header.php';
     background: white;
     border-radius: 0;
     padding: 2rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: none;
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .feature-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+    box-shadow: none;
 }
 
 .feature-icon {
@@ -99,33 +99,33 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .feature-card:nth-child(3n+1) .feature-icon {
-    color: #3b82f6;
+    color: #0e5f5a;
 }
 
 .feature-card:nth-child(3n+2) .feature-icon {
-    color: #047857;
+    color: #1f6b45;
 }
 
 .feature-card:nth-child(3n+3) .feature-icon {
-    color: #8b5cf6;
+    color: #5b3a8c;
 }
 
 /* Why Choose Digital ID section - all icons green */
 .why-choose-section .feature-card .feature-icon {
-    color: #047857 !important;
+    color: #1f6b45 !important;
 }
 
 .why-choose-section .feature-card h3 {
-    color: #047857 !important;
+    color: #0d2b2e !important;
 }
 
 /* Advanced Features section - all icons blue (same as first) */
 .advanced-features-section .feature-card .feature-icon {
-    color: #3b82f6 !important;
+    color: #0e5f5a !important;
 }
 
 .advanced-features-section .feature-card h3 {
-    color: #3b82f6 !important;
+    color: #0d2b2e !important;
 }
 
 .feature-card h3 {
@@ -134,19 +134,19 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .feature-card:nth-child(3n+1) h3 {
-    color: #3b82f6;
+    color: #0d2b2e;
 }
 
 .feature-card:nth-child(3n+2) h3 {
-    color: #047857;
+    color: #0d2b2e;
 }
 
 .feature-card:nth-child(3n+3) h3 {
-    color: #8b5cf6;
+    color: #0d2b2e;
 }
 
 .feature-card p {
-    color: #666;
+    color: #4a5a5c;
     line-height: 1.8;
 }
 
@@ -172,23 +172,23 @@ include INCLUDES_PATH . '/header.php';
 
 .benefit-icon {
     font-size: 1.5rem;
-    color: #047857;
+    color: #1f6b45;
     flex-shrink: 0;
 }
 
 .benefit-item h3 {
     margin: 0 0 0.5rem 0;
-    color: #1f2937;
+    color: #0d2b2e;
 }
 
 .benefit-item p {
     margin: 0;
-    color: #5b6371;
+    color: #4a5a5c;
     font-size: 0.95rem;
 }
 
 .cta-section {
-    background: #2563eb;
+    background: #0e5f5a;
     color: white;
     padding: 3rem 2rem;
     border-radius: 0;
@@ -234,23 +234,23 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .stat-item:nth-child(1) .stat-number {
-    color: #3b82f6;
+    color: #0e5f5a;
 }
 
 .stat-item:nth-child(2) .stat-number {
-    color: #047857;
+    color: #1f6b45;
 }
 
 .stat-item:nth-child(3) .stat-number {
-    color: #8b5cf6;
+    color: #5b3a8c;
 }
 
 .stat-item:nth-child(4) .stat-number {
-    color: #0e7490;
+    color: #0e5f5a;
 }
 
 .stat-label {
-    color: #5b6371;
+    color: #4a5a5c;
     margin-top: 0.5rem;
     font-size: 1rem;
 }
@@ -310,7 +310,7 @@ include INCLUDES_PATH . '/header.php';
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(6, 182, 212, 0.3) 0%, rgba(37, 99, 235, 0.25) 100%);
+    background: transparent;
     z-index: 1;
 }
 
@@ -362,17 +362,17 @@ include INCLUDES_PATH . '/header.php';
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
-    color: #0e7490;
+    color: #0e5f5a;
     z-index: 10;
     transition: all 0.3s;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow: none;
     flex-shrink: 0;
 }
 
 .slider-nav:hover {
     background: white;
     transform: translateY(-50%) scale(1.1);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    box-shadow: none;
 }
 
 .slider-prev {
@@ -492,8 +492,13 @@ include INCLUDES_PATH . '/header.php';
             <?php endif; ?>
         </div>
     </div>
-    <div class="hero-image">
-        <img src="<?php echo url('assets/images/features/Transform Your Identity Management.png'); ?>" alt="Transform Your Identity Management" style="width: 100%; height: 100%; object-fit: cover; border-radius: 0;">
+    <div class="hero-image hero-steps">
+        <p class="hero-steps__title">How a check works</p>
+        <ol>
+            <li><strong>Scan</strong><span>Open the staff member's card and scan the QR code. It changes every five minutes.</span></li>
+            <li><strong>See the result</strong><span>The name, role and employer appear, with a clear valid or not valid message.</span></li>
+            <li><strong>It is logged</strong><span>Every check is recorded with the time and result for your audit trail.</span></li>
+        </ol>
     </div>
 </div>
 
@@ -504,7 +509,7 @@ include INCLUDES_PATH . '/header.php';
         <!-- Keep 6 cards visible -->
         <div class="feature-card">
             <i class="fas fa-shield-alt feature-icon"></i>
-            <h3>Bank-Grade Security</h3>
+            <h3>Layered Security</h3>
             <p>Multi-layered verification with visual checks, time-limited QR codes, and NFC technology. Every verification is logged and auditable.</p>
         </div>
         
@@ -523,7 +528,7 @@ include INCLUDES_PATH . '/header.php';
         <div class="feature-card">
             <i class="fas fa-bolt feature-icon"></i>
             <h3>Instant Verification</h3>
-            <p>Verify employee identity in seconds with QR code scanning or NFC tap. Perfect for banks, service providers, and emergency situations.</p>
+            <p>Verify employee identity in seconds with QR code scanning or NFC tap. Useful for service providers and in emergencies.</p>
         </div>
         
         <div class="feature-card">
@@ -545,7 +550,7 @@ include INCLUDES_PATH . '/header.php';
             <div class="features-slider-track" id="featuresPageSliderTrack">
                 <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/features/slider/slide-one.png'); ?>');">
                     <div class="feature-slide-content">
-                        <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                        <div class="feature-icon-wrapper" style="background: rgba(14, 95, 90, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
                             <i class="fas fa-door-open" style="font-size: 2.5rem; color: white;"></i>
                         </div>
                         <h3>Smart Access Control</h3>
@@ -555,7 +560,7 @@ include INCLUDES_PATH . '/header.php';
                 
                 <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/features/slider/slide-two.png'); ?>');">
                     <div class="feature-slide-content">
-                        <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                        <div class="feature-icon-wrapper" style="background: rgba(14, 95, 90, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
                             <i class="fas fa-database" style="font-size: 2.5rem; color: white;"></i>
                         </div>
                         <h3>Data Portability</h3>
@@ -565,7 +570,7 @@ include INCLUDES_PATH . '/header.php';
                 
                 <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/features/slider/slide-threeew.png'); ?>');">
                     <div class="feature-slide-content">
-                        <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                        <div class="feature-icon-wrapper" style="background: rgba(14, 95, 90, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
                             <i class="fas fa-users" style="font-size: 2.5rem; color: white;"></i>
                         </div>
                         <h3>People Friendly</h3>
@@ -575,7 +580,7 @@ include INCLUDES_PATH . '/header.php';
                 
                 <div class="feature-slide" style="background-image: url('<?php echo url('assets/images/features/slider/slide-four.png'); ?>');">
                     <div class="feature-slide-content">
-                        <div class="feature-icon-wrapper" style="background: rgba(6, 182, 212, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                        <div class="feature-icon-wrapper" style="background: rgba(14, 95, 90, 0.2); width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
                             <i class="fas fa-microsoft" style="font-size: 2.5rem; color: white;"></i>
                         </div>
                         <h3>Microsoft 365 Workflows</h3>
@@ -645,7 +650,7 @@ include INCLUDES_PATH . '/header.php';
 </div>
 
 <div class="benefits-section">
-    <h2 style="text-align: center; margin-bottom: 1rem; color: #1f2937;">Key Benefits for Social Care Providers</h2>
+    <h2 style="text-align: center; margin-bottom: 1rem; color: #0d2b2e;">Key Benefits for Social Care Providers</h2>
     
     <div class="benefits-grid">
         <div class="benefit-item">
@@ -738,9 +743,9 @@ include INCLUDES_PATH . '/header.php';
     <p>Join organisations already using Digital ID to streamline their identity management</p>
     <div class="cta-buttons">
         <?php if (Auth::isLoggedIn()): ?>
-            <a href="<?php echo url('id-card.php'); ?>" class="btn btn-secondary" style="background: white; color: #1d4ed8;">View Your ID Card</a>
+            <a href="<?php echo url('id-card.php'); ?>" class="btn btn-secondary" style="background: white; color: #0a4440;">View Your ID Card</a>
         <?php else: ?>
-            <a href="<?php echo url('request-access.php'); ?>" class="btn btn-secondary" style="background: white; color: #1d4ed8;">Request Access</a>
+            <a href="<?php echo url('request-access.php'); ?>" class="btn btn-secondary" style="background: white; color: #0a4440;">Request Access</a>
             <a href="<?php echo url('login.php'); ?>" class="btn btn-secondary" style="background: transparent; color: white; border: 2px solid white;">Login</a>
         <?php endif; ?>
     </div>

@@ -5,16 +5,6 @@ $pageTitle = 'Housing & Social Care';
 include INCLUDES_PATH . '/header.php';
 
 // Unsplash images - professional stock photos for housing & social care context
-$unsplash = [
-    'hero' => 'https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=1200&q=80',
-    'building' => 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80',
-    'care_home' => 'https://images.unsplash.com/photo-1417325384643-aac51acc9e5d?auto=format&fit=crop&w=1200&q=80',
-    'banking' => 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1200&q=80',
-    'housing' => 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80',
-    'hospital' => 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80',
-    'training' => 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80',
-    'rewards' => 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80',
-];
 ?>
 
 <style>
@@ -30,26 +20,26 @@ $unsplash = [
 .hero-content h1 {
     font-size: 3.5rem;
     font-weight: 700;
-    color: #1f2937;
+    color: #0d2b2e;
     margin-bottom: 1.5rem;
     line-height: 1.2;
 }
 
 .hero-content p {
     font-size: 1.25rem;
-    color: #5b6371;
+    color: #4a5a5c;
     line-height: 1.7;
     margin-bottom: 2rem;
 }
 
 .hero-image {
-    background-color: #f3f4f6;
+    background-color: #f6f5f1;
     border-radius: 0;
     aspect-ratio: 4/3;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #9ca3af;
+    color: #4a5a5c;
     font-size: 1.125rem;
     position: relative;
     overflow: hidden;
@@ -86,20 +76,20 @@ $unsplash = [
 
 .workflow-intro h2 {
     font-size: 2.5rem;
-    color: #1f2937;
+    color: #0d2b2e;
     margin-bottom: 1.5rem;
 }
 
 .workflow-intro p {
     font-size: 1.125rem;
-    color: #5b6371;
+    color: #4a5a5c;
     line-height: 1.8;
 }
 
 .use-case-section {
     margin: 5rem 0;
     padding: 3rem 0;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid #dcd8cd;
 }
 
 .use-case-section:first-of-type {
@@ -124,7 +114,7 @@ $unsplash = [
 
 .use-case-content h3 {
     font-size: 2rem;
-    color: #1f2937;
+    color: #0d2b2e;
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
@@ -134,7 +124,7 @@ $unsplash = [
 .use-case-icon {
     width: 60px;
     height: 60px;
-    background: linear-gradient(135deg, #0e7490 0%, #0891b2 100%);
+    background: #0e5f5a;
     border-radius: 0;
     display: flex;
     align-items: center;
@@ -146,7 +136,7 @@ $unsplash = [
 
 .use-case-content p {
     font-size: 1.125rem;
-    color: #4b5563;
+    color: #4a5a5c;
     line-height: 1.8;
     margin-bottom: 1.5rem;
 }
@@ -161,7 +151,7 @@ $unsplash = [
     padding: 0.75rem 0;
     padding-left: 2rem;
     position: relative;
-    color: #374151;
+    color: #2f484b;
     font-size: 1rem;
 }
 
@@ -171,21 +161,21 @@ $unsplash = [
     font-weight: 900;
     position: absolute;
     left: 0;
-    color: #047857;
+    color: #1f6b45;
     font-size: 1rem;
 }
 
 .use-case-image {
     width: 100%;
     border-radius: 0;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: none;
     aspect-ratio: 4/3;
     object-fit: cover;
-    background: #f3f4f6;
+    background: #f6f5f1;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #9ca3af;
+    color: #4a5a5c;
     font-size: 1.125rem;
 }
 
@@ -197,22 +187,22 @@ $unsplash = [
 }
 
 .call-to-action {
-    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    background: #f4f6f5;
     padding: 4rem 2rem;
     text-align: center;
     margin: 5rem -20px -2rem -20px;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid #dcd8cd;
 }
 
 .call-to-action h2 {
     font-size: 2.5rem;
-    color: #1f2937;
+    color: #0d2b2e;
     margin-bottom: 1rem;
 }
 
 .call-to-action p {
     font-size: 1.125rem;
-    color: #4b5563;
+    color: #4a5a5c;
     max-width: 700px;
     margin: 0 auto 2rem;
     line-height: 1.8;
@@ -247,13 +237,6 @@ $unsplash = [
             <?php endif; ?>
         </div>
     </div>
-    <div class="hero-image">
-        <img src="<?php echo htmlspecialchars($unsplash['hero']); ?>" alt="Digital ID for Housing & Social Care" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-        <div class="hero-image-placeholder" style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; flex-direction: column;">
-            <i class="fas fa-home"></i>
-            <span>Hero Image</span>
-        </div>
-    </div>
 </div>
 
 <div class="container">
@@ -280,12 +263,6 @@ $unsplash = [
                     <li>Works with any turnstile or access system</li>
                 </ul>
             </div>
-            <div class="use-case-image">
-                <img src="<?php echo htmlspecialchars($unsplash['building']); ?>" alt="Staff member scanning QR code at building entrance" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; color: #9ca3af;">
-                    <span>Building Access Image</span>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -307,12 +284,6 @@ $unsplash = [
                     <li>Peace of mind for vulnerable clients</li>
                 </ul>
             </div>
-            <div class="use-case-image">
-                <img src="<?php echo htmlspecialchars($unsplash['care_home']); ?>" alt="Staff member being verified at care home" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; color: #9ca3af;">
-                    <span>Care Home Access Image</span>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -328,17 +299,9 @@ $unsplash = [
                 </h3>
                 <p>When acting on behalf of vulnerable clients at banks and financial institutions, your staff can prove their identity and employment status instantly. Bank staff can verify credentials in seconds.</p>
                 <ul class="use-case-features">
-                    <li>Accepted verification at major banks</li>
                     <li>Real-time employment status confirmation</li>
                     <li>Secure, logged verification process</li>
-                    <li>Compliance with banking regulations</li>
                 </ul>
-            </div>
-            <div class="use-case-image">
-                <img src="<?php echo htmlspecialchars($unsplash['banking']); ?>" alt="Staff member showing Digital ID at bank" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; color: #9ca3af;">
-                    <span>Banking Image</span>
-                </div>
             </div>
         </div>
     </section>
@@ -361,12 +324,6 @@ $unsplash = [
                     <li>Streamlined check-in processes</li>
                 </ul>
             </div>
-            <div class="use-case-image">
-                <img src="<?php echo htmlspecialchars($unsplash['housing']); ?>" alt="Staff member at housing provider office" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; color: #9ca3af;">
-                    <span>Housing Provider Image</span>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -387,12 +344,6 @@ $unsplash = [
                     <li>Secure access to restricted areas</li>
                     <li>Professional medical setting verification</li>
                 </ul>
-            </div>
-            <div class="use-case-image">
-                <img src="<?php echo htmlspecialchars($unsplash['hospital']); ?>" alt="Staff member at hospital" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; color: #9ca3af;">
-                    <span>Hospital Image</span>
-                </div>
             </div>
         </div>
     </section>
@@ -415,12 +366,6 @@ $unsplash = [
                     <li>Compliance reporting</li>
                 </ul>
             </div>
-            <div class="use-case-image">
-                <img src="<?php echo htmlspecialchars($unsplash['training']); ?>" alt="Staff checking in for training session" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; color: #9ca3af;">
-                    <span>Training Session Image</span>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -442,66 +387,60 @@ $unsplash = [
                     <li>Multiple retail partners supported</li>
                 </ul>
             </div>
-            <div class="use-case-image">
-                <img src="<?php echo htmlspecialchars($unsplash['rewards']); ?>" alt="Staff member registering for employee discount" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; color: #9ca3af;">
-                    <span>Employee Rewards Image</span>
-                </div>
-            </div>
         </div>
     </section>
 
     <!-- Benefits Summary -->
     <section class="use-case-section">
-        <h2 style="text-align: center; font-size: 2.5rem; color: #1f2937; margin-bottom: 3rem;">Why Housing & Social Care Providers Choose Digital ID</h2>
+        <h2 style="text-align: center; font-size: 2.5rem; color: #0d2b2e; margin-bottom: 3rem;">Why Housing & Social Care Providers Choose Digital ID</h2>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem;">
             <div class="card" style="text-align: center; padding: 2rem;">
-                <div style="font-size: 3rem; color: #047857; margin-bottom: 1rem;">
+                <div style="font-size: 3rem; color: #1f6b45; margin-bottom: 1rem;">
                     <i class="fas fa-clock"></i>
                 </div>
-                <h3 style="color: #1f2937; margin-bottom: 1rem;">Save Time</h3>
-                <p style="color: #5b6371;">Quick verification means more time with clients, less time on paperwork.</p>
+                <h3 style="color: #0d2b2e; margin-bottom: 1rem;">Save Time</h3>
+                <p style="color: #4a5a5c;">Quick verification means more time with clients, less time on paperwork.</p>
             </div>
             
             <div class="card" style="text-align: center; padding: 2rem;">
-                <div style="font-size: 3rem; color: #047857; margin-bottom: 1rem;">
+                <div style="font-size: 3rem; color: #1f6b45; margin-bottom: 1rem;">
                     <i class="fas fa-shield-alt"></i>
                 </div>
-                <h3 style="color: #1f2937; margin-bottom: 1rem;">Enhanced Security</h3>
-                <p style="color: #5b6371;">Secure, verifiable identity protection for your team and clients.</p>
+                <h3 style="color: #0d2b2e; margin-bottom: 1rem;">Enhanced Security</h3>
+                <p style="color: #4a5a5c;">Secure, verifiable identity protection for your team and clients.</p>
             </div>
             
             <div class="card" style="text-align: center; padding: 2rem;">
-                <div style="font-size: 3rem; color: #047857; margin-bottom: 1rem;">
+                <div style="font-size: 3rem; color: #1f6b45; margin-bottom: 1rem;">
                     <i class="fas fa-clipboard-check"></i>
                 </div>
-                <h3 style="color: #1f2937; margin-bottom: 1rem;">Compliance Ready</h3>
-                <p style="color: #5b6371;">Automatic logging and audit trails for regulatory compliance.</p>
+                <h3 style="color: #0d2b2e; margin-bottom: 1rem;">Compliance Ready</h3>
+                <p style="color: #4a5a5c;">Automatic logging and audit trails for regulatory compliance.</p>
             </div>
             
             <div class="card" style="text-align: center; padding: 2rem;">
-                <div style="font-size: 3rem; color: #047857; margin-bottom: 1rem;">
+                <div style="font-size: 3rem; color: #1f6b45; margin-bottom: 1rem;">
                     <i class="fas fa-mobile-alt"></i>
                 </div>
-                <h3 style="color: #1f2937; margin-bottom: 1rem;">Always Accessible</h3>
-                <p style="color: #5b6371;">Access your Digital ID from any device, anytime, anywhere.</p>
+                <h3 style="color: #0d2b2e; margin-bottom: 1rem;">Always Accessible</h3>
+                <p style="color: #4a5a5c;">Access your Digital ID from any device, anytime, anywhere.</p>
             </div>
             
             <div class="card" style="text-align: center; padding: 2rem;">
-                <div style="font-size: 3rem; color: #047857; margin-bottom: 1rem;">
+                <div style="font-size: 3rem; color: #1f6b45; margin-bottom: 1rem;">
                     <i class="fas fa-building"></i>
                 </div>
-                <h3 style="color: #1f2937; margin-bottom: 1rem;">Building Access</h3>
-                <p style="color: #5b6371;">Seamless building and turnstile access with automatic attendance logging.</p>
+                <h3 style="color: #0d2b2e; margin-bottom: 1rem;">Building Access</h3>
+                <p style="color: #4a5a5c;">Seamless building and turnstile access with automatic attendance logging.</p>
             </div>
             
             <div class="card" style="text-align: center; padding: 2rem;">
-                <div style="font-size: 3rem; color: #047857; margin-bottom: 1rem;">
+                <div style="font-size: 3rem; color: #1f6b45; margin-bottom: 1rem;">
                     <i class="fas fa-user-check"></i>
                 </div>
-                <h3 style="color: #1f2937; margin-bottom: 1rem;">Client Trust</h3>
-                <p style="color: #5b6371;">Build confidence with families and clients through instant identity verification.</p>
+                <h3 style="color: #0d2b2e; margin-bottom: 1rem;">Client Trust</h3>
+                <p style="color: #4a5a5c;">Build confidence with families and clients through instant identity verification.</p>
             </div>
         </div>
     </section>

@@ -104,27 +104,27 @@ include INCLUDES_PATH . '/header.php';
     <?php endif; ?>
     
     <div style="text-align: center; margin-bottom: 2rem;">
-        <a href="<?php echo url('photo-guidelines.php'); ?>" style="color: #3b82f6; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+        <a href="<?php echo url('photo-guidelines.php'); ?>" style="color: #0e5f5a; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
             <i class="fas fa-info-circle"></i> View Photo Guidelines
         </a>
     </div>
     
     <!-- Current Photo Status -->
     <?php if ($employee['photo_path'] && file_exists(dirname(__DIR__) . '/' . $employee['photo_path']) && ($currentPhotoStatus === 'approved' || $currentPhotoStatus === 'none')): ?>
-        <div style="background: #f0fdf4; border-left: 4px solid #047857; padding: 1.5rem; border-radius: 0; margin-bottom: 2rem;">
-            <h3 style="margin-top: 0; color: #065f46; display: flex; align-items: center; gap: 0.75rem;">
+        <div style="background: #e6f1ef; border-left: 4px solid #1f6b45; padding: 1.5rem; border-radius: 0; margin-bottom: 2rem;">
+            <h3 style="margin-top: 0; color: #174f33; display: flex; align-items: center; gap: 0.75rem;">
                 <i class="fas fa-check-circle"></i> Current Approved Photo
             </h3>
             <div style="display: flex; gap: 1.5rem; align-items: start; margin-top: 1rem;">
                 <img src="<?php echo htmlspecialchars(url('view-image.php?path=' . urlencode($employee['photo_path']))); ?>" 
                      alt="Current Photo" 
-                     style="width: 150px; height: 150px; object-fit: cover; border-radius: 0; border: 3px solid #047857;">
+                     style="width: 150px; height: 150px; object-fit: cover; border-radius: 0; border: 3px solid #1f6b45;">
                 <div style="flex: 1;">
-                    <p style="color: #065f46; margin: 0 0 0.5rem 0;">
+                    <p style="color: #174f33; margin: 0 0 0.5rem 0;">
                         You currently have an approved photo. You can upload a new photo to replace it, which will need administrator approval.
                     </p>
                     <?php if ($employee['photo_approved_at']): ?>
-                        <p style="color: #047857; margin: 0; font-size: 0.875rem;">
+                        <p style="color: #1f6b45; margin: 0; font-size: 0.875rem;">
                             <i class="fas fa-calendar-check"></i> Approved on <?php echo date('d/m/Y H:i', strtotime($employee['photo_approved_at'])); ?>
                         </p>
                     <?php endif; ?>
@@ -132,8 +132,8 @@ include INCLUDES_PATH . '/header.php';
             </div>
         </div>
     <?php elseif ($currentPhotoStatus === 'pending'): ?>
-        <div style="background: #fef3c7; border-left: 4px solid #b45309; padding: 1.5rem; border-radius: 0; margin-bottom: 2rem;">
-            <h3 style="margin-top: 0; color: #92400e; display: flex; align-items: center; gap: 0.75rem;">
+        <div style="background: #f7f1e1; border-left: 4px solid #6b4500; padding: 1.5rem; border-radius: 0; margin-bottom: 2rem;">
+            <h3 style="margin-top: 0; color: #6b4500; display: flex; align-items: center; gap: 0.75rem;">
                 <i class="fas fa-clock"></i> Photo Pending Approval
             </h3>
             <?php 
@@ -144,44 +144,44 @@ include INCLUDES_PATH . '/header.php';
                 <div style="display: flex; gap: 1.5rem; align-items: start; margin-top: 1rem;">
                     <img src="<?php echo htmlspecialchars(url('view-image.php?path=' . urlencode($pendingPhotoPath))); ?>" 
                          alt="Pending Photo" 
-                         style="width: 150px; height: 150px; object-fit: cover; border-radius: 0; border: 3px solid #b45309; display: block;">
+                         style="width: 150px; height: 150px; object-fit: cover; border-radius: 0; border: 3px solid #6b4500; display: block;">
                     <div style="flex: 1;">
-                        <p style="color: #92400e; margin: 0;">
+                        <p style="color: #6b4500; margin: 0;">
                             Your photo has been uploaded and is waiting for administrator approval. You'll be notified once it's been reviewed.
                         </p>
-                        <p style="color: #78350f; margin: 0.5rem 0 0 0; font-size: 0.875rem;">
+                        <p style="color: #6b4500; margin: 0.5rem 0 0 0; font-size: 0.875rem;">
                             You can upload a different photo if you want to replace this one.
                         </p>
                     </div>
                 </div>
             <?php else: ?>
-                <p style="color: #92400e; margin: 0;">
+                <p style="color: #6b4500; margin: 0;">
                     Your photo is pending approval. The image may still be processing.
                 </p>
             <?php endif; ?>
         </div>
     <?php elseif ($currentPhotoStatus === 'rejected'): ?>
-        <div style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 0; margin-bottom: 2rem;">
-            <h3 style="margin-top: 0; color: #991b1b; display: flex; align-items: center; gap: 0.75rem;">
+        <div style="background: #f8eceb; border-left: 4px solid #a3322b; padding: 1.5rem; border-radius: 0; margin-bottom: 2rem;">
+            <h3 style="margin-top: 0; color: #7d2520; display: flex; align-items: center; gap: 0.75rem;">
                 <i class="fas fa-times-circle"></i> Photo Rejected
             </h3>
             <?php if (!empty($employee['photo_rejection_reason'])): ?>
                 <div style="background: white; padding: 1rem; border-radius: 0; margin-top: 1rem;">
-                    <p style="margin: 0 0 0.5rem 0; color: #991b1b; font-weight: 600;">Reason:</p>
-                    <p style="margin: 0; color: #7f1d1d;"><?php echo nl2br(htmlspecialchars($employee['photo_rejection_reason'])); ?></p>
+                    <p style="margin: 0 0 0.5rem 0; color: #7d2520; font-weight: 600;">Reason:</p>
+                    <p style="margin: 0; color: #7d2520;"><?php echo nl2br(htmlspecialchars($employee['photo_rejection_reason'])); ?></p>
                 </div>
             <?php else: ?>
-                <p style="color: #991b1b; margin: 0;">
+                <p style="color: #7d2520; margin: 0;">
                     Your photo was not approved. Please review the guidelines above and upload a new photo that meets the requirements.
                 </p>
             <?php endif; ?>
         </div>
     <?php else: ?>
-        <div style="background: #f3f4f6; border-left: 4px solid #5b6371; padding: 1.5rem; border-radius: 0; margin-bottom: 2rem;">
-            <h3 style="margin-top: 0; color: #374151;">
+        <div style="background: #f6f5f1; border-left: 4px solid #4a5a5c; padding: 1.5rem; border-radius: 0; margin-bottom: 2rem;">
+            <h3 style="margin-top: 0; color: #2f484b;">
                 <i class="fas fa-user-circle"></i> No Photo Uploaded
             </h3>
-            <p style="color: #4b5563; margin: 0;">
+            <p style="color: #4a5a5c; margin: 0;">
                 Upload a photo to be displayed on your digital ID card. Your photo must be approved by an administrator before it appears on your card.
             </p>
         </div>
@@ -203,7 +203,7 @@ include INCLUDES_PATH . '/header.php';
         <div id="photo-preview" style="display: none; margin-bottom: 1.5rem;">
             <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Photo Preview:</label>
             <div style="display: inline-block; position: relative;">
-                <img id="preview-image" src="" alt="Preview" style="width: 200px; height: 200px; object-fit: cover; border-radius: 0; border: 3px solid #3b82f6;">
+                <img id="preview-image" src="" alt="Preview" style="width: 200px; height: 200px; object-fit: cover; border-radius: 0; border: 3px solid #0e5f5a;">
                 <div id="preview-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); border-radius: 0; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
                     Preview
                 </div>

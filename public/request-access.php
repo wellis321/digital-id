@@ -30,14 +30,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <html>
                 <head>
                     <style>
-                        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                        body { font-family: Arial, sans-serif; line-height: 1.6; color: #2f484b; }
                         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                        .header { background-color: #2563eb; color: white; padding: 20px; text-align: center; }
-                        .content { padding: 20px; background-color: #f9f9f9; }
+                        .header { background-color: #0e5f5a; color: white; padding: 20px; text-align: center; }
+                        .content { padding: 20px; background-color: #f6f5f1; }
                         .field { margin-bottom: 15px; }
-                        .label { font-weight: bold; color: #1f2937; }
-                        .value { color: #4b5563; margin-top: 5px; }
-                        .footer { padding: 20px; text-align: center; color: #666; font-size: 12px; }
+                        .label { font-weight: bold; color: #0d2b2e; }
+                        .value { color: #4a5a5c; margin-top: 5px; }
+                        .footer { padding: 20px; text-align: center; color: #4a5a5c; font-size: 12px; }
                     </style>
                 </head>
                 <body>
@@ -130,21 +130,21 @@ include INCLUDES_PATH . '/header.php';
             <h2 style="margin-top: 2rem; margin-bottom: 1rem;">Organisation Details</h2>
             
             <div class="form-group">
-                <label for="organisation_name">Organisation Name <span style="color: #dc2626;">*</span></label>
+                <label for="organisation_name">Organisation Name <span style="color: #a3322b;">*</span></label>
                 <input type="text" id="organisation_name" name="organisation_name" required 
                        value="<?php echo htmlspecialchars($_POST['organisation_name'] ?? ''); ?>">
                 <small>The full name of your organisation</small>
             </div>
             
             <div class="form-group">
-                <label for="domain">Email Domain <span style="color: #dc2626;">*</span></label>
+                <label for="domain">Email Domain <span style="color: #a3322b;">*</span></label>
                 <input type="text" id="domain" name="domain" required placeholder="example.com"
                        value="<?php echo htmlspecialchars($_POST['domain'] ?? ''); ?>">
                 <small>The email domain your organisation uses (e.g., example.com). Users with emails ending in @example.com will be associated with your organisation.</small>
             </div>
             
             <div class="form-group">
-                <label for="estimated_seats">Estimated Number of Seats <span style="color: #dc2626;">*</span></label>
+                <label for="estimated_seats">Estimated Number of Seats <span style="color: #a3322b;">*</span></label>
                 <input type="number" id="estimated_seats" name="estimated_seats" required min="1" 
                        value="<?php echo htmlspecialchars($_POST['estimated_seats'] ?? ''); ?>">
                 <small>How many users do you expect to have? This helps us allocate the right number of seats for your organisation.</small>
@@ -153,14 +153,14 @@ include INCLUDES_PATH . '/header.php';
             <h2 style="margin-top: 2rem; margin-bottom: 1rem;">Contact Information</h2>
             
             <div class="form-group">
-                <label for="contact_name">Your Name <span style="color: #dc2626;">*</span></label>
+                <label for="contact_name">Your Name <span style="color: #a3322b;">*</span></label>
                 <input type="text" id="contact_name" name="contact_name" required 
                        value="<?php echo htmlspecialchars($_POST['contact_name'] ?? ''); ?>">
                 <small>The name of the person we should contact about this request</small>
             </div>
             
             <div class="form-group">
-                <label for="contact_email">Your Email <span style="color: #dc2626;">*</span></label>
+                <label for="contact_email">Your Email <span style="color: #a3322b;">*</span></label>
                 <input type="email" id="contact_email" name="contact_email" required 
                        value="<?php echo htmlspecialchars($_POST['contact_email'] ?? ''); ?>">
                 <small>We'll use this email to contact you about setting up your organisation</small>
@@ -183,7 +183,7 @@ include INCLUDES_PATH . '/header.php';
             <button type="submit" class="btn btn-primary">Submit Request</button>
         </form>
         
-        <div style="margin-top: 2rem; padding: 1.5rem; background-color: #f9fafb; border-radius: 0;">
+        <div style="margin-top: 2rem; padding: 1.5rem; background-color: #f6f5f1; border-radius: 0;">
             <h2 style="margin-top: 0;">What Happens Next?</h2>
             <p>After you submit this form:</p>
             <ul style="line-height: 1.8;">

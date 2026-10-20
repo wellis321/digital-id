@@ -145,19 +145,19 @@ include dirname(__DIR__, 2) . '/includes/header.php';
 }
 
 .pending-count-badge {
-    background: #fef3c7;
+    background: #f7f1e1;
     padding: 0.75rem 1.5rem;
     border-radius: 0;
-    border: 2px solid #f59e0b;
+    border: 2px solid #8a5a00;
     white-space: nowrap;
 }
 
 .photo-approval-item {
     background: white;
-    border: 2px solid #e5e7eb;
+    border: 2px solid #dcd8cd;
     border-radius: 0;
     padding: 2rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: none;
 }
 
 .photo-approval-content {
@@ -172,20 +172,20 @@ include dirname(__DIR__, 2) . '/includes/header.php';
     height: 200px;
     object-fit: cover;
     border-radius: 0;
-    border: 3px solid #f59e0b;
+    border: 3px solid #8a5a00;
     display: block;
 }
 
 .photo-placeholder {
     width: 200px;
     height: 200px;
-    background: #f3f4f6;
+    background: #f6f5f1;
     border-radius: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #9ca3af;
-    border: 3px solid #f59e0b;
+    color: #4a5a5c;
+    border: 3px solid #8a5a00;
 }
 
 .approval-actions {
@@ -231,16 +231,16 @@ include dirname(__DIR__, 2) . '/includes/header.php';
     <div class="photo-approval-header">
         <div>
             <h1 style="margin: 0;">Photo Approvals</h1>
-            <p style="color: #6b7280; margin-top: 0.5rem;">
+            <p style="color: #4a5a5c; margin-top: 0.5rem;">
                 Review and approve employee photos for digital ID cards
             </p>
         </div>
         <?php if ($pendingCount > 0): ?>
             <div class="pending-count-badge">
-                <span style="font-size: 1.5rem; font-weight: bold; color: #92400e;">
+                <span style="font-size: 1.5rem; font-weight: bold; color: #6b4500;">
                     <?php echo $pendingCount; ?>
                 </span>
-                <span style="color: #78350f; margin-left: 0.5rem;">
+                <span style="color: #6b4500; margin-left: 0.5rem;">
                     Photo<?php echo $pendingCount !== 1 ? 's' : ''; ?> Pending
                 </span>
             </div>
@@ -256,10 +256,10 @@ include dirname(__DIR__, 2) . '/includes/header.php';
     <?php endif; ?>
     
     <?php if (empty($pendingPhotos)): ?>
-        <div style="text-align: center; padding: 3rem; background: #f9fafb; border-radius: 0;">
-            <i class="fas fa-check-circle" style="font-size: 4rem; color: #10b981; margin-bottom: 1rem;"></i>
-            <h2 style="color: #1f2937; margin-bottom: 0.5rem;">No Pending Photos</h2>
-            <p style="color: #6b7280;">
+        <div style="text-align: center; padding: 3rem; background: #f6f5f1; border-radius: 0;">
+            <i class="fas fa-check-circle" style="font-size: 4rem; color: #1f6b45; margin-bottom: 1rem;"></i>
+            <h2 style="color: #0d2b2e; margin-bottom: 0.5rem;">No Pending Photos</h2>
+            <p style="color: #4a5a5c;">
                 All photos have been reviewed. Check back later for new uploads.
             </p>
         </div>
@@ -283,17 +283,17 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                                 <img src="<?php echo htmlspecialchars($imageUrl); ?>" 
                                      alt="Pending Photo" 
                                      class="photo-preview">
-                                <p style="text-align: center; margin-top: 0.5rem; color: #f59e0b; font-size: 0.875rem; font-weight: 600;">
+                                <p style="text-align: center; margin-top: 0.5rem; color: #8a5a00; font-size: 0.875rem; font-weight: 600;">
                                     <i class="fas fa-clock"></i> Pending Review
                                 </p>
                             <?php else: ?>
                                 <div class="photo-placeholder">
                                     <i class="fas fa-image" style="font-size: 3rem;"></i>
                                 </div>
-                                <p style="text-align: center; margin-top: 0.5rem; color: #ef4444; font-size: 0.875rem;">
+                                <p style="text-align: center; margin-top: 0.5rem; color: #a3322b; font-size: 0.875rem;">
                                     <i class="fas fa-exclamation-triangle"></i> Photo file not found
                                     <?php if ($pendingPhotoPath): ?>
-                                        <br><small style="font-size: 0.75rem; color: #9ca3af;">Path: <?php echo htmlspecialchars($pendingPhotoPath); ?></small>
+                                        <br><small style="font-size: 0.75rem; color: #4a5a5c;">Path: <?php echo htmlspecialchars($pendingPhotoPath); ?></small>
                                     <?php endif; ?>
                                 </p>
                             <?php endif; ?>
@@ -301,20 +301,20 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                         
                         <!-- Employee Info and Actions -->
                         <div>
-                            <h3 style="margin-top: 0; color: #1f2937;">
+                            <h3 style="margin-top: 0; color: #0d2b2e;">
                                 <?php echo htmlspecialchars($emp['first_name'] . ' ' . $emp['last_name']); ?>
                             </h3>
-                            <p style="color: #6b7280; margin: 0.25rem 0;">
+                            <p style="color: #4a5a5c; margin: 0.25rem 0;">
                                 <i class="fas fa-envelope"></i> <?php echo htmlspecialchars($emp['email']); ?>
                             </p>
                             <?php if ($emp['display_reference'] ?? $emp['employee_reference']): ?>
-                                <p style="color: #6b7280; margin: 0.25rem 0;">
+                                <p style="color: #4a5a5c; margin: 0.25rem 0;">
                                     <i class="fas fa-id-card"></i> Reference: <?php echo htmlspecialchars($emp['display_reference'] ?? $emp['employee_reference']); ?>
                                 </p>
                             <?php endif; ?>
                             
                             <!-- Approval Form -->
-                            <form method="POST" action="" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e5e7eb;">
+                            <form method="POST" action="" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #dcd8cd;">
                                 <?php echo CSRF::tokenField(); ?>
                                 <input type="hidden" name="employee_id" value="<?php echo $emp['id']; ?>">
                                 
@@ -328,7 +328,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                                 </div>
                                 
                                 <div class="approval-actions">
-                                    <button type="submit" name="action" value="approve" class="btn" style="background: #10b981; color: white; border: none;">
+                                    <button type="submit" name="action" value="approve" class="btn" style="background: #1f6b45; color: white; border: none;">
                                         <i class="fas fa-check"></i> Approve Photo
                                     </button>
                                     <button type="submit" name="action" value="reject" class="btn btn-danger reject-photo-btn" data-employee-name="<?php echo htmlspecialchars($emp['first_name'] . ' ' . $emp['last_name']); ?>">

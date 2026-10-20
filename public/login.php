@@ -189,9 +189,9 @@ include INCLUDES_PATH . '/header.php';
     ?>
         <div style="margin: 1.5rem 0; text-align: center;">
             <div style="margin: 1rem 0; display: flex; align-items: center;">
-                <div style="flex: 1; height: 1px; background: #ddd;"></div>
-                <span style="padding: 0 1rem; color: #666;">or</span>
-                <div style="flex: 1; height: 1px; background: #ddd;"></div>
+                <div style="flex: 1; height: 1px; background: #dcd8cd;"></div>
+                <span style="padding: 0 1rem; color: #4a5a5c;">or</span>
+                <div style="flex: 1; height: 1px; background: #dcd8cd;"></div>
             </div>
             <a href="<?php echo url('entra-login.php?org_id=' . $organisationId); ?>" class="btn btn-secondary">
                 Login with Microsoft 365
@@ -199,13 +199,13 @@ include INCLUDES_PATH . '/header.php';
         </div>
     <?php endif; ?>
     
-    <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e5e7eb;">
-        <p style="margin-bottom: 1rem; text-align: center; color: #374151; font-weight: 500;">Don't have an account?</p>
+    <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #dcd8cd;">
+        <p style="margin-bottom: 1rem; text-align: center; color: #2f484b; font-weight: 500;">Don't have an account?</p>
         <a href="<?php echo url('register.php'); ?>" class="btn btn-primary" style="width: 100%; display: block; text-align: center;">
             <i class="fas fa-user-plus"></i> Register Now
         </a>
     </div>
-    <p style="margin-top: 1rem; text-align: center; color: #5b6371; font-size: 0.875rem;">
+    <p style="margin-top: 1rem; text-align: center; color: #4a5a5c; font-size: 0.875rem;">
         <strong>New organisation?</strong> <a href="<?php echo url('request-access.php'); ?>">Request access</a> for your organisation first.
     </p>
 </div>

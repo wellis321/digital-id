@@ -109,20 +109,20 @@ include dirname(__DIR__, 2) . '/includes/header.php';
         ?>
         
         <?php if ($staffServiceAvailable && isset($staffServiceConfig) && ($staffServiceConfig['entra_enabled'] ?? false)): ?>
-            <div class="alert alert-info" style="background-color: #eff6ff; border-left: 4px solid #3b82f6;">
+            <div class="alert alert-info" style="background-color: #f4f6f5; border-left: 4px solid #0e5f5a;">
                 <strong><i class="fas fa-info-circle"></i> Entra Integration Managed by Staff Service</strong>
-                <p style="margin: 0.5rem 0 0; color: #1e40af;">
+                <p style="margin: 0.5rem 0 0; color: #0a4440;">
                     Entra integration is configured in Staff Service and is being used as the source of truth. 
                     Staff data is synced from Entra to Staff Service, and then to Digital ID.
                 </p>
-                <p style="margin: 0.5rem 0 0; color: #1e40af;">
+                <p style="margin: 0.5rem 0 0; color: #0a4440;">
                     To configure Entra integration, visit the <a href="<?php echo defined('STAFF_SERVICE_URL') ? rtrim(STAFF_SERVICE_URL, '/') . '/admin/entra-settings.php' : '#'; ?>" style="color: #0284c7; font-weight: 600;">Entra Settings page in Staff Service</a>.
                 </p>
             </div>
         <?php elseif ($staffServiceAvailable): ?>
-            <div class="alert alert-info" style="background-color: #f0f9ff; border-left: 4px solid #06b6d4;">
+            <div class="alert alert-info" style="background-color: #f4f6f5; border-left: 4px solid #0e5f5a;">
                 <strong><i class="fas fa-info-circle"></i> Staff Service Available</strong>
-                <p style="margin: 0.5rem 0 0; color: #0e7490;">
+                <p style="margin: 0.5rem 0 0; color: #0e5f5a;">
                     Staff Service is available but Entra integration is not enabled there. 
                     You can configure Entra integration here for standalone use, or enable it in Staff Service to use it as the central hub.
                 </p>
@@ -138,16 +138,16 @@ include dirname(__DIR__, 2) . '/includes/header.php';
         </div>
         
         <!-- User Synchronisation Section -->
-        <div class="card" style="margin-top: 2rem; padding: 1.5rem; background: #f9fafb; border: 1px solid #e5e7eb;">
+        <div class="card" style="margin-top: 2rem; padding: 1.5rem; background: #f6f5f1; border: 1px solid #dcd8cd;">
             <h2 style="margin-top: 0;">User Synchronisation</h2>
-            <p style="color: #6b7280; margin-bottom: 1.5rem;">
+            <p style="color: #4a5a5c; margin-bottom: 1.5rem;">
                 Synchronise users from Microsoft Entra ID (Azure AD) to Digital ID. This will fetch all active users from your Microsoft 365 organisation and import them using the same process as CSV/JSON import.
             </p>
             
             <?php if ($syncResult && !empty($syncResult['warnings'])): ?>
-                <div style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 1rem; margin-bottom: 1rem; border-radius: 0;">
-                    <h4 style="margin-top: 0; color: #92400e; font-size: 1rem;">Sync Warnings</h4>
-                    <ul style="margin: 0.5rem 0 0; padding-left: 1.5rem; color: #92400e; font-size: 0.875rem;">
+                <div style="background-color: #f7f1e1; border-left: 4px solid #8a5a00; padding: 1rem; margin-bottom: 1rem; border-radius: 0;">
+                    <h4 style="margin-top: 0; color: #6b4500; font-size: 1rem;">Sync Warnings</h4>
+                    <ul style="margin: 0.5rem 0 0; padding-left: 1.5rem; color: #6b4500; font-size: 0.875rem;">
                         <?php foreach ($syncResult['warnings'] as $warning): ?>
                             <li><?php echo htmlspecialchars($warning); ?></li>
                         <?php endforeach; ?>
@@ -164,7 +164,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                         <input type="checkbox" name="create_employees" value="1" style="margin: 0;">
                         <span>Also create employee profiles for users with employee IDs</span>
                     </label>
-                    <small style="display: block; margin-top: 0.25rem; color: #6b7280;">
+                    <small style="display: block; margin-top: 0.25rem; color: #4a5a5c;">
                         If checked, employee profiles will be created for users who have an employee ID in Microsoft Entra ID.
                     </small>
                 </div>
@@ -174,11 +174,11 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                 </button>
             </form>
             
-            <div style="margin-top: 1.5rem; padding: 1rem; background-color: #eff6ff; border-left: 4px solid #3b82f6; border-radius: 0;">
-                <h4 style="margin-top: 0; color: #1e40af; font-size: 0.875rem;">
+            <div style="margin-top: 1.5rem; padding: 1rem; background-color: #f4f6f5; border-left: 4px solid #0e5f5a; border-radius: 0;">
+                <h4 style="margin-top: 0; color: #0a4440; font-size: 0.875rem;">
                     <i class="fas fa-info-circle"></i> How It Works
                 </h4>
-                <ul style="margin: 0.5rem 0 0; padding-left: 1.5rem; color: #1e40af; font-size: 0.875rem;">
+                <ul style="margin: 0.5rem 0 0; padding-left: 1.5rem; color: #0a4440; font-size: 0.875rem;">
                     <li>Fetches all active users from Microsoft Entra ID</li>
                     <li>Matches users by email address</li>
                     <li>Creates new users or updates existing ones</li>
@@ -187,11 +187,11 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                 </ul>
             </div>
             
-            <div style="margin-top: 1rem; padding: 1rem; background-color: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 0;">
-                <h4 style="margin-top: 0; color: #92400e; font-size: 0.875rem;">
+            <div style="margin-top: 1rem; padding: 1rem; background-color: #f7f1e1; border-left: 4px solid #8a5a00; border-radius: 0;">
+                <h4 style="margin-top: 0; color: #6b4500; font-size: 0.875rem;">
                     <i class="fas fa-exclamation-triangle"></i> Required Permissions
                 </h4>
-                <p style="margin: 0.5rem 0 0; color: #92400e; font-size: 0.875rem;">
+                <p style="margin: 0.5rem 0 0; color: #6b4500; font-size: 0.875rem;">
                     For user synchronisation to work, your Azure AD app registration needs <strong>User.Read.All</strong> application permission (not delegated). 
                     Admin consent is required for this permission.
                 </p>
@@ -210,9 +210,9 @@ include dirname(__DIR__, 2) . '/includes/header.php';
             $staffServiceAvailable = StaffServiceClient::isAvailable();
             ?>
             <?php if ($staffServiceAvailable): ?>
-                <div class="alert alert-warning" style="background-color: #fef3c7; border-left: 4px solid #f59e0b;">
+                <div class="alert alert-warning" style="background-color: #f7f1e1; border-left: 4px solid #8a5a00;">
                     <strong><i class="fas fa-exclamation-triangle"></i> Standalone Mode</strong>
-                    <p style="margin: 0.5rem 0 0; color: #92400e;">
+                    <p style="margin: 0.5rem 0 0; color: #6b4500;">
                         You can configure Entra integration here for standalone use. However, if you're using Staff Service, 
                         it's recommended to configure Entra integration in Staff Service instead, so it acts as the central hub 
                         for all applications.
