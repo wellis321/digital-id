@@ -886,8 +886,7 @@ include INCLUDES_PATH . '/header.php';
                                 <?php
                                 require_once SRC_PATH . '/classes/QRCodeGenerator.php';
                                 $demoUrl = APP_URL . url('demo-id-card.php');
-                                $encodedUrl = urlencode($demoUrl);
-                                $qrImageUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={$encodedUrl}";
+                                $qrImageUrl = QRCodeGenerator::dataUri($demoUrl);
                                 ?>
                                 <img src="<?php echo htmlspecialchars($qrImageUrl); ?>" alt="QR Code" style="max-width: 100px; background: white; padding: 0.5rem; border: 1px solid #dcd8cd; transition: none !important;">
                                 <p style="font-size: 0.6rem; color: #4a5a5c; margin-top: 0.5rem;">Scan to see demo</p>

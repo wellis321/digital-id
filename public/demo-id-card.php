@@ -101,8 +101,7 @@ include INCLUDES_PATH . '/header.php';
                     // Generate a real QR code that links to the request access page
                     require_once SRC_PATH . '/classes/QRCodeGenerator.php';
                     $demoUrl = APP_URL . url('request-access.php');
-                    $encodedUrl = urlencode($demoUrl);
-                    $qrImageUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={$encodedUrl}";
+                    $qrImageUrl = QRCodeGenerator::dataUri($demoUrl);
                     ?>
                     <img src="<?php echo htmlspecialchars($qrImageUrl); ?>" alt="QR Code - Scan to request access" style="max-width: 200px; background: white; padding: 1rem; border-radius: 0; border: 1px solid #dcd8cd;">
                     <p style="margin-top: 0.75rem; font-size: 0.75rem; color: #4a5a5c;">
