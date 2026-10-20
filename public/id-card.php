@@ -353,7 +353,7 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
     </div>
     
     <!-- Building Access Information -->
-    <div class="info-box" style="margin-top: 2rem; padding: 1.5rem; background: #f0f9ff; border-left: 4px solid #0e7490; border-radius: 0.5rem;">
+    <div class="info-box" style="margin-top: 2rem; padding: 1.5rem; background: #f0f9ff; border-left: 4px solid #0e7490; border-radius: 0;">
         <h3 style="margin-top: 0; margin-bottom: 1rem; color: #0369a1; font-size: 1.125rem;">
             <i class="fas fa-door-open"></i> Using Your ID for Building Access
         </h3>

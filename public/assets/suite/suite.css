@@ -1,5 +1,5 @@
 /* =============================================================================
-   Suite design kit v0.2.0  ("Survey sheet": loch ink + thistle)
+   Suite design kit v0.2.1  ("Survey sheet": loch ink + thistle)
    Shared look for Find Care Scotland and its sister apps.
 
    HOW IT WORKS
@@ -166,6 +166,11 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--brand); }
 .callout-box h3, .callout-box h4, .info-box h3, .info-box h4 { color: inherit; }
 
 /* ── 8. Badges  (.badge + -success -danger -warning -secondary -blue -green -grey -teal) ── */
+/* House rule: no single thick edge on a rounded box. A left/right accent border with rounded corners
+   curls round the top and bottom, so such elements are always square. This catches inline styles,
+   which beat any class; app stylesheets must follow the same rule at source. */
+[style*="border-left"], [style*="border-right"], [style*="border-inline"] { border-radius: 0 !important; }
+
 .badge { font-family: var(--font-body); font-weight: 600; border-radius: 999px; background: var(--rule-soft); color: var(--ink-soft); border: 1px solid var(--rule); }
 .badge-success, .badge-green, .badge-teal { background: var(--brand-tint); color: var(--brand-deep); border-color: #b4d6d1; }
 .badge-danger { background: var(--danger-tint); color: var(--danger); border-color: var(--danger-border); }
