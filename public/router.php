@@ -6,7 +6,11 @@
  */
 
 $requestUri = $_SERVER['REQUEST_URI'];
-$requestPath = parse_url($requestUri, PHP_URL_PATH);
+$requestPath = rawurldecode((string) parse_url($requestUri, PHP_URL_PATH));
+if (strpos($requestPath, '..') !== false || strpos($requestPath, "\0") !== false) {
+    http_response_code(400);
+    exit;
+}
 
 // Remove query string for file checking
 $filePath = __DIR__ . $requestPath;
@@ -25,9 +29,9 @@ if (is_dir($filePath)) {
         include dirname(__DIR__) . '/includes/header.php';
         ?>
         <div class="card" style="text-align: center; padding: 4rem 2rem;">
-            <h1 style="font-size: 6rem; margin-bottom: 1rem; color: #6b7280;">404</h1>
+            <h1 style="font-size: 6rem; margin-bottom: 1rem; color: #5b6371;">404</h1>
             <h2 style="margin-bottom: 1rem;">Page Not Found</h2>
-            <p style="color: #6b7280; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+            <p style="color: #5b6371; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
                 The page you're looking for doesn't exist or has been moved.
             </p>
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
@@ -69,9 +73,9 @@ $pageTitle = 'Page Not Found';
 include dirname(__DIR__) . '/includes/header.php';
 ?>
 <div class="card" style="text-align: center; padding: 4rem 2rem;">
-    <h1 style="font-size: 6rem; margin-bottom: 1rem; color: #6b7280;">404</h1>
+    <h1 style="font-size: 6rem; margin-bottom: 1rem; color: #5b6371;">404</h1>
     <h2 style="margin-bottom: 1rem;">Page Not Found</h2>
-    <p style="color: #6b7280; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+    <p style="color: #5b6371; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
         The page you're looking for doesn't exist or has been moved.
     </p>
     <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">

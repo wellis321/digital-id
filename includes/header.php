@@ -28,6 +28,7 @@
     <!-- Font Awesome 6 (Free) - Icon Library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="<?php echo url('assets/css/style.css'); ?>?v=<?php echo filemtime(dirname(__DIR__) . '/public/assets/css/style.css'); ?>">
+    <link rel="stylesheet" href="<?php echo htmlspecialchars(url('assets/suite/suite.css')); ?>?v=<?php echo filemtime(dirname(__DIR__) . '/public/assets/suite/suite.css'); ?>">
     
     <!-- Service Worker Registration -->
     <script>
@@ -256,7 +257,7 @@
         <nav>
             <div class="container">
                 <a href="<?php echo url('index.php'); ?>" class="logo">
-                    <img src="<?php echo url('assets/images/300-high-digitalID-logo.png'); ?>" alt="<?php echo APP_NAME; ?>" class="logo-image">
+                    <img src="<?php echo url('assets/images/300-high-digitalID-logo.png'); ?>" alt="" class="logo-image">
                     <span class="logo-text"><?php echo APP_NAME; ?></span>
                 </a>
                 <button class="mobile-menu-toggle" aria-label="Toggle menu" style="display: none;">

@@ -12,7 +12,7 @@ include INCLUDES_PATH . '/header.php';
 <div class="card" style="text-align: center; padding: 4rem 2rem;">
     <h1 style="font-size: 6rem; margin-bottom: 1rem; color: #dc2626;">403</h1>
     <h2 style="margin-bottom: 1rem;">Access Forbidden</h2>
-    <p style="color: #6b7280; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+    <p style="color: #5b6371; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
         You don't have permission to access this resource. If you believe this is an error, please contact your administrator.
     </p>
     <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">

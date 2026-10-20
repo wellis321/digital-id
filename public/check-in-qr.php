@@ -51,7 +51,7 @@ include dirname(__DIR__) . '/includes/header.php';
             $qrImageUrl = QRCodeGenerator::generateImageUrl($qrToken);
             ?>
             <img src="<?php echo htmlspecialchars($qrImageUrl); ?>" alt="QR Code" style="max-width: 300px; border: 2px solid #e5e7eb; padding: 1rem; background: white;">
-            <p style="margin-top: 1rem; color: #6b7280;">
+            <p style="margin-top: 1rem; color: #5b6371;">
                 <i class="fas fa-mobile-alt"></i> Point your camera at this QR code to scan
             </p>
         </div>

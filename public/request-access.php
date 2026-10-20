@@ -104,7 +104,7 @@ include INCLUDES_PATH . '/header.php';
     <h1>Request Access for Your Organisation</h1>
     
     <div class="callout-box">
-        <h3>How It Works</h3>
+        <h2>How It Works</h2>
         <p>Getting started with Digital ID is a simple three-step process:</p>
         <ol class="step-list">
             <li><strong>Contact Us:</strong> Fill out the form below with your organisation details. We'll discuss your needs, including how many seats you require and who will be your administrators.</li>
@@ -183,7 +183,7 @@ include INCLUDES_PATH . '/header.php';
         </form>
         
         <div style="margin-top: 2rem; padding: 1.5rem; background-color: #f9fafb; border-radius: 0;">
-            <h3 style="margin-top: 0;">What Happens Next?</h3>
+            <h2 style="margin-top: 0;">What Happens Next?</h2>
             <p>After you submit this form:</p>
             <ul style="line-height: 1.8;">
                 <li>We'll review your request and contact you within 1-2 business days</li>

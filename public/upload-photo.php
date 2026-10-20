@@ -111,14 +111,14 @@ include INCLUDES_PATH . '/header.php';
     
     <!-- Current Photo Status -->
     <?php if ($employee['photo_path'] && file_exists(dirname(__DIR__) . '/' . $employee['photo_path']) && ($currentPhotoStatus === 'approved' || $currentPhotoStatus === 'none')): ?>
-        <div style="background: #f0fdf4; border-left: 4px solid #10b981; padding: 1.5rem; border-radius: 0; margin-bottom: 2rem;">
+        <div style="background: #f0fdf4; border-left: 4px solid #047857; padding: 1.5rem; border-radius: 0; margin-bottom: 2rem;">
             <h3 style="margin-top: 0; color: #065f46; display: flex; align-items: center; gap: 0.75rem;">
                 <i class="fas fa-check-circle"></i> Current Approved Photo
             </h3>
             <div style="display: flex; gap: 1.5rem; align-items: start; margin-top: 1rem;">
                 <img src="<?php echo htmlspecialchars(url('view-image.php?path=' . urlencode($employee['photo_path']))); ?>" 
                      alt="Current Photo" 
-                     style="width: 150px; height: 150px; object-fit: cover; border-radius: 0; border: 3px solid #10b981;">
+                     style="width: 150px; height: 150px; object-fit: cover; border-radius: 0; border: 3px solid #047857;">
                 <div style="flex: 1;">
                     <p style="color: #065f46; margin: 0 0 0.5rem 0;">
                         You currently have an approved photo. You can upload a new photo to replace it, which will need administrator approval.
@@ -132,7 +132,7 @@ include INCLUDES_PATH . '/header.php';
             </div>
         </div>
     <?php elseif ($currentPhotoStatus === 'pending'): ?>
-        <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 0; margin-bottom: 2rem;">
+        <div style="background: #fef3c7; border-left: 4px solid #b45309; padding: 1.5rem; border-radius: 0; margin-bottom: 2rem;">
             <h3 style="margin-top: 0; color: #92400e; display: flex; align-items: center; gap: 0.75rem;">
                 <i class="fas fa-clock"></i> Photo Pending Approval
             </h3>
@@ -144,7 +144,7 @@ include INCLUDES_PATH . '/header.php';
                 <div style="display: flex; gap: 1.5rem; align-items: start; margin-top: 1rem;">
                     <img src="<?php echo htmlspecialchars(url('view-image.php?path=' . urlencode($pendingPhotoPath))); ?>" 
                          alt="Pending Photo" 
-                         style="width: 150px; height: 150px; object-fit: cover; border-radius: 0; border: 3px solid #f59e0b; display: block;">
+                         style="width: 150px; height: 150px; object-fit: cover; border-radius: 0; border: 3px solid #b45309; display: block;">
                     <div style="flex: 1;">
                         <p style="color: #92400e; margin: 0;">
                             Your photo has been uploaded and is waiting for administrator approval. You'll be notified once it's been reviewed.
@@ -177,7 +177,7 @@ include INCLUDES_PATH . '/header.php';
             <?php endif; ?>
         </div>
     <?php else: ?>
-        <div style="background: #f3f4f6; border-left: 4px solid #6b7280; padding: 1.5rem; border-radius: 0; margin-bottom: 2rem;">
+        <div style="background: #f3f4f6; border-left: 4px solid #5b6371; padding: 1.5rem; border-radius: 0; margin-bottom: 2rem;">
             <h3 style="margin-top: 0; color: #374151;">
                 <i class="fas fa-user-circle"></i> No Photo Uploaded
             </h3>

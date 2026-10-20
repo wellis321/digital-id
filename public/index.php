@@ -54,7 +54,7 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .home-hero .btn-hero-primary {
-    background-color: #06b6d4;
+    background-color: #0e7490;
     color: white;
     padding: 0.875rem 2rem;
     font-size: 1.0625rem;
@@ -149,7 +149,7 @@ include INCLUDES_PATH . '/header.php';
 
 .section-header p {
     font-size: 1.25rem;
-    color: #6b7280;
+    color: #5b6371;
     line-height: 1.7;
 }
 
@@ -190,7 +190,7 @@ include INCLUDES_PATH . '/header.php';
 
 .feature-icon-wrapper i {
     font-size: 1.75rem;
-    color: #06b6d4;
+    color: #0e7490;
 }
 
 .feature-item h3 {
@@ -202,7 +202,7 @@ include INCLUDES_PATH . '/header.php';
 
 .feature-item p {
     font-size: 1.125rem;
-    color: #6b7280;
+    color: #5b6371;
     line-height: 1.6;
 }
 
@@ -340,7 +340,7 @@ include INCLUDES_PATH . '/header.php';
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
-    color: #06b6d4;
+    color: #0e7490;
     z-index: 10;
     transition: all 0.3s;
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
@@ -417,7 +417,7 @@ include INCLUDES_PATH . '/header.php';
 
 .why-item p {
     font-size: 1rem;
-    color: #6b7280;
+    color: #5b6371;
     line-height: 1.6;
 }
 
@@ -432,6 +432,7 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .cta-section h2 {
+    color: #fff;
     font-size: 2.25rem;
     font-weight: 700;
     margin-bottom: 1rem;
@@ -448,7 +449,7 @@ include INCLUDES_PATH . '/header.php';
 
 .cta-section .btn {
     background: white;
-    color: #06b6d4;
+    color: #0e7490;
     padding: 0.875rem 2rem;
     font-weight: 500;
     margin: 0 0.5rem;
@@ -467,7 +468,7 @@ include INCLUDES_PATH . '/header.php';
 
 .trust-section p {
     text-align: center;
-    color: #6b7280;
+    color: #5b6371;
     font-size: 0.875rem;
     font-weight: 500;
     text-transform: uppercase;
@@ -517,6 +518,7 @@ include INCLUDES_PATH . '/header.php';
     direction: ltr;
 }
 
+.two-column-text h1,
 .two-column-text h2 {
     font-size: 3rem;
     font-weight: 700;
@@ -527,7 +529,7 @@ include INCLUDES_PATH . '/header.php';
 
 .two-column-text p {
     font-size: 1.25rem;
-    color: #6b7280;
+    color: #5b6371;
     line-height: 1.7;
     margin-bottom: 1.5rem;
 }
@@ -552,7 +554,7 @@ include INCLUDES_PATH . '/header.php';
     font-weight: 900;
     position: absolute;
     left: 0;
-    color: #10b981;
+    color: #047857;
 }
 
 .two-column-image {
@@ -626,11 +628,11 @@ include INCLUDES_PATH . '/header.php';
 
 .works-with-item i {
     font-size: 2.5rem;
-    color: #06b6d4;
+    color: #0e7490;
     margin-bottom: 1rem;
 }
 
-.works-with-item h4 {
+.works-with-item h3 {
     font-size: 1.125rem;
     font-weight: 600;
     color: #111827;
@@ -639,7 +641,7 @@ include INCLUDES_PATH . '/header.php';
 
 .works-with-item p {
     font-size: 0.875rem;
-    color: #6b7280;
+    color: #5b6371;
 }
 
 /* Stats Section */
@@ -672,7 +674,7 @@ include INCLUDES_PATH . '/header.php';
 
 .stat-label {
     font-size: 1.125rem;
-    color: #6b7280;
+    color: #5b6371;
     font-weight: 500;
 }
 
@@ -730,7 +732,7 @@ include INCLUDES_PATH . '/header.php';
 
 .testimonial-author-info p {
     font-size: 0.875rem;
-    color: #6b7280;
+    color: #5b6371;
     margin: 0;
 }
 
@@ -752,7 +754,7 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .placeholder-section h3 {
-    color: #6b7280;
+    color: #5b6371;
     margin-bottom: 0.5rem;
 }
 
@@ -783,6 +785,7 @@ include INCLUDES_PATH . '/header.php';
         font-size: 1.125rem;
     }
     
+    .two-column-text h1,
     .two-column-text h2 {
         font-size: 2.25rem;
     }
@@ -843,7 +846,7 @@ include INCLUDES_PATH . '/header.php';
         <div class="two-column-section">
             <div class="two-column-content">
                 <div class="two-column-text">
-                    <h2>Digital ID for Social Care Providers</h2>
+                    <h1>Digital ID for Social Care Providers</h1>
                     <p>
                         Secure, verifiable employee identification designed for organisations where trust is critical. 
                         Replace paper-based ID cards with modern, secure technology that protects your staff and service users.
@@ -857,10 +860,10 @@ include INCLUDES_PATH . '/header.php';
                     </ul>
                     <div class="cta-buttons" style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
                         <?php if (Auth::isLoggedIn()): ?>
-                            <a href="<?php echo url('id-card.php'); ?>" class="btn btn-hero-primary" style="background-color: #06b6d4; color: white; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; transition: all 0.2s; border: none; text-decoration: none;">View Your ID Card</a>
+                            <a href="<?php echo url('id-card.php'); ?>" class="btn btn-hero-primary" style="background-color: #0e7490; color: white; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; transition: all 0.2s; border: none; text-decoration: none;">View Your ID Card</a>
                             <a href="<?php echo url('features.php'); ?>" class="btn btn-hero-secondary" style="background-color: white; color: #2563eb; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; border: 1px solid #2563eb; transition: all 0.2s; text-decoration: none;">Learn More</a>
                         <?php else: ?>
-                            <a href="<?php echo url('register.php'); ?>" class="btn btn-hero-primary" style="background-color: #06b6d4; color: white; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; transition: all 0.2s; border: none; text-decoration: none;">Register</a>
+                            <a href="<?php echo url('register.php'); ?>" class="btn btn-hero-primary" style="background-color: #0e7490; color: white; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; transition: all 0.2s; border: none; text-decoration: none;">Register</a>
                             <a href="<?php echo url('demo-id-card.php'); ?>" class="btn btn-hero-secondary" style="background-color: white; color: #2563eb; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; border: 1px solid #2563eb; transition: all 0.2s; text-decoration: none;">See Example ID Card</a>
                             <a href="<?php echo url('login.php'); ?>" class="btn btn-hero-secondary" style="background-color: white; color: #2563eb; padding: 0.875rem 2rem; font-size: 1.0625rem; font-weight: 500; border-radius: 0; border: 1px solid #2563eb; transition: all 0.2s; text-decoration: none;">Login</a>
                         <?php endif; ?>
@@ -869,7 +872,7 @@ include INCLUDES_PATH . '/header.php';
                 <div class="two-column-image">
                     <a href="<?php echo url('demo-id-card.php'); ?>" style="display: block; text-decoration: none;">
                         <div class="id-card" style="position: relative; margin: 0 auto; max-width: 350px; transform: scale(0.9); transform-origin: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s, box-shadow 0.2s;">
-                            <div style="position: absolute; top: 0.5rem; right: 0.5rem; background: #f59e0b; color: white; padding: 0.25rem 0.75rem; font-size: 0.6rem; font-weight: 600; border-radius: 0; z-index: 10;">DEMO</div>
+                            <div style="position: absolute; top: 0.5rem; right: 0.5rem; background: #b45309; color: white; padding: 0.25rem 0.75rem; font-size: 0.6rem; font-weight: 600; border-radius: 0; z-index: 10;">DEMO</div>
                             <div class="id-card-header" style="padding: 1rem; margin-bottom: 1rem;">
                                 <h2 style="margin: 0; font-size: 1.2rem;">Example Organisation</h2>
                                 <p style="margin: 0; font-size: 0.8rem;">Digital ID Card</p>
@@ -887,7 +890,7 @@ include INCLUDES_PATH . '/header.php';
                                 $qrImageUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={$encodedUrl}";
                                 ?>
                                 <img src="<?php echo htmlspecialchars($qrImageUrl); ?>" alt="QR Code" style="max-width: 100px; background: white; padding: 0.5rem; border: 1px solid #e5e7eb; transition: none !important;">
-                                <p style="font-size: 0.6rem; color: #9ca3af; margin-top: 0.5rem;">Scan to see demo</p>
+                                <p style="font-size: 0.6rem; color: #5b6371; margin-top: 0.5rem;">Scan to see demo</p>
                             </div>
                         </div>
                     </a>
@@ -1043,31 +1046,31 @@ include INCLUDES_PATH . '/header.php';
         <div class="works-with-grid">
             <div class="works-with-item">
                 <i class="fab fa-microsoft"></i>
-                <h4>Microsoft 365</h4>
+                <h3>Microsoft 365</h3>
                 <p>Single sign-on and user synchronisation</p>
             </div>
             
             <div class="works-with-item">
                 <i class="fas fa-share-alt"></i>
-                <h4>SharePoint Lists</h4>
+                <h3>SharePoint Lists</h3>
                 <p>Sync check-in data automatically</p>
             </div>
             
             <div class="works-with-item">
                 <i class="fas fa-bolt"></i>
-                <h4>Power Automate</h4>
+                <h3>Power Automate</h3>
                 <p>Trigger workflows from check-ins</p>
             </div>
             
             <div class="works-with-item">
                 <i class="fas fa-users"></i>
-                <h4>Microsoft Teams</h4>
+                <h3>Microsoft Teams</h3>
                 <p>Send notifications to channels</p>
             </div>
             
             <div class="works-with-item">
                 <i class="fas fa-clipboard-check"></i>
-                <h4>Check-In Sessions</h4>
+                <h3>Check-In Sessions</h3>
                 <p>Fire drill and safety tracking</p>
             </div>
         </div>
@@ -1181,26 +1184,26 @@ include INCLUDES_PATH . '/header.php';
         <div style="margin-top: 3rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
             <div style="padding: 1.5rem; background: white; border: 1px solid #e5e7eb; border-radius: 0;">
                 <div style="width: 48px; height: 48px; background-color: #f0f9ff; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
-                    <i class="fas fa-sign-in-alt" style="font-size: 1.5rem; color: #06b6d4;"></i>
+                    <i class="fas fa-sign-in-alt" style="font-size: 1.5rem; color: #0e7490;"></i>
                 </div>
                 <h4 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Single Sign-On</h4>
-                <p style="color: #6b7280; font-size: 0.9375rem; margin: 0;">Users log in with their Microsoft 365 credentials - no separate password needed.</p>
+                <p style="color: #5b6371; font-size: 0.9375rem; margin: 0;">Users log in with their Microsoft 365 credentials - no separate password needed.</p>
             </div>
             
             <div style="padding: 1.5rem; background: white; border: 1px solid #e5e7eb; border-radius: 0;">
                 <div style="width: 48px; height: 48px; background-color: #f0f9ff; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
-                    <i class="fas fa-sync" style="font-size: 1.5rem; color: #06b6d4;"></i>
+                    <i class="fas fa-sync" style="font-size: 1.5rem; color: #0e7490;"></i>
                 </div>
                 <h4 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">User Sync</h4>
-                <p style="color: #6b7280; font-size: 0.9375rem; margin: 0;">Automatically sync users from Microsoft Entra ID - no CSV exports required.</p>
+                <p style="color: #5b6371; font-size: 0.9375rem; margin: 0;">Automatically sync users from Microsoft Entra ID - no CSV exports required.</p>
             </div>
             
             <div style="padding: 1.5rem; background: white; border: 1px solid #e5e7eb; border-radius: 0;">
                 <div style="width: 48px; height: 48px; background-color: #f0f9ff; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
-                    <i class="fas fa-shield-alt" style="font-size: 1.5rem; color: #06b6d4;"></i>
+                    <i class="fas fa-shield-alt" style="font-size: 1.5rem; color: #0e7490;"></i>
                 </div>
                 <h4 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Secure & Compliant</h4>
-                <p style="color: #6b7280; font-size: 0.9375rem; margin: 0;">Uses industry-standard OAuth 2.0 and Microsoft Graph API for secure integration.</p>
+                <p style="color: #5b6371; font-size: 0.9375rem; margin: 0;">Uses industry-standard OAuth 2.0 and Microsoft Graph API for secure integration.</p>
             </div>
         </div>
     </div>
@@ -1215,8 +1218,8 @@ include INCLUDES_PATH . '/header.php';
             <p>Join organisations already using Digital ID to streamline their identity management and protect their staff and service users.</p>
             <div>
                 <a href="<?php echo url('register.php'); ?>" class="btn" style="background: white; color: #2563eb; border: none; font-weight: 600;">Register</a>
-                <a href="<?php echo url('login.php'); ?>" class="btn" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid white;">Login</a>
-                <a href="<?php echo url('request-access.php'); ?>" class="btn" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid white; font-size: 0.9375rem;">Request Organisation Access</a>
+                <a href="<?php echo url('login.php'); ?>" class="btn" style="background: transparent; color: white; border: 1px solid white;">Login</a>
+                <a href="<?php echo url('request-access.php'); ?>" class="btn" style="background: transparent; color: white; border: 1px solid white; font-size: 0.9375rem;">Request Organisation Access</a>
             </div>
         </div>
     </div>

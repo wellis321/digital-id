@@ -181,7 +181,7 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .password-requirement.unmet {
-    color: #6b7280;
+    color: #5b6371;
 }
 
 .password-requirement.unmet:before {

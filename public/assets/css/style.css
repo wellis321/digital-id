@@ -224,7 +224,7 @@ nav .container {
 .nav-dropdown-menu a i {
     width: 1rem;
     text-align: center;
-    color: #6b7280;
+    color: #5b6371;
     font-size: 0.875rem;
 }
 
@@ -328,7 +328,7 @@ main {
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #06b6d4;
+    border-color: #0e7490;
     box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
 }
 
@@ -348,7 +348,7 @@ main {
 }
 
 .btn-primary {
-    background-color: #06b6d4;
+    background-color: #0e7490;
     color: white;
     border: none;
 }
@@ -463,6 +463,7 @@ main {
     margin-bottom: 2rem;
 }
 
+.callout-box h2,
 .callout-box h3 {
     margin-top: 0;
     margin-bottom: 0.5rem;
@@ -567,7 +568,8 @@ footer .container {
     }
 }
 
-.footer-section h3 {
+.footer-section h3,
+.footer-section h2.footer-heading {
     color: white;
     font-size: 1.125rem;
     font-weight: 600;
@@ -651,7 +653,7 @@ footer .container {
 }
 
 .footer-social a:hover {
-    background-color: #06b6d4;
+    background-color: #0e7490;
     color: white;
 }
 
@@ -805,7 +807,7 @@ footer .container {
     left: 0;
     right: 0;
     background: white;
-    border-top: 2px solid #06b6d4;
+    border-top: 2px solid #0e7490;
     box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
     padding: 1.5rem 2rem;
     z-index: 10000;
@@ -839,7 +841,7 @@ footer .container {
 }
 
 .cookie-banner-text a {
-    color: #06b6d4;
+    color: #0e7490;
     text-decoration: underline;
 }
 
@@ -865,7 +867,7 @@ footer .container {
 }
 
 .cookie-banner-btn-accept {
-    background: #06b6d4;
+    background: #0e7490;
     color: white;
 }
 

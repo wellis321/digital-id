@@ -25,7 +25,7 @@ include INCLUDES_PATH . '/header.php';
 
 .hero-content p {
     font-size: 1.25rem;
-    color: #6b7280;
+    color: #5b6371;
     line-height: 1.7;
     margin-bottom: 2rem;
 }
@@ -98,7 +98,7 @@ include INCLUDES_PATH . '/header.php';
 
 .two-column-text p {
     font-size: 1.125rem;
-    color: #6b7280;
+    color: #5b6371;
     line-height: 1.8;
     margin-bottom: 1.5rem;
 }
@@ -143,7 +143,7 @@ include INCLUDES_PATH . '/header.php';
     font-size: 3rem;
     margin-bottom: 1rem;
     display: block;
-    color: #06b6d4;
+    color: #0e7490;
 }
 
 @media (max-width: 968px) {
@@ -167,7 +167,7 @@ include INCLUDES_PATH . '/header.php';
     top: 0;
     bottom: 0;
     width: 4px;
-    background: linear-gradient(to bottom, #2563eb, #10b981, #8b5cf6, #f59e0b, #06b6d4);
+    background: linear-gradient(to bottom, #2563eb, #047857, #8b5cf6, #b45309, #0e7490);
     transform: translateX(-50%);
     z-index: 1;
 }
@@ -267,7 +267,7 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .timeline-step:nth-child(2) .timeline-marker {
-    background-color: #10b981;
+    background-color: #047857;
 }
 
 .timeline-step:nth-child(3) .timeline-marker {
@@ -275,11 +275,11 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .timeline-step:nth-child(4) .timeline-marker {
-    background-color: #f59e0b;
+    background-color: #b45309;
 }
 
 .timeline-step:nth-child(5) .timeline-marker {
-    background-color: #06b6d4;
+    background-color: #0e7490;
 }
 
 .timeline-content h4 {
@@ -291,7 +291,7 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .timeline-content p {
-    color: #6b7280;
+    color: #5b6371;
     line-height: 1.7;
     margin: 0;
 }
@@ -363,7 +363,7 @@ include INCLUDES_PATH . '/header.php';
 
 .feature-icon-wrapper i {
     font-size: 1.75rem;
-    color: #06b6d4;
+    color: #0e7490;
 }
 
 .feature-item h3 {
@@ -374,7 +374,7 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .feature-item p {
-    color: #6b7280;
+    color: #5b6371;
     line-height: 1.7;
     margin: 0;
 }
@@ -411,7 +411,7 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .comparison-table th:nth-child(3) {
-    background-color: #10b981;
+    background-color: #047857;
     width: 37.5%;
     border-right: none;
 }
@@ -734,7 +734,7 @@ include INCLUDES_PATH . '/header.php';
             <h3 style="font-size: 1.5rem; font-weight: 500; color: #4b5563; margin-top: 0.5rem; margin-bottom: 0;">Understanding the difference between consumer and enterprise digital ID systems</h3>
         </div>
         
-        <div class="highlight-box" style="background-color: #f0fdf4; border: 2px solid #10b981; border-left: 4px solid #10b981; max-width: 900px; margin: 2rem auto 0;">
+        <div class="highlight-box" style="background-color: #f0fdf4; border: 2px solid #047857; border-left: 4px solid #047857; max-width: 900px; margin: 2rem auto 0;">
             <h3 style="margin-top: 0; color: #047857; font-size: 1.5rem; margin-bottom: 1rem;">
                 <i class="fas fa-info-circle" style="margin-right: 0.5rem;"></i>
                 Enterprise vs. Consumer Digital ID Systems

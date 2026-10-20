@@ -36,6 +36,10 @@ define('UPLOADS_PATH', ROOT_PATH . '/uploads');
 // Load environment variables
 require_once __DIR__ . '/env_loader.php';
 
+// Browser security headers (clickjacking, <base> injection, form hijacking, MIME sniffing, HSTS in production)
+require_once ROOT_PATH . '/src/classes/SecurityHeaders.php';
+SecurityHeaders::send($isProduction);
+
 // Application settings (from .env or defaults)
 define('APP_NAME', getenv('APP_NAME') ?: 'Digital ID');
 define('APP_VERSION', '1.0.0');

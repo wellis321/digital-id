@@ -12,7 +12,7 @@ $isMobile = $isIOS || $isAndroid;
 
 <div class="card">
     <h1>Install Digital ID App</h1>
-    <p style="font-size: 1.125rem; color: #6b7280; margin-bottom: 2rem;">
+    <p style="font-size: 1.125rem; color: #5b6371; margin-bottom: 2rem;">
         Install Digital ID as a Progressive Web App (PWA) on your device for quick, app-like access to your ID card.
     </p>
     
@@ -21,7 +21,7 @@ $isMobile = $isIOS || $isAndroid;
             <button id="install-button" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem;">
                 <i class="fas fa-download"></i> Install App Now
             </button>
-            <p style="text-align: center; margin-top: 0.5rem; color: #6b7280; font-size: 0.875rem;">
+            <p style="text-align: center; margin-top: 0.5rem; color: #5b6371; font-size: 0.875rem;">
                 Tap the button above if it appears, or follow the instructions below for your device
             </p>
         </div>
@@ -46,7 +46,7 @@ $isMobile = $isIOS || $isAndroid;
     <?php endif; ?>
     
     <?php if ($isAndroid): ?>
-        <div class="card" style="background-color: #f0fdf4; border-left: 4px solid #10b981; margin-bottom: 2rem;">
+        <div class="card" style="background-color: #f0fdf4; border-left: 4px solid #047857; margin-bottom: 2rem;">
             <h2 style="margin-top: 0; color: #047857;">
                 <i class="fas fa-mobile-alt"></i> Android Installation
             </h2>
@@ -76,7 +76,7 @@ $isMobile = $isIOS || $isAndroid;
     <?php endif; ?>
     
     <?php if (!$isMobile): ?>
-        <div class="card" style="background-color: #f9fafb; border-left: 4px solid #6b7280; margin-bottom: 2rem;">
+        <div class="card" style="background-color: #f9fafb; border-left: 4px solid #5b6371; margin-bottom: 2rem;">
             <h2 style="margin-top: 0;">
                 <i class="fas fa-desktop"></i> Desktop Installation
             </h2>
@@ -92,7 +92,7 @@ $isMobile = $isIOS || $isAndroid;
                 <li><strong>Windows:</strong> Click the menu button (three horizontal lines) → Select "Install" (requires Firefox 143.0+)</li>
                 <li><strong>macOS/Linux:</strong> PWA installation is not natively supported in Firefox. Please use Chrome or Edge browser instead.</li>
             </ol>
-            <p style="margin-top: 1rem; color: #6b7280; font-size: 0.875rem;">
+            <p style="margin-top: 1rem; color: #5b6371; font-size: 0.875rem;">
                 <i class="fas fa-info-circle"></i> Firefox PWA support varies by platform. Windows users need Firefox 143.0 or later.
             </p>
             
@@ -104,7 +104,7 @@ $isMobile = $isIOS || $isAndroid;
         </div>
     <?php endif; ?>
     
-    <div class="card" style="background-color: #fffbeb; border-left: 4px solid #f59e0b;">
+    <div class="card" style="background-color: #fffbeb; border-left: 4px solid #b45309;">
         <h2 style="margin-top: 0; color: #92400e;">
             <i class="fas fa-question-circle"></i> Troubleshooting
         </h2>

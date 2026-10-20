@@ -7,7 +7,7 @@ include INCLUDES_PATH . '/header.php';
 
 <div class="card">
     <h1>Terms of Service</h1>
-    <p style="color: #6b7280; margin-bottom: 2rem;"><strong>Last updated:</strong> <?php echo date('F j, Y'); ?></p>
+    <p style="color: #5b6371; margin-bottom: 2rem;"><strong>Last updated:</strong> <?php echo date('F j, Y'); ?></p>
     
     <div style="line-height: 1.8;">
         <section style="margin-bottom: 3rem;">

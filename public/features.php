@@ -25,7 +25,7 @@ include INCLUDES_PATH . '/header.php';
 
 .hero-content p {
     font-size: 1.25rem;
-    color: #6b7280;
+    color: #5b6371;
     line-height: 1.7;
     margin-bottom: 2rem;
 }
@@ -103,7 +103,7 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .feature-card:nth-child(3n+2) .feature-icon {
-    color: #10b981;
+    color: #047857;
 }
 
 .feature-card:nth-child(3n+3) .feature-icon {
@@ -112,11 +112,11 @@ include INCLUDES_PATH . '/header.php';
 
 /* Why Choose Digital ID section - all icons green */
 .why-choose-section .feature-card .feature-icon {
-    color: #10b981 !important;
+    color: #047857 !important;
 }
 
 .why-choose-section .feature-card h3 {
-    color: #10b981 !important;
+    color: #047857 !important;
 }
 
 /* Advanced Features section - all icons blue (same as first) */
@@ -138,7 +138,7 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .feature-card:nth-child(3n+2) h3 {
-    color: #10b981;
+    color: #047857;
 }
 
 .feature-card:nth-child(3n+3) h3 {
@@ -172,18 +172,18 @@ include INCLUDES_PATH . '/header.php';
 
 .benefit-icon {
     font-size: 1.5rem;
-    color: #10b981;
+    color: #047857;
     flex-shrink: 0;
 }
 
-.benefit-item h4 {
+.benefit-item h3 {
     margin: 0 0 0.5rem 0;
     color: #1f2937;
 }
 
 .benefit-item p {
     margin: 0;
-    color: #6b7280;
+    color: #5b6371;
     font-size: 0.95rem;
 }
 
@@ -197,6 +197,7 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .cta-section h2 {
+    color: #fff;
     font-size: 2.5rem;
     margin-bottom: 1rem;
 }
@@ -237,7 +238,7 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .stat-item:nth-child(2) .stat-number {
-    color: #10b981;
+    color: #047857;
 }
 
 .stat-item:nth-child(3) .stat-number {
@@ -245,11 +246,11 @@ include INCLUDES_PATH . '/header.php';
 }
 
 .stat-item:nth-child(4) .stat-number {
-    color: #06b6d4;
+    color: #0e7490;
 }
 
 .stat-label {
-    color: #6b7280;
+    color: #5b6371;
     margin-top: 0.5rem;
     font-size: 1rem;
 }
@@ -361,7 +362,7 @@ include INCLUDES_PATH . '/header.php';
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
-    color: #06b6d4;
+    color: #0e7490;
     z-index: 10;
     transition: all 0.3s;
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
@@ -650,7 +651,7 @@ include INCLUDES_PATH . '/header.php';
         <div class="benefit-item">
             <i class="fas fa-check-circle benefit-icon"></i>
             <div>
-                <h4>Bank Transactions</h4>
+                <h3>Bank Transactions</h3>
                 <p>Prove employee identity when acting on behalf of vulnerable clients at banks and financial institutions</p>
             </div>
         </div>
@@ -658,7 +659,7 @@ include INCLUDES_PATH . '/header.php';
         <div class="benefit-item">
             <i class="fas fa-check-circle benefit-icon"></i>
             <div>
-                <h4>Emergency Situations</h4>
+                <h3>Emergency Situations</h3>
                 <p>Quick identity verification during emergencies, fire drills, and safety checks</p>
             </div>
         </div>
@@ -666,7 +667,7 @@ include INCLUDES_PATH . '/header.php';
         <div class="benefit-item">
             <i class="fas fa-check-circle benefit-icon"></i>
             <div>
-                <h4>Meeting Attendance</h4>
+                <h3>Meeting Attendance</h3>
                 <p>Automatically track attendance at meetings, training sessions, and mandatory briefings</p>
             </div>
         </div>
@@ -674,7 +675,7 @@ include INCLUDES_PATH . '/header.php';
         <div class="benefit-item">
             <i class="fas fa-check-circle benefit-icon"></i>
             <div>
-                <h4>Lone Working Safety</h4>
+                <h3>Lone Working Safety</h3>
                 <p>Verify staff identity for lone working checks and safety protocols</p>
             </div>
         </div>
@@ -682,7 +683,7 @@ include INCLUDES_PATH . '/header.php';
         <div class="benefit-item">
             <i class="fas fa-check-circle benefit-icon"></i>
             <div>
-                <h4>Service User Confidence</h4>
+                <h3>Service User Confidence</h3>
                 <p>Give service users and families confidence that staff are verified and legitimate</p>
             </div>
         </div>
@@ -690,7 +691,7 @@ include INCLUDES_PATH . '/header.php';
         <div class="benefit-item">
             <i class="fas fa-check-circle benefit-icon"></i>
             <div>
-                <h4>Compliance Ready</h4>
+                <h3>Compliance Ready</h3>
                 <p>Complete audit trails for regulatory compliance and quality assurance</p>
             </div>
         </div>
@@ -698,7 +699,7 @@ include INCLUDES_PATH . '/header.php';
         <div class="benefit-item">
             <i class="fas fa-check-circle benefit-icon"></i>
             <div>
-                <h4>Cost Effective</h4>
+                <h3>Cost Effective</h3>
                 <p>Eliminate costs of printing, replacing, and managing physical ID cards</p>
             </div>
         </div>
@@ -706,7 +707,7 @@ include INCLUDES_PATH . '/header.php';
         <div class="benefit-item">
             <i class="fas fa-check-circle benefit-icon"></i>
             <div>
-                <h4>Environmentally Friendly</h4>
+                <h3>Environmentally Friendly</h3>
                 <p>Reduce paper waste and plastic card production with digital solutions</p>
             </div>
         </div>
@@ -737,10 +738,10 @@ include INCLUDES_PATH . '/header.php';
     <p>Join organisations already using Digital ID to streamline their identity management</p>
     <div class="cta-buttons">
         <?php if (Auth::isLoggedIn()): ?>
-            <a href="<?php echo url('id-card.php'); ?>" class="btn btn-secondary" style="background: white; color: #3b82f6;">View Your ID Card</a>
+            <a href="<?php echo url('id-card.php'); ?>" class="btn btn-secondary" style="background: white; color: #1d4ed8;">View Your ID Card</a>
         <?php else: ?>
-            <a href="<?php echo url('request-access.php'); ?>" class="btn btn-secondary" style="background: white; color: #3b82f6;">Request Access</a>
-            <a href="<?php echo url('login.php'); ?>" class="btn btn-secondary" style="background: rgba(255,255,255,0.2); color: white; border: 2px solid white;">Login</a>
+            <a href="<?php echo url('request-access.php'); ?>" class="btn btn-secondary" style="background: white; color: #1d4ed8;">Request Access</a>
+            <a href="<?php echo url('login.php'); ?>" class="btn btn-secondary" style="background: transparent; color: white; border: 2px solid white;">Login</a>
         <?php endif; ?>
     </div>
 </div>

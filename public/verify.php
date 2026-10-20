@@ -102,7 +102,7 @@ include dirname(__DIR__) . '/includes/header.php';
                         ?>
                         <img src="<?php echo htmlspecialchars($photoUrl); ?>" alt="Photo" class="id-card-photo">
                     <?php else: ?>
-                        <div class="id-card-photo" style="background-color: #f3f4f6; border: 3px solid #e5e7eb; display: flex; align-items: center; justify-content: center; color: #6b7280;">
+                        <div class="id-card-photo" style="background-color: #f3f4f6; border: 3px solid #e5e7eb; display: flex; align-items: center; justify-content: center; color: #5b6371;">
                             No Photo
                         </div>
                     <?php endif; ?>

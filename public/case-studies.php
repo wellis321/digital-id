@@ -92,7 +92,7 @@ include INCLUDES_PATH . '/header.php';
     <h1>Case Studies</h1>
     
     <div class="callout-box">
-        <h3>We're Looking for Partners</h3>
+        <h2>We're Looking for Partners</h2>
         <p>
             We're building a library of case studies to showcase how organisations are using Digital ID to improve their identity management,
             enhance security, and streamline operations. If you're using Digital ID and would like to share your story, we'd love to work with you.
@@ -112,24 +112,24 @@ include INCLUDES_PATH . '/header.php';
                 <div style="width: 48px; height: 48px; background-color: #eff6ff; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
                     <i class="fas fa-handshake" style="font-size: 1.5rem; color: #2563eb;"></i>
                 </div>
-                <h4 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Collaboration</h4>
-                <p style="color: #6b7280; font-size: 0.9375rem; margin: 0;">We'll work together to tell your story accurately and highlight the benefits you've experienced.</p>
+                <h3 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Collaboration</h3>
+                <p style="color: #5b6371; font-size: 0.9375rem; margin: 0;">We'll work together to tell your story accurately and highlight the benefits you've experienced.</p>
             </div>
             
             <div style="padding: 1.5rem; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0;">
                 <div style="width: 48px; height: 48px; background-color: #eff6ff; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
                     <i class="fas fa-chart-line" style="font-size: 1.5rem; color: #2563eb;"></i>
                 </div>
-                <h4 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Real Results</h4>
-                <p style="color: #6b7280; font-size: 0.9375rem; margin: 0;">Share measurable outcomes, time savings, cost reductions, or improvements in security and compliance.</p>
+                <h3 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Real Results</h3>
+                <p style="color: #5b6371; font-size: 0.9375rem; margin: 0;">Share measurable outcomes, time savings, cost reductions, or improvements in security and compliance.</p>
             </div>
             
             <div style="padding: 1.5rem; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0;">
                 <div style="width: 48px; height: 48px; background-color: #eff6ff; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
                     <i class="fas fa-users" style="font-size: 1.5rem; color: #2563eb;"></i>
                 </div>
-                <h4 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Diverse Stories</h4>
-                <p style="color: #6b7280; font-size: 0.9375rem; margin: 0;">We're interested in organisations of all sizes and use cases - every story helps others understand the possibilities.</p>
+                <h3 style="margin-top: 0; font-size: 1.125rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Diverse Stories</h3>
+                <p style="color: #5b6371; font-size: 0.9375rem; margin: 0;">We're interested in organisations of all sizes and use cases - every story helps others understand the possibilities.</p>
             </div>
         </div>
     </div>
@@ -203,9 +203,9 @@ include INCLUDES_PATH . '/header.php';
         </div>
         
         <div class="callout-box callout-box--warning" style="margin-top: 2rem;">
-            <h4>
+            <h3>
                 <i class="fas fa-info-circle"></i> Prefer to Email Directly?
-            </h4>
+            </h3>
             <p>
                 You can also reach us directly at <a href="mailto:<?php echo CONTACT_EMAIL; ?>"><?php echo CONTACT_EMAIL; ?></a>
                 if you'd prefer to discuss case study opportunities via email.

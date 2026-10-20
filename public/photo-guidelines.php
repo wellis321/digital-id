@@ -8,11 +8,11 @@ include INCLUDES_PATH . '/header.php';
 
 <div class="card">
     <div style="margin-bottom: 2rem;">
-        <a href="<?php echo url('upload-photo.php'); ?>" style="color: #6b7280; display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+        <a href="<?php echo url('upload-photo.php'); ?>" style="color: #5b6371; display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
             <i class="fas fa-arrow-left"></i> Back to Upload Photo
         </a>
         <h1 style="margin-top: 0;">Photo Guidelines for Digital ID Cards</h1>
-        <p style="color: #6b7280;">
+        <p style="color: #5b6371;">
             Follow these guidelines to ensure your photo is approved for use on your digital ID card.
         </p>
     </div>

@@ -28,12 +28,12 @@ include INCLUDES_PATH . '/header.php';
 
 <div class="card" style="max-width: 600px; margin: 2rem auto;">
     <h1>Digital ID Card Example</h1>
-    <p style="color: #6b7280; margin-bottom: 2rem;">
+    <p style="color: #5b6371; margin-bottom: 2rem;">
         This is an example of what a Digital ID card looks like. When you register and your organisation administrator creates your employee profile, you'll receive your own personalised digital ID card.
     </p>
     
-    <div style="background: #f0f9ff; border: 2px solid #06b6d4; border-radius: 0; padding: 1rem; margin-bottom: 2rem; text-align: center;">
-        <i class="fas fa-info-circle" style="color: #06b6d4; font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
+    <div style="background: #f0f9ff; border: 2px solid #0e7490; border-radius: 0; padding: 1rem; margin-bottom: 2rem; text-align: center;">
+        <i class="fas fa-info-circle" style="color: #0e7490; font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
         <p style="margin: 0; color: #0369a1; font-weight: 500;">This is a demonstration card with example data</p>
     </div>
 </div>
@@ -72,7 +72,7 @@ include INCLUDES_PATH . '/header.php';
         <div style="position: relative;">
             <div class="id-card" id="id-card-content" style="position: relative; margin: 0;">
                 <!-- Demo Badge -->
-                <div style="position: absolute; top: 1rem; right: 1rem; background: #f59e0b; color: white; padding: 0.5rem 1rem; font-size: 0.75rem; font-weight: 600; border-radius: 0; z-index: 10;">
+                <div style="position: absolute; top: 1rem; right: 1rem; background: #b45309; color: white; padding: 0.5rem 1rem; font-size: 0.75rem; font-weight: 600; border-radius: 0; z-index: 10;">
                     <i class="fas fa-eye"></i> DEMO
                 </div>
                 
@@ -96,7 +96,7 @@ include INCLUDES_PATH . '/header.php';
                 
                 <!-- Demo QR Code -->
                 <div class="id-card-qr" style="margin-top: 1.5rem; text-align: center;">
-                    <p style="margin-bottom: 1rem; font-size: 0.875rem; color: #6b7280;">Scan QR code to learn more</p>
+                    <p style="margin-bottom: 1rem; font-size: 0.875rem; color: #5b6371;">Scan QR code to learn more</p>
                     <?php
                     // Generate a real QR code that links to the request access page
                     require_once SRC_PATH . '/classes/QRCodeGenerator.php';

@@ -37,7 +37,7 @@ $unsplash = [
 
 .hero-content p {
     font-size: 1.25rem;
-    color: #6b7280;
+    color: #5b6371;
     line-height: 1.7;
     margin-bottom: 2rem;
 }
@@ -92,7 +92,7 @@ $unsplash = [
 
 .workflow-intro p {
     font-size: 1.125rem;
-    color: #6b7280;
+    color: #5b6371;
     line-height: 1.8;
 }
 
@@ -134,7 +134,7 @@ $unsplash = [
 .use-case-icon {
     width: 60px;
     height: 60px;
-    background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+    background: linear-gradient(135deg, #0e7490 0%, #0891b2 100%);
     border-radius: 0;
     display: flex;
     align-items: center;
@@ -171,7 +171,7 @@ $unsplash = [
     font-weight: 900;
     position: absolute;
     left: 0;
-    color: #10b981;
+    color: #047857;
     font-size: 1rem;
 }
 
@@ -457,51 +457,51 @@ $unsplash = [
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem;">
             <div class="card" style="text-align: center; padding: 2rem;">
-                <div style="font-size: 3rem; color: #10b981; margin-bottom: 1rem;">
+                <div style="font-size: 3rem; color: #047857; margin-bottom: 1rem;">
                     <i class="fas fa-clock"></i>
                 </div>
                 <h3 style="color: #1f2937; margin-bottom: 1rem;">Save Time</h3>
-                <p style="color: #6b7280;">Quick verification means more time with clients, less time on paperwork.</p>
+                <p style="color: #5b6371;">Quick verification means more time with clients, less time on paperwork.</p>
             </div>
             
             <div class="card" style="text-align: center; padding: 2rem;">
-                <div style="font-size: 3rem; color: #10b981; margin-bottom: 1rem;">
+                <div style="font-size: 3rem; color: #047857; margin-bottom: 1rem;">
                     <i class="fas fa-shield-alt"></i>
                 </div>
                 <h3 style="color: #1f2937; margin-bottom: 1rem;">Enhanced Security</h3>
-                <p style="color: #6b7280;">Secure, verifiable identity protection for your team and clients.</p>
+                <p style="color: #5b6371;">Secure, verifiable identity protection for your team and clients.</p>
             </div>
             
             <div class="card" style="text-align: center; padding: 2rem;">
-                <div style="font-size: 3rem; color: #10b981; margin-bottom: 1rem;">
+                <div style="font-size: 3rem; color: #047857; margin-bottom: 1rem;">
                     <i class="fas fa-clipboard-check"></i>
                 </div>
                 <h3 style="color: #1f2937; margin-bottom: 1rem;">Compliance Ready</h3>
-                <p style="color: #6b7280;">Automatic logging and audit trails for regulatory compliance.</p>
+                <p style="color: #5b6371;">Automatic logging and audit trails for regulatory compliance.</p>
             </div>
             
             <div class="card" style="text-align: center; padding: 2rem;">
-                <div style="font-size: 3rem; color: #10b981; margin-bottom: 1rem;">
+                <div style="font-size: 3rem; color: #047857; margin-bottom: 1rem;">
                     <i class="fas fa-mobile-alt"></i>
                 </div>
                 <h3 style="color: #1f2937; margin-bottom: 1rem;">Always Accessible</h3>
-                <p style="color: #6b7280;">Access your Digital ID from any device, anytime, anywhere.</p>
+                <p style="color: #5b6371;">Access your Digital ID from any device, anytime, anywhere.</p>
             </div>
             
             <div class="card" style="text-align: center; padding: 2rem;">
-                <div style="font-size: 3rem; color: #10b981; margin-bottom: 1rem;">
+                <div style="font-size: 3rem; color: #047857; margin-bottom: 1rem;">
                     <i class="fas fa-building"></i>
                 </div>
                 <h3 style="color: #1f2937; margin-bottom: 1rem;">Building Access</h3>
-                <p style="color: #6b7280;">Seamless building and turnstile access with automatic attendance logging.</p>
+                <p style="color: #5b6371;">Seamless building and turnstile access with automatic attendance logging.</p>
             </div>
             
             <div class="card" style="text-align: center; padding: 2rem;">
-                <div style="font-size: 3rem; color: #10b981; margin-bottom: 1rem;">
+                <div style="font-size: 3rem; color: #047857; margin-bottom: 1rem;">
                     <i class="fas fa-user-check"></i>
                 </div>
                 <h3 style="color: #1f2937; margin-bottom: 1rem;">Client Trust</h3>
-                <p style="color: #6b7280;">Build confidence with families and clients through instant identity verification.</p>
+                <p style="color: #5b6371;">Build confidence with families and clients through instant identity verification.</p>
             </div>
         </div>
     </section>

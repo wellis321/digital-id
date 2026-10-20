@@ -289,9 +289,9 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
                 $photoAltText .= ' (pending approval)';
             }
             ?>
-            <img src="<?php echo htmlspecialchars($photoPath); ?>" alt="<?php echo $photoAltText; ?>" class="id-card-photo" style="<?php echo ($photoStatus === 'pending' && !$hasApprovedPhoto) ? 'opacity: 0.7; border: 2px dashed #f59e0b;' : ''; ?>">
+            <img src="<?php echo htmlspecialchars($photoPath); ?>" alt="<?php echo $photoAltText; ?>" class="id-card-photo" style="<?php echo ($photoStatus === 'pending' && !$hasApprovedPhoto) ? 'opacity: 0.7; border: 2px dashed #b45309;' : ''; ?>">
     <?php else: ?>
-        <div class="id-card-photo" style="background-color: #f3f4f6; border: 3px solid #e5e7eb; display: flex; align-items: center; justify-content: center; color: #6b7280;">
+        <div class="id-card-photo" style="background-color: #f3f4f6; border: 3px solid #e5e7eb; display: flex; align-items: center; justify-content: center; color: #5b6371;">
             No Photo
         </div>
     <?php endif; ?>
@@ -303,11 +303,11 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
         $showPendingMessage = ($photoStatus === 'pending' && !$hasApprovedPhoto);
         ?>
         <?php if ($showPendingMessage): ?>
-            <p style="color: #f59e0b; font-size: 0.875rem; margin: 0 0 0.75rem 0;">
+            <p style="color: #b45309; font-size: 0.875rem; margin: 0 0 0.75rem 0;">
                 <i class="fas fa-clock"></i> Photo pending approval
             </p>
         <?php elseif ($photoStatus === 'pending' && $hasApprovedPhoto): ?>
-            <p style="color: #06b6d4; font-size: 0.875rem; margin: 0 0 0.75rem 0;">
+            <p style="color: #0e7490; font-size: 0.875rem; margin: 0 0 0.75rem 0;">
                 <i class="fas fa-info-circle"></i> New photo uploaded - awaiting approval (current photo shown)
             </p>
         <?php elseif (($employee['photo_approval_status'] ?? 'none') === 'rejected'): ?>
@@ -339,7 +339,7 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
     
     <?php if ($signatureUrl): ?>
     <div class="id-card-signature" style="margin-top: 1.5rem; text-align: center; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
-        <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #6b7280;"><strong>Signature:</strong></p>
+        <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #5b6371;"><strong>Signature:</strong></p>
         <img src="<?php echo htmlspecialchars($signatureUrl); ?>" alt="Signature" style="max-width: 200px; max-height: 80px; object-fit: contain; background: white; padding: 0.5rem; border: 1px solid #e5e7eb;">
     </div>
     <?php endif; ?>
@@ -353,7 +353,7 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
     </div>
     
     <!-- Building Access Information -->
-    <div class="info-box" style="margin-top: 2rem; padding: 1.5rem; background: #f0f9ff; border-left: 4px solid #06b6d4; border-radius: 0.5rem;">
+    <div class="info-box" style="margin-top: 2rem; padding: 1.5rem; background: #f0f9ff; border-left: 4px solid #0e7490; border-radius: 0.5rem;">
         <h3 style="margin-top: 0; margin-bottom: 1rem; color: #0369a1; font-size: 1.125rem;">
             <i class="fas fa-door-open"></i> Using Your ID for Building Access
         </h3>

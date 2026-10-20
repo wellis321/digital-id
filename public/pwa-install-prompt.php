@@ -57,7 +57,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #6b7280;
+    color: #5b6371;
 }
 
 .pwa-install-close:hover {
@@ -77,7 +77,7 @@
 
 .pwa-install-prompt p {
     margin: 0 0 1rem 0;
-    color: #6b7280;
+    color: #5b6371;
     font-size: 0.875rem;
 }
 
@@ -225,7 +225,7 @@ window.pwaInstallHandler = {
                         <li>Select <strong>"Install"</strong> or <strong>"Add to Home Screen"</strong></li>
                         <li>Confirm the installation</li>
                     </ol>
-                    <p style="margin-top: 1rem; color: #6b7280; font-size: 0.875rem;">
+                    <p style="margin-top: 1rem; color: #5b6371; font-size: 0.875rem;">
                         <i class="fas fa-info-circle"></i> Firefox supports PWA installation on Android. Look for the "Install" option in the browser menu.
                     </p>
                 `;
@@ -248,7 +248,7 @@ window.pwaInstallHandler = {
                         <li>Select <strong>"Install"</strong> or look for the install icon in the address bar</li>
                         <li>Confirm the installation</li>
                     </ol>
-                    <p style="margin-top: 1rem; color: #6b7280; font-size: 0.875rem;">
+                    <p style="margin-top: 1rem; color: #5b6371; font-size: 0.875rem;">
                         <i class="fas fa-info-circle"></i> Requires Firefox 143.0 or later on Windows. macOS and Linux users should use Chrome or Edge for PWA installation.
                     </p>
                 `;

@@ -3,7 +3,7 @@
         <div class="container">
             <div class="footer-section">
                 <a href="<?php echo url('index.php'); ?>" class="footer-logo">
-                    <img src="<?php echo url('assets/images/300-high-digitalID-logo.png'); ?>" alt="<?php echo APP_NAME; ?>" class="footer-logo-image">
+                    <img src="<?php echo url('assets/images/300-high-digitalID-logo.png'); ?>" alt="" class="footer-logo-image">
                     <span class="footer-logo-text"><?php echo APP_NAME; ?></span>
                 </a>
                 <p style="color: #9ca3af; line-height: 1.6; margin-top: 1rem;">
@@ -18,7 +18,7 @@
             </div>
             
             <div class="footer-section">
-                <h3>Product</h3>
+                <h2 class="footer-heading">Product</h2>
                 <ul>
                     <li><a href="<?php echo url('features.php'); ?>">Features</a></li>
                     <li><a href="<?php echo url('security.php'); ?>#how-it-works">How It Works</a></li>
@@ -27,7 +27,7 @@
             </div>
             
             <div class="footer-section">
-                <h3>Resources</h3>
+                <h2 class="footer-heading">Resources</h2>
                 <ul>
                     <li><a href="<?php echo url('docs-getting-started.php'); ?>">Documentation</a></li>
                     <li><a href="<?php echo url('docs-mcp-integration.php'); ?>">AI Integration (MCP)</a></li>
@@ -38,7 +38,7 @@
             </div>
             
             <div class="footer-section">
-                <h3>Company</h3>
+                <h2 class="footer-heading">Company</h2>
                 <ul>
                     <li><a href="<?php echo url('contact.php'); ?>">Contact</a></li>
                     <li><a href="<?php echo url('request-access.php'); ?>">Request Access</a></li>
@@ -50,7 +50,7 @@
         
         <div class="footer-bottom-section">
             <div class="footer-section footer-install-app">
-                <h3>Install App</h3>
+                <h2 class="footer-heading">Install App</h2>
                 <p style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 1rem;">
                     Install Digital ID as an app on your phone for quick access
                 </p>
@@ -63,7 +63,7 @@
             </div>
             
             <div class="footer-section footer-staff-service">
-                <h3>Staff Service</h3>
+                <h2 class="footer-heading">Staff Service</h2>
                 <p style="color: #9ca3af; font-size: 0.875rem; line-height: 1.6; margin-bottom: 1rem;">
                     Centralised staff management designed for organisations where data ownership is critical. Take control of your staff information and integrate with existing systems without duplication or vendor lock-in.
                 </p>
@@ -119,7 +119,7 @@
     </footer>
     
     <!-- Cookie Banner -->
-    <div id="cookieBanner" class="cookie-banner">
+    <div id="cookieBanner" class="cookie-banner" role="region" aria-label="Cookie notice">
         <div class="cookie-banner-content">
             <div class="cookie-banner-text">
                 <p>

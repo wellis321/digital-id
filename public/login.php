@@ -193,7 +193,7 @@ include INCLUDES_PATH . '/header.php';
             <i class="fas fa-user-plus"></i> Register Now
         </a>
     </div>
-    <p style="margin-top: 1rem; text-align: center; color: #6b7280; font-size: 0.875rem;">
+    <p style="margin-top: 1rem; text-align: center; color: #5b6371; font-size: 0.875rem;">
         <strong>New organisation?</strong> <a href="<?php echo url('request-access.php'); ?>">Request access</a> for your organisation first.
     </p>
 </div>
