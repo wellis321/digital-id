@@ -45,6 +45,9 @@ define('APP_NAME', getenv('APP_NAME') ?: 'Digital ID');
 define('APP_VERSION', '1.0.0');
 define('APP_URL', getenv('APP_URL') ?: 'http://localhost');
 
+// Demo instance (public sample-data site, reset nightly). Never true on a customer's system.
+define('DEMO_MODE', filter_var(getenv('DEMO_MODE'), FILTER_VALIDATE_BOOLEAN));
+
 // Contact email - Main super admin and point of contact
 define('CONTACT_EMAIL', 'digital-ids@outlook.com');
 
@@ -148,6 +151,9 @@ require_once ROOT_PATH . '/shared-auth/src/OrganisationalUnits.php';
 
 // Include database configuration
 require_once CONFIG_PATH . '/database.php';
+
+// Demo-mode helpers
+require_once INCLUDES_PATH . '/demo.php';
 
 // Autoload classes (simple autoloader)
 spl_autoload_register(function ($class) {

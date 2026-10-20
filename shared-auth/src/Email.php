@@ -60,6 +60,10 @@ class Email {
      * Protected so subclasses can call it for application-specific email types.
      */
     protected static function sendEmail($to, $subject, $message) {
+        // The public demo never sends email.
+        if (defined('DEMO_MODE') && DEMO_MODE) {
+            return true;
+        }
         $headers = [
             'MIME-Version: 1.0',
             'Content-type: text/html; charset=UTF-8',

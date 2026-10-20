@@ -253,6 +253,7 @@
             overflow: visible;
         }
     </style>
+    <?php echo demo_banner_html(); ?>
     <header>
         <nav>
             <div class="container">

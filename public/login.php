@@ -136,6 +136,18 @@ include INCLUDES_PATH . '/header.php';
         <div class="alert alert-success" role="alert" aria-live="polite"><?php echo htmlspecialchars($success); ?></div>
     <?php endif; ?>
     
+    <?php if (DEMO_MODE): ?>
+    <div class="demo-login-help">
+        <h2>Try the demo</h2>
+        <p>Sign in with either account. The password for both is <strong><?php echo htmlspecialchars(DEMO_PASSWORD); ?></strong></p>
+        <ul>
+            <?php foreach (demo_accounts() as [$label, $demoEmail]): ?>
+                <li><?php echo htmlspecialchars($label); ?>: <strong><?php echo htmlspecialchars($demoEmail); ?></strong></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+    <?php endif; ?>
+
     <form method="POST" action="" autocomplete="off">
         <?php echo CSRF::tokenField(); 
         ?>

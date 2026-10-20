@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__DIR__) . '/config/config.php';
+demo_block_posts();
 
 // #region agent log
 $debugLogPath = defined('ROOT_PATH') ? ROOT_PATH . '/.cursor/debug.log' : dirname(__DIR__) . '/.cursor/debug.log';

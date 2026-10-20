@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__DIR__, 2) . '/config/config.php';
+demo_block_posts();
 
 Auth::requireLogin();
 
