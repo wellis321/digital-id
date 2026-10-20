@@ -64,6 +64,10 @@ class Email {
         if (defined('DEMO_MODE') && DEMO_MODE) {
             return true;
         }
+        // The public demo never sends email.
+        if (defined('DEMO_MODE') && DEMO_MODE) {
+            return true;
+        }
         $headers = [
             'MIME-Version: 1.0',
             'Content-type: text/html; charset=UTF-8',

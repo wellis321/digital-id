@@ -944,3 +944,9 @@ footer .container {
 .use-case-grid, .use-case-grid.reverse { grid-template-columns: minmax(0, 1fr) !important; max-width: 70ch; }
 .hero-section { grid-template-columns: minmax(0, 1fr) !important; }
 .timeline-marker { background: var(--ink) !important; color: #fff !important; border-radius: 6px !important; }
+
+/* Cross-links between the demos and the showcase */
+.demo-banner a { color: #fff; text-decoration: underline; text-underline-offset: 0.18em; margin-left: 0.35rem; }
+.demo-banner a:hover { color: #e8cf86; }
+.demo-other-products { margin: 1rem 0 0; padding: 0 1rem; text-align: center; font-size: 0.9rem; color: rgba(255,255,255,0.8); }
+.demo-other-products a { color: #fff; }

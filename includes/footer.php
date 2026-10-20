@@ -116,7 +116,8 @@
             }
         });
         </script>
-    </footer>
+        <?php echo demo_other_products_html('digital-id'); ?>
+</footer>
     
     <!-- Cookie Banner -->
     <div id="cookieBanner" class="cookie-banner" role="region" aria-label="Cookie notice">

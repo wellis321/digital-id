@@ -42,6 +42,28 @@ function demo_banner_html(): string
     if (!DEMO_MODE) {
         return '';
     }
+    $sw = 'https://findcarescotland.com/software';
     return '<div class="demo-banner" role="region" aria-label="Demo notice"><strong>Demo</strong> '
-        . 'All names and records here are made up, and the data resets every night. Please do not enter real personal information.</div>';
+        . 'All names and records here are made up, and the data resets every night. Please do not enter real personal information. <a href="'.$sw.'">Part of Find Care Scotland\'s software for providers</a></div>';
+}
+
+/** "Other products" line for the demo footer: links to the showcase pages on Find Care Scotland. */
+function demo_other_products_html(string $current): string
+{
+    if (!DEMO_MODE) {
+        return '';
+    }
+    $products = [
+        'digital-id' => 'Digital ID',
+        'contracts' => 'Contracts',
+        'staff-service' => 'Staff records',
+        'simple-data-cleaner' => 'Simple Data Cleaner',
+    ];
+    $links = [];
+    foreach ($products as $slug => $label) {
+        if ($slug !== $current) {
+            $links[] = '<a href="https://findcarescotland.com/software/' . $slug . '">' . $label . '</a>';
+        }
+    }
+    return '<p class="demo-other-products">Other products: ' . implode(' · ', $links) . '</p>';
 }
