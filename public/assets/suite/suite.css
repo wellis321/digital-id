@@ -245,6 +245,11 @@ footer, .site-footer { background: var(--ink); color: rgba(255,255,255,0.78); bo
    decorative shadows, no pastel panels. Colour is reserved for meaning (status) and for the primary action. */
 .demo-banner { background: var(--ink-soft); color: #fff; border-bottom: 1px solid rgba(255,255,255,0.12); }
 .demo-banner strong { color: #e8cf86; }
+/* The notice wraps into a short block instead of one long line. */
+body .demo-banner { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.2rem 1.25rem; padding: 0.6rem 1rem; text-align: left; }
+body .demo-banner strong { margin-right: 0; }
+body .demo-banner__text { flex: 0 1 40rem; min-width: 0; line-height: 1.45; }
+body .demo-banner a { margin-left: 0; }
 .demo-login-help { background: var(--surface); border: 1px solid var(--rule); color: var(--ink); }
 .demo-login-help h2 { color: var(--ink); }
 /* a first card sitting hard against the header looks unfinished */

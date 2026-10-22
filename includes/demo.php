@@ -44,7 +44,7 @@ function demo_banner_html(): string
     }
     $sw = 'https://findcarescotland.com/software';
     return '<div class="demo-banner" role="region" aria-label="Demo notice"><strong>Demo</strong> '
-        . 'All names and records here are made up, and the data resets every night. Please do not enter real personal information. <a href="'.$sw.'">Part of Find Care Scotland\'s software for providers</a></div>';
+        . '<span class="demo-banner__text">All names and records here are made up, and the data resets every night. Please do not enter real personal information.</span> <a href="'.$sw.'">Part of Find Care Scotland\'s software for providers</a></div>';
 }
 
 /** "Other products" line for the demo footer: links to the showcase pages on Find Care Scotland. */
