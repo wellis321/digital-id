@@ -57,6 +57,9 @@ function demo_other_products_html(string $current): string
         'digital-id' => 'Digital ID',
         'contracts' => 'Contracts',
         'staff-service' => 'Staff records',
+        'team-service' => 'Teams',
+        'people-service' => 'People we support',
+        'strategic-plan' => 'Strategic plans',
         'simple-data-cleaner' => 'Simple Data Cleaner',
     ];
     $links = [];
