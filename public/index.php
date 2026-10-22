@@ -841,7 +841,7 @@ include INCLUDES_PATH . '/header.php';
 
 
 <!-- Hero Section -->
-<div class="full-width-section main-section">
+<div class="full-width-section main-section home-hero-dark">
     <div class="section-content">
         <div class="two-column-section">
             <div class="two-column-content">
