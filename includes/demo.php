@@ -56,9 +56,7 @@ function demo_other_products_html(string $current): string
     $products = [
         'digital-id' => 'Digital ID',
         'contracts' => 'Contracts',
-        'staff-service' => 'Staff records',
-        'team-service' => 'Teams',
-        'people-service' => 'People we support',
+        'care-core' => 'Care Core',
         'strategic-plan' => 'Strategic plans',
         'simple-data-cleaner' => 'Simple Data Cleaner',
     ];
