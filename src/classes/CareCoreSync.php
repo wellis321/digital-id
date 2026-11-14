@@ -186,7 +186,7 @@ class CareCoreSync
                 $endsOn = (string) ($emp['end_date'] ?? ($event['data']['end_date'] ?? ''));
                 $local = $db->prepare('SELECT id FROM employees WHERE organisation_id = ? AND care_core_person_id = ?'); $local->execute([$orgId, $personUuid]); $eid = $local->fetchColumn();
                 if (!$eid) return $done('ignored', 'not someone we hold');
-                if ($endsOn !== '' && $endsOn > date('Y-m-d')) {   // leaving in the future: the card stays valid until then
+                if ($endsOn !== '' && $endsOn >= date('Y-m-d')) {   // their last day is today or later: the card works through that day and stops the day after
                     $db->prepare('UPDATE employees SET leaves_on = ? WHERE id = ?')->execute([$endsOn, $eid]);
                     return $done('ok', "leaves on $endsOn");
                 }
