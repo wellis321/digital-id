@@ -143,6 +143,22 @@ class Auth {
         return false;
     }
     
+    /** Sign a user in without a password (used after a verified emailed link). Same checks and session as login(). */
+    public static function loginUserById($userId) {
+        $db = getDbConnection();
+        $stmt = $db->prepare("SELECT u.*, o.name as organisation_name FROM users u LEFT JOIN organisations o ON u.organisation_id = o.id WHERE u.id = ?");
+        $stmt->execute([$userId]);
+        $user = $stmt->fetch();
+        if (!$user || !$user['is_active'] || !($user['email_verified'] ?? true)) return false;
+        session_regenerate_id(true);
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['organisation_id'] = $user['organisation_id'];
+        $_SESSION['email'] = $user['email'];
+        $_SESSION['user_data'] = $user;
+        $db->prepare("UPDATE users SET last_login = NOW() WHERE id = ?")->execute([$user['id']]);
+        return true;
+    }
+
     /**
      * Verify email address with token
      */

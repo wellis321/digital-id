@@ -1,4 +1,4 @@
-import os, sys, json, subprocess, time, urllib.request, urllib.error, tempfile, base64
+import os, sys, json, urllib.parse, subprocess, time, urllib.request, urllib.error, tempfile, base64
 # End to end: Care Core (single source of truth) -> Digital ID. Joiner, mover, leaver, photo, webhook, reconcile.
 #   CC_PW=<mysql root password> [CARE_CORE_DIR=../care-core] python3 tests/e2e/care_core_connector.py
 # Needs MySQL on 127.0.0.1:8889, empty-able databases care_core_review_demo and digitalid_review_demo (Digital ID schema loaded). Ports 8990 (Care Core) and 8097 (Digital ID).
@@ -87,6 +87,40 @@ try:
     s,b=post({'id':str(__import__('uuid').uuid4()),'type':'employment.ended','subject':e2['person_id'],'data':{'employment':e2['id']}}); check('an ended event is accepted', s==200, (s,b))
     row=pdo('digitalid_review_demo',"SELECT e.is_active,u.is_active FROM employees e JOIN users u ON u.id=e.user_id WHERE u.email='omar.ali@cc-e2e.test'")
     check('and the leaver is switched off at once', row and [int(x) for x in row[0]]==[0,0], row)
+
+    print('-- magic-link sign-in and the managed-organisation guard')
+    import re, http.cookiejar
+    s_,r=api('POST','/employments',{'first_name':'Priya','last_name':'Nair','email':'priya.nair@cc-e2e.test','job_title':'Nurse','start_date':'2026-01-05'}); e3=r['data']
+    di(f'echo json_encode(CareCoreSync::syncOrganisation({org_di}));')
+    di(f'putenv("MAIL_TRANSPORT=log");')
+    open(DI+'/storage/mail.log','w').close() if os.path.isdir(DI+'/storage') else None
+    cj=http.cookiejar.CookieJar()
+    class NR(urllib.request.HTTPRedirectHandler):
+        def redirect_request(self,*a,**k): return None
+    op=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj),NR)
+    def fetch(url,data=None):
+        try:
+            x=op.open(urllib.request.Request(url,data=urllib.parse.urlencode(data).encode() if data else None),timeout=30); return x.status,x.headers,x.read().decode('utf8','replace')
+        except urllib.error.HTTPError as e: return e.code,e.headers,e.read().decode('utf8','replace')
+    def csrf(h): m=re.search(r'name="csrf_token"\s+value="([^"]+)"',h) or re.search(r'value="([^"]+)"\s+name="csrf_token"',h); return m.group(1) if m else ''
+    st,h,b=fetch('http://localhost:8097/login-link.php'); check('the sign-in-by-email page loads', st==200 and 'Email me a link' in b, st)
+    st,h,b=fetch('http://localhost:8097/login-link.php',{'csrf_token':csrf(b),'email':'nobody@cc-e2e.test'}); check('an unknown address gets the same quiet answer', 'on its way' in b, b[:200])
+    check('no link was created for the unknown address', int(pdo('digitalid_review_demo','SELECT COUNT(*) FROM login_links')[0][0])==0)
+    st,h,b=fetch('http://localhost:8097/login-link.php'); st,h,b=fetch('http://localhost:8097/login-link.php',{'csrf_token':csrf(b),'email':'priya.nair@cc-e2e.test'}); check('a current member of staff is told the same thing', 'on its way' in b, b[:200])
+    n=int(pdo('digitalid_review_demo','SELECT COUNT(*) FROM login_links')[0][0]); check('and a link was created for them', n==1, n)
+    # we cannot read the emailed token (only its hash is stored), so make a known one the same way MagicLink does
+    tok=di(f'$t=bin2hex(random_bytes(32)); getDbConnection()->prepare("INSERT INTO login_links (user_id, token_hash, expires_at) SELECT id, ?, DATE_ADD(NOW(), INTERVAL 15 MINUTE) FROM users WHERE email=?")->execute([hash("sha256",$t),"priya.nair@cc-e2e.test"]); echo $t;')[-64:]
+    st,h,b=fetch('http://localhost:8097/login-link.php?t='+tok); check('opening the link shows a button and does not sign in', st==200 and 'name="t"' in b and int(pdo('digitalid_review_demo','SELECT COUNT(*) FROM login_links WHERE used_at IS NOT NULL')[0][0])==0, st)
+    st,h,b2=fetch('http://localhost:8097/login-link.php',{'csrf_token':csrf(b),'t':tok}); check('pressing it signs them in', st==302 and 'id-card' in (h.get('Location') or ''), (st,h.get('Location')))
+    st,h,b3=fetch('http://localhost:8097/id-card.php'); check('and the card page opens', st==200, st)
+    st,h,b=fetch('http://localhost:8097/login-link.php?t='+tok); check('the same link cannot be used twice', 'expired or has already been used' in b, b[:200])
+    # a leaver cannot use a link that was already emailed
+    tok2=di(f'$t=bin2hex(random_bytes(32)); getDbConnection()->prepare("INSERT INTO login_links (user_id, token_hash, expires_at) SELECT id, ?, DATE_ADD(NOW(), INTERVAL 15 MINUTE) FROM users WHERE email=?")->execute([hash("sha256",$t),"omar.ali@cc-e2e.test"]); echo $t;')[-64:]
+    cj.clear(); st,h,b=fetch('http://localhost:8097/login-link.php?t='+tok2); st,h,b2=fetch('http://localhost:8097/login-link.php',{'csrf_token':csrf(b),'t':tok2})
+    check('a leaver cannot sign in even with a link they were already sent', st!=302, (st,h.get('Location')))
+    # managed organisation guard
+    r=di(f'echo json_encode(Employee::create(1,{org_di},"X1")); echo json_encode(UserImport::importFromCsv({org_di},"/nonexistent"));')
+    check('staff cannot be added by hand while Care Core manages the organisation', 'come from Care Core' in r, r[:200])
 finally:
     for p in procs: p.terminate()
     pdo('digitalid_review_demo',"DELETE FROM organisations WHERE domain='cc-e2e.test'")

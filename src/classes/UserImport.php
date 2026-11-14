@@ -15,6 +15,9 @@ class UserImport {
      * @return array ['success' => bool, 'users_created' => int, 'users_updated' => int, 'users_skipped' => int, 'employees_created' => int, 'warnings' => array]
      */
     public static function importFromCsv($organisationId, $filePath, $createEmployees = false) {
+        if (CareCore::managed((int) $organisationId)) {
+            return ['success' => false, 'message' => 'Staff for this organisation come from Care Core. Add or change people there and they appear here automatically.', 'users_created' => 0, 'users_updated' => 0, 'users_skipped' => 0, 'employees_created' => 0, 'warnings' => []];
+        }
         $warnings = [];
         $usersCreated = 0;
         $usersUpdated = 0;
@@ -162,6 +165,9 @@ class UserImport {
      * @return array ['success' => bool, 'users_created' => int, 'users_updated' => int, 'users_skipped' => int, 'employees_created' => int, 'warnings' => array]
      */
     public static function importFromJson($organisationId, $filePath, $createEmployees = false) {
+        if (CareCore::managed((int) $organisationId)) {
+            return ['success' => false, 'message' => 'Staff for this organisation come from Care Core. Add or change people there and they appear here automatically.', 'users_created' => 0, 'users_updated' => 0, 'users_skipped' => 0, 'employees_created' => 0, 'warnings' => []];
+        }
         $warnings = [];
         $usersCreated = 0;
         $usersUpdated = 0;

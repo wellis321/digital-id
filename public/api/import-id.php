@@ -22,6 +22,12 @@ if (!CSRF::validatePost()) {
     exit;
 }
 
+if (Auth::isLoggedIn() && CareCore::managed((int) Auth::getOrganisationId())) {
+    http_response_code(409);
+    echo json_encode(['error' => 'Staff for this organisation come from Care Core. Add or change people there and they appear here automatically.']);
+    exit;
+}
+
 // Check if JSON file was uploaded
 if (!isset($_FILES['id_data']) || $_FILES['id_data']['error'] !== UPLOAD_ERR_OK) {
     http_response_code(400);

@@ -16,6 +16,9 @@ class Employee {
      * @return array Success/failure result
      */
     public static function create($userId, $organisationId, $employeeNumber, $displayReference = null, $photoPath = null) {
+        if (CareCore::managed((int) $organisationId)) {
+            return ['success' => false, 'error' => 'Staff for this organisation come from Care Core. Add or change people there and they appear here automatically.', 'message' => 'Staff for this organisation come from Care Core. Add or change people there and they appear here automatically.'];
+        }
         $db = getDbConnection();
         
         // Trim and validate employee number (required - from HR/payroll)

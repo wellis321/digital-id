@@ -30,7 +30,7 @@ class VerificationService {
         // Use organisation_id from idCard for defense in depth
         $employee = Employee::findById($idCard['employee_id'], $idCard['organisation_id'] ?? null);
         
-        if (!$employee || !$employee['is_active']) {
+        if (!$employee || !$employee['is_active'] || self::hasLeft($employee)) {
             self::logVerification($idCard['id'], $idCard['employee_id'], $type, 'failed', 'employee_inactive');
             return [
                 'success' => false,
@@ -77,7 +77,7 @@ class VerificationService {
             ];
         }
         
-        if (!$employee['is_active']) {
+        if (!$employee['is_active'] || self::hasLeft($employee)) {
             return [
                 'success' => false,
                 'message' => 'Employee is not active.'
@@ -146,6 +146,11 @@ class VerificationService {
         }
     }
     
+    /** Their last day (from Care Core) has passed: a card stops working the day after, even if the nightly sync has not run yet. */
+    private static function hasLeft(array $employee): bool {
+        return !empty($employee['leaves_on']) && $employee['leaves_on'] < date('Y-m-d');
+    }
+
     /**
      * Get error message for verification failure reason
      */
