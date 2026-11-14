@@ -28,6 +28,8 @@ def api(method,path,body=None,raw=False):
     except urllib.error.HTTPError as e: return e.code,e.read().decode()[:300]
 def di(code):
     r=subprocess.run(['php','-r','require "'+DI+'/config/config.php"; '+code],cwd=DI,env=DIENV,capture_output=True,text=True); return (r.stdout+r.stderr).strip()
+import glob
+for f in glob.glob(tempfile.gettempdir()+'/rate_limit_*.json'): os.remove(f)   # the limiter keeps its counts in temp files, so earlier runs would count against this one
 try:
     print('-- starting Care Core and Digital ID')
     subprocess.run(['php','scripts/demo-reset.php'],cwd=CC,env={**CCENV,'DEMO_MODE':'true'},capture_output=True)
@@ -38,6 +40,9 @@ try:
     spawn(['php','-S','localhost:8990','-t','public','public/index.php'],CCENV,CC)
     check('Care Core is up', up(8990))
     # Digital ID: an organisation, then connect
+    for q in ("DELETE FROM employees WHERE user_id IN (SELECT id FROM users WHERE email LIKE '%@cc-e2e.test' OR email LIKE '%@demo.lochview.test')","DELETE FROM users WHERE email LIKE '%@cc-e2e.test' OR email LIKE '%@demo.lochview.test'","DELETE FROM care_core_events","DELETE FROM login_links"):
+        try: pdo('digitalid_review_demo',q)
+        except Exception: pass
     pdo('digitalid_review_demo',"DELETE FROM organisations WHERE domain='cc-e2e.test'")
     pdo('digitalid_review_demo',"INSERT INTO organisations (name, domain) VALUES ('Glenross e2e','cc-e2e.test')")
     org_di=int(pdo('digitalid_review_demo',"SELECT id FROM organisations WHERE domain='cc-e2e.test'")[0][0])
@@ -123,5 +128,8 @@ try:
     check('staff cannot be added by hand while Care Core manages the organisation', 'come from Care Core' in r, r[:200])
 finally:
     for p in procs: p.terminate()
+    for q in ("DELETE FROM employees WHERE user_id IN (SELECT id FROM users WHERE email LIKE '%@cc-e2e.test' OR email LIKE '%@demo.lochview.test')","DELETE FROM users WHERE email LIKE '%@cc-e2e.test' OR email LIKE '%@demo.lochview.test'","DELETE FROM care_core_events","DELETE FROM login_links"):
+        try: pdo('digitalid_review_demo',q)
+        except Exception: pass
     pdo('digitalid_review_demo',"DELETE FROM organisations WHERE domain='cc-e2e.test'")
 print(f'\n{ok} passed, {len(bad)} failed'); sys.exit(1 if bad else 0)

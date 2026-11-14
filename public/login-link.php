@@ -3,6 +3,7 @@ require_once dirname(__DIR__) . '/config/config.php';
 require_once SRC_PATH . '/classes/RateLimiter.php';
 
 $error = ''; $sent = false;
+if (DEMO_MODE) { http_response_code(403); $pageTitle = 'Not available in the demo'; include dirname(__DIR__) . '/includes/header.php'; echo '<div class="card"><h1>Not available in the demo</h1><p>The demo does not send email. Use one of the demo logins on the sign-in page.</p><p><a href="' . url('login.php') . '">Back to sign in</a></p></div>'; include dirname(__DIR__) . '/includes/footer.php'; exit; }
 $token = (string) ($_GET['t'] ?? $_POST['t'] ?? '');
 
 if ($token !== '') {

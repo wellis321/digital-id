@@ -164,7 +164,7 @@ include INCLUDES_PATH . '/header.php';
         
         <button type="submit" class="btn btn-primary">Login</button>
     </form>
-    <p style="margin-top:1rem"><a href="<?php echo url('login-link.php'); ?>">Email me a sign-in link instead</a></p>
+    <?php if (!DEMO_MODE): ?><p style="margin-top:1rem"><a href="<?php echo url('login-link.php'); ?>">Email me a sign-in link instead</a></p><?php endif; ?>
     
     <?php
     // Check if Entra login is available

@@ -201,6 +201,8 @@ class CareCoreSync
             $r = self::upsert($orgId, $person, $emp, $client);
             return $done('ok', $r['action']);
         } catch (Throwable $e) {
+            // Problems with the person's own record (no email, an address used elsewhere) will not fix themselves by retrying: record them and move on.
+            if ($e instanceof RuntimeException && (str_contains($e->getMessage(), 'no email address') || str_contains($e->getMessage(), 'another organisation'))) return $done('ignored', $e->getMessage());
             $db->prepare('DELETE FROM care_core_events WHERE event_id = ? AND outcome = ?')->execute([$id, 'pending']);   // not handled: let Care Core retry
             throw $e;
         }

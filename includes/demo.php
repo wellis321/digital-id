@@ -7,12 +7,20 @@
 
 const DEMO_PASSWORD = 'DemoPass2026!';
 
+/** Is this demo fed by the Care Core demo? (its single organisation is then Loch View Care) */
+function demo_linked(): bool
+{
+    try { return (string) getDbConnection()->query('SELECT domain FROM organisations WHERE id = 1')->fetchColumn() === 'demo.lochview.test'; }
+    catch (Throwable $e) { return false; }
+}
+
 /** The accounts the seed creates, for the sign-in page. [role label, email] */
 function demo_accounts(): array
 {
+    $d = demo_linked() ? 'demo.lochview.test' : 'demo.glenross.test';
     return [
-        ['Organisation administrator', 'admin@demo.glenross.test'],
-        ['Member of staff', 'staff@demo.glenross.test'],
+        ['Organisation administrator', 'admin@' . $d],
+        ['Member of staff', 'staff@' . $d],
     ];
 }
 
