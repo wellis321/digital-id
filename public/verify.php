@@ -39,6 +39,13 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && $organisationName && $employeeR
             'success' => false,
             'message' => 'Invalid security token.'
         ];
+    } elseif (RateLimiter::isRateLimited('verify_ref_org_' . strtolower($organisationName), 300, 3600)) {
+        // Backstop: however many addresses someone uses, one organisation's staff cannot be walked through faster than this. A family
+        // checking a visitor needs one lookup; the QR code (which needs no lookup at all) is unaffected.
+        $verificationResult = [
+            'success' => false,
+            'message' => 'Too many manual lookups for this organisation just now. Please try again later, or ask the person to show you their QR code.'
+        ];
     } else {
         $verificationResult = VerificationService::verifyByReference($organisationName, $employeeReference);
     }

@@ -244,7 +244,7 @@ php scripts/sync-staff-service.php 1</code></pre>
             
             <div class="info-box" style="margin-top: 2rem;">
                 <h4><i class="fas fa-book"></i> Additional Resources</h4>
-                <p>For detailed technical information about the Staff Service integration, see the <a href="<?php echo dirname(__DIR__); ?>/INTEGRATION.md">INTEGRATION.md</a> file in the project root.</p>
+                <p>For detailed technical information about the Staff Service integration, see the <strong>INTEGRATION.md</strong> file in the project root.</p>
             </div>
             
     </main>

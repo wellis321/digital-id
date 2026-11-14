@@ -111,26 +111,21 @@ class RateLimiter {
     }
     
     /**
-     * Get client identifier (IP address with proxy support)
+     * Get client identifier: the address of the connection.
+     *
+     * Headers such as X-Forwarded-For or CF-Connecting-IP are written by whoever sends the request, so trusting them lets anyone
+     * make up a fresh address for every attempt and walk straight past every limit. REMOTE_ADDR is the real client address on
+     * this host (checked on the live site: a lookup sent with a made-up X-Forwarded-For was logged with the true address).
+     * Only if a deployment really sits behind a proxy that rewrites that header can it be named in the environment:
+     * TRUSTED_PROXY_HEADER=HTTP_X_FORWARDED_FOR (the proxy must overwrite, not append to, what the client sent).
      */
     public static function getClientIdentifier() {
-        // Check for proxy headers first
-        $ipKeys = ['HTTP_CF_CONNECTING_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_REAL_IP', 'REMOTE_ADDR'];
-        
-        foreach ($ipKeys as $key) {
-            if (!empty($_SERVER[$key])) {
-                $ip = $_SERVER[$key];
-                // Handle comma-separated IPs (X-Forwarded-For can have multiple)
-                if (strpos($ip, ',') !== false) {
-                    $ip = trim(explode(',', $ip)[0]);
-                }
-                if (filter_var($ip, FILTER_VALIDATE_IP)) {
-                    return $ip;
-                }
-            }
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+        $trusted = (string) getenv('TRUSTED_PROXY_HEADER');
+        if ($trusted !== '' && preg_match('/^HTTP_[A-Z0-9_]+$/', $trusted) && !empty($_SERVER[$trusted])) {
+            $candidate = trim(explode(',', (string) $_SERVER[$trusted])[0]);
+            if (filter_var($candidate, FILTER_VALIDATE_IP)) $ip = $candidate;
         }
-        
-        return 'unknown';
+        return filter_var($ip, FILTER_VALIDATE_IP) ? $ip : 'unknown';
     }
 }
-

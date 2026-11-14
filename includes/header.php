@@ -286,6 +286,7 @@
                                                  strpos($currentPage, 'photo-approvals.php') !== false || 
                                                  strpos($currentPage, 'reference-settings.php') !== false ||
                                                  strpos($currentPage, 'entra-settings.php') !== false ||
+                                                 strpos($currentPage, 'care-core-settings.php') !== false ||
                                                  strpos($currentPage, 'staff-service-settings.php') !== false ||
                                                  strpos($currentPage, 'verification-logs.php') !== false);
                             
@@ -337,6 +338,9 @@
                                     </a>
                                     <a href="<?php echo url('admin/reference-settings.php'); ?>" class="<?php echo (strpos($currentPage, 'reference-settings.php') !== false) ? 'active' : ''; ?>">
                                         <i class="fas fa-cog"></i> Settings
+                                    </a>
+                                    <a href="<?php echo url('admin/care-core-settings.php'); ?>" class="<?php echo (strpos($currentPage, 'care-core-settings.php') !== false) ? 'active' : ''; ?>">
+                                        <i class="fas fa-link"></i> Care Core
                                     </a>
                                     <a href="<?php echo url('admin/staff-service-settings.php'); ?>" class="<?php echo (strpos($currentPage, 'staff-service-settings.php') !== false) ? 'active' : ''; ?>">
                                         <i class="fas fa-link"></i> Staff Service

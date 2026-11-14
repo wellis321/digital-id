@@ -4,8 +4,13 @@
  * Digital ID Application
  */
 
-// Error reporting (environment-based)
-$isProduction = getenv('APP_ENV') === 'production' || getenv('APP_ENV') === 'prod';
+// Load the .env file FIRST: the production setting below is read from it. (It used to be loaded further down, so APP_ENV=production in .env
+// was silently ignored and errors, with server file paths, were shown to visitors.)
+require_once __DIR__ . '/env_loader.php';
+
+// Error reporting (environment-based). A public demo instance counts as production: it must never print errors or file paths.
+$isProduction = getenv('APP_ENV') === 'production' || getenv('APP_ENV') === 'prod'
+    || filter_var(getenv('DEMO_MODE'), FILTER_VALIDATE_BOOLEAN);
 if ($isProduction) {
     error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
     ini_set('display_errors', 0);
@@ -32,9 +37,6 @@ define('SRC_PATH', ROOT_PATH . '/src');
 define('PUBLIC_PATH', ROOT_PATH . '/public');
 define('ASSETS_PATH', PUBLIC_PATH . '/assets');
 define('UPLOADS_PATH', ROOT_PATH . '/uploads');
-
-// Load environment variables
-require_once __DIR__ . '/env_loader.php';
 
 // Browser security headers (clickjacking, <base> injection, form hijacking, MIME sniffing, HSTS in production)
 require_once ROOT_PATH . '/src/classes/SecurityHeaders.php';

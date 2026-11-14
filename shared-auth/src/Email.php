@@ -59,20 +59,15 @@ class Email {
      * In production, you may want to use a service like SendGrid, Mailgun, or SMTP
      * Protected so subclasses can call it for application-specific email types.
      */
+    /** Send a message (plain text or HTML) through the configured mailer. Returns true when it was accepted for delivery. */
+    public static function send($to, $subject, $message, $replyTo = null, array $opts = []) {
+        require_once dirname(__DIR__, 2) . '/src/classes/Mailer.php';
+        return Mailer::send((string) $to, (string) $subject, (string) $message, $replyTo, $opts);
+    }
+
     protected static function sendEmail($to, $subject, $message) {
-        // The public demo never sends email.
-        if (defined('DEMO_MODE') && DEMO_MODE) {
-            return true;
-        }
-        $headers = [
-            'MIME-Version: 1.0',
-            'Content-type: text/html; charset=UTF-8',
-            'From: ' . APP_NAME . ' <' . (getenv('MAIL_FROM') ?: 'noreply@example.com') . '>',
-            'Reply-To: ' . (getenv('MAIL_REPLY_TO') ?: 'support@example.com'),
-            'X-Mailer: PHP/' . phpversion()
-        ];
-        
-        return mail($to, $subject, $message, implode("\r\n", $headers));
+        // Verification and notification emails go through the same mailer (SMTP when configured, never the public demo).
+        return self::send($to, $subject, $message);
     }
     
     /**

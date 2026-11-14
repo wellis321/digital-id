@@ -243,7 +243,7 @@ class CheckInService {
         
         $stmt = $db->prepare("
             SELECT ci.*,
-                   e.first_name, e.last_name, e.employee_reference, e.display_reference,
+                   u.first_name, u.last_name, e.employee_reference, e.display_reference,
                    u.email as employee_email
             FROM check_ins ci
             INNER JOIN employees e ON ci.employee_id = e.id
@@ -298,7 +298,7 @@ class CheckInService {
         
         $stmt = $db->prepare("
             SELECT ci.*,
-                   e.first_name, e.last_name, e.employee_reference, e.display_reference,
+                   u.first_name, u.last_name, e.employee_reference, e.display_reference,
                    u.email as employee_email
             FROM check_ins ci
             INNER JOIN employees e ON ci.employee_id = e.id
