@@ -32,6 +32,7 @@ if (!$employee && RBAC::isSuperAdmin()) {
 
 $pageTitle = 'Digital ID Card';
 include dirname(__DIR__) . '/includes/header.php';
+if (DEMO_MODE) { echo '<div class="container">' . demo_tour_html(RBAC::isAdmin()) . '</div>'; }
 
 // If no employee record exists, find contact person and send notifications
 if (!$employee):

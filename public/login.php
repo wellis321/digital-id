@@ -121,6 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+if (!empty($_SESSION['demo_entry_error'])) { $error = (string) $_SESSION['demo_entry_error']; unset($_SESSION['demo_entry_error']); }
 $pageTitle = 'Login';
 include INCLUDES_PATH . '/header.php';
 ?>
@@ -137,8 +138,17 @@ include INCLUDES_PATH . '/header.php';
     <?php endif; ?>
     
     <?php if (DEMO_MODE): ?>
+    <form method="POST" action="<?php echo htmlspecialchars(url('demo-enter.php')); ?>" class="demo-enter" aria-labelledby="demo-enter-h">
+        <?php echo CSRF::tokenField(); ?><?php echo demo_entry_fields(); ?>
+        <h2 id="demo-enter-h">Explore the demonstration in one click</h2>
+        <p class="demo-muted">No sign-up and nothing to type. It is full of invented people, and it resets every night.</p>
+        <div class="demo-enter__btns">
+            <button class="btn btn-primary" type="submit" name="role" value="admin">Explore as an administrator<span>Manage staff and cards, run a check-in, read the audit trail</span></button>
+            <button class="btn btn-secondary" type="submit" name="role" value="staff">Explore as a member of staff<span>See your own ID card and its QR code</span></button>
+        </div>
+    </form>
     <div class="demo-login-help">
-        <h2>Try the demo</h2>
+        <h2>Or sign in with a demo account</h2>
         <p>Sign in with either account. The password for both is <strong><?php echo htmlspecialchars(DEMO_PASSWORD); ?></strong></p>
         <ul>
             <?php foreach (demo_accounts() as [$label, $demoEmail]): ?>
