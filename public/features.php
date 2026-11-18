@@ -479,6 +479,7 @@ include INCLUDES_PATH . '/header.php';
 }
 </style>
 
+<link rel="stylesheet" href="<?php echo url('assets/css/story.css'); ?>?v=<?php echo @filemtime(__DIR__ . '/assets/css/story.css'); ?>">
 <div class="hero-section">
     <div class="hero-content">
         <h1>Transform Your Identity Management</h1>
@@ -492,13 +493,13 @@ include INCLUDES_PATH . '/header.php';
             <?php endif; ?>
         </div>
     </div>
-    <div class="hero-image hero-steps">
-        <p class="hero-steps__title">How a check works</p>
-        <ol>
-            <li><strong>Scan</strong><span>Open the staff member's card and scan the QR code. It changes every five minutes.</span></li>
-            <li><strong>See the result</strong><span>The name, role and employer appear, with a clear valid or not valid message.</span></li>
-            <li><strong>It is logged</strong><span>Every check is recorded with the time and result for your audit trail.</span></li>
-        </ol>
+    <div class="story" aria-label="How a check works: scan, see the result, it is logged">
+      <div class="scene"><div class="scene-bar"><span class="dot"></span><i class="fas fa-qrcode"></i> How a check works<span class="tag">Digital ID</span></div>
+       <div class="scene-body">
+        <div class="srow"><i class="fas fa-qrcode lead"></i><div><div class="t">1. Scan</div><div class="s">Open the staff member's card and scan the QR code. It changes every five minutes.</div></div><span class="st thistle">Scanned</span></div>
+        <div class="srow"><i class="fas fa-user-check lead"></i><div><div class="t">2. See the result</div><div class="s">Name, role and employer appear, with a clear valid or not valid message.</div></div><span class="st">Valid</span></div>
+        <div class="srow"><i class="fas fa-clipboard-list lead"></i><div><div class="t">3. It is logged</div><div class="s">Every check is recorded with the time and result for your audit trail.</div></div><span class="st gold">Logged</span></div>
+       </div><div class="scene-foot">Illustration with invented data</div></div>
     </div>
 </div>
 

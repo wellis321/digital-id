@@ -478,6 +478,7 @@ include INCLUDES_PATH . '/header.php';
 }
 </style>
 
+<link rel="stylesheet" href="<?php echo url('assets/css/story.css'); ?>?v=<?php echo @filemtime(__DIR__ . '/assets/css/story.css'); ?>">
 <!-- Hero Section -->
 <div class="full-width-section main-section">
     <div class="section-content">
@@ -487,6 +488,13 @@ include INCLUDES_PATH . '/header.php';
                 <p>Understanding the security features and verification methods that protect your digital identity. Learn how our multi-layered approach ensures your organisation's data remains secure.</p>
                 <a href="<?php echo url('features.php'); ?>" class="btn btn-primary">Explore Features</a>
             </div>
+            <div class="story" aria-hidden="true"><div class="idstage">
+              <div class="idchip c1"><i class="fas fa-shield-alt"></i> Token checked</div>
+              <div class="idchip c2"><i class="fas fa-stopwatch"></i> Expires in minutes</div>
+              <div class="idchip c3"><i class="fas fa-clipboard-list"></i> Logged</div>
+              <div class="idcard"><div class="top"><span>HARBOUR CARE</span><span>STAFF ID</span></div>
+               <div class="body"><div class="face">AM</div><div><div class="nm">Alex Morgan</div><div class="rl">Support worker</div></div></div>
+               <div class="qr"></div><div class="ok"><i class="fas fa-check"></i> Valid</div></div></div></div>
         </div>
     </div>
 </div>
