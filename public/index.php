@@ -899,6 +899,26 @@ include INCLUDES_PATH . '/header.php';
     </div>
 </div>
 
+<!-- In use (animated scenes) -->
+<link rel="stylesheet" href="<?php echo url('assets/css/story.css'); ?>?v=<?php echo @filemtime(__DIR__ . '/assets/css/story.css'); ?>">
+<div class="full-width-section main-section">
+ <div class="section-content story">
+  <div class="section-header"><h2>See it in use through the day</h2><p>Each check shows the person at the other end who your staff member is, and records that it happened. The pictures are drawn illustrations with invented data.</p></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem;margin-top:1.5rem" aria-hidden="true">
+   <div class="scene"><div class="scene-bar"><span class="dot"></span>Front entrance<span class="tag">08:50</span></div><div class="scene-body">
+     <div class="srow"><i class="fas fa-qrcode lead"></i><div><div class="t">QR code scanned</div><div class="s">Alex Morgan</div></div><span class="st thistle">Read</span></div>
+     <div class="srow"><i class="fas fa-door-open lead"></i><div><div class="t">Access granted</div><div class="s">Attendance logged</div></div><span class="st">Granted</span></div></div></div>
+   <div class="scene"><div class="scene-bar"><span class="dot"></span>Care home visit<span class="tag">10:15</span></div><div class="scene-body">
+     <div class="srow"><i class="fas fa-user-check lead"></i><div><div class="t">Name matches the photo</div><div class="s">Support worker</div></div><span class="st">Matches</span></div>
+     <div class="srow"><i class="fas fa-briefcase lead"></i><div><div class="t">Employment status</div><div class="s">Harbour Care</div></div><span class="st">Active</span></div></div></div>
+   <div class="scene"><div class="scene-bar"><span class="dot"></span>Training session<span class="tag">16:00</span></div><div class="scene-body">
+     <div class="srow"><i class="fas fa-user-check lead"></i><div><div class="t">Alex Morgan</div><div class="s">09:02</div></div><span class="st">In</span></div>
+     <div class="srow"><i class="fas fa-file-export lead"></i><div><div class="t">Attendance report</div><div class="s">Ready to export</div></div><span class="st thistle">Ready</span></div></div></div>
+  </div>
+  <p style="text-align:center;margin-top:1.5rem"><a class="btn btn-primary" href="<?php echo url('housing-social-care.php'); ?>">See a whole day in housing and social care</a></p>
+ </div>
+</div>
+
 <!-- Main Features Section -->
 <div class="full-width-section main-section-light-blue">
     <div class="section-content">

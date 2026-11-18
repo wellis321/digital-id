@@ -13,6 +13,13 @@ include INCLUDES_PATH . '/header.php';
     <main class="docs-content">
             <h1>Getting Started</h1>
             <p>Welcome to Digital ID! This guide will help you get started with using the platform.</p>
+<link rel="stylesheet" href="<?php echo url('assets/css/story.css'); ?>?v=<?php echo @filemtime(__DIR__ . '/assets/css/story.css'); ?>">
+    <div class="story"><div class="scene" aria-hidden="true" style="margin:0 0 2rem"><div class="scene-bar"><span class="dot"></span>Your first day<span class="tag">Digital ID</span></div><div class="scene-body">
+      <div class="srow"><i class="fas fa-user-plus lead"></i><div><div class="t">1. Register</div><div class="s">Email address and a strong password</div></div><span class="st">Done</span></div>
+      <div class="srow"><i class="fas fa-envelope-circle-check lead"></i><div><div class="t">2. Verify your email</div><div class="s">Click the link we send you</div></div><span class="st">Done</span></div>
+      <div class="srow"><i class="fas fa-building lead"></i><div><div class="t">3. Join or create an organisation</div><div class="s">With an invitation code, or start your own</div></div><span class="st thistle">Next</span></div>
+      <div class="srow"><i class="fas fa-id-card lead"></i><div><div class="t">4. Your employee profile</div><div class="s">Created by an organisation administrator</div></div><span class="st gold">Then your card</span></div>
+    </div><div class="scene-foot">Illustration</div></div></div>
             
             <h2>What is Digital ID?</h2>
             <p>Digital ID is a secure, verifiable digital identification system designed specifically for social care providers and other organisations. It replaces traditional paper-based ID cards with modern, secure digital alternatives that can be accessed from any device.</p>
