@@ -105,6 +105,12 @@ class CareCoreClient
         return [$body, $h['content-type'] ?? ''];
     }
 
+    /** A person's learning records (training, qualifications, courses). Needs the compliance.read permission. @return list<array<string,mixed>> */
+    public function learning(string $personUuid): array
+    {
+        return $this->all('/people/' . rawurlencode($personUuid) . '/learning');
+    }
+
     /** Tell Care Core where to send events. Returns the endpoint id and the signing secret (shown once). @return array{id:string,secret:string} */
     public function createWebhook(string $url, array $types): array
     {

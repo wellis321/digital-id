@@ -7,7 +7,7 @@ RBAC::requireOrganisationAdmin();
 $orgId = Auth::getOrganisationId();
 CareCore::ensureSchema();
 $error = ''; $success = ''; $result = null;
-$events = ['person.created', 'person.updated', 'employment.started', 'employment.changed', 'employment.ended'];
+$events = ['person.created', 'person.updated', 'employment.started', 'employment.changed', 'employment.ended', 'learning.recorded'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!CSRF::validatePost()) { $error = 'Invalid security token.'; }

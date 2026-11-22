@@ -69,6 +69,7 @@ $demo = defined('DEMO_MODE') && DEMO_MODE;
                 <ul>
                     <li><strong>Care Core</strong> keeps one record of each person and member of staff.</li>
                     <li><strong>Care Plans, Digital ID and Policy Core</strong> read from it, so a joiner or leaver is entered once.</li>
+                    <li><strong>Digital ID</strong> shows a member of staff's current training and skills from Care Core on their own card.</li>
                     <li><strong>Referrals</strong> are held in Care Core and flow into Care Plans, with the specialist skills they call for.</li>
                     <li><strong>Contracts</strong> reads the people you support from Care Core, so each person is entered once.</li>
                     <li><strong>Strategic Plans</strong> projects are owned by a Care Core team and show who is in it today.</li>
@@ -77,7 +78,7 @@ $demo = defined('DEMO_MODE') && DEMO_MODE;
             <div>
                 <h3>Coming next</h3>
                 <ul>
-                    <li><strong>Training records</strong> shared with Digital ID, so a card can show a person's skills.</li>
+                    <li><strong>Training records</strong> shared with Care Plans, so specialist skills and their expiry dates arrive without typing.</li>
                     <li><strong>Deeper links</strong>: contracts beside each person's referral, and plan goals tied to services.</li>
                 </ul>
             </div>
@@ -200,7 +201,7 @@ $demo = defined('DEMO_MODE') && DEMO_MODE;
         <div class="dh-joins">
             <div class="dh-join dh-join--on">
                 <h3><i class="fas fa-people-group" aria-hidden="true"></i> Care Core <span class="dh-tag">Connected</span></h3>
-                <p>Joiners, role changes and leavers come from Care Core as they happen, so a new starter gets a card and a leaver&rsquo;s card stops checking out without a second round of data entry.</p>
+                <p>Joiners, role changes and leavers come from Care Core as they happen, so a new starter gets a card and a leaver&rsquo;s card stops checking out without a second round of data entry. Their current training and skills come across too, and show on their own card.</p>
             </div>
             <div class="dh-join dh-join--on">
                 <h3><i class="fab fa-microsoft" aria-hidden="true"></i> Microsoft 365 <span class="dh-tag">Connected</span></h3>

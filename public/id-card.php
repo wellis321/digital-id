@@ -329,6 +329,22 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
         <p><strong>Reference:</strong> <?php echo htmlspecialchars($employee['display_reference'] ?? $employee['employee_reference'] ?? 'N/A'); ?></p>
         <p><strong>Organisation:</strong> <?php echo htmlspecialchars($employee['organisation_name']); ?></p>
     </div>
+    <?php
+    // Training and skills recorded in Care Core (only when this organisation's staff come from it, and never on the public check).
+    $trainingRows = (!empty($employee['care_core_person_id'])) ? CareCoreSync::trainingFor((int) $employee['id']) : [];
+    if ($trainingRows): ?>
+    <section class="id-card-training" aria-labelledby="training-h" style="margin-top: 1.25rem; padding: 0.75rem 1rem; background: #f6f5f1; text-align: left;">
+        <h3 id="training-h" style="margin: 0 0 0.5rem; font-size: 1rem;">Training and skills</h3>
+        <ul style="margin: 0; padding-left: 1.1rem; font-size: 0.9rem;">
+            <?php foreach ($trainingRows as $t): $out = $t['status'] === 'expired'; ?>
+                <li><?php echo htmlspecialchars($t['title']); ?>:
+                    <?php if ($out): ?><strong>out of date since <?php echo htmlspecialchars(date('j M Y', strtotime((string) $t['expiry_date']))); ?></strong>
+                    <?php elseif ($t['expiry_date']): ?>valid until <?php echo htmlspecialchars(date('j M Y', strtotime((string) $t['expiry_date']))); ?>
+                    <?php else: ?>no expiry<?php endif; ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </section>
+    <?php endif; ?>
     
     <?php
     // Signature: use proxy if employee is linked to Staff Service and has a cached signature URL

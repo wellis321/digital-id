@@ -13,7 +13,8 @@ class CareCoreSync
     {
         CareCore::ensureSchema();
         $client ??= CareCore::client($orgId);
-        $n = ['created' => 0, 'updated' => 0, 'deactivated' => 0, 'reactivated' => 0, 'skipped' => 0, 'photos' => 0, 'errors' => []];
+        $n = ['created' => 0, 'updated' => 0, 'deactivated' => 0, 'reactivated' => 0, 'skipped' => 0, 'photos' => 0, 'training' => 0, 'errors' => []];
+        $trainingOk = true;   // switched off for the rest of the pass if the key cannot read learning records (it still syncs staff)
         $people = [];
         foreach ($client->people() as $p) $people[$p['id']] = $p;
         $current = [];
@@ -24,6 +25,10 @@ class CareCoreSync
             try {
                 $r = self::upsert($orgId, $p, $e, $images ? $client : null);
                 $n[$r['action']]++; $n['photos'] += $r['photos'];
+                if ($trainingOk) {
+                    try { $n['training'] += self::syncTraining($orgId, (string) $p['id'], $client); }
+                    catch (Throwable $tx) { if (str_contains($tx->getMessage(), 'permission')) $trainingOk = false; else $n['errors'][] = trim(($p['first_name'] ?? '') . ' ' . ($p['last_name'] ?? '')) . ' (training): ' . $tx->getMessage(); }
+                }
             } catch (Throwable $ex) { $n['errors'][] = trim(($p['first_name'] ?? '') . ' ' . ($p['last_name'] ?? '')) . ': ' . $ex->getMessage(); }
         }
         // Anyone we hold from Care Core who no longer has a current employment has left.
@@ -37,6 +42,64 @@ class CareCoreSync
         CareCore::set($orgId, 'care_core_last_sync', gmdate('c'));
         CareCore::set($orgId, 'care_core_last_result', json_encode($n));
         return $n;
+    }
+
+    /**
+     * Turn Care Core's learning records into the rows kept here. Pure, so it can be tested without a database. A record needs an id and a title; a status of
+     * "expired" or an expiry date before today means it is out of date; nothing else is trusted beyond its length.
+     * @param list<array<string,mixed>> $records @return list<array<string,mixed>>
+     */
+    public static function trainingRows(array $records, string $today): array
+    {
+        $out = [];
+        foreach ($records as $r) {
+            $id = strtolower((string) ($r['id'] ?? '')); $title = trim((string) ($r['title'] ?? ''));
+            if (!preg_match('/^[0-9a-f-]{36}$/', $id) || $title === '') continue;
+            $date = static fn($v): ?string => (is_string($v) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $v)) ? $v : null;
+            $expiry = $date($r['expiry_date'] ?? null);
+            $status = (string) ($r['status'] ?? 'completed');
+            if (!in_array($status, ['completed', 'in_progress', 'pending', 'expired'], true)) $status = 'completed';
+            if ($status === 'completed' && $expiry !== null && $expiry < $today) $status = 'expired';
+            $out[] = ['id' => $id, 'title' => mb_substr($title, 0, 200), 'record_type' => mb_substr((string) ($r['record_type'] ?? 'training'), 0, 30), 'provider' => ($p = trim((string) ($r['provider'] ?? ''))) === '' ? null : mb_substr($p, 0, 200),
+                'completion_date' => $date($r['completion_date'] ?? null), 'expiry_date' => $expiry, 'status' => $status, 'mandatory' => !empty($r['is_mandatory']) ? 1 : 0];
+        }
+        return $out;
+    }
+
+    /** Make this person's training here match Care Core. Records Care Core no longer has are removed. Returns how many records are held now. */
+    public static function syncTraining(int $orgId, string $personUuid, ?CareCoreClient $client = null): int
+    {
+        CareCore::ensureSchema();
+        $db = getDbConnection();
+        $s = $db->prepare('SELECT id FROM employees WHERE organisation_id = ? AND care_core_person_id = ?'); $s->execute([$orgId, $personUuid]);
+        $eid = (int) $s->fetchColumn();
+        if (!$eid) return 0;
+        $client ??= CareCore::client($orgId);
+        $rows = self::trainingRows($client->learning($personUuid), date('Y-m-d'));
+        $db->beginTransaction();
+        try {
+            $ins = $db->prepare('INSERT INTO employee_training (employee_id, organisation_id, care_core_record_id, title, record_type, provider, completion_date, expiry_date, status, is_mandatory)
+                                 VALUES (?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE title = VALUES(title), record_type = VALUES(record_type), provider = VALUES(provider), completion_date = VALUES(completion_date),
+                                 expiry_date = VALUES(expiry_date), status = VALUES(status), is_mandatory = VALUES(is_mandatory), synced_at = NOW()');
+            foreach ($rows as $r) $ins->execute([$eid, $orgId, $r['id'], $r['title'], $r['record_type'], $r['provider'], $r['completion_date'], $r['expiry_date'], $r['status'], $r['mandatory']]);
+            $keep = array_column($rows, 'id');
+            if ($keep) $db->prepare('DELETE FROM employee_training WHERE employee_id = ? AND care_core_record_id NOT IN (' . implode(',', array_fill(0, count($keep), '?')) . ')')->execute(array_merge([$eid], $keep));
+            else $db->prepare('DELETE FROM employee_training WHERE employee_id = ?')->execute([$eid]);
+            $db->commit();
+        } catch (Throwable $e) { if ($db->inTransaction()) $db->rollBack(); throw $e; }
+        return count($rows);
+    }
+
+    /** What to show on a card: current training first (soonest to expire last), then anything out of date. @return list<array<string,mixed>> */
+    public static function trainingFor(int $employeeId): array
+    {
+        try {
+            CareCore::ensureSchema();
+            $s = getDbConnection()->prepare("SELECT title, record_type, expiry_date, completion_date, status, is_mandatory FROM employee_training WHERE employee_id = ? AND status IN ('completed','expired')
+                                              ORDER BY (status = 'expired'), is_mandatory DESC, title");
+            $s->execute([$employeeId]);
+            return $s->fetchAll();
+        } catch (Throwable $e) { return []; }
     }
 
     /** @return array{action:string,photos:int} action: created | updated | reactivated */
@@ -177,6 +240,11 @@ class CareCoreSync
         }
         $done = static function (string $outcome, string $detail) use ($db, $id): array { $db->prepare('UPDATE care_core_events SET outcome = ?, detail = ? WHERE event_id = ?')->execute([$outcome, mb_substr($detail, 0, 250), $id]); return [$outcome, $detail]; };
         try {
+            if ($type === 'learning.recorded') {   // a training record was added: bring that person's training up to date
+                $client ??= CareCore::client($orgId);
+                try { $n = self::syncTraining($orgId, (string) ($event['subject'] ?? ''), $client); return $done('ok', $n . ' training records'); }
+                catch (RuntimeException $e) { if (str_contains($e->getMessage(), 'permission')) return $done('ignored', 'the API key cannot read learning records'); throw $e; }
+            }
             if (!in_array($type, ['person.created', 'person.updated', 'employment.started', 'employment.changed', 'employment.ended'], true)) return $done('ignored', "$type is not used here");
             $client ??= CareCore::client($orgId);
             $personUuid = (string) ($event['subject'] ?? '');

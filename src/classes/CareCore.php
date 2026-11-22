@@ -55,6 +55,10 @@ class CareCore
                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, UNIQUE KEY unique_org_setting (organisation_id, setting_key)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
         $db->exec("CREATE TABLE IF NOT EXISTS care_core_events (event_id CHAR(36) NOT NULL PRIMARY KEY, organisation_id INT NOT NULL, type VARCHAR(60) NOT NULL, outcome VARCHAR(20) NOT NULL DEFAULT 'ok',
                    detail VARCHAR(255) NULL, received_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, INDEX idx_cc_events_org (organisation_id, received_at)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+        $db->exec("CREATE TABLE IF NOT EXISTS employee_training (id INT AUTO_INCREMENT PRIMARY KEY, employee_id INT NOT NULL, organisation_id INT NOT NULL, care_core_record_id CHAR(36) NOT NULL,
+                   title VARCHAR(200) NOT NULL, record_type VARCHAR(30) NOT NULL DEFAULT 'training', provider VARCHAR(200) NULL, completion_date DATE NULL, expiry_date DATE NULL,
+                   status VARCHAR(20) NOT NULL DEFAULT 'completed', is_mandatory TINYINT(1) NOT NULL DEFAULT 0, synced_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                   UNIQUE KEY uq_training_record (employee_id, care_core_record_id), INDEX idx_training_emp (employee_id, expiry_date)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
         $db->exec("CREATE TABLE IF NOT EXISTS login_links (id INT AUTO_INCREMENT PRIMARY KEY, user_id INT NOT NULL, token_hash CHAR(64) NOT NULL, expires_at DATETIME NOT NULL, used_at DATETIME NULL,
                    requested_ip VARCHAR(45) NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, UNIQUE KEY uq_login_link_token (token_hash), INDEX idx_login_links_user (user_id)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
     }
