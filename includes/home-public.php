@@ -70,6 +70,7 @@ $demo = defined('DEMO_MODE') && DEMO_MODE;
                     <li><strong>Care Core</strong> keeps one record of each person and member of staff.</li>
                     <li><strong>Care Plans, Digital ID and Policy Core</strong> read from it, so a joiner or leaver is entered once.</li>
                     <li><strong>Digital ID</strong> shows a member of staff's current training and skills from Care Core on their own card.</li>
+                    <li><strong>Care Plans</strong> turns Care Core training into specialist skills with their expiry dates, so rotas can be checked against them.</li>
                     <li><strong>Referrals</strong> are held in Care Core and flow into Care Plans, with the specialist skills they call for.</li>
                     <li><strong>Contracts</strong> reads the people you support from Care Core, so each person is entered once.</li>
                     <li><strong>Strategic Plans</strong> projects are owned by a Care Core team and show who is in it today.</li>
@@ -78,7 +79,6 @@ $demo = defined('DEMO_MODE') && DEMO_MODE;
             <div>
                 <h3>Coming next</h3>
                 <ul>
-                    <li><strong>Training records</strong> shared with Care Plans, so specialist skills and their expiry dates arrive without typing.</li>
                     <li><strong>Deeper links</strong>: contracts beside each person's referral, and plan goals tied to services.</li>
                 </ul>
             </div>
