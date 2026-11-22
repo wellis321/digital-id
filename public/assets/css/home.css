@@ -222,33 +222,38 @@
 html { scroll-padding-top: 5rem; scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
-/* Suite connectivity diagram */
+/* Suite connectivity diagram (Care Core's style, used on every page) */
+.dh-suite { background: #11262b; color: #eae3d4; padding: clamp(3.25rem, 6.5vw, 5.5rem) 0; }
+.dh-suite h2 { font-family: var(--font-display, "Bricolage Grotesque", system-ui, sans-serif); font-weight: 600; color: #fff; font-size: clamp(2rem, 4.2vw, 3.4rem); line-height: 1.08; margin: 0; letter-spacing: -0.015em; }
+.dh-suite p { margin: 0; }
+.dh-suite .dh-suitehead p:first-child { color: #d9b45a; font-size: .8rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 1rem; }
 .dh-suitehead { max-width: 44rem; margin-bottom: 2rem; }
-.dh-suitehead h2 { font-size: clamp(1.9rem, 4vw, 3rem); line-height: 1.1; }
-.dh-suitelead { margin-top: 1rem; font-size: 1.1rem; line-height: 1.65; color: #2f484b; }
+.dh-suitelead { margin-top: 1rem !important; font-size: 1.1rem; line-height: 1.65; color: #d6dfe0; }
 .dh-diagram { margin: 0; }
-.dh-diagram svg { display: block; width: 100%; height: auto; font-family: inherit; }
-.dh-diagram figcaption { margin-top: .75rem; font-size: .9rem; color: #2f484b; }
-.dh-rings circle { fill: none; stroke: #cfe0de; stroke-width: 1; }
-.dh-live { fill: none; stroke: #0e5f5a; stroke-width: 3.5; stroke-linecap: round; }
-.dh-next { fill: none; stroke: #8aa09e; stroke-width: 2.5; stroke-dasharray: 8 8; stroke-linecap: round; }
-.dh-hub circle { fill: #0d2b2e; }
-.dh-ht { fill: #fff; font-size: 22px; font-weight: 700; text-anchor: middle; }
-.dh-hs { fill: #e9f0ee; font-size: 13px; text-anchor: middle; }
-.dh-node rect { fill: #fff; stroke: #0d2b2e; stroke-width: 2; }
-.dh-nextnode rect { stroke: #8aa09e; stroke-dasharray: 6 5; }
-.dh-here rect { fill: #fbf1d5; stroke: #b8892b; stroke-width: 3.5; stroke-dasharray: none; }
-.dh-nt { font-size: 18px; font-weight: 700; text-anchor: middle; fill: #0d2b2e; }
-.dh-ns { font-size: 13px; text-anchor: middle; fill: #2f484b; }
-.dh-here .dh-ns { fill: #b8892b; font-weight: 700; }
-.dh-suitecols { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 5vw, 4rem); margin-top: 2rem; }
-.dh-suitecols h3 { font-size: 1.25rem; margin-bottom: .5rem; }
-.dh-suitecols ul { list-style: none; margin: 0; padding: 0; }
-.dh-suitecols li { padding: .55rem 0; border-top: 1px solid #dcd8cd; line-height: 1.55; color: #2f484b; }
-.dh-suitecols strong { color: #0d2b2e; }
-@media (max-width: 48rem) { .dh-suitecols { grid-template-columns: 1fr; } .dh-nt { font-size: 20px; } .dh-ns { font-size: 15px; } }
-
+.dh-diagram svg { display: block; width: 100%; height: auto; }
+.dh-diagram figcaption { margin-top: .75rem; font-size: .9rem; color: #b9c4c4; }
+.dh-rings circle { fill: none; stroke: rgb(255 255 255 / .1); stroke-width: 1; }
+.dh-live { fill: none; stroke: #d9b45a; stroke-width: 2.6; stroke-dasharray: 9 11; stroke-linecap: round; animation: dh-flow 2.4s linear infinite; }
+.dh-rings circle { animation: dh-ring 5s ease-in-out infinite; } .dh-rings circle:nth-child(2) { animation-delay: 1s; } .dh-rings circle:nth-child(3) { animation-delay: 2s; }
+@keyframes dh-flow { to { stroke-dashoffset: -20; } }
+@keyframes dh-ring { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .dh-live, .dh-rings circle { animation: none; } }
+.dh-hub circle { fill: #5a1229; stroke: #d9b45a; stroke-width: 2.6; }
+.dh-ht, .dh-hs, .dh-nt, .dh-ns { text-anchor: middle; }
+.dh-ht { fill: #fff; font-family: var(--font-display, "Bricolage Grotesque", system-ui, sans-serif); font-size: 24px; font-weight: 600; }
+.dh-hs { fill: #e6c3cf; font-size: 12.5px; }
+.dh-node rect { fill: #1d3d44; stroke: rgb(255 255 255 / .3); stroke-width: 1.5; }
+.dh-nt { fill: #fff; font-family: var(--font-display, "Bricolage Grotesque", system-ui, sans-serif); font-size: 20px; font-weight: 600; }
+.dh-ns { fill: #c4bdae; font-size: 12.5px; }
+.dh-here rect { stroke: #d9b45a; stroke-width: 3; fill: #24474f; }
+.dh-here .dh-ns { fill: #d9b45a; font-weight: 700; }
 .dh-link { cursor: pointer; }
-.dh-link:hover .dh-node rect { stroke-width: 3.5; }
-.dh-link:hover .dh-hub circle { stroke: #b8892b; stroke-width: 4; }
-.dh-link:focus-visible { outline: 3px solid #b8892b; outline-offset: 4px; }
+.dh-link:hover .dh-node rect { stroke-width: 3; stroke: #fff; }
+.dh-link:hover .dh-hub circle { stroke-width: 4; }
+.dh-link:focus-visible { outline: 3px solid #d9b45a; outline-offset: 4px; }
+.dh-suitecols { display: grid; grid-template-columns: 1.4fr 1fr; gap: clamp(1.5rem, 5vw, 4rem); margin-top: 2.5rem; }
+.dh-suitecols h3 { font-family: var(--font-display, "Bricolage Grotesque", system-ui, sans-serif); font-size: 1.4rem; font-weight: 600; color: #d9b45a; margin: 0 0 .6rem; }
+.dh-suitecols ul { list-style: none; margin: 0; padding: 0; }
+.dh-suitecols li { padding: .6rem 0; border-top: 1px solid rgb(255 255 255 / .18); line-height: 1.55; color: #d6dfe0; }
+.dh-suitecols strong { color: #fff; }
+@media (max-width: 48rem) { .dh-suitecols { grid-template-columns: 1fr; } .dh-nt { font-size: 24px; } .dh-ns { font-size: 15px; } }
