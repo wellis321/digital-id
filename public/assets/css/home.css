@@ -165,7 +165,7 @@
 /* Demo */
 .dh-demo { background: var(--dh-brand-tint); }
 .dh-demo__form { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; max-width: 52rem; }
-.dh-role { display: block; text-align: left; padding: 1.6rem 1.5rem; border-radius: 10px; border: 2px solid var(--dh-ink); cursor: pointer; font-family: inherit; transition: transform .2s var(--dh-ease), box-shadow .2s; }
+.dh-role { display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; text-align: left; padding: 1.6rem 1.5rem; border-radius: 10px; border: 2px solid var(--dh-ink); cursor: pointer; font-family: inherit; transition: transform .2s var(--dh-ease), box-shadow .2s; }
 .dh-role i { display: block; font-size: 1.5rem; margin-bottom: .9rem; }
 .dh-role strong { display: block; font-family: var(--font-display, sans-serif); font-size: 1.3rem; letter-spacing: -0.01em; }
 .dh-role span { display: block; margin-top: .5rem; line-height: 1.5; font-size: 1rem; }
