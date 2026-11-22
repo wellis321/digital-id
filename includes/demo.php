@@ -37,7 +37,7 @@ function demo_block_posts(): void
     <div class="card">
         <h1>Not available in the demo</h1>
         <p>This is a demonstration with sample data, so it does not send email, create new accounts or connect to other systems.</p>
-        <p>To use Digital ID with your own organisation, <a href="mailto:<?php echo htmlspecialchars(CONTACT_EMAIL); ?>?subject=Digital%20ID%20for%20my%20organisation">get in touch</a>.</p>
+        <p>To use Digital ID with your own organisation, <a href="https://findcarescotland.com/software/enquire?product=digital-id">get in touch</a>.</p>
         <p><a href="<?php echo htmlspecialchars(url('index.php')); ?>">Back to the home page</a></p>
     </div>
     <?php

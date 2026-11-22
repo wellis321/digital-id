@@ -21,10 +21,10 @@ include INCLUDES_PATH . '/header.php';
                 <div style="flex: 1;">
                     <h2 style="margin: 0 0 0.5rem 0; font-size: 1.5rem; color: #0d2b2e;">Email</h2>
                     <p style="color: #4a5a5c; margin: 0 0 1rem 0;">
-                        Send us an email and we'll get back to you as soon as possible.
+                        Send us a short message and we'll get back to you as soon as possible.
                     </p>
-                    <a href="mailto:<?php echo CONTACT_EMAIL; ?>" style="font-size: 1.125rem; color: #0e5f5a; text-decoration: none; font-weight: 600;">
-                        <?php echo CONTACT_EMAIL; ?>
+                    <a href="https://findcarescotland.com/software/enquire?product=digital-id" style="font-size: 1.125rem; color: #0e5f5a; text-decoration: none; font-weight: 600;">
+                        Open the contact form
                         <i class="fas fa-external-link-alt" style="margin-left: 0.5rem; font-size: 0.875rem;"></i>
                     </a>
                 </div>
