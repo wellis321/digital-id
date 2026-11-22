@@ -123,7 +123,7 @@ $demo = defined('DEMO_MODE') && DEMO_MODE;
             </div>
             <div class="dh-shot">
                 <div class="dh-shot__bar" aria-hidden="true"><i></i><i></i><i></i></div>
-                <img src="<?php echo $img('people.webp'); ?>" width="1080" height="620" loading="lazy" alt="The employee list in the demonstration: names, email addresses, HR references, card references and a status of Active, with Edit and View ID card buttons.">
+                <img src="<?php echo $img('people.webp'); ?>" width="1080" height="602" loading="lazy" alt="The employee list in the demonstration: names, email addresses, HR references, card references and a status of Active, with Edit and View ID card buttons.">
             </div>
         </article>
 
