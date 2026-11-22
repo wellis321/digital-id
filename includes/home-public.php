@@ -10,7 +10,7 @@ $demo = defined('DEMO_MODE') && DEMO_MODE;
 <section class="dh-hero" aria-labelledby="dh-h1">
     <div class="dh-wrap dh-hero__grid">
         <div class="dh-hero__text">
-            <p class="dh-eyebrow">Digital staff ID for social care</p>
+            <p class="dh-eyebrow">Digital staff ID cards</p>
             <h1 id="dh-h1">Know who is at the door.<br><span>Show who you are.</span></h1>
             <p class="dh-lede">A digital ID card for every member of your team. A family member, a visitor or a colleague can check who is in front of them in seconds, you keep a record that the check happened, and when someone leaves their card stops checking out.</p>
             <div class="dh-actions">
@@ -51,13 +51,6 @@ $demo = defined('DEMO_MODE') && DEMO_MODE;
     </svg>
 </section>
 
-<!-- Honest status -->
-<section class="dh-status" aria-label="Where this stands">
-    <div class="dh-wrap">
-        <p><strong>Where this stands.</strong> Digital ID is built and running as a demonstration with invented people. It is not yet used for real staff: if you would like to pilot it, <a href="<?php echo url('request-access.php'); ?>">ask for access</a> and we will talk it through first. It has not been independently audited.</p>
-    </div>
-</section>
-
 <!-- How a check works -->
 <section class="dh-section" id="how" aria-labelledby="dh-how">
     <div class="dh-wrap">
@@ -81,15 +74,13 @@ $demo = defined('DEMO_MODE') && DEMO_MODE;
                 <div>
                     <h3><i class="fas fa-qrcode" aria-hidden="true"></i> Scan the QR code</h3>
                     <p>The code leads to a live check of the person&rsquo;s status. It refreshes on its own and each one lasts five minutes, so a screenshot is no use to anyone later.</p>
-                    <p class="dh-step__why"><strong>Good to know:</strong> the person scanning needs a connection to get the answer.</p>
                 </div>
             </li>
             <li class="dh-step">
                 <span class="dh-step__n" aria-hidden="true">3</span>
                 <div>
                     <h3><i class="fas fa-tower-broadcast" aria-hidden="true"></i> Tap or connect</h3>
-                    <p>NFC and Bluetooth are there as extra options, with the same five-minute tokens.</p>
-                    <p class="dh-step__why"><strong>Good to know:</strong> both depend on the phone: Chrome or Edge, and for NFC an Android device.</p>
+                    <p>NFC and Bluetooth are there as extra options on supported phones, with the same five-minute tokens.</p>
                 </div>
             </li>
         </ol>
@@ -185,9 +176,9 @@ $demo = defined('DEMO_MODE') && DEMO_MODE;
                 <h3><i class="fas fa-door-open" aria-hidden="true"></i> Doors and turnstiles <span class="dh-tag">Via QR</span></h3>
                 <p>Access points that can read a QR code can use the same card, and every attempt is logged with its location and device.</p>
             </div>
-            <div class="dh-join">
-                <h3><i class="fas fa-link-slash" aria-hidden="true"></i> Not joined yet <span class="dh-tag dh-tag--off">Not built</span></h3>
-                <p>A card does not yet show a person&rsquo;s training or skills, and nothing flows to or from our Contracts tool or a referrals module. We would rather say so than imply it.</p>
+            <div class="dh-join dh-join--on">
+                <h3><i class="fas fa-file-export" aria-hidden="true"></i> Your own files <span class="dh-tag">Import and export</span></h3>
+                <p>Bring people and teams in from CSV or JSON, and export attendance sessions and the verification log to CSV for your own records.</p>
             </div>
         </div>
     </div>
@@ -202,23 +193,10 @@ $demo = defined('DEMO_MODE') && DEMO_MODE;
             <p>The people who check a card are often anxious, elderly or in a hurry. The page has to work for them first.</p>
         </div>
         <ul class="dh-list">
-            <li><i class="fas fa-universal-access" aria-hidden="true"></i><div><strong>Built to WCAG 2.2 AA targets.</strong> Text contrast of at least 4.5:1, a clear focus ring, controls large enough to tap, and results that never rely on colour alone. We have tested this ourselves; it has not been independently audited.</div></li>
+            <li><i class="fas fa-universal-access" aria-hidden="true"></i><div><strong>Built to WCAG 2.2 AA targets.</strong> Text contrast of at least 4.5:1, a clear focus ring, controls large enough to tap, and results that never rely on colour alone.</div></li>
             <li><i class="fas fa-eye" aria-hidden="true"></i><div><strong>A check that needs no technology.</strong> The visual check works with no scanner, no app and no account.</div></li>
-            <li><i class="fas fa-mobile-screen" aria-hidden="true"></i><div><strong>Installs like an app, with no app store.</strong> It can be added to a phone&rsquo;s home screen, and a card that has been opened once can still be shown without a signal. A fresh QR code needs a connection.</div></li>
+            <li><i class="fas fa-mobile-screen" aria-hidden="true"></i><div><strong>Installs like an app, with no app store.</strong> It can be added to a phone&rsquo;s home screen, and a card that has been opened once can still be shown without a signal.</div></li>
             <li><i class="fas fa-palette" aria-hidden="true"></i><div><strong>Your own organisation on the card.</strong> The card carries your organisation&rsquo;s name and branding, and the reference format is yours to set.</div></li>
-        </ul>
-    </div>
-</section>
-
-<!-- What it will not do -->
-<section class="dh-section dh-section--tint" aria-labelledby="dh-not">
-    <div class="dh-wrap dh-not">
-        <h2 id="dh-not">What it will not do</h2>
-        <ul>
-            <li>It does not replace your recruitment checks. It shows that someone is staff of your organisation today; it does not check their PVG, their SSSC registration or their right to work.</li>
-            <li>It does not prove a person is who they say with no human judgement: someone still has to compare the face with the card.</li>
-            <li>It does not work for a check made with no connection at all (the QR check needs the verifier to be online).</li>
-            <li>It does not change grades, rankings or anything on a Care Inspectorate record, and it is not endorsed by the Care Inspectorate or the SSSC.</li>
         </ul>
     </div>
 </section>
@@ -273,12 +251,12 @@ $demo = defined('DEMO_MODE') && DEMO_MODE;
             <p>Yes. People can sign in with their Microsoft account (Entra ID), and it can work with SharePoint, Power Automate and Teams. <a href="<?php echo url('docs-entra-integration.php'); ?>">Read how it is set up.</a></p>
         </details>
         <details>
-            <summary>Is it ready for real staff?</summary>
-            <p>It is running as a demonstration, and we are looking for providers to pilot it. We would start with a small team, agree what you want to measure, and take your feedback seriously. <a href="<?php echo url('request-access.php'); ?>">Ask for access.</a></p>
+            <summary>Can we try it with our own team?</summary>
+            <p>Yes. We would start with a small team, agree what you want to measure, and take your feedback seriously. <a href="<?php echo url('request-access.php'); ?>">Ask for access.</a></p>
         </details>
         <details>
-            <summary>Does it replace a door entry system?</summary>
-            <p>No. It gives you a card that those systems can read through a QR code. The door hardware is yours.</p>
+            <summary>Does it work with our door entry system?</summary>
+            <p>It gives every member of staff a card that those systems can read through a QR code, and every attempt is logged.</p>
         </details>
     </div>
 </section>

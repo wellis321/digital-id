@@ -39,10 +39,11 @@ class FrontPageTest extends TestCase
         $this->assertSame(count($m[1]), count(array_unique($m[1])));
     }
 
-    public function testHonestStatementsArePresent(): void
+    public function testDemonstrationIsLabelledAndNoDisclaimerClutter(): void
     {
-        foreach (['invented people', 'not yet used for real staff', 'not been independently audited', 'What it will not do', 'Not joined yet', 'five minutes'] as $needle) {
-            $this->assertStringContainsString($needle, $this->html, $needle);
+        $this->assertStringContainsString('invented people', $this->html);
+        foreach (['What it will not do', 'Not joined yet', 'not endorsed', 'independently audited'] as $needle) {
+            $this->assertStringNotContainsString($needle, $this->html, $needle);
         }
     }
 

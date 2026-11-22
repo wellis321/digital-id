@@ -4,7 +4,7 @@
     <div class="dh-wrap dh-foot__in">
         <div>
             <p class="dh-foot__brand"><?php echo htmlspecialchars(APP_NAME); ?></p>
-            <p class="dh-foot__small">Part of a suite of tools for care providers, from <a href="https://findcarescotland.com/software">Find Care Scotland</a>. Not endorsed by the Care Inspectorate or the SSSC.</p>
+            <p class="dh-foot__small">Part of a suite of tools for care providers, from <a href="https://findcarescotland.com/software">Find Care Scotland</a>.</p>
         </div>
         <nav aria-label="Footer">
             <a href="<?php echo url('features.php'); ?>">Features</a>
