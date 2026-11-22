@@ -23,6 +23,9 @@
 .dh-head__cta { display: flex; align-items: center; gap: .75rem; }
 .dh-link { color: #fff; text-decoration: none; font-weight: 500; padding: .5rem .5rem; }
 .dh-link:hover { text-decoration: underline; }
+.dh-logo, .dh-nav a, .dh-link, .dh-btn { white-space: nowrap; }
+.dh-head .dh-btn { min-height: 2.5rem; padding: .5rem 1.1rem; }
+@media (max-width: 80rem) { .dh-nav a:nth-child(n+5) { display: none; } }
 @media (max-width: 62rem) { .dh-nav { display: none; } .dh-head__cta { margin-left: auto; } }
 @media (max-width: 30rem) { .dh-logo span { display: none; } }
 
