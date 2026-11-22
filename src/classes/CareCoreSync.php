@@ -25,6 +25,7 @@ class CareCoreSync
             try {
                 $r = self::upsert($orgId, $p, $e, $images ? $client : null);
                 $n[$r['action']]++; $n['photos'] += $r['photos'];
+                if (!empty($r['warning'])) $n['errors'][] = trim(($p['first_name'] ?? '') . ' ' . ($p['last_name'] ?? '')) . ' (photo): ' . $r['warning'];
                 if ($trainingOk) {
                     try { $n['training'] += self::syncTraining($orgId, (string) $p['id'], $client); }
                     catch (Throwable $tx) { if (str_contains($tx->getMessage(), 'permission')) $trainingOk = false; else $n['errors'][] = trim(($p['first_name'] ?? '') . ' ' . ($p['last_name'] ?? '')) . ' (training): ' . $tx->getMessage(); }
@@ -102,7 +103,7 @@ class CareCoreSync
         } catch (Throwable $e) { return []; }
     }
 
-    /** @return array{action:string,photos:int} action: created | updated | reactivated */
+    /** @return array{action:string,photos:int,warning:?string} action: created | updated | reactivated */
     public static function upsert(int $orgId, array $person, array $employment, ?CareCoreClient $images): array
     {
         $db = getDbConnection();
@@ -150,8 +151,13 @@ class CareCoreSync
             $db->prepare('UPDATE users SET first_name = ?, last_name = ?, is_active = 1 WHERE id = ?')->execute([$first, $last, $emp['user_id']]);
             if ($reactivated) $action = 'reactivated';
         }
-        $photos = $images ? self::images((int) $emp['id'], $orgId, (string) $person['id'], $images) : 0;
-        return ['action' => $action, 'photos' => $photos];
+        $photos = 0; $warning = null;
+        if ($images) {
+            // A photo that cannot be fetched must not stop the person being issued a card, or their training being read.
+            try { $photos = self::images((int) $emp['id'], $orgId, (string) $person['id'], $images); }
+            catch (Throwable $e) { $warning = $e->getMessage(); }
+        }
+        return ['action' => $action, 'photos' => $photos, 'warning' => $warning];
     }
 
     /** @return array<string,mixed>|null */
