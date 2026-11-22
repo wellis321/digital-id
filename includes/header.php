@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title><?php echo isset($pageTitle) ? htmlspecialchars($pageTitle) . ' - ' : ''; ?><?php echo APP_NAME; ?></title>
+    <title><?php echo !empty($titleOverride) ? htmlspecialchars($titleOverride) : ((isset($pageTitle) ? htmlspecialchars($pageTitle) . ' - ' : '') . APP_NAME); ?></title>
     
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#0e5f5a">
@@ -14,7 +14,13 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Digital ID">
-    <meta name="description" content="Secure digital ID card for social care providers">
+    <meta name="description" content="<?php echo htmlspecialchars($metaDescription ?? 'Secure digital ID card for social care providers'); ?>">
+    <?php if (!empty($marketing)): ?>
+    <meta property="og:title" content="<?php echo htmlspecialchars($titleOverride ?? APP_NAME); ?>">
+    <meta property="og:description" content="<?php echo htmlspecialchars($metaDescription ?? ''); ?>">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="<?php echo url('assets/css/home.css'); ?>?v=<?php echo @filemtime(dirname(__DIR__) . '/public/assets/css/home.css'); ?>">
+    <?php endif; ?>
     
     <!-- Favicons -->
     <link rel="icon" type="image/x-icon" href="<?php echo url('assets/images/favicon_io/favicon.ico'); ?>">
@@ -254,6 +260,7 @@
         }
     </style>
     <?php echo demo_banner_html(); ?>
+    <?php if (!empty($marketing)): include __DIR__ . '/marketing-header.php'; else: ?>
     <header>
         <nav>
             <div class="container">
@@ -411,4 +418,4 @@
             <?php include __DIR__ . '/../public/pwa-install-prompt.php'; ?>
             
             <main id="main-content" class="container">
-
+    <?php endif; ?>

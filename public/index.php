@@ -13,6 +13,17 @@ if (Auth::isLoggedIn() && RBAC::isAdmin()) {
     $countUsersNeedingNumbers = count($usersNeedingEmployeeNumbers);
 }
 
+if (!Auth::isLoggedIn()) {
+    // Signed-out visitors get the product front page (own header/footer, assets/css/home.css).
+    $marketing = true;
+    $titleOverride = 'Digital ID: staff ID cards for social care providers';
+    $metaDescription = 'A digital ID card for every member of care staff. Anyone can check who is in front of them in seconds, every check is recorded, and a leaver\'s card stops working. Try the demonstration.';
+    include INCLUDES_PATH . '/header.php';
+    include INCLUDES_PATH . '/home-public.php';
+    include INCLUDES_PATH . '/footer.php';
+    exit;
+}
+
 include INCLUDES_PATH . '/header.php';
 ?>
 

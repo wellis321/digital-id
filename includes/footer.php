@@ -1,3 +1,4 @@
+<?php if (empty($marketing)): ?>
     </main>
     <footer>
         <div class="container">
@@ -118,6 +119,7 @@
         </script>
         <?php echo demo_other_products_html('digital-id'); ?>
 </footer>
+<?php else: include __DIR__ . '/marketing-footer.php'; endif; ?>
     
     <!-- Cookie Banner -->
     <div id="cookieBanner" class="cookie-banner" role="region" aria-label="Cookie notice">
