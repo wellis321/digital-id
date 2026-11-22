@@ -66,7 +66,7 @@ if ($linked) {
     $token = bin2hex(random_bytes(20));
     $appUrl = rtrim((string) APP_URL, '/');
     if (!str_starts_with($appUrl, 'https://') && !preg_match('~^http://localhost[:/]~', $appUrl . '/')) { fwrite(STDERR, "Linked demo needs APP_URL to be the public https address.\n"); exit(1); }
-    $hook = $client->createWebhook(CareCore::webhookUrl($token), ['person.created', 'person.updated', 'employment.started', 'employment.changed', 'employment.ended']);
+    $hook = $client->createWebhook(CareCore::webhookUrl($token), ['person.created', 'person.updated', 'employment.started', 'employment.changed', 'employment.ended', 'learning.recorded']);
     CareCore::set(1, 'care_core_webhook_token', $token); CareCore::set(1, 'care_core_webhook_id', $hook['id']); CareCore::set(1, 'care_core_webhook_secret', $hook['secret']);
     $r = CareCoreSync::syncOrganisation(1, true, $client);
     echo "Synced from Care Core: {$r['created']} people, {$r['photos']} photos, " . count($r['errors']) . " problems.\n";
