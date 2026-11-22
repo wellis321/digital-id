@@ -51,6 +51,38 @@ $demo = defined('DEMO_MODE') && DEMO_MODE;
     </svg>
 </section>
 
+<!-- The suite -->
+<section class="dh-section dh-section--tint" id="suite" aria-labelledby="dh-suite-h">
+    <div class="dh-wrap">
+        <div class="dh-suitehead">
+            <p class="dh-eyebrow dh-eyebrow--dark">One suite, joining up</p>
+            <h2 id="dh-suite-h">Everything listens to one record.</h2>
+            <p class="dh-suitelead">Change a person once in Care Core and the products that depend on them find out. Digital ID is part of that suite, and we are working towards every product being fully connected.</p>
+        </div>
+        <figure class="dh-diagram">
+            <svg viewBox="0 0 960 560" role="img" aria-labelledby="dh-dia-t dh-dia-d"><title id="dh-dia-t">How the suite joins up around Care Core</title><desc id="dh-dia-d">Care Core sits in the centre. Care Plans, Digital ID and Policy Core are connected to it today. Referrals, Contracts and Strategic Plans are coming next. Digital ID is the product you are looking at.</desc><g class="dh-rings"><circle cx="480" cy="280" r="110"/><circle cx="480" cy="280" r="170"/><circle cx="480" cy="280" r="234"/></g><g><path class="dh-live" d="M216 106 C340 106 380 220 424 250"/><path class="dh-live" d="M216 280 L406 280"/><path class="dh-live" d="M216 454 C340 454 380 340 424 310"/><path class="dh-next" d="M744 106 C620 106 580 220 536 250"/><path class="dh-next" d="M744 280 L554 280"/><path class="dh-next" d="M744 454 C620 454 580 340 536 310"/></g><a class="dh-link" href="https://core.findcarescotland.com/" aria-label="Care Core: people and staff"><g class="dh-hub"><circle cx="480" cy="280" r="74"/><text x="480" y="276" class="dh-ht">Care Core</text><text x="480" y="300" class="dh-hs">people and staff</text></g></a><a class="dh-link" href="https://care.findcarescotland.com/" aria-label="Care Plans: care records"><g class="dh-node"><rect x="40" y="70" width="176" height="72" rx="8"/><text x="128" y="101" class="dh-nt">Care Plans</text><text x="128" y="124" class="dh-ns">care records</text></g></a><a class="dh-link" href="https://id.findcarescotland.com/" aria-label="Digital ID: staff cards (you are here)"><g class="dh-node dh-here"><rect x="40" y="244" width="176" height="72" rx="8"/><text x="128" y="275" class="dh-nt">Digital ID</text><text x="128" y="298" class="dh-ns">you are here</text></g></a><a class="dh-link" href="https://policies.findcarescotland.com/" aria-label="Policy Core: policies and reading"><g class="dh-node"><rect x="40" y="418" width="176" height="72" rx="8"/><text x="128" y="449" class="dh-nt">Policy Core</text><text x="128" y="472" class="dh-ns">policies and reading</text></g></a><a class="dh-link" href="https://core.findcarescotland.com/" aria-label="Referrals: held in Care Core"><g class="dh-node dh-nextnode"><rect x="744" y="70" width="176" height="72" rx="8"/><text x="832" y="101" class="dh-nt">Referrals</text><text x="832" y="124" class="dh-ns">held in Care Core</text></g></a><a class="dh-link" href="https://contracts.findcarescotland.com/public/index.php" aria-label="Contracts: funding and rates"><g class="dh-node dh-nextnode"><rect x="744" y="244" width="176" height="72" rx="8"/><text x="832" y="275" class="dh-nt">Contracts</text><text x="832" y="298" class="dh-ns">funding and rates</text></g></a><a class="dh-link" href="https://strategic.findcarescotland.com/" aria-label="Strategic Plans: plans and goals"><g class="dh-node dh-nextnode"><rect x="744" y="418" width="176" height="72" rx="8"/><text x="832" y="449" class="dh-nt">Strategic Plans</text><text x="832" y="472" class="dh-ns">plans and goals</text></g></a></svg>
+            <figcaption>Solid lines are connected today. Dashed lines are coming next. Click any product to visit it.</figcaption>
+        </figure>
+        <div class="dh-suitecols">
+            <div>
+                <h3>Connected today</h3>
+                <ul>
+                    <li><strong>Care Core</strong> keeps one record of each person and member of staff.</li>
+                    <li><strong>Care Plans, Digital ID and Policy Core</strong> read from it, so a joiner or leaver is entered once.</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Coming next</h3>
+                <ul>
+                    <li><strong>Referrals</strong> held in Care Core, flowing into the plan.</li>
+                    <li><strong>Contracts and Strategic Plans</strong> linked to the same record.</li>
+                    <li><strong>Training records</strong> shared with Digital ID.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- How a check works -->
 <section class="dh-section" id="how" aria-labelledby="dh-how">
     <div class="dh-wrap">
@@ -179,38 +211,6 @@ $demo = defined('DEMO_MODE') && DEMO_MODE;
             <div class="dh-join dh-join--on">
                 <h3><i class="fas fa-file-export" aria-hidden="true"></i> Your own files <span class="dh-tag">Import and export</span></h3>
                 <p>Bring people and teams in from CSV or JSON, and export attendance sessions and the verification log to CSV for your own records.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- The suite -->
-<section class="dh-section dh-section--tint" id="suite" aria-labelledby="dh-suite-h">
-    <div class="dh-wrap">
-        <div class="dh-suitehead">
-            <p class="dh-eyebrow dh-eyebrow--dark">One suite, joining up</p>
-            <h2 id="dh-suite-h">Everything listens to one record.</h2>
-            <p class="dh-suitelead">Change a person once in Care Core and the products that depend on them find out. Digital ID is part of that suite, and we are working towards every product being fully connected.</p>
-        </div>
-        <figure class="dh-diagram">
-            <svg viewBox="0 0 960 560" role="img" aria-labelledby="dh-dia-t dh-dia-d"><title id="dh-dia-t">How the suite joins up around Care Core</title><desc id="dh-dia-d">Care Core sits in the centre. Care Plans, Digital ID and Policy Core are connected to it today. Referrals, Contracts and Strategic Plans are coming next. Digital ID is the product you are looking at.</desc><g class="dh-rings"><circle cx="480" cy="280" r="110"/><circle cx="480" cy="280" r="170"/><circle cx="480" cy="280" r="234"/></g><g><path class="dh-live" d="M216 106 C340 106 380 220 424 250"/><path class="dh-live" d="M216 280 L406 280"/><path class="dh-live" d="M216 454 C340 454 380 340 424 310"/><path class="dh-next" d="M744 106 C620 106 580 220 536 250"/><path class="dh-next" d="M744 280 L554 280"/><path class="dh-next" d="M744 454 C620 454 580 340 536 310"/></g><g class="dh-hub"><circle cx="480" cy="280" r="74"/><text x="480" y="276" class="dh-ht">Care Core</text><text x="480" y="300" class="dh-hs">people and staff</text></g><g class="dh-node"><rect x="40" y="70" width="176" height="72" rx="8"/><text x="128" y="101" class="dh-nt">Care Plans</text><text x="128" y="124" class="dh-ns">care records</text></g><g class="dh-node dh-here"><rect x="40" y="244" width="176" height="72" rx="8"/><text x="128" y="275" class="dh-nt">Digital ID</text><text x="128" y="298" class="dh-ns">you are here</text></g><g class="dh-node"><rect x="40" y="418" width="176" height="72" rx="8"/><text x="128" y="449" class="dh-nt">Policy Core</text><text x="128" y="472" class="dh-ns">policies and reading</text></g><g class="dh-node dh-nextnode"><rect x="744" y="70" width="176" height="72" rx="8"/><text x="832" y="101" class="dh-nt">Referrals</text><text x="832" y="124" class="dh-ns">held in Care Core</text></g><g class="dh-node dh-nextnode"><rect x="744" y="244" width="176" height="72" rx="8"/><text x="832" y="275" class="dh-nt">Contracts</text><text x="832" y="298" class="dh-ns">funding and rates</text></g><g class="dh-node dh-nextnode"><rect x="744" y="418" width="176" height="72" rx="8"/><text x="832" y="449" class="dh-nt">Strategic Plans</text><text x="832" y="472" class="dh-ns">plans and goals</text></g></svg>
-            <figcaption>Solid lines are connected today. Dashed lines are coming next.</figcaption>
-        </figure>
-        <div class="dh-suitecols">
-            <div>
-                <h3>Connected today</h3>
-                <ul>
-                    <li><strong>Care Core</strong> keeps one record of each person and member of staff.</li>
-                    <li><strong>Care Plans, Digital ID and Policy Core</strong> read from it, so a joiner or leaver is entered once.</li>
-                </ul>
-            </div>
-            <div>
-                <h3>Coming next</h3>
-                <ul>
-                    <li><strong>Referrals</strong> held in Care Core, flowing into the plan.</li>
-                    <li><strong>Contracts and Strategic Plans</strong> linked to the same record.</li>
-                    <li><strong>Training records</strong> shared with Digital ID.</li>
-                </ul>
             </div>
         </div>
     </div>

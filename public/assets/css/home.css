@@ -247,3 +247,8 @@ html { scroll-padding-top: 5rem; scroll-behavior: smooth; }
 .dh-suitecols li { padding: .55rem 0; border-top: 1px solid #dcd8cd; line-height: 1.55; color: #2f484b; }
 .dh-suitecols strong { color: #0d2b2e; }
 @media (max-width: 48rem) { .dh-suitecols { grid-template-columns: 1fr; } .dh-nt { font-size: 20px; } .dh-ns { font-size: 15px; } }
+
+.dh-link { cursor: pointer; }
+.dh-link:hover .dh-node rect { stroke-width: 3.5; }
+.dh-link:hover .dh-hub circle { stroke: #b8892b; stroke-width: 4; }
+.dh-link:focus-visible { outline: 3px solid #b8892b; outline-offset: 4px; }
