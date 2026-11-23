@@ -128,6 +128,12 @@ class Auth {
                 return ['error' => 'account_inactive', 'message' => 'Your account has been deactivated. Please contact your administrator.'];
             }
             
+            // A second step is switched on for this person: nothing is signed in until it is passed (see public/login-2fa.php).
+            if (self::secondStepNeeded((int) $user['id'])) {
+                TwoFactor::startPending((int) $user['id']);
+                return ['error' => 'second_step_required', 'message' => 'One more step.'];
+            }
+
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['organisation_id'] = $user['organisation_id'];
             $_SESSION['email'] = $user['email'];
@@ -143,13 +149,22 @@ class Auth {
         return false;
     }
     
+    /** Is two-step sign-in switched on for this person? */
+    private static function secondStepNeeded($userId) {
+        if (!defined('SRC_PATH')) return false;
+        require_once SRC_PATH . '/classes/TwoFactor.php';
+        try { return TwoFactor::on((int) $userId); } catch (Throwable $e) { error_log('two-step check failed: ' . $e->getMessage()); return false; }
+    }
+
     /** Sign a user in without a password (used after a verified emailed link). Same checks and session as login(). */
-    public static function loginUserById($userId) {
+    public static function loginUserById($userId, $secondStep = true) {
         $db = getDbConnection();
         $stmt = $db->prepare("SELECT u.*, o.name as organisation_name FROM users u LEFT JOIN organisations o ON u.organisation_id = o.id WHERE u.id = ?");
         $stmt->execute([$userId]);
         $user = $stmt->fetch();
         if (!$user || !$user['is_active'] || !($user['email_verified'] ?? true)) return false;
+        // $secondStep is false only where the second step has just been passed, or for the shared demonstration accounts (which cannot have one).
+        if ($secondStep && self::secondStepNeeded((int) $user['id'])) { TwoFactor::startPending((int) $user['id']); return 'second_step_required'; }
         session_regenerate_id(true);
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['organisation_id'] = $user['organisation_id'];

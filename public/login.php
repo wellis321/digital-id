@@ -24,7 +24,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password = $_POST['password'] ?? '';
         
         $result = Auth::login($email, $password);
-        
+
+        if (is_array($result) && ($result['error'] ?? '') === 'second_step_required') {
+            // The password was right; one more step before anyone is signed in.
+            RateLimiter::reset($rateLimitKey);
+            header('Location: ' . url('login-2fa.php'));
+            exit;
+        }
+
         if ($result === true) {
             // If this organisation is connected to the Staff Service, verify the user is active there
             if (!StaffServiceClient::verifyUser($email)) {
@@ -92,6 +99,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $user = $stmt->fetch();
 
                     if ($user) {
+                        // Someone who has switched on two-step sign-in cannot get round it through the older Staff Service password.
+                        require_once SRC_PATH . '/classes/TwoFactor.php';
+                        if (TwoFactor::on((int) $user['id'])) {
+                            TwoFactor::startPending((int) $user['id']);
+                            RateLimiter::reset($rateLimitKey);
+                            header('Location: ' . url('login-2fa.php'));
+                            exit;
+                        }
                         session_regenerate_id(true);
                         $_SESSION['user_id']       = $user['id'];
                         $_SESSION['organisation_id'] = $user['organisation_id'];

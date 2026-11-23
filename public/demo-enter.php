@@ -27,7 +27,7 @@ $human = CSRF::validatePost()
     && !demo_entry_looks_automated()
     && ($signedIn || demo_entry_token_ok((string) ($_POST['ft'] ?? '')));
 $userId = $human ? demo_entry_user_id((string) ($_POST['role'] ?? '')) : null;
-if (!$userId || !Auth::loginUserById($userId)) {
+if (!$userId || !Auth::loginUserById($userId, false)) {
     $fail('That did not work. Please wait a moment after the page loads and press the button again, or use one of the demo accounts below.');
 }
 header('Location: ' . url('id-card.php'));

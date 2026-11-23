@@ -43,7 +43,7 @@ class MagicLink
     }
 
     /** Use the link: signs the person in. Returns false when it is wrong, used, expired, or they have since left. */
-    public static function consume(string $token): bool
+    public static function consume(string $token)
     {
         if (!preg_match('/^[a-f0-9]{64}$/', $token)) return false;
         CareCore::ensureSchema();
@@ -56,6 +56,6 @@ class MagicLink
                            WHERE l.token_hash = ? AND u.is_active = 1 AND (e.id IS NULL OR (e.is_active = 1 AND (e.leaves_on IS NULL OR e.leaves_on >= CURDATE())))');
         $s->execute([$hash]);
         $uid = $s->fetchColumn();
-        return $uid ? Auth::loginUserById((int) $uid) : false;
+        return $uid ? Auth::loginUserById((int) $uid) : false;   // true, false, or 'second_step_required'
     }
 }

@@ -295,6 +295,7 @@
                                                  strpos($currentPage, 'entra-settings.php') !== false ||
                                                  strpos($currentPage, 'care-core-settings.php') !== false ||
                                                  strpos($currentPage, 'staff-service-settings.php') !== false ||
+                                                 strpos($currentPage, 'two-step.php') !== false ||
                                                  strpos($currentPage, 'verification-logs.php') !== false);
                             
                             // Get notification counts
@@ -345,6 +346,9 @@
                                     </a>
                                     <a href="<?php echo url('admin/reference-settings.php'); ?>" class="<?php echo (strpos($currentPage, 'reference-settings.php') !== false) ? 'active' : ''; ?>">
                                         <i class="fas fa-cog"></i> Settings
+                                    </a>
+                                    <a href="<?php echo url('admin/two-step.php'); ?>" class="<?php echo (strpos($currentPage, 'two-step.php') !== false) ? 'active' : ''; ?>">
+                                        <i class="fas fa-key"></i> Two-step sign-in
                                     </a>
                                     <a href="<?php echo url('admin/care-core-settings.php'); ?>" class="<?php echo (strpos($currentPage, 'care-core-settings.php') !== false) ? 'active' : ''; ?>">
                                         <i class="fas fa-link"></i> Care Core
@@ -399,6 +403,7 @@
                                 </div>
                             </div>
                         <?php endif; ?>
+                        <a href="<?php echo url('two-step.php'); ?>">Two-step sign-in</a>
                         <a href="<?php echo url('logout.php'); ?>">Logout</a>
                     </div>
                 <?php else: ?>

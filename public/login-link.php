@@ -9,7 +9,9 @@ $token = (string) ($_GET['t'] ?? $_POST['t'] ?? '');
 if ($token !== '') {
     // The link in the email only SHOWS a button; pressing it signs in. Mail scanners that open links therefore cannot use it up.
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && CSRF::validatePost()) {
-        if (MagicLink::consume($token)) { header('Location: ' . url('id-card.php')); exit; }
+        $ml = MagicLink::consume($token);
+        if ($ml === 'second_step_required') { header('Location: ' . url('login-2fa.php')); exit; }
+        if ($ml) { header('Location: ' . url('id-card.php')); exit; }
         $error = 'That link has expired or has already been used. Ask for a new one below.'; $token = '';
     } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') { $error = 'Please try again.'; }
     elseif (!MagicLink::valid($token)) { $error = 'That link has expired or has already been used. Ask for a new one below.'; $token = ''; }
