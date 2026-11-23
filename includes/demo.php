@@ -59,7 +59,7 @@ function demo_banner_html(): string
             . '<span>You are viewing as ' . ($isAdmin ? 'an administrator' : 'a member of staff') . '.</span> <button class="demo-linkbtn" type="submit" name="role" value="' . $other . '">See it as ' . ($isAdmin ? 'a member of staff' : 'an administrator') . '</button></form>';
     }
     $html = '<div class="demo-banner" role="region" aria-label="Demo notice"><strong>Demo</strong> '
-        . '<span class="demo-banner__text">All names and records here are made up, and the data resets every night. Please do not enter real personal information.</span> <strong><a class="demo-banner__back" href="https://findcarescotland.com/software">&larr; Back to Find Care Scotland software</a></strong> &middot; <a href="https://findcarescotland.com/software">All software</a></div>' ;
+        . '<span class="demo-banner__text">All names and records here are made up, and the data resets every night. Please do not enter real personal information.</span> <strong><a class="demo-banner__back" href="https://findcarescotland.com/software">&larr; Back to Find Care Scotland software</a></strong> &middot; <a href="https://findcarescotland.com/software">All software</a> &middot; <a href="https://docs.findcarescotland.com/products/digital-id.html">Documentation</a></div>' ;
     return substr($html, 0, -strlen('</div>')) . $switch . '</div>';
 }
 
