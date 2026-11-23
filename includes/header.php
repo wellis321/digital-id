@@ -349,9 +349,26 @@
                                     <a href="<?php echo url('admin/care-core-settings.php'); ?>" class="<?php echo (strpos($currentPage, 'care-core-settings.php') !== false) ? 'active' : ''; ?>">
                                         <i class="fas fa-link"></i> Care Core
                                     </a>
+                                    <?php
+                                    // The older Staff Service link is only shown to an organisation that already uses it (or is on its page). Care Core replaced it.
+                                    $showStaffService = strpos($currentPage, 'staff-service-settings.php') !== false;
+                                    if (!$showStaffService) {
+                                        try {
+                                            $ssOrg = Auth::getOrganisationId();
+                                            if ($ssOrg) {
+                                                $ssStmt = getDbConnection()->prepare("SELECT setting_value FROM organisation_settings WHERE organisation_id = ? AND setting_key = 'use_staff_service'");
+                                                $ssStmt->execute([$ssOrg]);
+                                                $ssVal = $ssStmt->fetchColumn();
+                                                $showStaffService = $ssVal !== false && in_array(strtolower((string) $ssVal), ['1', 'true', 'yes', 'on'], true);
+                                            }
+                                        } catch (Throwable $e) { $showStaffService = false; }
+                                    }
+                                    ?>
+                                    <?php if ($showStaffService): ?>
                                     <a href="<?php echo url('admin/staff-service-settings.php'); ?>" class="<?php echo (strpos($currentPage, 'staff-service-settings.php') !== false) ? 'active' : ''; ?>">
-                                        <i class="fas fa-link"></i> Staff Service
+                                        <i class="fas fa-link"></i> Staff Service (older)
                                     </a>
+                                    <?php endif; ?>
                                     <a href="<?php echo url('admin/entra-settings.php'); ?>" class="<?php echo (strpos($currentPage, 'entra-settings.php') !== false) ? 'active' : ''; ?>">
                                         <i class="fas fa-microsoft"></i> Microsoft 365 SSO
                                     </a>

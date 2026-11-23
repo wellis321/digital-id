@@ -187,3 +187,6 @@ Two primary audiences for the public-facing site (marketing pages, docs, verific
 3. **Accessible by default (WCAG 2.1 AA)** — colour contrast, keyboard access, readable type sizes, and reduced-motion support are baseline requirements, not nice-to-haves, given elderly/vulnerable end-users.
 4. **Institutional trust, not corporate sales energy** — lean toward calm/official over bold marketing-site tropes (large gradient hero metrics, aggressive CTAs).
 5. **Two audiences, two moods within one system** — buyer/admin-facing marketing and docs pages can be a little more confident/capable in tone; the public verification page should be the calmest, simplest, most reassuring surface in the product.
+
+## Backups, the Staff Service link and the notes folder (23 Nov 2026)
+`scripts/backup.php` (database plus `uploads/`) writes to `../backups-digitalid/`, beside the web folder, with checksums and a manifest; `scripts/restore-check.php FILE --into=SCRATCH_DB` proves a restore (scratch name must contain "restore" or "test"). The admin menu shows the older **Staff Service** link only to an organisation that has `use_staff_service` on (Care Core replaced it). Old one-off notes (migration runbooks, Hostinger fixes, readiness reviews, the Staff Service integration) are in `docs/archive/`; `INTEGRATION.md` now describes the Care Core link.
