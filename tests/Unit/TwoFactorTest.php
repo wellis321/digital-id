@@ -120,4 +120,25 @@ class TwoFactorTest extends TestCase
         $this->assertTrue(Auth::login($email, 'password12345'));
         $this->assertSame((int) $this->userId, (int) $_SESSION['user_id']);
     }
+
+    public function testRequiringItIsOffByDefaultAndFollowsTheChosenLevel(): void
+    {
+        $this->assertSame('off', TwoFactor::requirement($this->organisationId));
+        $this->assertFalse(TwoFactor::mustSetUp((int) $this->userId));
+        $this->assertFalse(TwoFactor::setRequirement($this->organisationId, 'sometimes'), 'only a known option');
+        $this->assertTrue(TwoFactor::setRequirement($this->organisationId, 'everyone'));
+        $this->assertTrue(TwoFactor::mustSetUp((int) $this->userId), 'a member of staff with a password must set it up');
+        $this->assertTrue(TwoFactor::setRequirement($this->organisationId, 'admins'));
+        $this->assertFalse(TwoFactor::mustSetUp((int) $this->userId), 'a member of staff is not an administrator');
+        TwoFactor::setRequirement($this->organisationId, 'everyone');
+        $this->switchOn();
+        $this->assertFalse(TwoFactor::mustSetUp((int) $this->userId), 'once it is on they are free to go on');
+    }
+
+    public function testSomeoneWithNoPasswordIsLeftToMicrosoft(): void
+    {
+        TwoFactor::setRequirement($this->organisationId, 'everyone');
+        getDbConnection()->prepare("UPDATE users SET password_hash = '' WHERE id = ?")->execute([$this->userId]);
+        $this->assertFalse(TwoFactor::mustSetUp((int) $this->userId));
+    }
 }

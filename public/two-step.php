@@ -33,6 +33,7 @@ include dirname(__DIR__) . '/includes/header.php';
 ?>
 <div class="card" style="max-width:560px;margin:2rem auto">
     <h1>Two-step sign-in</h1>
+    <?php if (TwoFactor::mustSetUp($uid)): ?><div class="alert alert-error" role="alert"><strong>Your organisation requires two-step sign-in.</strong> Set it up below before you carry on. Digital ID will not open anything else until you have.</div><?php endif; ?>
     <?php if ($error): ?><div class="alert alert-error" role="alert"><?= htmlspecialchars($error) ?></div><?php endif; ?>
     <?php if ($success): ?><div class="alert alert-success" role="status"><?= htmlspecialchars($success) ?></div><?php endif; ?>
     <?php if ($codes): ?>

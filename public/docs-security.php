@@ -42,7 +42,7 @@ include INCLUDES_PATH . '/header.php';
             <p>User accounts require passwords with minimum 8 characters, including uppercase, lowercase, numbers, and special characters. Passwords are hashed using industry-standard algorithms.</p>
             
             <h3>Two-Step Sign-In</h3>
-            <p>Anyone who signs in with a password can add a second step: a 6-digit code from an authenticator app, with eight one-time recovery codes for a lost phone. The secret is stored encrypted, each code works once, and wrong tries are limited. It applies to password sign-in and the emailed sign-in link. Sign-in with Microsoft follows your Microsoft settings. An administrator can reset it for someone who has lost both their phone and their codes, from Admin &rsaquo; Two-step sign-in.</p>
+            <p>Anyone who signs in with a password can add a second step: a 6-digit code from an authenticator app, with eight one-time recovery codes for a lost phone. The secret is stored encrypted, each code works once, and wrong tries are limited. It applies to password sign-in and the emailed sign-in link. Sign-in with Microsoft follows your Microsoft settings. An administrator can reset it for someone who has lost both their phone and their codes, from Admin &rsaquo; Two-step sign-in, where an administrator can also <strong>require</strong> it for administrators or for everyone who signs in with a password. Someone it applies to is taken to set it up before they can open anything else.</p>
 
             <h3>Role-Based Access Control</h3>
             <p>Multi-level access control with Superadmin, Organisation Admin, and Staff roles. Each organisation's data is completely isolated from others.</p>

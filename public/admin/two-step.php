@@ -11,6 +11,11 @@ $orgId = (int) Auth::getOrganisationId();
 $isSuper = RBAC::isSuperAdmin();
 $error = ''; $success = '';
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'require') {
+    if (!CSRF::validatePost()) { $error = 'Please try again.'; }
+    elseif (TwoFactor::setRequirement($orgId, (string) ($_POST['level'] ?? ''))) { error_log('two-step requirement set to ' . $_POST['level'] . ' for organisation ' . $orgId . ' by user ' . Auth::getUserId()); $success = 'Saved.'; }
+    else { $error = 'Choose one of the options.'; }
+}
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'reset') {
     if (!CSRF::validatePost()) { $error = 'Please try again.'; }
     else {
@@ -27,6 +32,15 @@ include dirname(__DIR__, 2) . '/includes/header.php';
 ?>
 <div class="card">
     <h1>Two-step sign-in</h1>
+    <h2>Require it</h2>
+    <form method="POST"><?= CSRF::tokenField() ?><input type="hidden" name="action" value="require">
+        <?php $level = TwoFactor::requirement($orgId); foreach (TwoFactor::LEVELS as $k => $label): ?>
+        <div class="form-group"><label><input type="radio" name="level" value="<?= htmlspecialchars($k) ?>"<?= $level === $k ? ' checked' : '' ?>> <?= htmlspecialchars($label) ?></label></div>
+        <?php endforeach; ?>
+        <p class="small">Someone it applies to is taken to set it up the next time they use Digital ID, and cannot open anything else until they have. It applies to you too, straight away: have your phone to hand. People who sign in with Microsoft follow your Microsoft settings; the shared demonstration accounts are exempt.</p>
+        <button class="btn btn-primary" type="submit">Save</button>
+    </form>
+    <h2 style="margin-top:2rem">Who has it on</h2>
     <p>People who have switched on two-step sign-in. If someone has lost their phone <em>and</em> their recovery codes, reset it here: they sign in with their password and can set it up again. Make sure you know who is asking: a reset is the way round the second step.</p>
     <?php if ($error): ?><div class="alert alert-error" role="alert"><?= htmlspecialchars($error) ?></div><?php endif; ?>
     <?php if ($success): ?><div class="alert alert-success" role="status"><?= htmlspecialchars($success) ?></div><?php endif; ?>

@@ -157,4 +157,44 @@ class TwoFactor
         }
         return false;
     }
+
+    // ── Requiring it ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    public const LEVELS = [
+        'off'      => 'Not required: each person chooses',
+        'admins'   => 'Required for administrators',
+        'everyone' => 'Required for everyone who signs in with a password',
+    ];
+    private const SETTING = 'require_two_step';
+
+    public static function requirement(int $orgId): string
+    {
+        $s = getDbConnection()->prepare('SELECT setting_value FROM organisation_settings WHERE organisation_id = ? AND setting_key = ?');
+        $s->execute([$orgId, self::SETTING]);
+        $v = (string) $s->fetchColumn();
+        return isset(self::LEVELS[$v]) ? $v : 'off';
+    }
+
+    public static function setRequirement(int $orgId, string $level): bool
+    {
+        if (!isset(self::LEVELS[$level])) return false;
+        getDbConnection()->prepare('INSERT INTO organisation_settings (organisation_id, setting_key, setting_value) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)')->execute([$orgId, self::SETTING, $level]);
+        return true;
+    }
+
+    /** Must this person set it up before going on? Only people who sign in with a password; not the shared demonstration accounts; not once it is on. */
+    public static function mustSetUp(int $userId): bool
+    {
+        $db = getDbConnection();
+        $s = $db->prepare('SELECT id, email, password_hash, organisation_id FROM users WHERE id = ?');
+        $s->execute([$userId]);
+        $u = $s->fetch();
+        if (!$u || !self::available($u)) return false;
+        $level = self::requirement((int) $u['organisation_id']);
+        if ($level === 'off') return false;
+        if ($level === 'admins') {
+            $roles = RBAC::getUserRolesById($userId);
+            if (!in_array('superadmin', $roles, true) && !in_array('organisation_admin', $roles, true)) return false;
+        }
+        return !self::on($userId);
+    }
 }

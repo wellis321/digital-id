@@ -525,6 +525,18 @@ class Auth {
                 }
                 exit;
             }
+            // Two-step sign-in is REQUIRED for this person and they have not set it up: take them to do that first (and let them sign out).
+            $script = (string) ($_SERVER['SCRIPT_NAME'] ?? '');
+            $allowed = preg_match('#(^|/)(two-step|logout|login-2fa)\.php$#', $script) === 1 && !str_contains($script, '/admin/');
+            if (!$allowed && defined('SRC_PATH')) {
+                require_once SRC_PATH . '/classes/TwoFactor.php';
+                $must = false;
+                try { $must = TwoFactor::mustSetUp((int) $userId); } catch (Throwable $e) { error_log('two-step requirement check failed: ' . $e->getMessage()); }
+                if ($must && !headers_sent()) {
+                    header('Location: ' . (function_exists('url') ? url('two-step.php') : '/two-step.php') . '?required=1');
+                    exit;
+                }
+            }
         }
     }
 }
