@@ -52,9 +52,13 @@ include dirname(__DIR__) . '/includes/header.php';
             <div class="form-group"><label for="pw2">Switch it off (your password)</label><input type="password" id="pw2" name="password" required autocomplete="current-password"></div>
             <button class="btn btn-secondary" type="submit">Switch off two-step sign-in</button></form>
     <?php elseif ($secret): ?>
-        <p>1. In an authenticator app (such as Microsoft Authenticator or Google Authenticator), add an account and type in this setup key:</p>
-        <p style="font-family:monospace;font-size:1.15rem;letter-spacing:.08em"><strong><?= htmlspecialchars(trim(chunk_split($secret, 4, ' '))) ?></strong></p>
-        <p class="small">On a phone, <a href="<?= htmlspecialchars(Totp::uri($secret, (string) $me['email'], 'Digital ID')) ?>">this link</a> opens your app directly.</p>
+        <p>1. Open an authenticator app on your phone (such as Microsoft Authenticator or Google Authenticator), choose to add an account, and scan this code:</p>
+        <?php $qrUri = Totp::uri($secret, (string) $me['email'], 'Digital ID'); ?>
+        <div data-qr="<?= htmlspecialchars($qrUri) ?>" hidden></div>
+        <details style="margin:.75rem 0"><summary>Cannot scan it? Type the key in instead</summary>
+            <p style="font-family:monospace;font-size:1.15rem;letter-spacing:.08em"><strong><?= htmlspecialchars(trim(chunk_split($secret, 4, ' '))) ?></strong></p>
+            <p class="small">On the phone that has the app, <a href="<?= htmlspecialchars($qrUri) ?>">this link</a> opens it directly.</p></details>
+        <script src="/assets/qr/qrcode.js"></script><script src="/assets/qr/qr-init.js"></script>
         <p>2. Enter the 6-digit code it shows, to prove it works:</p>
         <form method="POST"><?= CSRF::tokenField() ?><input type="hidden" name="action" value="enable">
             <div class="form-group"><label for="code">Code</label><input type="text" id="code" name="code" inputmode="numeric" autocomplete="one-time-code" required maxlength="7"></div>
