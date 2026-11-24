@@ -128,6 +128,11 @@ class Auth {
                 return ['error' => 'account_inactive', 'message' => 'Your account has been deactivated. Please contact your administrator.'];
             }
             
+            // This organisation has made Care Core the only way in (administrators keep a password).
+            if (class_exists('CareCoreSignIn') && CareCoreSignIn::only((int) $user['organisation_id'], $user)) {
+                return ['error' => 'sso_only', 'message' => 'Your organisation asks you to sign in with Care Core. Use "Sign in with Care Core" on this page.'];
+            }
+
             // A second step is switched on for this person: nothing is signed in until it is passed (see public/login-2fa.php).
             if (self::secondStepNeeded((int) $user['id'])) {
                 TwoFactor::startPending((int) $user['id']);

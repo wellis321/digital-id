@@ -20,6 +20,8 @@ class MagicLink
         $s->execute([$email]);
         $u = $s->fetch();
         if (!$u) return;
+        $full = $db->prepare('SELECT id, organisation_id FROM users WHERE id = ?'); $full->execute([$u['id']]); $fu = $full->fetch();
+        if ($fu && CareCoreSignIn::only((int) $fu['organisation_id'], $fu)) return;   // Care Core is the only way in for this person
         $n = $db->prepare('SELECT COUNT(*) FROM login_links WHERE user_id = ? AND created_at > DATE_SUB(NOW(), INTERVAL 1 HOUR)'); $n->execute([$u['id']]);
         if ((int) $n->fetchColumn() >= 5) return;   // enough emails for one person in an hour
         $token = bin2hex(random_bytes(32));

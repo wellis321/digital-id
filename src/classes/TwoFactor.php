@@ -184,6 +184,7 @@ class TwoFactor
     /** Must this person set it up before going on? Only people who sign in with a password; not the shared demonstration accounts; not once it is on. */
     public static function mustSetUp(int $userId): bool
     {
+        if (!empty($_SESSION['sso_strong'])) return false;   // a second step done in Care Core counts
         $db = getDbConnection();
         $s = $db->prepare('SELECT id, email, password_hash, organisation_id FROM users WHERE id = ?');
         $s->execute([$userId]);

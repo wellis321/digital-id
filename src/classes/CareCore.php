@@ -7,7 +7,7 @@
  */
 class CareCore
 {
-    private const KEYS = ['care_core_url', 'care_core_api_key', 'care_core_webhook_id', 'care_core_webhook_secret', 'care_core_webhook_token', 'care_core_last_sync', 'care_core_last_result'];
+    private const KEYS = ['sso_client_id', 'sso_secret', 'sso_enabled', 'sso_only', 'care_core_url', 'care_core_api_key', 'care_core_webhook_id', 'care_core_webhook_secret', 'care_core_webhook_token', 'care_core_last_sync', 'care_core_last_result'];
 
     // ── Sealing (AES-256-GCM, key from APP_KEY, or derived from the database settings when no APP_KEY is set) ──────────────────────────
     private static function key(): string
@@ -69,7 +69,7 @@ class CareCore
         $s = getDbConnection()->prepare('SELECT setting_value FROM organisation_settings WHERE organisation_id = ? AND setting_key = ?');
         $s->execute([$orgId, $key]);
         $v = (string) ($s->fetchColumn() ?: '');
-        return in_array($key, ['care_core_api_key', 'care_core_webhook_secret'], true) ? self::open($v) : $v;
+        return in_array($key, ['care_core_api_key', 'care_core_webhook_secret', 'sso_secret'], true) ? self::open($v) : $v;
     }
 
     public static function set(int $orgId, string $key, ?string $value): void
@@ -77,7 +77,7 @@ class CareCore
         if (!in_array($key, self::KEYS, true)) throw new InvalidArgumentException('unknown setting');
         $db = getDbConnection();
         if ($value === null || $value === '') { $db->prepare('DELETE FROM organisation_settings WHERE organisation_id = ? AND setting_key = ?')->execute([$orgId, $key]); return; }
-        if (in_array($key, ['care_core_api_key', 'care_core_webhook_secret'], true)) $value = self::seal($value);
+        if (in_array($key, ['care_core_api_key', 'care_core_webhook_secret', 'sso_secret'], true)) $value = self::seal($value);
         $db->prepare('INSERT INTO organisation_settings (organisation_id, setting_key, setting_value) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)')->execute([$orgId, $key, $value]);
     }
 

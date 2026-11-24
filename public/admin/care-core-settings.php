@@ -32,6 +32,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } elseif ($action === 'sync' && CareCore::managed($orgId)) {
                 $result = CareCoreSync::syncOrganisation($orgId);
                 $success = 'Sync finished.';
+            } elseif ($action === 'signin') {
+                $r = CareCoreSignIn::save($orgId, (string) ($_POST['client_id'] ?? ''), (string) ($_POST['client_secret'] ?? ''), ($_POST['enabled'] ?? '') === '1', ($_POST['only'] ?? '') === '1');
+                if ($r !== true) throw new RuntimeException($r);
+                $success = 'Saved.';
             } elseif ($action === 'disconnect') {
                 $old = CareCore::get($orgId, 'care_core_webhook_id');
                 if ($old !== '' && CareCore::managed($orgId)) { try { CareCore::client($orgId)->deleteWebhook($old); } catch (Throwable $e) {} }
@@ -68,6 +72,19 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                 <small>Create a key in Care Core with permission to read people and employments. It is stored encrypted.</small></div>
             <button class="btn btn-primary" type="submit">Connect and import staff</button>
         </form>
+    <?php endif; ?>
+    <?php if ($managed): ?>
+    <hr>
+    <h2>Sign in with Care Core</h2>
+    <p>Let people sign in to Digital ID through Care Core, with the same password and second step as everything else. Register Digital ID in Care Core (Admin, Single sign-in) with this redirect address, then paste the client ID and secret it gives you. People still need an account here: signing in never creates one and never gives a role.</p>
+    <p><code><?= htmlspecialchars(CareCoreSignIn::redirectUri()) ?></code></p>
+    <form method="POST"><?= CSRF::tokenField() ?><input type="hidden" name="action" value="signin">
+        <div class="form-group"><label for="ccid">Client ID</label><input id="ccid" name="client_id" value="<?= htmlspecialchars(CareCore::get($orgId, 'sso_client_id')) ?>" autocomplete="off"></div>
+        <div class="form-group"><label for="ccs">Client secret<?= CareCore::get($orgId, 'sso_secret') !== '' ? ' (leave empty to keep the one saved)' : '' ?></label><input id="ccs" name="client_secret" type="password" autocomplete="off"></div>
+        <div class="form-group"><label><input type="checkbox" name="enabled" value="1" <?= CareCore::get($orgId, 'sso_enabled') === '1' ? 'checked' : '' ?>> Show "Sign in with Care Core"</label></div>
+        <div class="form-group"><label><input type="checkbox" name="only" value="1" <?= CareCore::get($orgId, 'sso_only') === '1' ? 'checked' : '' ?>> Everyone except administrators must use it (administrators keep a password in case Care Core is down)</label></div>
+        <button class="btn btn-primary" type="submit">Save</button>
+    </form>
     <?php endif; ?>
 </div>
 <?php include dirname(__DIR__, 2) . '/includes/footer.php'; ?>

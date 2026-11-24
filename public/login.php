@@ -3,6 +3,7 @@ require_once dirname(__DIR__) . '/config/config.php';
 
 $error = '';
 $success = '';
+if (!empty($_SESSION['cc_flash'])) { $error = (string) $_SESSION['cc_flash']; unset($_SESSION['cc_flash']); }   // a message from the Care Core sign-in
 
 // Rate limiting for login attempts
 require_once SRC_PATH . '/classes/RateLimiter.php';
@@ -189,6 +190,18 @@ include INCLUDES_PATH . '/header.php';
         
         <button type="submit" class="btn btn-primary">Login</button>
     </form>
+    <?php $ccOrgs = CareCoreSignIn::organisations(); if ($ccOrgs): ?>
+    <div style="margin: 1.5rem 0">
+        <?php if (count($ccOrgs) === 1): ?>
+            <a class="btn btn-secondary" href="<?php echo htmlspecialchars(url('care-core-login.php?start=1&org=' . (int) $ccOrgs[0]['id'])); ?>">Sign in with Care Core</a>
+        <?php else: ?>
+            <form method="GET" action="<?php echo htmlspecialchars(url('care-core-login.php')); ?>"><input type="hidden" name="start" value="1">
+                <label for="cc-org">Your organisation</label>
+                <select id="cc-org" name="org"><?php foreach ($ccOrgs as $o): ?><option value="<?php echo (int) $o['id']; ?>"><?php echo htmlspecialchars($o['name']); ?></option><?php endforeach; ?></select>
+                <button class="btn btn-secondary" type="submit">Sign in with Care Core</button></form>
+        <?php endif; ?>
+    </div>
+    <?php endif; ?>
     <?php if (!DEMO_MODE): ?><p style="margin-top:1rem"><a href="<?php echo url('login-link.php'); ?>">Email me a sign-in link instead</a></p><?php endif; ?>
     
     <?php
