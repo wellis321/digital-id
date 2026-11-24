@@ -39,7 +39,8 @@ include dirname(__DIR__) . '/includes/header.php';
     <?php if ($codes): ?>
         <h2>Save your recovery codes</h2>
         <p>These eight codes are for the day you lose your phone. <strong>Each works once, and they will not be shown again.</strong> Keep them somewhere safe and apart from your password.</p>
-        <ul style="font-family:monospace;font-size:1.1rem;list-style:none;padding:0;columns:2"><?php foreach ($codes as $c): ?><li><?= htmlspecialchars($c) ?></li><?php endforeach; ?></ul>
+        <ul data-recovery data-product="Digital ID" style="font-family:monospace;font-size:1.1rem;list-style:none;padding:0;columns:2"><?php foreach ($codes as $c): ?><li><?= htmlspecialchars($c) ?></li><?php endforeach; ?></ul>
+        <script src="/assets/qr/recovery-codes.js"></script>
         <p><a class="btn btn-primary" href="<?= url('two-step.php') ?>">I have saved them</a></p>
     <?php elseif (!$available): ?>
         <p>Two-step sign-in applies to accounts that sign in with a password. If you sign in with Microsoft, your Microsoft settings decide this. A shared demonstration account cannot use it.</p>
