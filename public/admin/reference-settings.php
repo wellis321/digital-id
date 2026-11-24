@@ -183,8 +183,8 @@ include dirname(__DIR__, 2) . '/includes/header.php';
 
 <div class="container">
     <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
-        <a href="<?php echo url('admin/organisational-structure.php'); ?>" style="color: #4a5a5c;">
-            <i class="fas fa-arrow-left"></i>
+        <a href="<?php echo url('admin/organisational-structure.php'); ?>" style="color: #4a5a5c;" aria-label="Back to organisational structure">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i>
         </a>
         <div style="flex: 1;">
             <h1>Organisation Settings</h1>

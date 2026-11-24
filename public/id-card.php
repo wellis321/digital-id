@@ -33,6 +33,7 @@ if (!$employee && RBAC::isSuperAdmin()) {
 $pageTitle = 'Digital ID Card';
 include dirname(__DIR__) . '/includes/header.php';
 if (DEMO_MODE) { echo '<div class="container">' . demo_tour_html(RBAC::isAdmin()) . '</div>'; }
+echo '<h1 class="sr-only">Your digital ID card</h1>';
 
 // If no employee record exists, find contact person and send notifications
 if (!$employee):
@@ -114,7 +115,7 @@ if (!$employee):
     }
 ?>
 <div class="card">
-    <h1>Employee Profile Not Found</h1>
+    <h2>Employee Profile Not Found</h2>
     <div class="alert alert-error">
         <p><strong>Your account is active, but you don't have an employee profile set up yet.</strong></p>
         <p>An employee profile with an employee reference number is required to generate your digital ID card.</p>
