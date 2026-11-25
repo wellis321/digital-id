@@ -77,6 +77,10 @@ if ($linked) {
         $db->prepare("UPDATE users SET password_hash = ? WHERE id = ?")->execute([$hash, $uid]);
         $db->prepare("INSERT IGNORE INTO user_roles (user_id, role_id) VALUES (?, ?)")->execute([$uid, $roleId[$role]]);
     }
+    // Sign in with Care Core on the demonstration: the Care Core demo registers this demo as a client every night, with credentials worked out from DEMO_SSO_SECRET (the same value is in
+    // each demo's .env). The demo logins above are the same people as in Care Core, so they match by email.
+    $ssoMaster = trim((string) getenv('DEMO_SSO_SECRET'));
+    if (strlen($ssoMaster) >= 32) { $sr = CareCoreSignIn::save(1, 'cc_demo_id', hash_hmac('sha256', 'id', $ssoMaster), true, false); echo $sr === true ? "Sign in with Care Core is on for the demonstration.\n" : "Sign in with Care Core was not set up: $sr\n"; }
     foreach ($db->query("SELECT id FROM employees WHERE organisation_id = 1 AND is_active = 1 ORDER BY id")->fetchAll(PDO::FETCH_COLUMN) as $eid) { $employeeIds[] = (int) $eid; DigitalID::createIdCard((int) $eid); }
     $people = $employeeIds;
 } else {
