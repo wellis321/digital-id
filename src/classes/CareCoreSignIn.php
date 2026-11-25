@@ -16,7 +16,7 @@ class CareCoreSignIn
     /** Seconds between checks that someone who came in through Care Core is still allowed in. */
     public const RECHECK = 300;
 
-    public static function redirectUri(): string { return rtrim((string) APP_URL, '/') . url('care-core-login.php'); }
+    public static function redirectUri(): string { return rtrim((string) APP_URL, '/') . '/care-core-login.php'; }   // not url(): that adds /public/, and the address registered in Care Core must be exact
 
     private static function pdo(): PDO { return getDbConnection(); }
 
