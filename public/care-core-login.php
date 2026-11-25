@@ -21,7 +21,8 @@ if (isset($_GET['start'])) {
 
 $r = CareCoreSignIn::complete($_GET);
 if (is_string($r)) cc_back($r);
-[$u, , $strong] = $r;
+[$u, , $strong, $sub] = $r;
+$_SESSION['cc_pending'] = ['uid' => (int) $u['id'], 'org' => (int) $u['organisation_id'], 'sub' => $sub];   // picked up when sign-in completes (see Auth::loginUserById)
 $res = Auth::loginUserById((int) $u['id'], !$strong);   // a second step done in Care Core counts; otherwise this product asks for its own if the person has one
 if ($res === 'second_step_required') { header('Location: ' . url('login-2fa.php')); exit; }
 if ($res !== true) cc_back('Your account here is not ready to sign in. Check that your email is verified, or ask your administrator.');

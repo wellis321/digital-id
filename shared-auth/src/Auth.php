@@ -176,6 +176,11 @@ class Auth {
         $_SESSION['email'] = $user['email'];
         $_SESSION['user_data'] = $user;
         $db->prepare("UPDATE users SET last_login = NOW() WHERE id = ?")->execute([$user['id']]);
+        // This person came in through Care Core (see public/care-core-login.php): remember it, so they can be checked again.
+        if (!empty($_SESSION['cc_pending']) && (int) ($_SESSION['cc_pending']['uid'] ?? 0) === (int) $user['id'] && class_exists('CareCoreSignIn')) {
+            CareCoreSignIn::remember((int) $_SESSION['cc_pending']['org'], (string) $_SESSION['cc_pending']['sub']);
+            unset($_SESSION['cc_pending']);
+        }
         return true;
     }
 
@@ -528,6 +533,13 @@ class Auth {
                 if (!headers_sent()) {
                     header('Location: ' . $loginUrl);
                 }
+                exit;
+            }
+            // Came in through Care Core and no longer allowed there (left, or their login was switched off): out within minutes.
+            if (class_exists('CareCoreSignIn') && !CareCoreSignIn::stillAllowed()) {
+                self::logout();
+                $_SESSION['cc_flash'] = 'Your access has ended. If that is not right, ask your administrator.';
+                if (!headers_sent()) { header('Location: ' . (function_exists('url') ? url('login.php') : '/login.php')); }
                 exit;
             }
             // Two-step sign-in is REQUIRED for this person and they have not set it up: take them to do that first (and let them sign out).

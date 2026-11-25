@@ -251,6 +251,17 @@ class CareCoreSync
                 try { $n = self::syncTraining($orgId, (string) ($event['subject'] ?? ''), $client); return $done('ok', $n . ' training records'); }
                 catch (RuntimeException $e) { if (str_contains($e->getMessage(), 'permission')) return $done('ignored', 'the API key cannot read learning records'); throw $e; }
             }
+            if ($type === 'user.disabled') {   // a login was switched off in Care Core: switch it off here too, at once (the card is not revoked; never the only administrator)
+                $s = $db->prepare('SELECT user_id FROM employees WHERE organisation_id = ? AND care_core_person_id = ?'); $s->execute([$orgId, (string) ($event['subject'] ?? '')]); $uid = (int) $s->fetchColumn();
+                if (!$uid) return $done('ignored', 'no matching account here');
+                $roles = RBAC::getUserRolesById($uid);
+                if (in_array('organisation_admin', $roles, true)) {
+                    $n = $db->prepare("SELECT COUNT(*) FROM users u JOIN user_roles ur ON ur.user_id = u.id JOIN roles r ON r.id = ur.role_id WHERE u.organisation_id = ? AND r.name = 'organisation_admin' AND u.is_active = 1 AND u.id <> ?"); $n->execute([$orgId, $uid]);
+                    if ((int) $n->fetchColumn() === 0) return $done('ignored', 'the only administrator was left on');
+                }
+                $db->prepare('UPDATE users SET is_active = 0 WHERE id = ?')->execute([$uid]);
+                return $done('ok', 'login switched off');
+            }
             if (!in_array($type, ['person.created', 'person.updated', 'employment.started', 'employment.changed', 'employment.ended'], true)) return $done('ignored', "$type is not used here");
             $client ??= CareCore::client($orgId);
             $personUuid = (string) ($event['subject'] ?? '');

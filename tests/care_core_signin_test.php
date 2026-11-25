@@ -12,7 +12,7 @@ $pdo->exec('CREATE TABLE organisations (id INT AUTO_INCREMENT PRIMARY KEY, name 
 $pdo->exec("CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, organisation_id INT NULL, email VARCHAR(190), is_active TINYINT(1) NOT NULL DEFAULT 1, email_verified TINYINT(1) NOT NULL DEFAULT 1, password_hash VARCHAR(255) NULL) ENGINE=InnoDB");
 $pdo->exec('CREATE TABLE roles (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50)) ENGINE=InnoDB');
 $pdo->exec('CREATE TABLE user_roles (user_id INT NOT NULL, role_id INT NOT NULL) ENGINE=InnoDB');
-$pdo->exec('CREATE TABLE employees (id INT AUTO_INCREMENT PRIMARY KEY, organisation_id INT NULL) ENGINE=InnoDB');
+$pdo->exec('CREATE TABLE employees (id INT AUTO_INCREMENT PRIMARY KEY, organisation_id INT NULL, user_id INT NULL) ENGINE=InnoDB');
 $pdo->exec("INSERT INTO roles (name) VALUES ('superadmin'), ('organisation_admin'), ('staff')");
 define('DEMO_MODE', false); define('DB_NAME', 'digitalid_signin_test'); define('DB_USER', 'test'); define('DB_PASS', 'test'); define('APP_URL', 'https://id.example.test');
 function getDbConnection() { return $GLOBALS['pdo']; }
@@ -95,6 +95,29 @@ $pdo->exec('UPDATE users SET is_active = 0 WHERE id = ' . (int) $user['id']); ch
 $_SESSION = ['sso_strong' => 1]; require_once dirname(__DIR__) . '/src/classes/Totp.php'; require_once dirname(__DIR__) . '/src/classes/TwoFactor.php';
 check('a second step done in Care Core counts for the require setting', TwoFactor::mustSetUp((int) $user['id']) === false);
 $_SESSION = [];
+// leaver cut-off: a person who came in through Care Core is asked about again every five minutes
+$ans = ['active' => true]; $calls = 0; $status = 200;
+CareCoreSignIn::$http = function (string $m, string $url, ?array $form) use (&$ans, &$calls, &$status): array { if (str_ends_with($url, '/oidc/introspect')) { $calls++; return [$status, json_encode($ans)]; } return [404, '']; };
+$_SESSION = []; check('a session not started through Care Core is never checked', CareCoreSignIn::stillAllowed() && $calls === 0);
+CareCoreSignIn::remember($org, 'sub-1'); check('checked at most every five minutes', CareCoreSignIn::stillAllowed() && $calls === 0);
+$_SESSION['cc_checked'] = time() - 400; check('asked after five minutes, and still allowed', CareCoreSignIn::stillAllowed() && $calls === 1);
+$_SESSION['cc_checked'] = time() - 400; $ans = ['active' => false]; check('cut off when Care Core says they are no longer allowed', !CareCoreSignIn::stillAllowed());
+$_SESSION['cc_checked'] = time() - 400; $status = 503; check('if Care Core cannot be reached they stay in and it is asked again soon', CareCoreSignIn::stillAllowed() && time() - $_SESSION['cc_checked'] > 200);
+$status = 401; $_SESSION['cc_checked'] = time() - 400; check('if our own credentials are refused nobody is locked out', CareCoreSignIn::stillAllowed());
+$_SESSION = [];
+// a login switched off in Care Core is switched off here at once (never the only administrator)
+require_once dirname(__DIR__) . '/src/classes/CareCoreSync.php';
+$ev = fn(string $pid) => ['id' => sprintf('%08x-0000-4000-8000-%012x', random_int(1, 2000000000), random_int(1, 2000000000)), 'type' => 'user.disabled', 'subject' => $pid];
+$pid1 = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'; $pid2 = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
+$pdo->prepare('INSERT INTO employees (organisation_id, user_id, care_core_person_id) VALUES (?,?,?)')->execute([$org, $user['id'], $pid1]);
+$pdo->prepare('INSERT INTO employees (organisation_id, user_id, care_core_person_id) VALUES (?,?,?)')->execute([$org, $admin['id'], $pid2]);
+[$out] = CareCoreSync::applyEvent($org, $ev($pid1));
+check('a login switched off in Care Core switches the account off here at once', $out === 'ok' && (int) $pdo->query('SELECT is_active FROM users WHERE id = ' . (int) $user['id'])->fetchColumn() === 0);
+$pdo->exec('UPDATE users SET is_active = 1 WHERE id = ' . (int) $user['id']);
+[$out] = CareCoreSync::applyEvent($org, $ev('cccccccc-cccc-4ccc-8ccc-cccccccccccc')); check('nothing to do when there is no such account', $out === 'ignored');
+[$out] = CareCoreSync::applyEvent($org, $ev($pid2));
+check('the only administrator is never switched off this way', $out === 'ignored' && (int) $pdo->query('SELECT is_active FROM users WHERE id = ' . (int) $admin['id'])->fetchColumn() === 1);
+
 CareCoreSignIn::$http = null;
 echo $fail ? "\n$fail FAILED\n" : "\nAll checks passed.\n";
 exit($fail ? 1 : 0);

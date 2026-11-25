@@ -13,6 +13,8 @@ class CareCoreSignIn
     /** Tests only: stands in for stored settings. @var array<string,mixed>|null */
     public static ?array $testSettings = null;
     public const SKEW = 60;
+    /** Seconds between checks that someone who came in through Care Core is still allowed in. */
+    public const RECHECK = 300;
 
     public static function redirectUri(): string { return rtrim((string) APP_URL, '/') . url('care-core-login.php'); }
 
@@ -84,15 +86,45 @@ class CareCoreSignIn
         return $s !== null && (int) $s['sso_enabled'] === 1 && (int) $s['sso_only'] === 1 && !self::isAdmin($user);
     }
 
+    /** Remember, in the session, that this person came in through Care Core, so they can be checked again later. */
+    public static function remember(int $org, string $sub): void
+    {
+        $_SESSION['cc_sub'] = $sub; $_SESSION['cc_org'] = $org; $_SESSION['cc_checked'] = time();
+    }
+
+    /**
+     * May someone who came in through Care Core stay in? Asked of Care Core at most every five minutes, so a leaver, or a login switched off there, is cut off within
+     * minutes. If Care Core cannot be reached the person stays in and it is asked again in a minute: Care Core being down never locks a service out.
+     */
+    public static function stillAllowed(): bool
+    {
+        $sub = (string) ($_SESSION['cc_sub'] ?? '');
+        if ($sub === '' || time() - (int) ($_SESSION['cc_checked'] ?? 0) < self::RECHECK) return true;
+        $r = self::introspect((int) ($_SESSION['cc_org'] ?? 0), $sub);
+        if ($r === null) { $_SESSION['cc_checked'] = time() - self::RECHECK + 60; return true; }
+        if ($r) { $_SESSION['cc_checked'] = time(); return true; }
+        return false;
+    }
+
+    /** @return ?bool true = still allowed, false = no longer, null = could not find out (unreachable, or our own credentials no longer accepted) */
+    public static function introspect(int $org, string $sub): ?bool
+    {
+        $s = self::settings($org);
+        if (!$s) return null;
+        [$st, $body] = self::request('POST', rtrim((string) $s['base_url'], '/') . '/oidc/introspect', ['sub' => $sub, 'client_id' => $s['sso_client_id'], 'client_secret' => (string) $s['secret']], 4);
+        $d = json_decode($body, true);
+        return $st === 200 && is_array($d) && array_key_exists('active', $d) ? (bool) $d['active'] : null;
+    }
+
     private static function b64u(string $raw): string { return rtrim(strtr(base64_encode($raw), '+/', '-_'), '='); }
     private static function unb64u(string $s): ?string { $r = base64_decode(strtr($s, '-_', '+/'), true); return $r === false ? null : $r; }
 
     /** @return array{0:int,1:string} */
-    private static function request(string $method, string $url, ?array $form = null): array
+    private static function request(string $method, string $url, ?array $form = null, int $timeout = 10): array
     {
         if (self::$http) return (self::$http)($method, $url, $form);
         $ch = curl_init($url);
-        curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 10, CURLOPT_CONNECTTIMEOUT => 5, CURLOPT_FOLLOWLOCATION => false, CURLOPT_USERAGENT => 'digital-id-signin',
+        curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => $timeout, CURLOPT_CONNECTTIMEOUT => 5, CURLOPT_FOLLOWLOCATION => false, CURLOPT_USERAGENT => 'digital-id-signin',
             CURLOPT_PROTOCOLS => CURLPROTO_HTTPS | CURLPROTO_HTTP]);
         if ($form !== null) { curl_setopt($ch, CURLOPT_POST, true); curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($form)); }
         $body = curl_exec($ch); $code = (int) curl_getinfo($ch, CURLINFO_RESPONSE_CODE); curl_close($ch);
@@ -122,7 +154,7 @@ class CareCoreSignIn
         ], '', '&', PHP_QUERY_RFC3986), null];
     }
 
-    /** Finish. Returns [user row, next path, second step done in Care Core] or a message safe to show. @param array<string,string> $query @return array{0:array<string,mixed>,1:string,2:bool}|string */
+    /** Finish. Returns [user row, next path, second step done in Care Core] or a message safe to show. @param array<string,string> $query @return array{0:array<string,mixed>,1:string,2:bool,3:string}|string */
     public static function complete(array $query): array|string
     {
         $saved = $_SESSION['cc_oidc'] ?? null; unset($_SESSION['cc_oidc']);
@@ -144,7 +176,7 @@ class CareCoreSignIn
         if ($claims === null) return $bad;
         $u = self::userFor($org, $claims);
         if (is_string($u)) return $u;
-        return [$u, (string) $saved['next'], in_array('otp', (array) ($claims['amr'] ?? []), true)];
+        return [$u, (string) $saved['next'], in_array('otp', (array) ($claims['amr'] ?? []), true), (string) $claims['sub']];
     }
 
     /** Check an ID token in full. Null for anything wrong. @param array<string,mixed> $s @param array<string,mixed> $d @return array<string,mixed>|null */
