@@ -13,3 +13,29 @@ body .demo-banner a:focus-visible, body .demo-banner .demo-linkbtn:focus-visible
 body header.shell-header, body > header { background: var(--ink, #0d2b2e); background-image: none; box-shadow: none; }
 body .shell-brand { display: inline-flex; align-items: center; gap: .6rem; color: #fff; font-weight: 700; font-size: 1.15rem; line-height: 1.2; text-decoration: none; }
 body .shell-mark { display: inline-grid; place-items: center; flex: none; width: 2.25rem; height: 2.25rem; border: 1px solid rgba(255,255,255,.55); border-radius: 6px; font-size: .85rem; font-weight: 700; letter-spacing: .02em; color: #fff; }
+
+/* Strategic Plans: a menu for narrow screens (its wide menu is hidden there). */
+body .shell-menu { display: none; }
+body .shell-menu summary { cursor: pointer; list-style: none; color: #fff; font-weight: 600; border: 1px solid rgba(255,255,255,.55); border-radius: 6px; padding: .5rem .9rem; min-height: 44px; display: inline-flex; align-items: center; }
+body .shell-menu summary::-webkit-details-marker { display: none; }
+body .shell-menu summary:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+body .shell-menu ul { position: absolute; left: 0; right: 0; z-index: 60; margin: 0; padding: 0; list-style: none; background: var(--ink, #0d2b2e); border-bottom: 1px solid rgba(255,255,255,.2); }
+body .shell-menu li a { display: block; padding: .8rem 1.25rem; color: #fff; text-decoration: none; border-top: 1px solid rgba(255,255,255,.14); }
+body .shell-menu li a[aria-current="page"] { font-weight: 700; text-decoration: underline; text-underline-offset: .2em; }
+@media (max-width: 767px) { body .shell-menu { display: block; } }
+
+/* Narrow screens: the strip reads as one short paragraph, and Contracts' menu button and menu are visible on ink. */
+@media (max-width: 640px) {
+  body .demo-banner { display: block; font-size: .8rem; padding: .4rem 1rem; }
+  body .demo-banner .demo-switch { display: inline; }
+  body .demo-banner .demo-switch span { margin-right: .35rem; }
+  body .demo-banner .demo-linkbtn { min-height: 28px; padding: 0; display: inline-block; }
+}
+@media (max-width: 768px) {
+  body header .nav-toggle { width: 44px; height: 44px; padding: 10px 7px; }
+  body header .nav-toggle-icon { background-color: #fff; }
+  body header .nav-menu.nav-menu-active { background: var(--ink, #0d2b2e); }
+  body header .nav-menu.nav-menu-active > li { border-color: rgba(255,255,255,.14); }
+  body header .nav-menu.nav-menu-active a { color: #fff; background: transparent; }
+  body header .nav-menu.nav-menu-active .nav-dropdown-menu { background: transparent; border: 0; box-shadow: none; }
+}
