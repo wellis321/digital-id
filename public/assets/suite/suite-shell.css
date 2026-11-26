@@ -1,0 +1,15 @@
+/* Suite shell (kit 0.4.0): the same demonstration strip and the same header in Digital ID, Contracts and Strategic Plans.
+   Load AFTER suite.css. Unlike suite.css this file sets a little layout, only for the strip and the brand. */
+
+/* The demonstration strip: one quiet line, not a second header. */
+body .demo-banner { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0 .9rem; padding: .3rem 1rem; background: #fbefd9; color: #3d2a05; border-bottom: 1px solid #e3cf9f; font-size: .875rem; line-height: 1.4; text-align: left; }
+body .demo-banner strong { color: inherit; text-transform: none; letter-spacing: 0; margin-right: 0; }
+body .demo-banner__text { flex: 0 1 auto; min-width: 0; }
+body .demo-banner a, body .demo-banner a:hover, body .demo-banner .demo-linkbtn { color: inherit; margin-left: 0; text-decoration: underline; text-underline-offset: .18em; }
+body .demo-banner .demo-linkbtn { min-height: 32px; padding: .2rem 0; font-size: inherit; font-weight: 600; }
+body .demo-banner a:focus-visible, body .demo-banner .demo-linkbtn:focus-visible { outline: 3px solid #3d2a05; outline-offset: 2px; box-shadow: none; }
+
+/* The header: ink, one height, a lettered mark and the product's name. */
+body header.shell-header, body > header { background: var(--ink, #0d2b2e); background-image: none; box-shadow: none; }
+body .shell-brand { display: inline-flex; align-items: center; gap: .6rem; color: #fff; font-weight: 700; font-size: 1.15rem; line-height: 1.2; text-decoration: none; }
+body .shell-mark { display: inline-grid; place-items: center; flex: none; width: 2.25rem; height: 2.25rem; border: 1px solid rgba(255,255,255,.55); border-radius: 6px; font-size: .85rem; font-weight: 700; letter-spacing: .02em; color: #fff; }

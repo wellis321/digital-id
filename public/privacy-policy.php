@@ -131,14 +131,12 @@ include INCLUDES_PATH . '/header.php';
         
         <section id="cookies" style="margin-bottom: 3rem;">
             <h2>8. Cookies and Tracking Technologies</h2>
-            <p>We use cookies and similar tracking technologies to:</p>
+            <p>We use one essential cookie, to:</p>
             <ul style="margin-left: 2rem; margin-top: 0.5rem;">
                 <li>Maintain your login session</li>
                 <li>Store CSRF tokens for security</li>
-                <li>Remember your preferences</li>
-                <li>Analyse service usage</li>
             </ul>
-            <p>You can control cookies through your browser settings. However, disabling cookies may affect the functionality of the service.</p>
+            <p>We use no advertising, tracking or analytics cookies. You can control cookies through your browser settings. However, disabling cookies may affect the functionality of the service.</p>
         </section>
         
         <section style="margin-bottom: 3rem;">

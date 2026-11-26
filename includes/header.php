@@ -35,6 +35,7 @@
     <link rel="stylesheet" href="<?php echo htmlspecialchars(url('assets/libs/fontawesome/css/all.min.css')); ?>?v=6.4.0">
     <link rel="stylesheet" href="<?php echo url('assets/css/style.css'); ?>?v=<?php echo filemtime(dirname(__DIR__) . '/public/assets/css/style.css'); ?>">
     <link rel="stylesheet" href="<?php echo htmlspecialchars(url('assets/suite/suite.css')); ?>?v=<?php echo filemtime(dirname(__DIR__) . '/public/assets/suite/suite.css'); ?>">
+    <link rel="stylesheet" href="<?php echo htmlspecialchars(url('assets/suite/suite-shell.css')); ?>?v=<?php echo filemtime(dirname(__DIR__) . '/public/assets/suite/suite-shell.css'); ?>">
     
     <!-- Service Worker Registration -->
     <script>
@@ -264,8 +265,8 @@
     <header>
         <nav>
             <div class="container">
-                <a href="<?php echo url('index.php'); ?>" class="logo">
-                    <img src="<?php echo url('assets/images/300-high-digitalID-logo.png'); ?>" alt="" class="logo-image">
+                <a href="<?php echo url('index.php'); ?>" class="logo shell-brand">
+                    <span class="shell-mark" aria-hidden="true">ID</span>
                     <span class="logo-text"><?php echo APP_NAME; ?></span>
                 </a>
                 <button class="mobile-menu-toggle" aria-label="Toggle menu" style="display: none;">
