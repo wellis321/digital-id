@@ -8,6 +8,14 @@ class CareCoreClient
 {
     /** @var callable|null */
     public static $http = null;
+    /** @var callable|null Stands in for waiting in tests: fn(int $seconds): void */
+    public static $sleep = null;
+
+    /** Seconds to wait before asking again when Care Core cannot answer a read. */
+    private const WAITS = [2, 5, 10];
+    /** The most one pass spends waiting, so a Care Core that is really down does not hold a page or a job open. */
+    private const PATIENCE = 60;
+    private int $waited = 0;
 
     public function __construct(private string $baseUrl, private string $apiKey)
     {
@@ -34,7 +42,20 @@ class CareCoreClient
         $body = $json === null ? null : json_encode($json, JSON_UNESCAPED_SLASHES);
         $headers = ['Authorization: Bearer ' . $this->apiKey, 'Accept: application/json, image/*'];
         if ($body !== null) $headers[] = 'Content-Type: application/json';
-        if (self::$http) return (self::$http)($method, $url, $body, $headers);
+        // Care Core sometimes answers a read with a server error for a moment (on shared hosting, when asked many things quickly), so ask again.
+        // Only reads: something being created is never sent twice.
+        for ($try = 0; ; $try++) {
+            $answer = self::$http ? (self::$http)($method, $url, $body, $headers) : $this->send($method, $url, $body, $headers);
+            $wait = self::WAITS[$try] ?? null;
+            if ($method !== 'GET' || !in_array($answer[0], [500, 502, 503, 504], true) || $wait === null || $this->waited + $wait > self::PATIENCE) return $answer;
+            $this->waited += $wait;
+            self::$sleep ? (self::$sleep)($wait) : sleep($wait);
+        }
+    }
+
+    /** One call over the network. @param list<string> $headers @return array{0:int,1:string,2:array<string,string>} */
+    private function send(string $method, string $url, ?string $body, array $headers): array
+    {
         $ch = curl_init($url);
         $local = in_array(strtolower((string) parse_url($url, PHP_URL_HOST)), ['localhost', '127.0.0.1', '::1'], true);
         curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_HEADER => true, CURLOPT_TIMEOUT => 20, CURLOPT_CONNECTTIMEOUT => 8, CURLOPT_CUSTOMREQUEST => $method,
