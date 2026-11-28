@@ -16,7 +16,6 @@ foreach ($argv as $a) { if (str_starts_with($a, '--keep=')) $keep = max(1, (int)
 if (!is_dir($dir) && !mkdir($dir, 0700, true)) { fwrite(STDERR, "Cannot create $dir\n"); exit(1); }
 @chmod($dir, 0700);
 $pdo = getDbConnection();
-$pdo->exec("SET time_zone = '+00:00'");   // the dump says its times are UTC, so read them that way
 $stamp = gmdate('Ymd-His'); $name = 'digitalid-' . $stamp . '.sql.gz'; $path = $dir . '/' . $name;
 $gz = gzopen($path . '.partial', 'wb6');
 if (!$gz) { fwrite(STDERR, "Cannot write $path\n"); exit(1); }

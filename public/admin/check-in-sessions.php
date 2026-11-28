@@ -114,7 +114,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                             </td>
                             <td><?php echo htmlspecialchars(ucfirst(str_replace('_', ' ', $session['session_type']))); ?></td>
                             <td><?php echo htmlspecialchars($session['location_name'] ?? 'N/A'); ?></td>
-                            <td><?php echo date('d/m/Y H:i', strtotime($session['started_at'])); ?></td>
+                            <td><?php echo uk_time($session['started_at']); ?></td>
                             <td><?php echo htmlspecialchars(($session['started_by_first_name'] ?? '') . ' ' . ($session['started_by_last_name'] ?? '')); ?></td>
                             <td><?php echo CheckInSession::getCheckInCount($session['id']); ?></td>
                             <td>
@@ -166,8 +166,8 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                             </td>
                             <td><?php echo htmlspecialchars(ucfirst(str_replace('_', ' ', $session['session_type']))); ?></td>
                             <td><?php echo htmlspecialchars($session['location_name'] ?? 'N/A'); ?></td>
-                            <td><?php echo date('d/m/Y H:i', strtotime($session['started_at'])); ?></td>
-                            <td><?php echo $session['ended_at'] ? date('d/m/Y H:i', strtotime($session['ended_at'])) : '-'; ?></td>
+                            <td><?php echo uk_time($session['started_at']); ?></td>
+                            <td><?php echo $session['ended_at'] ? uk_time($session['ended_at']) : '-'; ?></td>
                             <td><?php echo htmlspecialchars(($session['started_by_first_name'] ?? '') . ' ' . ($session['started_by_last_name'] ?? '')); ?></td>
                             <td><?php echo CheckInSession::getCheckInCount($session['id']); ?></td>
                             <td>

@@ -8,6 +8,8 @@
  * Get database connection
  * @return PDO
  */
+require_once __DIR__ . '/time.php';
+
 function getDbConnection() {
     static $pdo = null;
     
@@ -21,8 +23,7 @@ function getDbConnection() {
             ];
             
             $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
-            // The database's session keeps UK time, like the app, so NOW(), CURDATE() and saved times agree with PHP all year (the server's own clock is UTC).
-            try { $pdo->exec("SET time_zone = 'Europe/London'"); } catch (PDOException $e) { $pdo->exec("SET time_zone = '" . date('P') . "'"); }
+            $pdo->exec("SET time_zone = '+00:00'");   // saved times are UTC on every server; see time.php for showing them
         } catch (PDOException $e) {
             error_log("Database connection error: " . $e->getMessage());
             die("Database connection failed. Please check your configuration.");

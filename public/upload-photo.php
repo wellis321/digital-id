@@ -125,7 +125,7 @@ include INCLUDES_PATH . '/header.php';
                     </p>
                     <?php if ($employee['photo_approved_at']): ?>
                         <p style="color: #1f6b45; margin: 0; font-size: 0.875rem;">
-                            <i class="fas fa-calendar-check"></i> Approved on <?php echo date('d/m/Y H:i', strtotime($employee['photo_approved_at'])); ?>
+                            <i class="fas fa-calendar-check"></i> Approved on <?php echo uk_time($employee['photo_approved_at']); ?>
                         </p>
                     <?php endif; ?>
                 </div>

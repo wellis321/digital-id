@@ -203,7 +203,7 @@ class Auth {
         }
         
         // Check if token has expired
-        if (strtotime($user['verification_token_expires_at']) < time()) {
+        if (db_ts($user['verification_token_expires_at']) < time()) {
             return ['success' => false, 'message' => 'Verification token has expired. Please request a new verification email.'];
         }
         
@@ -280,7 +280,7 @@ class Auth {
         
         // Generate new verification token
         $verificationToken = Email::generateVerificationToken();
-        $tokenExpires = date('Y-m-d H:i:s', strtotime('+' . VERIFICATION_TOKEN_EXPIRY_HOURS . ' hours'));
+        $tokenExpires = gmdate('Y-m-d H:i:s', strtotime('+' . VERIFICATION_TOKEN_EXPIRY_HOURS . ' hours'));
         
         $stmt = $db->prepare("
             UPDATE users 
@@ -426,7 +426,7 @@ class Auth {
             
             // Generate verification token
             $verificationToken = Email::generateVerificationToken();
-            $tokenExpires = date('Y-m-d H:i:s', strtotime('+' . VERIFICATION_TOKEN_EXPIRY_HOURS . ' hours'));
+            $tokenExpires = gmdate('Y-m-d H:i:s', strtotime('+' . VERIFICATION_TOKEN_EXPIRY_HOURS . ' hours'));
             
             // Create user (inactive until email verified)
             $passwordHash = self::hashPassword($password);

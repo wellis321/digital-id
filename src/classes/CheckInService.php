@@ -211,7 +211,7 @@ class CheckInService {
         $stmt->execute([$checkIn['id']]);
         
         if ($stmt->rowCount() > 0) {
-            $checkIn['checked_out_at'] = date('Y-m-d H:i:s');
+            $checkIn['checked_out_at'] = gmdate('Y-m-d H:i:s');
             
             // Get full check-in record
             $fullCheckIn = self::getCheckInById($checkIn['id']);

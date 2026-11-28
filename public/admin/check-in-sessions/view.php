@@ -68,11 +68,11 @@ include dirname(__DIR__, 3) . '/includes/header.php';
             </tr>
             <tr>
                 <th>Started:</th>
-                <td><?php echo date('d/m/Y H:i:s', strtotime($session['started_at'])); ?></td>
+                <td><?php echo uk_time($session['started_at'], 'd/m/Y H:i:s'); ?></td>
             </tr>
             <tr>
                 <th>Ended:</th>
-                <td><?php echo $session['ended_at'] ? date('d/m/Y H:i:s', strtotime($session['ended_at'])) : 'Active'; ?></td>
+                <td><?php echo $session['ended_at'] ? uk_time($session['ended_at'], 'd/m/Y H:i:s') : 'Active'; ?></td>
             </tr>
             <tr>
                 <th>Started By:</th>
@@ -120,8 +120,8 @@ include dirname(__DIR__, 3) . '/includes/header.php';
                             <tr>
                                 <td><?php echo htmlspecialchars(($checkIn['first_name'] ?? '') . ' ' . ($checkIn['last_name'] ?? '')); ?></td>
                                 <td><?php echo htmlspecialchars($checkIn['display_reference'] ?? $checkIn['employee_reference'] ?? 'N/A'); ?></td>
-                                <td><?php echo date('d/m/Y H:i:s', strtotime($checkIn['checked_in_at'])); ?></td>
-                                <td><?php echo $checkIn['checked_out_at'] ? date('d/m/Y H:i:s', strtotime($checkIn['checked_out_at'])) : '-'; ?></td>
+                                <td><?php echo uk_time($checkIn['checked_in_at'], 'd/m/Y H:i:s'); ?></td>
+                                <td><?php echo $checkIn['checked_out_at'] ? uk_time($checkIn['checked_out_at'], 'd/m/Y H:i:s') : '-'; ?></td>
                                 <td>
                                     <?php
                                     $method = $checkIn['check_in_method'] ?? 'manual';

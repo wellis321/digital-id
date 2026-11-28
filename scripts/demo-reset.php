@@ -115,20 +115,21 @@ for ($n = 0; $n < 60; $n++) {
     $r = mt_rand(1, 20);
     $result = $r === 1 ? 'expired' : ($r === 2 ? 'failed' : 'success');
     $stmt->execute([$card['id'], $card['employee_id'], ['qr', 'qr', 'qr', 'visual', 'nfc'][mt_rand(0, 4)], $devices[mt_rand(0, 3)], $result,
-        date('Y-m-d H:i:s', time() - mt_rand(3600, 30 * 86400)), $result === 'success' ? null : 'Demo record']);
+        gmdate('Y-m-d H:i:s', time() - mt_rand(3600, 30 * 86400)), $result === 'success' ? null : 'Demo record']);
 }
 
 // A completed fire drill, to show check-in sessions and attendance.
 $adminUserId = (int) $db->query("SELECT id FROM users WHERE email = 'admin@" . $orgDomain . "'")->fetchColumn();
-$started = date('Y-m-d H:i:s', strtotime('-2 days 10:30'));
+$startedAt = strtotime('-2 days 10:30');   // 10:30 here, saved as UTC
+$started = gmdate('Y-m-d H:i:s', $startedAt);
 $db->prepare("INSERT INTO check_in_sessions (organisation_id, session_name, session_type, started_by, started_at, ended_at, location_name)
               VALUES (1, 'Fire drill: Inverness office', 'fire_drill', ?, ?, ?, 'Inverness office')")
-   ->execute([$adminUserId, $started, date('Y-m-d H:i:s', strtotime($started . ' +12 minutes'))]);
+   ->execute([$adminUserId, $started, gmdate('Y-m-d H:i:s', $startedAt + 12 * 60)]);
 $sessionId = (int) $db->lastInsertId();
 foreach (array_slice($employeeIds, 0, 9) as $k => $employeeId) {
     $db->prepare("INSERT INTO check_ins (employee_id, check_in_type, location_name, checked_in_at, session_id, check_in_method)
                   VALUES (?, 'fire_drill', 'Inverness office', ?, ?, 'qr_scan')")
-       ->execute([$employeeId, date('Y-m-d H:i:s', strtotime($started . ' +' . (2 + $k) . ' minutes')), $sessionId]);
+       ->execute([$employeeId, gmdate('Y-m-d H:i:s', $startedAt + (2 + $k) * 60), $sessionId]);
 }
 
 echo "Seeded " . count($people) . " staff, " . count($cards) . " ID cards, 60 verifications and 1 fire drill.\n";

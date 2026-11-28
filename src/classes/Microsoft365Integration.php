@@ -151,8 +151,8 @@ class Microsoft365Integration {
             $listItemData = [
                 'Title' => $employeeName,
                 'EmployeeReference' => $employeeRef,
-                'CheckInTime' => $checkIn['checked_in_at'],
-                'CheckOutTime' => $checkIn['checked_out_at'] ?? null,
+                'CheckInTime' => uk_time($checkIn['checked_in_at'], 'c'),
+                'CheckOutTime' => uk_time($checkIn['checked_out_at'] ?? null, 'c') ?: null,
                 'Location' => $checkIn['location_name'] ?? '',
                 'Method' => $checkIn['check_in_method'] ?? 'manual',
                 'SessionId' => $checkIn['session_id'] ?? null

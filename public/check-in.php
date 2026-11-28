@@ -114,7 +114,7 @@ include dirname(__DIR__) . '/includes/header.php';
                     <p>
                         <strong>Type:</strong> <?php echo htmlspecialchars(ucfirst(str_replace('_', ' ', $session['session_type']))); ?><br>
                         <strong>Location:</strong> <?php echo htmlspecialchars($session['location_name'] ?? 'N/A'); ?><br>
-                        <strong>Started:</strong> <?php echo date('d/m/Y H:i', strtotime($session['started_at'])); ?>
+                        <strong>Started:</strong> <?php echo uk_time($session['started_at']); ?>
                     </p>
                     
                     <?php if (isset($checkInStatus[$session['id']]) && $checkInStatus[$session['id']]): ?>

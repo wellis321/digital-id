@@ -206,7 +206,7 @@ include dirname(__DIR__, 3) . '/includes/header.php';
                                 </span>
                                 <?php if (!empty($member['joined_at'])): ?>
                                     <span style="font-size: 0.75rem; color: #4a5a5c;">
-                                        Joined <?php echo date('d/m/Y', strtotime($member['joined_at'])); ?>
+                                        Joined <?php echo uk_time($member['joined_at'], 'd/m/Y'); ?>
                                     </span>
                                 <?php endif; ?>
                             </div>

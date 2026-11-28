@@ -16,7 +16,7 @@ class MagicLink
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) return;
         $db = getDbConnection();
         $s = $db->prepare('SELECT u.id, u.first_name FROM users u LEFT JOIN employees e ON e.user_id = u.id
-                           WHERE u.email = ? AND u.is_active = 1 AND u.email_verified = 1 AND (e.id IS NULL OR (e.is_active = 1 AND (e.leaves_on IS NULL OR e.leaves_on >= CURDATE()))) LIMIT 1');
+                           WHERE u.email = ? AND u.is_active = 1 AND u.email_verified = 1 AND (e.id IS NULL OR (e.is_active = 1 AND (e.leaves_on IS NULL OR e.leaves_on >= ' . sql_today() . '))) LIMIT 1');
         $s->execute([$email]);
         $u = $s->fetch();
         if (!$u) return;
@@ -55,7 +55,7 @@ class MagicLink
         $claim->execute([$hash]);
         if ($claim->rowCount() !== 1) return false;   // the single UPDATE is what makes it one-time, even with two taps at once
         $s = $db->prepare('SELECT l.user_id FROM login_links l JOIN users u ON u.id = l.user_id LEFT JOIN employees e ON e.user_id = u.id
-                           WHERE l.token_hash = ? AND u.is_active = 1 AND (e.id IS NULL OR (e.is_active = 1 AND (e.leaves_on IS NULL OR e.leaves_on >= CURDATE())))');
+                           WHERE l.token_hash = ? AND u.is_active = 1 AND (e.id IS NULL OR (e.is_active = 1 AND (e.leaves_on IS NULL OR e.leaves_on >= ' . sql_today() . ')))');
         $s->execute([$hash]);
         $uid = $s->fetchColumn();
         return $uid ? Auth::loginUserById((int) $uid) : false;   // true, false, or 'second_step_required'

@@ -431,7 +431,7 @@ $qrImageUrl = QRCodeGenerator::generateImageUrl($idCard['qr_token']);
     </script>
     
     <div style="margin-top: 1rem; text-align: center; font-size: 0.75rem; opacity: 0.7;">
-        <p>Card expires: <?php echo date('d/m/Y', strtotime($idCard['expires_at'])); ?></p>
+        <p>Card expires: <?php echo uk_time($idCard['expires_at'], 'd/m/Y'); ?></p>
     </div>
 </div>
 

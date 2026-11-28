@@ -47,14 +47,14 @@ $employees = $stmt->fetchAll();
 $whereConditions = ["e.organisation_id = ?"];
 $params = [$organisationId];
 
-if (!empty($dateFrom)) {
-    $whereConditions[] = "DATE(vl.verified_at) >= ?";
-    $params[] = $dateFrom;
+if (!empty($dateFrom) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateFrom)) {   // saved times are UTC: from the moment that UK date began
+    $whereConditions[] = "vl.verified_at >= ?";
+    $params[] = uk_day_start($dateFrom);
 }
 
-if (!empty($dateTo)) {
-    $whereConditions[] = "DATE(vl.verified_at) <= ?";
-    $params[] = $dateTo;
+if (!empty($dateTo) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateTo)) {
+    $whereConditions[] = "vl.verified_at < ?";
+    $params[] = uk_day_start(date('Y-m-d', strtotime($dateTo . ' +1 day')));
 }
 
 if (!empty($employeeId)) {
@@ -156,7 +156,7 @@ if ($export === 'csv') {
         }
         
         fputcsv($output, [
-            $row['verified_at'],
+            uk_time($row['verified_at'], 'Y-m-d H:i:s'),
             $employeeName,
             $employeeRef,
             strtoupper($row['verification_type']),
@@ -395,7 +395,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                             ?>
                             <tr style="border-bottom: 1px solid #dcd8cd;">
                                 <td style="padding: 0.75rem;">
-                                    <?php echo date('d/m/Y H:i:s', strtotime($log['verified_at'])); ?>
+                                    <?php echo uk_time($log['verified_at'], 'd/m/Y H:i:s'); ?>
                                 </td>
                                 <td style="padding: 0.75rem;">
                                     <strong><?php echo htmlspecialchars($employeeName); ?></strong><br>

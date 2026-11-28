@@ -92,7 +92,7 @@ try {
                     $result = [
                         'success' => true,
                         'sync_status' => $log['sync_status'],
-                        'synced_at' => $log['synced_at'],
+                        'synced_at' => uk_time($log['synced_at'], 'c'),
                         'error' => $log['sync_error']
                     ];
                 } else {

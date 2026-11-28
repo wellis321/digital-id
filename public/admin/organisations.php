@@ -178,7 +178,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                             <?php echo htmlspecialchars($org['user_count']); ?>
                         </td>
                         <td style="padding: 0.75rem;">
-                            <?php echo date('d/m/Y', strtotime($org['created_at'])); ?>
+                            <?php echo uk_time($org['created_at'], 'd/m/Y'); ?>
                         </td>
                         <td style="padding: 0.75rem;">
                             <button onclick="editOrganisation(<?php echo htmlspecialchars(json_encode($org)); ?>)" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem; margin-right: 0.5rem;">Edit</button>

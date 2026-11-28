@@ -47,8 +47,8 @@ fputcsv($output, [
 foreach ($checkIns as $checkIn) {
     $employeeName = ($checkIn['first_name'] ?? '') . ' ' . ($checkIn['last_name'] ?? '');
     $employeeRef = $checkIn['display_reference'] ?? $checkIn['employee_reference'] ?? '';
-    $checkInTime = date('Y-m-d H:i:s', strtotime($checkIn['checked_in_at']));
-    $checkOutTime = $checkIn['checked_out_at'] ? date('Y-m-d H:i:s', strtotime($checkIn['checked_out_at'])) : '';
+    $checkInTime = uk_time($checkIn['checked_in_at'], 'Y-m-d H:i:s');
+    $checkOutTime = $checkIn['checked_out_at'] ? uk_time($checkIn['checked_out_at'], 'Y-m-d H:i:s') : '';
     $method = ucfirst(str_replace('_', ' ', $checkIn['check_in_method'] ?? 'manual'));
     $location = $checkIn['location_name'] ?? '';
     $status = $checkIn['checked_out_at'] ? 'Checked Out' : 'Checked In';

@@ -219,7 +219,7 @@ class CareCoreSync
         if (!$e) return false;
         $db->beginTransaction();
         try {
-            $db->prepare('UPDATE employees SET is_active = 0, leaves_on = COALESCE(leaves_on, CURDATE()) WHERE id = ?')->execute([$employeeId]);
+            $db->prepare('UPDATE employees SET is_active = 0, leaves_on = COALESCE(leaves_on, ' . sql_today() . ') WHERE id = ?')->execute([$employeeId]);
             $db->prepare('UPDATE digital_id_cards SET is_revoked = 1, revoked_at = NOW() WHERE employee_id = ? AND is_revoked = 0')->execute([$employeeId]);
             $db->prepare('UPDATE users SET is_active = 0 WHERE id = ?')->execute([$e['user_id']]);
             $db->commit();

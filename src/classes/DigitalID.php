@@ -57,9 +57,9 @@ class DigitalID {
             $qrToken = self::generateToken();
             $nfcToken = self::generateToken();
             
-            $qrExpires = date('Y-m-d H:i:s', strtotime('+' . QR_TOKEN_EXPIRY_MINUTES . ' minutes'));
-            $nfcExpires = date('Y-m-d H:i:s', strtotime('+' . NFC_TOKEN_EXPIRY_MINUTES . ' minutes'));
-            $cardExpires = date('Y-m-d H:i:s', strtotime('+' . ID_CARD_EXPIRY_DAYS . ' days'));
+            $qrExpires = gmdate('Y-m-d H:i:s', strtotime('+' . QR_TOKEN_EXPIRY_MINUTES . ' minutes'));
+            $nfcExpires = gmdate('Y-m-d H:i:s', strtotime('+' . NFC_TOKEN_EXPIRY_MINUTES . ' minutes'));
+            $cardExpires = gmdate('Y-m-d H:i:s', strtotime('+' . ID_CARD_EXPIRY_DAYS . ' days'));
             
             // Create new ID card
             $stmt = $db->prepare("
@@ -166,8 +166,8 @@ class DigitalID {
         $qrToken = self::generateToken();
         $nfcToken = self::generateToken();
         
-        $qrExpires = date('Y-m-d H:i:s', strtotime('+' . QR_TOKEN_EXPIRY_MINUTES . ' minutes'));
-        $nfcExpires = date('Y-m-d H:i:s', strtotime('+' . NFC_TOKEN_EXPIRY_MINUTES . ' minutes'));
+        $qrExpires = gmdate('Y-m-d H:i:s', strtotime('+' . QR_TOKEN_EXPIRY_MINUTES . ' minutes'));
+        $nfcExpires = gmdate('Y-m-d H:i:s', strtotime('+' . NFC_TOKEN_EXPIRY_MINUTES . ' minutes'));
         
         $stmt = $db->prepare("
             UPDATE digital_id_cards 
@@ -185,8 +185,8 @@ class DigitalID {
      */
     private static function needsTokenRefresh($idCard) {
         $now = time();
-        $qrExpires = strtotime($idCard['qr_token_expires_at']);
-        $nfcExpires = strtotime($idCard['nfc_token_expires_at']);
+        $qrExpires = db_ts($idCard['qr_token_expires_at']);
+        $nfcExpires = db_ts($idCard['nfc_token_expires_at']);
         
         // Refresh if tokens expire in less than 1 minute
         return ($qrExpires - $now < 60) || ($nfcExpires - $now < 60);
@@ -227,7 +227,7 @@ class DigitalID {
             return ['valid' => false, 'reason' => 'expired'];
         }
         
-        if (strtotime($idCard['expires_at']) < time()) {
+        if (db_ts($idCard['expires_at']) < time()) {
             return ['valid' => false, 'reason' => 'card_expired'];
         }
         

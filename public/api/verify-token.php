@@ -174,7 +174,7 @@ try {
             ],
             'id_card' => [
                 'id' => $idCard['id'],
-                'expires_at' => $idCard['expires_at']
+                'expires_at' => uk_time($idCard['expires_at'], 'c')
             ],
             'verification_type' => $type,
             'verified_at' => date('c'),

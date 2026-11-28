@@ -136,8 +136,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (!isset($_POST['action']) || $_POST
         
         // Update ID card expiration if provided
         if (isset($_POST['card_expires_at']) && !empty($_POST['card_expires_at'])) {
-            $expiresAt = date('Y-m-d H:i:s', strtotime($_POST['card_expires_at']));
-            if ($idCard) {
+            $expiresAt = saved_from_uk($_POST['card_expires_at']);   // typed in UK time, saved in UTC
+            if ($idCard && $expiresAt !== null) {
                 $db = getDbConnection();
                 $stmt = $db->prepare("UPDATE digital_id_cards SET expires_at = ? WHERE id = ?");
                 $stmt->execute([$expiresAt, $idCard['id']]);
@@ -271,7 +271,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                              style="width: 150px; height: 150px; object-fit: cover; border-radius: 0; border: 3px solid #1f6b45;">
                         <?php if ($employee['photo_approved_at']): ?>
                             <p style="color: #4a5a5c; font-size: 0.875rem; margin: 0.5rem 0 0 0;">
-                                Approved on <?php echo date('d/m/Y H:i', strtotime($employee['photo_approved_at'])); ?>
+                                Approved on <?php echo uk_time($employee['photo_approved_at']); ?>
                             </p>
                         <?php endif; ?>
                     </div>
@@ -335,7 +335,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
             <div class="form-group">
                 <label for="card_expires_at">ID Card Expiration Date</label>
                 <input type="datetime-local" id="card_expires_at" name="card_expires_at" 
-                       value="<?php echo $idCard['expires_at'] ? date('Y-m-d\TH:i', strtotime($idCard['expires_at'])) : ''; ?>">
+                       value="<?php echo $idCard['expires_at'] ? uk_time($idCard['expires_at'], 'Y-m-d\TH:i') : ''; ?>">
                 <small>When this ID card expires. Leave empty to use default expiration period.</small>
             </div>
             
@@ -344,16 +344,16 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                     <i class="fas fa-info-circle"></i> ID Card Information
                 </h4>
                 <p style="margin: 0.25rem 0; color: #0e5f5a; font-size: 0.875rem;">
-                    <strong>Issued:</strong> <?php echo date('d/m/Y H:i', strtotime($idCard['issued_at'])); ?>
+                    <strong>Issued:</strong> <?php echo uk_time($idCard['issued_at']); ?>
                 </p>
                 <p style="margin: 0.25rem 0; color: #0e5f5a; font-size: 0.875rem;">
-                    <strong>Current Expiration:</strong> <?php echo $idCard['expires_at'] ? date('d/m/Y H:i', strtotime($idCard['expires_at'])) : 'Not set'; ?>
+                    <strong>Current Expiration:</strong> <?php echo $idCard['expires_at'] ? uk_time($idCard['expires_at']) : 'Not set'; ?>
                 </p>
                 <p style="margin: 0.25rem 0; color: #0e5f5a; font-size: 0.875rem;">
                     <strong>Status:</strong> 
                     <?php if ($idCard['is_revoked']): ?>
                         <span style="color: #a3322b;">Revoked</span>
-                    <?php elseif ($idCard['expires_at'] && strtotime($idCard['expires_at']) < time()): ?>
+                    <?php elseif ($idCard['expires_at'] && db_ts($idCard['expires_at']) < time()): ?>
                         <span style="color: #8a5a00;">Expired</span>
                     <?php else: ?>
                         <span style="color: #1f6b45;">Active</span>

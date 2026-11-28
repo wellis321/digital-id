@@ -114,7 +114,7 @@ class Email {
                         <div class='detail-row'><span class='detail-label'>Name:</span> " . htmlspecialchars($userDetails['first_name'] . ' ' . $userDetails['last_name']) . "</div>
                         <div class='detail-row'><span class='detail-label'>Email:</span> " . htmlspecialchars($userDetails['email']) . "</div>
                         <div class='detail-row'><span class='detail-label'>Organisation:</span> " . htmlspecialchars($organisationDetails['name']) . "</div>
-                        <div class='detail-row'><span class='detail-label'>Account Created:</span> " . date('d/m/Y H:i', strtotime($userDetails['created_at'])) . "</div>
+                        <div class='detail-row'><span class='detail-label'>Account Created:</span> " . uk_time($userDetails['created_at']) . "</div>
                     </div>
                     
                     <p style='text-align: center;'>
@@ -188,8 +188,8 @@ class Email {
                         <div class='detail-row'><span class='detail-label'>Email:</span> " . htmlspecialchars($userDetails['email']) . "</div>
                         <div class='detail-row'><span class='detail-label'>Account Status:</span> " . ($userDetails['is_active'] ? 'Active' : 'Inactive') . "</div>
                         <div class='detail-row'><span class='detail-label'>Email Verified:</span> " . ($userDetails['email_verified'] ? 'Yes' : 'No') . "</div>
-                        <div class='detail-row'><span class='detail-label'>Account Created:</span> " . date('d/m/Y H:i', strtotime($userDetails['created_at'])) . "</div>
-                        <div class='detail-row'><span class='detail-label'>Last Login:</span> " . ($userDetails['last_login'] ? date('d/m/Y H:i', strtotime($userDetails['last_login'])) : 'Never') . "</div>
+                        <div class='detail-row'><span class='detail-label'>Account Created:</span> " . uk_time($userDetails['created_at']) . "</div>
+                        <div class='detail-row'><span class='detail-label'>Last Login:</span> " . ($userDetails['last_login'] ? uk_time($userDetails['last_login']) : 'Never') . "</div>
                     </div>
                     
                     <div class='info-box'>
@@ -197,7 +197,7 @@ class Email {
                         <div class='detail-row'><span class='detail-label'>Organisation ID:</span> " . htmlspecialchars($organisationDetails['id']) . "</div>
                         <div class='detail-row'><span class='detail-label'>Name:</span> " . htmlspecialchars($organisationDetails['name']) . "</div>
                         <div class='detail-row'><span class='detail-label'>Domain:</span> " . htmlspecialchars($organisationDetails['domain']) . "</div>
-                        <div class='detail-row'><span class='detail-label'>Created:</span> " . date('d/m/Y H:i', strtotime($organisationDetails['created_at'])) . "</div>
+                        <div class='detail-row'><span class='detail-label'>Created:</span> " . uk_time($organisationDetails['created_at']) . "</div>
                     </div>
                     
                     " . $contactAttemptsText . "

@@ -29,7 +29,7 @@ if (!$idCardData) {
             'id' => $employee['organisation_id'],
             'name' => $employee['organisation_name']
         ],
-        'issued_at' => $employee['created_at'],
+        'issued_at' => uk_time($employee['created_at'], 'c'),
         'valid_until' => date('c', strtotime('+' . ID_CARD_EXPIRY_DAYS . ' days')),
         'verification_levels' => ['visual', 'qr', 'nfc']
     ];

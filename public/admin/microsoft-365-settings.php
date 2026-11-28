@@ -197,7 +197,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                                     <?php echo htmlspecialchars(ucfirst($log['sync_status'])); ?>
                                 </span>
                             </td>
-                            <td><?php echo $log['synced_at'] ? date('d/m/Y H:i:s', strtotime($log['synced_at'])) : '-'; ?></td>
+                            <td><?php echo $log['synced_at'] ? uk_time($log['synced_at'], 'd/m/Y H:i:s') : '-'; ?></td>
                             <td><?php echo htmlspecialchars($log['sync_error'] ?? '-'); ?></td>
                         </tr>
                     <?php endforeach; ?>

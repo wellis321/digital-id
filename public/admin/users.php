@@ -257,7 +257,7 @@ include dirname(__DIR__, 2) . '/includes/header.php';
                             <?php endif; ?>
                         </td>
                         <td style="padding: 0.75rem;">
-                            <?php echo date('d/m/Y', strtotime($user['created_at'])); ?>
+                            <?php echo uk_time($user['created_at'], 'd/m/Y'); ?>
                         </td>
                         <td style="padding: 0.75rem; white-space: nowrap; min-width: 200px;">
                             <div style="display: flex; flex-direction: column; gap: 0.5rem;">

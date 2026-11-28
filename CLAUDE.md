@@ -197,4 +197,4 @@ Two primary audiences for the public-facing site (marketing pages, docs, verific
 
 ## Dates and times
 
-The database connection sets its session to UK time (`getDbConnection()`), like PHP, so `NOW()`, `CURDATE()` and saved times agree all year; the server itself is UTC. A column written with `gmdate()` is UTC and must be written, compared and labelled as UTC. Check with `php tests/uk_time_test.php`.
+Saved times are UTC (every connection's session is `+00:00`); everything people see, and every "today", is UK. Show a saved time with `uk_time()`, compare it in PHP with `db_ts()`, in SQL with `NOW()` or `uk_day_start($date)`; save a time someone typed with `saved_from_uk()`; write other times with `NOW()` or `gmdate()`; put today into a query with `sql_today()` (`shared-auth/src/time.php`). Never `CURDATE()`, `date(strtotime($row['…_at']))` or `DATE(…_at)`. The server has no named time zones, which is why the session is not set to UK time. `php tests/uk_time_test.php` checks this and reads the code.
